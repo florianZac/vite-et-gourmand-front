@@ -1,4 +1,4 @@
-#Vite est Gourmand
+# Vite est Gourmand
 Ce site est un site vitrine pour le restaurant vite et gourmand
 
 Utilisation d'un Le framework JavaScript
@@ -18,8 +18,69 @@ Le fichier allRoutes.js : crée un tableau « allRoutes » contenant toutes les 
 
 Le fichier router.js : importe la classe Route et les variables « allRoutes » et « websiteName » du fichier allRoutes.js. C’est lui qui contient la logique de routage.
 
+# Architecture du Front
+/project-root
+├─ Pages/
+│ ├─ 404.html
+│ ├─ home.html
+│ ├───Auth/
+│ ├─ inscription.html
+│ ├─ login.html
+│ ├───Auth/
+│ ├─ commander.html
+│ ├───Contact/
+│ ├─ contact.html
+│ ├───Mention_legale/
+│ ├─ Mentions_CGV.html
+│ ├─ Mentions_legale.html
+├─ Router/
+│ ├─ Router.js 
+│ ├─ Route.js 
+│ └─ allRoutes.js
+├─ Script/
+│ ├─ script.js 
+├─ scss/
+│ ├─ _custom.scss
+│ ├─ main.css
+│ ├─ main.css.map 
+│ ├─ main.scss
 
-#Installation
-installation de bootstrap 1. se deplacer dans la racine du projet 2 executer la commande suivante npm install bootstrap
 
-#deploiment
+index.html
+
+# Installation du framework css bootstrap
+
+pourquoi : respect des normes standardiser, est gain de temps sur le css du site
+installation de bootstrap 1. 
+
+npm install bootstrap
+# NPM windows installation via choco pour s'il n'est pas déjà installer.
+https://nodejs.org/en/download
+Etape 1 : powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
+Etape 2 : choco install nodejs-lts -y
+Etape 3 : Vérifier les versions
+
+# Verification de la version de Node.js
+node -v #
+
+# Verification de la version de npm
+npm -v #
+
+# Instalation de la version 5.3 de Bootstrap
+npm install bootstrap@v5.3.8
+
+# Instalation de la version 5.3 de Bootstrap icon
+npm i bootstrap-icons
+
+# Installation de Sass 
+But :  possibilité de modifier les couleurs par défaut de bootstrap est surchargé le css pour appliqué notre propre style.
+
+
+
+
+
+
+
+
+
+# Déploiment

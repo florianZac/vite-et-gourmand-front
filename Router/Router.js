@@ -1,34 +1,33 @@
-// Import de la classe Route qui sert de modèle pour définir une route
-import Route from "../Router/Route.js";
-
-// Import de toutes les routes du site + le nom du site
-import { allRoutes, websiteName } from "../Router/allRoutes.js";
+// Router/Router.js
 
 // Import des fonctions utilitaires :
 // - vérifier si un utilisateur est connecté
 // - afficher/cacher certains éléments selon le rôle
 // - récupérer le rôle de l'utilisateur
-import { isConnected, showAndHideElementsForRole, getRole } from "../script/script.js"; 
+// Import des fonctions utilitaires depuis Script/script.js
+import { isConnected, showAndHideElementsForRole, getRole } from "../Script/script.js";
 
+console.log("Router chargé");
+
+// Import de la classe Route qui sert de modèle pour définir une route
+import Route from "./Route.js";
+
+// Import de toutes les routes du site + le nom du site
+import { allRoutes, websiteName } from "./allRoutes.js";
 
 /* =====================================================
    LOGIQUE DE ROUTAGE SPA (Single Page Application)
    ===================================================== */
-
 
 // Mode debug - affichera des logs dans la console si égale à True
 const debug = true;
 
 // Création d'une route spéciale pour les pages introuvables (404)
 const route404 = new Route(
-    "404",                          // nom interne de la route
-    "Page introuvable",             // titre affiché dans le navigateur
-    "/Pages/404.html",              // chemin vers le fichier HTML de la page 404
-    "/",                            // URL par défaut de redirection
-    ["client","employee","admin"],  // rôles autorisés
-    false                           // reload JS
+    "404",                      // nom interne de la route
+    "Page introuvable",         // titre affiché dans le navigateur
+    "Pages/404.html",           // chemin vers le fichier HTML de la page 404
 );
-
 
 // Cache qui mémorise les scripts JS déjà chargés
 // Permet d'éviter de recharger plusieurs fois le même fichier JS
@@ -39,14 +38,13 @@ const loadedScripts = new Set();
    ===================================================== */
 
 const getRouteByUrl = (url) => {
-
     // Si l'URL est index.html ou vide on la remplace par "/"
     if (url === "/index.html" || url === "") url = "/";
-
     // Recherche dans la liste des routes celle qui correspond à l'URL
-    // Si aucune correspondance → on retourne la route 404
+    // Si aucune correspondance on retourne la route 404
     return allRoutes.find(route => route.url === url) || route404;
 };
+
 
 /* =====================================================
    FORMATTER L'HEURE POUR LES LOGS DEBUG
@@ -68,6 +66,7 @@ const getFormattedTime = () => {
 export const LoadContentPage = async () => {
 
     // Récupère le chemin de l'URL actuelle dans le navigateur
+    //const path = window.location.pathname;
     const path = window.location.pathname;
 
     // Trouve la route correspondant à cette URL
@@ -80,45 +79,21 @@ export const LoadContentPage = async () => {
     // Tableau des rôles autorisés pour la route
     const allRolesArray = actualRoute.authorize;
 
-    // Si des rôles sont définis
+    // Vérification droits
     if (allRolesArray.length > 0) {
-
-        // Cas particulier : pages réservées aux utilisateurs NON connectés
-        if (allRolesArray.includes("disconnected")) {
-
-            // Si l'utilisateur est déjà connecté
-            if (isConnected()) {
-
-                // On le redirige vers l'accueil
-                return navigate("/");
-            }
-
+        if (allRolesArray.includes("disconnected") && isConnected()) {
+            return navigate("/");
+        } else if (!allRolesArray.includes("disconnected") && !isConnected()) {
+            return navigate("/login");
         } else {
-
-            // Si la page nécessite une connexion
-            if (!isConnected()) {
-
-                // Redirection vers la page login
-                return navigate("/login");
-            }
-
-            // Récupération du rôle utilisateur (admin ou client)
             const roleUser = getRole();
-
-            // Si le rôle n'est pas autorisé pour cette page
-            if (!allRolesArray.includes(roleUser)) {
-
-                // Redirection vers l'accueil
-                return navigate("/");
-            }
+            if (!allRolesArray.includes(roleUser)) return navigate("/");
         }
     }
-
 
     /* =====================================================
        CHARGEMENT DU HTML DE LA PAGE
        ===================================================== */
-
     try {
 
         // Requête HTTP pour récupérer le fichier HTML
@@ -142,7 +117,6 @@ export const LoadContentPage = async () => {
         document.getElementById("main-page").innerHTML = "<h2>Erreur chargement</h2>";
     }
 
-
     /* =====================================================
        INITIALISATION DES MODALS BOOTSTRAP
        ===================================================== */
@@ -154,7 +128,6 @@ export const LoadContentPage = async () => {
         new bootstrap.Modal(modalEl);
     });
 
-
     /* =====================================================
        CHARGEMENT DU JS SPÉCIFIQUE À LA PAGE
        ===================================================== */
@@ -162,32 +135,35 @@ export const LoadContentPage = async () => {
     if (actualRoute.pathJS && actualRoute.pathJS.trim() !== "") {
 
         // Fonction qui importe dynamiquement le module JS
-        const loadScript = () => {
+        const loadScript = async () => {
+            try {
+                // On force un chemin relatif correct
+                let scriptPath = actualRoute.pathJS;
+                if (!scriptPath.startsWith("./") && !scriptPath.startsWith("../") && !scriptPath.startsWith("/")) {
+                    scriptPath = "./" + scriptPath;
+                }
 
-            import(
-                actualRoute.pathJS + 
-                (actualRoute.reloadJS ? `?v=${Date.now()}` : "")
-            )
+                // Import dynamique du module
+                const mod = await import(scriptPath);
 
-            .then(mod => {
-
-                // Si la fonction initLoginPage existe dans le module
+                // Appelle initLoginPage si elle existe
                 if (mod.initLoginPage) mod.initLoginPage();
-            })
 
-            .catch(err => console.error("Erreur import module JS:", err));
+            } catch (err) {
+                console.error("Erreur import module JS:", err);
+            }
         };
 
-        // Si le script doit être rechargé ou s'il n'a jamais été chargé
+        // Si le script doit être rechargé ou n'a jamais été chargé
         if (actualRoute.reloadJS || !loadedScripts.has(actualRoute.pathJS)) {
 
+            // On charge le(s) script
             loadScript();
 
             // On ajoute le script au cache
             if (!actualRoute.reloadJS) loadedScripts.add(actualRoute.pathJS);
 
         } else {
-
             // Sinon on recharge quand même le script
             loadScript();
         }

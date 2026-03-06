@@ -1,13 +1,15 @@
+
 export default class Route {
-  constructor(url, title, pathHtml, pathJS = "",authorize, reloadJS = false) {
-    this.url = url;
-    this.title = title;
-    this.pathHtml = pathHtml;
-    this.pathJS = pathJS;
-    this.authorize = authorize; // Autorisation d'accès au page
-    //this.reloadJS = reloadJS; // rechargement rapide
+  constructor(url, title, pathHtml, authorize = [], pathJS = "", reloadJS = false) {
+    this.url = url;         // URL SPA
+    this.title = title;     // Titre de la page
+    this.pathHtml = pathHtml; // Chemin relatif vers le HTML
+    this.pathJS = pathJS;   // Chemin JS spécifique à la page
+    this.authorize = authorize; // Roles autorisés
+    this.reloadJS = reloadJS;   // Recharger JS à chaque visite
   }
 }
+
 
 
 /** Tableau de chaine de charactere perméttant de faire le choix pour un utilisateur spécifique 

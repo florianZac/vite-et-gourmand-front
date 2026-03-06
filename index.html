@@ -5,169 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="scss/main.css"/>
 
   <title>Vite & Gourmand</title>
 
-  <!-- Bootstrap 5 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
 </head>
 <body>
-   <!-- HEADER -->
-    <header>
-        <nav class="navbar navbar-expand-lg custom-navbar" data-bs-theme="dark">
-            <div class="container">
 
-                <!-- Logo -->
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <div class="logo-box me-2">
-                        <i class="bi bi-cup-hot-fill"></i>
-                    </div>
-                    <span class="brand-name">Vite & Gourmand</span>
-                </a>
-
-                <!-- Burger mobile -->
-                <button class="navbar-toggler border-0" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Menu -->
-                <div class="collapse navbar-collapse" id="navbarContent">
-
-                    <!-- Menu centre -->
-                    <ul class="navbar-nav mx-auto text-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Nos Menus</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
-                        </li>
-                    </ul>
-
-                    <!-- Partie droite -->
-                    <div class="d-flex align-items-center gap-3 justify-content-center">
-                        <a href="#" class="nav-link">Connexion</a>
-                        <a href="#" class="btn btn-inscription">
-                            <i class="bi bi-box-arrow-in-right me-1"></i>
-                            Inscription
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- MAIN -->
-    <main id="main-page">
-        <!--Le contenu de la page sera injecté ici par Router.js -->
-    </main>
-
-
-    <!-- FOOTER -->
-    <footer class="bg-dark text-white text-center">
-        <div class="row">
-            
-            <div class="col-12">
-                <h3 class="text-primary pt-2" >Nos horaires</h3>
-                <p> Du mardi au dimanche 12:00-14:00 18:00-23:00</p>
-            </div>
-            <div class="col-6">
-                <p class="text-primary text-white">vite et  <br/>
-                    5 rue de la route <br/>
-                    31150 Ville <br/>
-                    04 01 01 01 01 <br/>
-                </p>
-            </div>
-            <div class="col-6">
-                <p>contact@vitegourmand.fr</p>
-            </div>
-        </div>
-    </footer>
-    <footer class="footer-dark">
+<!-- ================= HEADER ================= -->
+<header>
+  <nav class="navbar navbar-expand-lg custom-navbar" data-bs-theme="dark">
     <div class="container">
-      <div class="row gy-4">
+      <!-- Logo -->
+      <a class="d-flex align-items-center gap-2 text-decoration-none" href="/">
 
-        <!-- Colonne 1 -->
-        <div class="col-lg-4">
-          <div class="footer-logo mb-3">
-            <i class="bi bi-bag-fill me-2"></i> Vite & Gourmand
-          </div>
+        <img 
+          src="/Assets/Images/logo-vite-gourmand_1.jpg"
+          alt="Vite & Gourmand - Logo"
+          class="rounded"
+          width="36"
+          height="36"
+          style="object-fit: cover;"
+          loading="lazy"
+        >
 
-          <p>
-            Traiteur artisanal à Bordeaux depuis 25 ans.
-            Julie & José vous accueillent avec passion
-            pour sublimer tous vos événements.
-          </p>
-
-          <p><i class="bi bi-geo-alt-fill icon-orange"></i>22 quai des Chartrons, 33000 Bordeaux</p>
-          <p><i class="bi bi-telephone-fill icon-orange"></i>+33 5 56 12 34 56</p>
-          <p><i class="bi bi-envelope-fill icon-orange"></i>contact@vitegourmand.fr</p>
+        <div class="lh-sm">
+          <span class="fw-bold text-primary">Vite</span>
+          <span class="fw-bold text-secondary"> &amp; </span>
+          <span class="fw-bold text-primary">Gourmand</span>
         </div>
 
-        <!-- Colonne 2 -->
-         <!--Le contenu devra etre modifier par le back  -->
-        <div class="col-lg-4">
-          <h5><i class="bi bi-clock icon-orange"></i> Horaires d'ouverture</h5>
+      </a>
 
-          <div class="hours-row"><span>Lundi</span><span>09:00 – 18:00</span></div>
-          <div class="hours-row"><span>Mardi</span><span>09:00 – 18:00</span></div>
-          <div class="hours-row"><span>Mercredi</span><span>09:00 – 18:00</span></div>
-          <div class="hours-row"><span>Jeudi</span><span>09:00 – 18:00</span></div>
-          <div class="hours-row"><span>Vendredi</span><span>09:00 – 19:00</span></div>
-          <div class="hours-row"><span>Samedi</span><span>10:00 – 17:00</span></div>
-          <div class="hours-row"><span>Dimanche</span><span>Fermé</span></div>
-        </div>
+      <!-- Burger menu mobile -->
+      <button 
+        class="navbar-toggler border-0" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#navbarContent" 
+        aria-label="Ouvrir le menu de navigation"
+        aria-expanded="false"
+      >
+        <i class="bi bi-list burger-icon"></i>
+        <i class="bi bi-x close-icon d-none"></i>
+      </button>
+      
+      <!-- Contenu Menu -->
+      <div class="collapse navbar-collapse" id="navbarContent">
 
-        <!-- Colonne 3 -->
-        <div class="col-lg-4">
-          <h5>Navigation</h5>
-          <div class="row">
-            <div class="col-6">
-              <p><a href="#">Accueil</a></p>
-              <p><a href="#">Contact</a></p>
-              <p><a href="#">Inscription</a></p>
-            </div>
-            <div class="col-6">
-              <p><a href="#">Nos menus</a></p>
-              <p><a href="#">Connexion</a></p>
-              <p><a href="#">Commander</a></p>
-            </div>
-          </div>
+        <!-- Menu centre -->
+        <ul class="navbar-nav mx-auto text-center">
+          <li class="nav-item">
+            <a href="/" class="nav-link">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a href="/nos_menu" class="nav-link">Nos Menus</a>
+          </li>
+          <li class="nav-item">
+            <a href="/contact" class="nav-link">Contact</a>
+          </li>
+        </ul>
 
-          <hr class="border-secondary">
-
-          <h6 class="mt-3">Légal</h6>
-          <p><a href="#">Mentions légales</a></p>
-          <p><a href="#">CGV</a></p>
+        <!-- Partie droite (Connexion/Inscription) -->
+        <div class="navbar-right-section">
+          <a href="/login" class="btn btn-connexion">Connexion</a>
+          <a href="/inscription" class="btn btn-inscription">
+            <i class="bi bi-box-arrow-in-right"></i> Inscription
+          </a>
         </div>
 
       </div>
+    </div>
+  </nav>
+</header>
 
-      <!-- Barre du bas -->
-      <div class="footer-divider d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <div>
-          © 2025 Vite & Gourmand — Tous droits réservés
+<!-- ================= MAIN ================= -->
+<main id="main-page">
+  <!-- Le contenu de la page sera injecté ici par Router.js -->
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer-dark">
+  <div class="container">
+    <div class="row gy-4">
+
+      <!-- Colonne 1 -->
+      <div class="col-lg-4">
+        <div class="footer-logo mb-3">
+          <img src="/Assets/Images/logo-vite-gourmand_footer.jpg" 
+            alt="Logo" 
+            width="36" 
+            height="36" 
+            style="object-fit: cover;" 
+            class="me-2"> 
+            Vite & Gourmand
         </div>
-        <div>
-          SIRET : 123 456 789 00012 — TVA : FR 12 123456789
+        <p>Traiteur artisanal à Bordeaux depuis 25 ans. Julie & José vous accueillent avec passion pour sublimer tous vos événements.</p>
+        <p><i class="bi bi-geo-alt-fill icon-orange"></i>22 quai des Chartrons, 33000 Bordeaux</p>
+        <p><i class="bi bi-telephone-fill icon-orange"></i>+33 5 56 12 34 56</p>
+        <p><i class="bi bi-envelope-fill icon-orange"></i>contact@vitegourmand.fr</p>
+      </div>
+
+      <!-- Colonne 2 -->
+      <div class="col-lg-4">
+        <h5><i class="bi bi-clock icon-orange"></i> Horaires d'ouverture</h5>
+        <div class="hours-row"><span>Lundi</span><span>09:00 – 18:00</span></div>
+        <div class="hours-row"><span>Mardi</span><span>09:00 – 18:00</span></div>
+        <div class="hours-row"><span>Mercredi</span><span>09:00 – 18:00</span></div>
+        <div class="hours-row"><span>Jeudi</span><span>09:00 – 18:00</span></div>
+        <div class="hours-row"><span>Vendredi</span><span>09:00 – 19:00</span></div>
+        <div class="hours-row"><span>Samedi</span><span>10:00 – 17:00</span></div>
+        <div class="hours-row"><span>Dimanche</span><span>Fermé</span></div>
+      </div>
+
+      <!-- Colonne 3 -->
+      <div class="col-lg-4">
+        <h5>Navigation</h5>
+        <div class="row">
+          <div class="col-6">
+            <p><a href="/" class="nav-link">Accueil</a></p>
+            <p><a href="/contact" class="nav-link">Contact</a></p>
+            <p><a href="/nos_menu" class="nav-link">Nos menus</a></p>
+          </div>
+          <div class="col-6">
+            <p><a href="/inscription" class="nav-link">Inscription</a></p>
+            <p><a href="/login" class="nav-link">Connexion</a></p>
+            <p><a href="/commander" class="nav-link">Commander</a></p>
+          </div>
         </div>
+
+        <hr class="border-secondary">
+        <h6 class="mt-3">Légal</h6>
+        <p><a href="/Mentions_legale">Mentions légales</a></p>
+        <p><a href="/Mentions_CGV">CGV</a></p>
       </div>
 
     </div>
-  </footer>
-    <script type="module" src="script/script.js"></script>
-    <script type="module" src="Router/router.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="footer-divider d-flex flex-column flex-md-row justify-content-between align-items-center">
+      <div>© 2025 Vite & Gourmand — Tous droits réservés</div>
+      <div>SIRET : 123 456 789 00012 — TVA : FR 12 123456789</div>
+    </div>
+  </div>
+</footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script type="module" src="Script/script.js"></script>
+  <script type="module" src="Router/Router.js"></script>
+  <script type="module" src="Script/header-interactions.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

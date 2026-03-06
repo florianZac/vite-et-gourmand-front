@@ -1,0 +1,65 @@
+// Le _ permet de dire à Sass que ce fichier ne doit pas etre compilé
+/* 1️ Fonctions Bootstrap */
+@import "../node_modules/bootstrap/scss/functions";
+
+/* ===============================
+   PALETTE VITE & GOURMAND
+   =============================== */
+
+$terracotta: hsl(14, 61%, 47%);
+$ocre: hsl(38, 58%, 55%);
+$bordeaux: hsl(338, 48%, 34%);
+$olive: hsl(79, 31%, 35%);
+$creme: hsl(38, 67%, 96%);
+
+/* ===============================
+   BOOTSTRAP THEME MISE A JOUR VARIABLE
+   =============================== */
+
+$primary: $terracotta;
+$secondary: $ocre;
+$success: $olive;
+$danger: $bordeaux;
+$light: $creme;
+
+/* ===============================
+   AJOUT DES COULEURS CUSTOM
+   =============================== */
+
+/* Police pour le texte */
+$font-family-sans-serif: "Inter", sans-serif !default;
+/* Police pour les titres */
+$headings-font-family: "Playfair Display", serif !default;
+/* Poids du texte */
+$font-weight-normal: 400;
+
+
+/* Variables Bootstrap */
+@import "../node_modules/bootstrap/scss/variables";
+
+/* ===============================
+   AJOUT DES COULEURS CUSTOM
+   =============================== */
+
+$custom-colors: (
+  "terracotta": $terracotta,
+  "ocre": $ocre,
+  "bordeaux": $bordeaux,
+  "olive": $olive
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+/* Bootstrap complet */
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+/* ===============================
+   VARIABLES CSS
+   =============================== */
+
+:root {
+  --terracotta: hsl(14, 61%, 47%);
+  --terracotta-light: hsl(14, 61%, 62%);
+  --terracotta-dark: hsl(14, 61%, 35%);
+}
+

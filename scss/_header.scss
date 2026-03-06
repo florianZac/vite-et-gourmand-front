@@ -1,0 +1,283 @@
+/* ===============================
+   STYLES DU HEADER - VITE & GOURMAND
+   =============================== */
+
+/* -------- Variables Header -------- */
+:root {
+  --header-height: 80px;
+  --header-height-mobile: 70px;
+  --transition-smooth: 0.3s ease;
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* -------- Styles généraux de la navbar -------- */
+.custom-navbar {
+  background-color: $creme;
+  border-bottom: 1px solid rgba($terracotta, 0.1);
+  padding: 0.75rem 0;
+  box-shadow: var(--shadow-subtle);
+  transition: all var(--transition-smooth);
+
+  &:hover {
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+/* -------- Logo et marque -------- */
+.navbar-brand .container a {
+  transition: transform var(--transition-smooth);
+  padding: 0.25rem 0;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  img {
+    transition: box-shadow var(--transition-smooth);
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba($terracotta, 0.3);
+    }
+  }
+}
+
+/* -------- Mise à jour de la couleur du & dans Vite et Gourmand -------- */
+.navbar-brand .lh-sm span.text-secondary {
+  color: $bordeaux !important;
+}
+
+/* -------- Menu navigation -------- */
+.navbar-nav {
+  gap: 2rem;
+
+  .nav-item {
+    position: relative;
+
+    .nav-link {
+      color: $dark !important;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+      padding: 0.5rem 0;
+      transition: color var(--transition-smooth);
+      position: relative;
+
+      /* Underline animation au hover */
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: $terracotta;
+        transition: width var(--transition-smooth);
+      }
+
+      &:hover {
+        color: $terracotta !important;
+
+        &::after {
+          width: 100%;
+        }
+      }
+
+      /* Lien actif - SEULEMENT quand la page est active */
+      &.active {
+        color: $terracotta !important;
+
+        &::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+/* -------- Section droite (Connexion/Inscription) -------- */
+.navbar-right-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  /* -------- Bouton Connexion -------- */
+  .btn-connexion {
+    background-color: $bordeaux;
+    color: white !important;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    transition: all var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+
+    &:hover {
+      background-color: darken($bordeaux, 8%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($bordeaux, 0.35);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba($bordeaux, 0.25);
+    }
+  }
+
+  /* -------- Bouton Inscription -------- */
+  .btn-inscription {
+    background-color: $terracotta;
+    color: white !important;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    transition: all var(--transition-smooth);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+
+    &:hover {
+      background-color: darken($terracotta, 8%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($terracotta, 0.35);
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba($terracotta, 0.25);
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* -------- Burger menu mobile -------- */
+.navbar-toggler {
+  color: $terracotta !important;
+  border: none;
+  background-color: transparent;
+  padding: 0.5rem 0.75rem;
+  transition: all var(--transition-smooth);
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  i {
+    color: $terracotta;
+    font-size: 1.5rem;
+  }
+}
+
+/* -------- Collapse mobile -------- */
+.navbar-collapse {
+  @media (max-width: 991px) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: $creme;
+    border-bottom: 1px solid rgba($terracotta, 0.1);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-hover);
+
+    .navbar-nav {
+      gap: 0;
+      margin-bottom: 1.5rem;
+
+      .nav-item {
+        padding: 1rem 0;
+        text-align: center;
+        border-bottom: 1px solid rgba($dark, 0.05);
+
+        &:first-child {
+          padding-top: 0;
+        }
+
+        &:last-child {
+          border-bottom: none;
+          padding-bottom: 0;
+        }
+
+        .nav-link {
+          font-size: 1.05rem;
+          padding: 0 !important;
+
+          &::after {
+            display: none;
+          }
+
+          &:hover,
+          &.active {
+            color: $terracotta !important;
+          }
+        }
+      }
+    }
+
+    .navbar-right-section {
+      flex-direction: column;
+      width: 100%;
+      gap: 1rem;
+
+      .btn-connexion {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .btn-inscription {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .navbar-nav {
+    gap: 1.5rem;
+  }
+
+  .navbar-right-section {
+    gap: 1rem;
+
+    .btn-connexion {
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    .btn-inscription {
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+
+      i {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+/* -------- Responsive pour les mobiles -------- */
+@media (max-width: 576px) {
+  .navbar-nav {
+    gap: 1rem;
+  }
+}
+
+/* -------- Scrolling effet -------- */
+.custom-navbar.scrolled {
+  background-color: rgba($creme, 0.98);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
