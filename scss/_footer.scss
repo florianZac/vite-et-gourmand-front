@@ -4,11 +4,11 @@
 
 /* -------- Conteneur principal du footer -------- */
 .footer-dark {
-  background-color: #1f1f1f;
-  color: #e0e0e0;
+  background-color: $dark-bg;
+  color: $white-warm;
   padding: 3rem 0 0;
-  margin-top: 4rem;
-  border-top: 1px solid rgba($terracotta, 0.1);
+  margin-top: 0;
+  border-top: none;
 }
 
 /* -------- Texte général du footer -------- */
@@ -16,13 +16,13 @@
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 0.75rem;
-  color: #b8b8b8;
+  color: $gray-600;
 }
 
 /* -------- Logo du footer -------- */
 .footer-logo {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: $font-weight-bold;
   color: $terracotta;
   display: flex;
   align-items: center;
@@ -31,8 +31,8 @@
 /* -------- Titres du footer (h5, h6) -------- */
 .footer-dark h5,
 .footer-dark h6 {
-  color: white;
-  font-weight: 600;
+  color: $white-pure;
+  font-weight: $font-weight-semibold;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -55,19 +55,19 @@
 }
 /* first-child = le PREMIER enfant span de hours-row (le jour) */
 .hours-row span:first-child {
-  font-weight: 500;
-  color: #d0d0d0;
+  font-weight: $font-weight-medium;
+  color: $white-cold;
 }
 
 /* last-child = représente le DERNIER enfant span de hours-row  (l'horaire) */
 .hours-row span:last-child {
   color: $ocre;
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
 }
 
 /* -------- Liens du footer -------- */
 .footer-dark .nav-link {
-  color: #b8b8b8 !important;
+  color: $gray-700 !important;
   padding: 0 !important;
   font-size: 0.95rem;
   transition: color var(--transition-smooth);
@@ -96,23 +96,23 @@
 .footer-dark .col-lg-4:nth-child(3) h5,
 .footer-dark .col-lg-4:nth-child(3) h6,
 .footer-dark .col-lg-4 h5,
-.footer-logo .mb-3{
+.footer-logo {
   justify-content: center;
 }
 
 /* -------- Séparateur horizontal -------- */
 .footer-dark .border-secondary {
-  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: $divider-border !important;
 
 }
 
 /* -------- Diviseur du footer (bas) -------- */
 .footer-divider {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid  $divider-border;
   padding: 2rem 0;
   margin-top: 2rem;
   font-size: 0.9rem;
-  color: #888;
+  color: $divider-color;
 }
 
 /* -------- Responsive Tablette -------- */
@@ -149,8 +149,8 @@
   }
 
   .footer-logo {
-  justify-content: center;
-  margin-bottom: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
   
   .footer-dark h5,

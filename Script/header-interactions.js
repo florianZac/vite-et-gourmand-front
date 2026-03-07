@@ -2,11 +2,12 @@
    Ce fichier centralise les intéractions et les effets concernant le header
    RÉSUMÉ DU FONCTIONNEMENT
    =============================== */
-// 1. SCROLL EFFECT
-// 2. ACTIVE LINK MANAGEMENT
-// 3. MOBILE MENU CLOSE ON LINK CLICK
-// 4. CLOSE ON OUTSIDE CLICK
-// 5. BURGER ICON / CLOSE ICON TOGGLE
+  // 0. GESTION DE L'OUVERTURE / FERMETURE DU MENU BURGER
+  // 1. EFFET DE SCROLL SUR LE HEADER
+  // 2. GESTION DU LIEN ACTIF
+  // 3. FERMER LE MENU MOBILE AU CLIC
+  // 4. FERMER LE MENU EN CLIQUANT DEHORS
+  // 5. SMOOTH SCROLL AVEC JAVASCRIPT
 
 // Attend que le DOM soit complètement chargé avant d'exécuter le code afin de garantir que tous les éléments HTML sont disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,6 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sélectionne les icônes burger et X pour l'affichage/masquage
   const burgerIcon = document.querySelector('.burger-icon');
   const closeIcon = document.querySelector('.close-icon');
+
+  // Déclare les variables globales
+  // lastScrollTop = sauvegarde la dernière position du scroll pour détecter la direction
+  let lastScrollTop = 0;
+  // isSmoothing = indique si un smooth scroll est en cours (pour éviter les conflits)
+  let isSmoothing = false;
 
   /* ========================================
      SECTION 0 : GESTION DU X POUR FERMER LE MENU
@@ -43,23 +50,37 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ========================================
      SECTION 1 : EFFET DE SCROLL SUR LE HEADER
      ======================================== */
-
-  //  Écoute l'événement 'scroll' sur la fenêtre se déclenche à chaque fois que l'utilisateur scroll
+  
+  // Écoute l'événement 'scroll' sur la fenêtre
+  // Cette fonction s'exécute à chaque fois que l'utilisateur scrolle
   window.addEventListener('scroll', () => {
     
-    // Vérifie la position verticale du scroll (en pixels)
-    // window.scrollY retourne le nombre de pixels défilés verticalement
-    // Si scrollY > 10px, on ajoute une ombre supplémentaire au header
-    if (window.scrollY > 10) {
-      
-      // Ajoute la classe 'scrolled' à la navbar Cette classe ajoute une ombre plus prononcée voir CSS
-      navbar.classList.add('scrolled');
-      
+    // Si un smooth scroll est en cours, on sort de la fonction (return)
+    // Cela empêche le header de bouger pendant le smooth scroll
+    if (isSmoothing) return; 
+    
+    // Récupère la position actuelle du scroll (en pixels depuis le haut)
+    // window.pageYOffset = combien de pixels on a scrollé vers le bas
+    // document.documentElement.scrollTop = alternative si pageYOffset ne marche pas
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    // Vérifie si on scroll vers le BAS (si la position actuelle est PLUS GRANDE que la dernière position)
+    if (currentScroll > lastScrollTop) {
+      // On scroll vers le BAS = cache le header
+      // navbar.style.transform = '-100px' = déplace le header vers le haut de -100 pixels
+      // Comme le header fait 80px de haut, il disparaît complètement de l'écran
+      navbar.style.transform = '-100px';
     } else {
-      
-      // Retire la classe 'scrolled' si le scroll est en haut cela remet l'ombre subtile initiale
-      navbar.classList.remove('scrolled');
+      // On scroll vers le HAUT = affiche le header
+      // navbar.style.transform = '0' = ramène le header à sa position normale (en haut de l'écran)
+      navbar.style.transform = '0';
     }
+
+    // Met à jour la position de scroll pour la prochaine vérification
+    // Si on est tout en haut (currentScroll <= 0), lastScrollTop = 0
+    // Sinon, lastScrollTop = la position actuelle du scroll
+    // Cela permet de détecter la direction du scroll la prochaine fois
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
   });
 
   /* ========================================
@@ -103,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  //  Appel initial de la fonction au chargement de la page
+  // Appel initial de la fonction au chargement de la page
   // Cela met en évidence le lien correspondant à l'URL actuelle
   updateActiveLink();
 
@@ -145,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Écoute TOUS les clics sur la page
   // Cette fonction s'exécute à chaque clic n'importe où
   document.addEventListener('click', (e) => {
-
     
     // Récupère le bouton burger (le bouton menu mobile)
     const toggler = document.querySelector('.navbar-toggler');
@@ -158,5 +178,45 @@ document.addEventListener('DOMContentLoaded', () => {
       // Cela ferme le menu en appelant le comportement du bouton burger
       toggler.click();
     }
+  });
+  /* ========================================
+     SECTION 5 : SMOOTH SCROLL AVEC JAVASCRIPT
+     ======================================== */
+  // Trouve TOUS les liens qui pointent vers des ancres (#)
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    
+    // Écoute le clic sur chaque lien ancre
+    link.addEventListener('click', (e) => {
+      
+      // Empêche le comportement par défaut du lien (qui ferait un scroll instantané)
+      e.preventDefault();
+      
+      // Récupère l'ID cible en enlevant le # du href
+      // .substring(1) enlève le premier caractère (le #) et retourne "section_1"
+      const targetId = link.getAttribute('href').substring(1);
+      
+      // Récupère l'élément DOM qui a cet ID
+      const target = document.getElementById(targetId);
+      
+      // Vérifie que l'élément cible existe vraiment
+      if (target) {
+        
+        // Force le header à rester visible pendant le smooth scroll
+        navbar.style.transform = 'translateY(0)';
+        
+        // Calcule la position exacte où scroller
+        // getBoundingClientRect().top = distance entre le haut de l'écran et l'élément cible
+        // window.scrollY = position actuelle du scroll
+        // - headerHeight = recule de 80px pour que le header ne cache pas le contenu
+        const headerHeight = 80;
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+        
+        // crée une animation smooth d'1 seconde environ vers la position calculée
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
   });
 });

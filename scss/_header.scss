@@ -13,15 +13,17 @@
 
 /* -------- Styles généraux de la navbar -------- */
 .custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1030;
   background-color: $creme;
   border-bottom: 1px solid rgba($terracotta, 0.1);
   padding: 0.75rem 0;
   box-shadow: var(--shadow-subtle);
-  transition: all var(--transition-smooth);
-
-  &:hover {
-    box-shadow: var(--shadow-hover);
-  }
+  transition: transform 0.3s ease;
 }
 
 /* -------- Logo et marque -------- */
@@ -55,7 +57,7 @@
     position: relative;
 
     .nav-link {
-      color: $dark !important;
+      color: $dark-bg !important;
       font-weight: 500;
       font-size: 1rem;
       letter-spacing: 0.3px;
@@ -276,7 +278,7 @@
   }
 }
 
-/* -------- Scrolling effet -------- */
+/* -------- Scrolling effet header -------- */
 .custom-navbar.scrolled {
   background-color: rgba($creme, 0.98);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);

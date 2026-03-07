@@ -2,20 +2,55 @@
 @import url("/node_modules/bootstrap-icons/font/bootstrap-icons.css");
 /* 1️ Fonctions Bootstrap */
 /* ===============================
-   PALETTE VITE & GOURMAND
+   PALETTE VITE & GOURMAND - COULEURS PRIMAIRES
    =============================== */
 /* ===============================
-   BOOTSTRAP THEME MISE A JOUR VARIABLE
+   PALETTE ÉTENDUE - COULEURS SECONDAIRES
+   =============================== */
+/* Variantes terracotta */
+/* Variantes ocre */
+/* Variantes bordeaux */
+/* Variantes olive */
+/*Variante rouge */
+/* Gradient coloré */
+/* ===============================
+   PALETTE NEUTRES - GRIS & NOIRS
+   =============================== */
+/* Noirs et fonds sombres */
+/* Noir très foncé pour les fonds */
+/* Noir légèrement plus clair */
+/* Gris pour textes et bordures */
+/* Très foncé */
+/* Foncé */
+/* Moyen */
+/* Clair */
+/* Très clair */
+/* Quasi blanc */
+/* Gris marron pour certains textes avec fond blanc */
+/* ===============================
+   PALETTE CLAIRES - BLANCS & CRÈMES
+   =============================== */
+/* Blanc pur */
+/* Crèmes et blancs chauds */
+/* Blanc chaud (crème) */
+/* Blanc froid */
+/* ===============================
+   VARIANTES TRANSPARENTES
    =============================== */
 /* ===============================
-   AJOUT DES COULEURS CUSTOM
+   BOOTSTRAP THEME MISE À JOUR VARIABLE
+   =============================== */
+/* ===============================
+   TYPOGRAPHIE
    =============================== */
 /* Police pour le texte */
 /* Police pour les titres */
 /* Poids du texte */
-/* Variables Bootstrap */
 /* ===============================
-   AJOUT DES COULEURS CUSTOM
+   VARIABLES BOOTSTRAP
+   =============================== */
+/* ===============================
+   COULEURS CUSTOM POUR BOOTSTRAP
    =============================== */
 /* Bootstrap complet */
 /*!
@@ -37,17 +72,17 @@
   --bs-cyan: #0dcaf0;
   --bs-black: #000;
   --bs-white: #fff;
-  --bs-gray: #6c757d;
-  --bs-gray-dark: #343a40;
+  --bs-gray: #999999;
+  --bs-gray-dark: #4A4A4A;
   --bs-gray-100: #f8f9fa;
   --bs-gray-200: #e9ecef;
   --bs-gray-300: #dee2e6;
-  --bs-gray-400: #ced4da;
-  --bs-gray-500: #adb5bd;
-  --bs-gray-600: #6c757d;
-  --bs-gray-700: #495057;
-  --bs-gray-800: #343a40;
-  --bs-gray-900: #212529;
+  --bs-gray-400: #E8E8E8;
+  --bs-gray-500: #CCCCCC;
+  --bs-gray-600: #999999;
+  --bs-gray-700: #666666;
+  --bs-gray-800: #4A4A4A;
+  --bs-gray-900: #333333;
   --bs-primary: hsl(14, 61%, 47%);
   --bs-secondary: hsl(38, 58%, 55%);
   --bs-success: hsl(79, 31%, 35%);
@@ -55,11 +90,13 @@
   --bs-warning: #ffc107;
   --bs-danger: hsl(338, 48%, 34%);
   --bs-light: hsl(38, 67%, 96%);
-  --bs-dark: #212529;
+  --bs-dark: #333333;
   --bs-terracotta: hsl(14, 61%, 47%);
   --bs-ocre: hsl(38, 58%, 55%);
   --bs-bordeaux: hsl(338, 48%, 34%);
   --bs-olive: hsl(79, 31%, 35%);
+  --bs-gray-700: #666666;
+  --bs-gray-600: #999999;
   --bs-primary-rgb: 193, 81, 47;
   --bs-secondary-rgb: 207, 158, 74;
   --bs-success-rgb: 99, 117, 62;
@@ -67,19 +104,21 @@
   --bs-warning-rgb: 255, 193, 7;
   --bs-danger-rgb: 128, 45, 76;
   --bs-light-rgb: 252, 247, 238;
-  --bs-dark-rgb: 33, 37, 41;
+  --bs-dark-rgb: 51, 51, 51;
   --bs-terracotta-rgb: 193, 81, 47;
   --bs-ocre-rgb: 207, 158, 74;
   --bs-bordeaux-rgb: 128, 45, 76;
   --bs-olive-rgb: 99, 117, 62;
+  --bs-gray-700-rgb: 102, 102, 102;
+  --bs-gray-600-rgb: 153, 153, 153;
   --bs-primary-text-emphasis: rgb(77.1834, 32.34352, 18.6966);
   --bs-secondary-text-emphasis: rgb(82.722, 63.1992, 29.478);
   --bs-success-text-emphasis: rgb(39.7579, 46.767, 24.633);
   --bs-info-text-emphasis: rgb(5.2, 80.8, 96);
   --bs-warning-text-emphasis: rgb(102, 77.2, 2.8);
   --bs-danger-text-emphasis: rgb(51.3264, 18.0336, 30.24096);
-  --bs-light-text-emphasis: #495057;
-  --bs-dark-text-emphasis: #495057;
+  --bs-light-text-emphasis: #666666;
+  --bs-dark-text-emphasis: #666666;
   --bs-primary-bg-subtle: rgb(242.5917, 220.17176, 213.3483);
   --bs-secondary-bg-subtle: rgb(245.361, 235.5996, 218.739);
   --bs-success-bg-subtle: rgb(223.87895, 227.3835, 216.3165);
@@ -87,7 +126,7 @@
   --bs-warning-bg-subtle: rgb(255, 242.6, 205.4);
   --bs-danger-bg-subtle: rgb(229.6632, 213.0168, 219.12048);
   --bs-light-bg-subtle: rgb(251.5, 252, 252.5);
-  --bs-dark-bg-subtle: #ced4da;
+  --bs-dark-bg-subtle: #E8E8E8;
   --bs-primary-border-subtle: rgb(230.1834, 185.34352, 171.6966);
   --bs-secondary-border-subtle: rgb(235.722, 216.1992, 182.478);
   --bs-success-border-subtle: rgb(192.7579, 199.767, 177.633);
@@ -95,7 +134,7 @@
   --bs-warning-border-subtle: rgb(255, 230.2, 155.8);
   --bs-danger-border-subtle: rgb(204.3264, 171.0336, 183.24096);
   --bs-light-border-subtle: #e9ecef;
-  --bs-dark-border-subtle: #adb5bd;
+  --bs-dark-border-subtle: #CCCCCC;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-font-sans-serif: "Inter", sans-serif;
@@ -105,18 +144,18 @@
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
-  --bs-body-color: #212529;
-  --bs-body-color-rgb: 33, 37, 41;
+  --bs-body-color: #333333;
+  --bs-body-color-rgb: 51, 51, 51;
   --bs-body-bg: #fff;
   --bs-body-bg-rgb: 255, 255, 255;
   --bs-emphasis-color: #000;
   --bs-emphasis-color-rgb: 0, 0, 0;
-  --bs-secondary-color: rgba(33, 37, 41, 0.75);
-  --bs-secondary-color-rgb: 33, 37, 41;
+  --bs-secondary-color: rgba(51, 51, 51, 0.75);
+  --bs-secondary-color-rgb: 51, 51, 51;
   --bs-secondary-bg: #e9ecef;
   --bs-secondary-bg-rgb: 233, 236, 239;
-  --bs-tertiary-color: rgba(33, 37, 41, 0.5);
-  --bs-tertiary-color-rgb: 33, 37, 41;
+  --bs-tertiary-color: rgba(51, 51, 51, 0.5);
+  --bs-tertiary-color-rgb: 51, 51, 51;
   --bs-tertiary-bg: #f8f9fa;
   --bs-tertiary-bg-rgb: 248, 249, 250;
   --bs-heading-color: inherit;
@@ -126,7 +165,7 @@
   --bs-link-hover-color: rgb(154.3668, 64.68704, 37.3932);
   --bs-link-hover-color-rgb: 154, 65, 37;
   --bs-code-color: #d63384;
-  --bs-highlight-color: #212529;
+  --bs-highlight-color: #333333;
   --bs-highlight-bg: rgb(255, 242.6, 205.4);
   --bs-border-width: 1px;
   --bs-border-style: solid;
@@ -156,18 +195,18 @@
   color-scheme: dark;
   --bs-body-color: #dee2e6;
   --bs-body-color-rgb: 222, 226, 230;
-  --bs-body-bg: #212529;
-  --bs-body-bg-rgb: 33, 37, 41;
+  --bs-body-bg: #333333;
+  --bs-body-bg-rgb: 51, 51, 51;
   --bs-emphasis-color: #fff;
   --bs-emphasis-color-rgb: 255, 255, 255;
   --bs-secondary-color: rgba(222, 226, 230, 0.75);
   --bs-secondary-color-rgb: 222, 226, 230;
-  --bs-secondary-bg: #343a40;
-  --bs-secondary-bg-rgb: 52, 58, 64;
+  --bs-secondary-bg: #4A4A4A;
+  --bs-secondary-bg-rgb: 74, 74, 74;
   --bs-tertiary-color: rgba(222, 226, 230, 0.5);
   --bs-tertiary-color-rgb: 222, 226, 230;
-  --bs-tertiary-bg: rgb(42.5, 47.5, 52.5);
-  --bs-tertiary-bg-rgb: 43, 48, 53;
+  --bs-tertiary-bg: rgb(62.5, 62.5, 62.5);
+  --bs-tertiary-bg-rgb: 63, 63, 63;
   --bs-primary-text-emphasis: rgb(217.7751, 150.51528, 130.0449);
   --bs-secondary-text-emphasis: rgb(226.083, 196.7988, 146.217);
   --bs-success-text-emphasis: rgb(161.63685, 172.1505, 138.9495);
@@ -182,16 +221,16 @@
   --bs-info-bg-subtle: rgb(2.6, 40.4, 48);
   --bs-warning-bg-subtle: rgb(51, 38.6, 1.4);
   --bs-danger-bg-subtle: rgb(25.6632, 9.0168, 15.12048);
-  --bs-light-bg-subtle: #343a40;
-  --bs-dark-bg-subtle: #1a1d20;
+  --bs-light-bg-subtle: #4A4A4A;
+  --bs-dark-bg-subtle: #252525;
   --bs-primary-border-subtle: rgb(115.7751, 48.51528, 28.0449);
   --bs-secondary-border-subtle: rgb(124.083, 94.7988, 44.217);
   --bs-success-border-subtle: rgb(59.63685, 70.1505, 36.9495);
   --bs-info-border-subtle: rgb(7.8, 121.2, 144);
   --bs-warning-border-subtle: rgb(153, 115.8, 4.2);
   --bs-danger-border-subtle: rgb(76.9896, 27.0504, 45.36144);
-  --bs-light-border-subtle: #495057;
-  --bs-dark-border-subtle: #343a40;
+  --bs-light-border-subtle: #666666;
+  --bs-dark-border-subtle: #4A4A4A;
   --bs-heading-color: inherit;
   --bs-link-color: rgb(217.7751, 150.51528, 130.0449);
   --bs-link-hover-color: rgb(225.22008, 171.412224, 155.03592);
@@ -200,7 +239,7 @@
   --bs-code-color: rgb(230.4, 132.6, 181.2);
   --bs-highlight-color: #dee2e6;
   --bs-highlight-bg: rgb(102, 77.2, 2.8);
-  --bs-border-color: #495057;
+  --bs-border-color: #666666;
   --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
   --bs-form-valid-color: rgb(117, 183, 152.4);
   --bs-form-valid-border-color: rgb(117, 183, 152.4);
@@ -727,7 +766,7 @@ progress {
   margin-top: -1rem;
   margin-bottom: 1rem;
   font-size: 0.875em;
-  color: #6c757d;
+  color: #999999;
 }
 .blockquote-footer::before {
   content: "— ";
@@ -2062,13 +2101,13 @@ progress {
 
 .table-dark {
   --bs-table-color: #fff;
-  --bs-table-bg: #212529;
-  --bs-table-border-color: rgb(77.4, 80.6, 83.8);
-  --bs-table-striped-bg: rgb(44.1, 47.9, 51.7);
+  --bs-table-bg: #333333;
+  --bs-table-border-color: rgb(91.8, 91.8, 91.8);
+  --bs-table-striped-bg: rgb(61.2, 61.2, 61.2);
   --bs-table-striped-color: #fff;
-  --bs-table-active-bg: rgb(55.2, 58.8, 62.4);
+  --bs-table-active-bg: rgb(71.4, 71.4, 71.4);
   --bs-table-active-color: #fff;
-  --bs-table-hover-bg: rgb(49.65, 53.35, 57.05);
+  --bs-table-hover-bg: rgb(66.3, 66.3, 66.3);
   --bs-table-hover-color: #fff;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
@@ -2295,7 +2334,7 @@ textarea.form-control-lg {
 }
 
 .form-select {
-  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234A4A4A' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   display: block;
   width: 100%;
   padding: 0.375rem 2.25rem 0.375rem 0.75rem;
@@ -2683,7 +2722,7 @@ textarea.form-control-lg {
 }
 .form-floating > :disabled ~ label,
 .form-floating > .form-control:disabled ~ label {
-  color: #6c757d;
+  color: #999999;
 }
 
 .input-group {
@@ -3159,19 +3198,19 @@ textarea.form-control-lg {
 
 .btn-dark {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #212529;
-  --bs-btn-border-color: #212529;
+  --bs-btn-bg: #333333;
+  --bs-btn-border-color: #333333;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: rgb(66.3, 69.7, 73.1);
-  --bs-btn-hover-border-color: rgb(55.2, 58.8, 62.4);
-  --bs-btn-focus-shadow-rgb: 66, 70, 73;
+  --bs-btn-hover-bg: rgb(81.6, 81.6, 81.6);
+  --bs-btn-hover-border-color: rgb(71.4, 71.4, 71.4);
+  --bs-btn-focus-shadow-rgb: 82, 82, 82;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: rgb(77.4, 80.6, 83.8);
-  --bs-btn-active-border-color: rgb(55.2, 58.8, 62.4);
+  --bs-btn-active-bg: rgb(91.8, 91.8, 91.8);
+  --bs-btn-active-border-color: rgb(71.4, 71.4, 71.4);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #212529;
-  --bs-btn-disabled-border-color: #212529;
+  --bs-btn-disabled-bg: #333333;
+  --bs-btn-disabled-border-color: #333333;
 }
 
 .btn-terracotta {
@@ -3240,6 +3279,40 @@ textarea.form-control-lg {
   --bs-btn-disabled-color: #fff;
   --bs-btn-disabled-bg: hsl(79, 31%, 35%);
   --bs-btn-disabled-border-color: hsl(79, 31%, 35%);
+}
+
+.btn-gray-700 {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #666666;
+  --bs-btn-border-color: #666666;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: rgb(86.7, 86.7, 86.7);
+  --bs-btn-hover-border-color: rgb(81.6, 81.6, 81.6);
+  --bs-btn-focus-shadow-rgb: 125, 125, 125;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: rgb(81.6, 81.6, 81.6);
+  --bs-btn-active-border-color: rgb(76.5, 76.5, 76.5);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #666666;
+  --bs-btn-disabled-border-color: #666666;
+}
+
+.btn-gray-600 {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #999999;
+  --bs-btn-border-color: #999999;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: rgb(168.3, 168.3, 168.3);
+  --bs-btn-hover-border-color: rgb(163.2, 163.2, 163.2);
+  --bs-btn-focus-shadow-rgb: 130, 130, 130;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: rgb(173.4, 173.4, 173.4);
+  --bs-btn-active-border-color: rgb(163.2, 163.2, 163.2);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-bg: #999999;
+  --bs-btn-disabled-border-color: #999999;
 }
 
 .btn-outline-primary {
@@ -3362,19 +3435,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-dark {
-  --bs-btn-color: #212529;
-  --bs-btn-border-color: #212529;
+  --bs-btn-color: #333333;
+  --bs-btn-border-color: #333333;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #212529;
-  --bs-btn-hover-border-color: #212529;
-  --bs-btn-focus-shadow-rgb: 33, 37, 41;
+  --bs-btn-hover-bg: #333333;
+  --bs-btn-hover-border-color: #333333;
+  --bs-btn-focus-shadow-rgb: 51, 51, 51;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #212529;
-  --bs-btn-active-border-color: #212529;
+  --bs-btn-active-bg: #333333;
+  --bs-btn-active-border-color: #333333;
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #212529;
+  --bs-btn-disabled-color: #333333;
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: #212529;
+  --bs-btn-disabled-border-color: #333333;
   --bs-gradient: none;
 }
 
@@ -3446,6 +3519,40 @@ textarea.form-control-lg {
   --bs-gradient: none;
 }
 
+.btn-outline-gray-700 {
+  --bs-btn-color: #666666;
+  --bs-btn-border-color: #666666;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #666666;
+  --bs-btn-hover-border-color: #666666;
+  --bs-btn-focus-shadow-rgb: 102, 102, 102;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #666666;
+  --bs-btn-active-border-color: #666666;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #666666;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #666666;
+  --bs-gradient: none;
+}
+
+.btn-outline-gray-600 {
+  --bs-btn-color: #999999;
+  --bs-btn-border-color: #999999;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #999999;
+  --bs-btn-hover-border-color: #999999;
+  --bs-btn-focus-shadow-rgb: 153, 153, 153;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #999999;
+  --bs-btn-active-border-color: #999999;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #999999;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #999999;
+  --bs-gradient: none;
+}
+
 .btn-link {
   --bs-btn-font-weight: 400;
   --bs-btn-color: var(--bs-link-color);
@@ -3455,7 +3562,7 @@ textarea.form-control-lg {
   --bs-btn-hover-border-color: transparent;
   --bs-btn-active-color: var(--bs-link-hover-color);
   --bs-btn-active-border-color: transparent;
-  --bs-btn-disabled-color: #6c757d;
+  --bs-btn-disabled-color: #999999;
   --bs-btn-disabled-border-color: transparent;
   --bs-btn-box-shadow: 0 0 0 #000;
   --bs-btn-focus-shadow-rgb: 202, 107, 78;
@@ -3569,7 +3676,7 @@ textarea.form-control-lg {
   --bs-dropdown-link-disabled-color: var(--bs-tertiary-color);
   --bs-dropdown-item-padding-x: 1rem;
   --bs-dropdown-item-padding-y: 0.25rem;
-  --bs-dropdown-header-color: #6c757d;
+  --bs-dropdown-header-color: #999999;
   --bs-dropdown-header-padding-x: 1rem;
   --bs-dropdown-header-padding-y: 0.5rem;
   position: absolute;
@@ -3823,7 +3930,7 @@ textarea.form-control-lg {
 
 .dropdown-menu-dark {
   --bs-dropdown-color: #dee2e6;
-  --bs-dropdown-bg: #343a40;
+  --bs-dropdown-bg: #4A4A4A;
   --bs-dropdown-border-color: var(--bs-border-color-translucent);
   --bs-dropdown-box-shadow: ;
   --bs-dropdown-link-color: #dee2e6;
@@ -3832,8 +3939,8 @@ textarea.form-control-lg {
   --bs-dropdown-link-hover-bg: rgba(255, 255, 255, 0.15);
   --bs-dropdown-link-active-color: #fff;
   --bs-dropdown-link-active-bg: hsl(14, 61%, 47%);
-  --bs-dropdown-link-disabled-color: #adb5bd;
-  --bs-dropdown-header-color: #adb5bd;
+  --bs-dropdown-link-disabled-color: #CCCCCC;
+  --bs-dropdown-header-color: #CCCCCC;
 }
 
 .btn-group,
@@ -4088,7 +4195,7 @@ textarea.form-control-lg {
   --bs-navbar-toggler-padding-y: 0.25rem;
   --bs-navbar-toggler-padding-x: 0.75rem;
   --bs-navbar-toggler-font-size: 1.25rem;
-  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2851, 51, 51, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   --bs-navbar-toggler-border-color: rgba(var(--bs-emphasis-color-rgb), 0.15);
   --bs-navbar-toggler-border-radius: var(--bs-border-radius);
   --bs-navbar-toggler-focus-width: 0.25rem;
@@ -4698,7 +4805,7 @@ textarea.form-control-lg {
   --bs-accordion-btn-padding-y: 1rem;
   --bs-accordion-btn-color: var(--bs-body-color);
   --bs-accordion-btn-bg: var(--bs-accordion-bg);
-  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23212529' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
   --bs-accordion-btn-icon-width: 1.25rem;
   --bs-accordion-btn-icon-transform: rotate(-180deg);
   --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
@@ -5097,6 +5204,20 @@ textarea.form-control-lg {
   --bs-alert-bg: var(--bs-olive-bg-subtle);
   --bs-alert-border-color: var(--bs-olive-border-subtle);
   --bs-alert-link-color: var(--bs-olive-text-emphasis);
+}
+
+.alert-gray-700 {
+  --bs-alert-color: var(--bs-gray-700-text-emphasis);
+  --bs-alert-bg: var(--bs-gray-700-bg-subtle);
+  --bs-alert-border-color: var(--bs-gray-700-border-subtle);
+  --bs-alert-link-color: var(--bs-gray-700-text-emphasis);
+}
+
+.alert-gray-600 {
+  --bs-alert-color: var(--bs-gray-600-text-emphasis);
+  --bs-alert-bg: var(--bs-gray-600-bg-subtle);
+  --bs-alert-border-color: var(--bs-gray-600-border-subtle);
+  --bs-alert-link-color: var(--bs-gray-600-text-emphasis);
 }
 
 @keyframes progress-bar-stripes {
@@ -5554,6 +5675,32 @@ textarea.form-control-lg {
   --bs-list-group-active-color: var(--bs-olive-bg-subtle);
   --bs-list-group-active-bg: var(--bs-olive-text-emphasis);
   --bs-list-group-active-border-color: var(--bs-olive-text-emphasis);
+}
+
+.list-group-item-gray-700 {
+  --bs-list-group-color: var(--bs-gray-700-text-emphasis);
+  --bs-list-group-bg: var(--bs-gray-700-bg-subtle);
+  --bs-list-group-border-color: var(--bs-gray-700-border-subtle);
+  --bs-list-group-action-hover-color: var(--bs-emphasis-color);
+  --bs-list-group-action-hover-bg: var(--bs-gray-700-border-subtle);
+  --bs-list-group-action-active-color: var(--bs-emphasis-color);
+  --bs-list-group-action-active-bg: var(--bs-gray-700-border-subtle);
+  --bs-list-group-active-color: var(--bs-gray-700-bg-subtle);
+  --bs-list-group-active-bg: var(--bs-gray-700-text-emphasis);
+  --bs-list-group-active-border-color: var(--bs-gray-700-text-emphasis);
+}
+
+.list-group-item-gray-600 {
+  --bs-list-group-color: var(--bs-gray-600-text-emphasis);
+  --bs-list-group-bg: var(--bs-gray-600-bg-subtle);
+  --bs-list-group-border-color: var(--bs-gray-600-border-subtle);
+  --bs-list-group-action-hover-color: var(--bs-emphasis-color);
+  --bs-list-group-action-hover-bg: var(--bs-gray-600-border-subtle);
+  --bs-list-group-action-active-color: var(--bs-emphasis-color);
+  --bs-list-group-action-active-bg: var(--bs-gray-600-border-subtle);
+  --bs-list-group-active-color: var(--bs-gray-600-bg-subtle);
+  --bs-list-group-active-bg: var(--bs-gray-600-text-emphasis);
+  --bs-list-group-active-border-color: var(--bs-gray-600-text-emphasis);
 }
 
 .btn-close {
@@ -7109,6 +7256,16 @@ textarea.form-control-lg {
   background-color: RGBA(var(--bs-olive-rgb), var(--bs-bg-opacity, 1)) !important;
 }
 
+.text-bg-gray-700 {
+  color: #fff !important;
+  background-color: RGBA(var(--bs-gray-700-rgb), var(--bs-bg-opacity, 1)) !important;
+}
+
+.text-bg-gray-600 {
+  color: #000 !important;
+  background-color: RGBA(var(--bs-gray-600-rgb), var(--bs-bg-opacity, 1)) !important;
+}
+
 .link-primary {
   color: RGBA(var(--bs-primary-rgb), var(--bs-link-opacity, 1)) !important;
   text-decoration-color: RGBA(var(--bs-primary-rgb), var(--bs-link-underline-opacity, 1)) !important;
@@ -7177,8 +7334,8 @@ textarea.form-control-lg {
   text-decoration-color: RGBA(var(--bs-dark-rgb), var(--bs-link-underline-opacity, 1)) !important;
 }
 .link-dark:hover, .link-dark:focus {
-  color: RGBA(26, 30, 33, var(--bs-link-opacity, 1)) !important;
-  text-decoration-color: RGBA(26, 30, 33, var(--bs-link-underline-opacity, 1)) !important;
+  color: RGBA(41, 41, 41, var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(41, 41, 41, var(--bs-link-underline-opacity, 1)) !important;
 }
 
 .link-terracotta {
@@ -7215,6 +7372,24 @@ textarea.form-control-lg {
 .link-olive:hover, .link-olive:focus {
   color: RGBA(80, 94, 49, var(--bs-link-opacity, 1)) !important;
   text-decoration-color: RGBA(80, 94, 49, var(--bs-link-underline-opacity, 1)) !important;
+}
+
+.link-gray-700 {
+  color: RGBA(var(--bs-gray-700-rgb), var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(var(--bs-gray-700-rgb), var(--bs-link-underline-opacity, 1)) !important;
+}
+.link-gray-700:hover, .link-gray-700:focus {
+  color: RGBA(82, 82, 82, var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(82, 82, 82, var(--bs-link-underline-opacity, 1)) !important;
+}
+
+.link-gray-600 {
+  color: RGBA(var(--bs-gray-600-rgb), var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(var(--bs-gray-600-rgb), var(--bs-link-underline-opacity, 1)) !important;
+}
+.link-gray-600:hover, .link-gray-600:focus {
+  color: RGBA(173, 173, 173, var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(173, 173, 173, var(--bs-link-underline-opacity, 1)) !important;
 }
 
 .link-body-emphasis {
@@ -7673,6 +7848,14 @@ textarea.form-control-lg {
   --bs-focus-ring-color: rgba(var(--bs-olive-rgb), var(--bs-focus-ring-opacity));
 }
 
+.focus-ring-gray-700 {
+  --bs-focus-ring-color: rgba(var(--bs-gray-700-rgb), var(--bs-focus-ring-opacity));
+}
+
+.focus-ring-gray-600 {
+  --bs-focus-ring-color: rgba(var(--bs-gray-600-rgb), var(--bs-focus-ring-opacity));
+}
+
 .position-static {
   position: static !important;
 }
@@ -7851,6 +8034,16 @@ textarea.form-control-lg {
 .border-olive {
   --bs-border-opacity: 1;
   border-color: rgba(var(--bs-olive-rgb), var(--bs-border-opacity)) !important;
+}
+
+.border-gray-700 {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-gray-700-rgb), var(--bs-border-opacity)) !important;
+}
+
+.border-gray-600 {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-gray-600-rgb), var(--bs-border-opacity)) !important;
 }
 
 .border-black {
@@ -8830,6 +9023,16 @@ textarea.form-control-lg {
   color: rgba(var(--bs-olive-rgb), var(--bs-text-opacity)) !important;
 }
 
+.text-gray-700 {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-gray-700-rgb), var(--bs-text-opacity)) !important;
+}
+
+.text-gray-600 {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-gray-600-rgb), var(--bs-text-opacity)) !important;
+}
+
 .text-black {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
@@ -9052,6 +9255,16 @@ textarea.form-control-lg {
   text-decoration-color: rgba(var(--bs-olive-rgb), var(--bs-link-underline-opacity)) !important;
 }
 
+.link-underline-gray-700 {
+  --bs-link-underline-opacity: 1;
+  text-decoration-color: rgba(var(--bs-gray-700-rgb), var(--bs-link-underline-opacity)) !important;
+}
+
+.link-underline-gray-600 {
+  --bs-link-underline-opacity: 1;
+  text-decoration-color: rgba(var(--bs-gray-600-rgb), var(--bs-link-underline-opacity)) !important;
+}
+
 .link-underline {
   --bs-link-underline-opacity: 1;
   text-decoration-color: rgba(var(--bs-link-color-rgb), var(--bs-link-underline-opacity, 1)) !important;
@@ -9163,6 +9376,16 @@ textarea.form-control-lg {
 .bg-olive {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-olive-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray-700 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-700-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray-600 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-600-rgb), var(--bs-bg-opacity)) !important;
 }
 
 .bg-black {
@@ -12376,7 +12599,8 @@ textarea.form-control-lg {
   }
 }
 /* ===============================
-   VARIABLES CSS
+   VARIABLES CSS pour du inline
+    ( jaime pas sa à part pour certain cas obligatoire je n'utilise pas le inline )  
    =============================== */
 :root {
   --terracotta: hsl(14, 61%, 47%);
@@ -12398,14 +12622,17 @@ textarea.form-control-lg {
 
 /* -------- Styles généraux de la navbar -------- */
 .custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1030;
   background-color: hsl(38, 67%, 96%);
   border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
   padding: 0.75rem 0;
   box-shadow: var(--shadow-subtle);
-  transition: all var(--transition-smooth);
-}
-.custom-navbar:hover {
-  box-shadow: var(--shadow-hover);
+  transition: transform 0.3s ease;
 }
 
 /* -------- Logo et marque -------- */
@@ -12436,7 +12663,7 @@ textarea.form-control-lg {
   position: relative;
 }
 .navbar-nav .nav-item .nav-link {
-  color: #212529 !important;
+  color: #1F1F1F !important;
   font-weight: 500;
   font-size: 1rem;
   letter-spacing: 0.3px;
@@ -12567,7 +12794,7 @@ textarea.form-control-lg {
   .navbar-collapse .navbar-nav .nav-item {
     padding: 1rem 0;
     text-align: center;
-    border-bottom: 1px solid rgba(33, 37, 41, 0.05);
+    border-bottom: 1px solid rgba(51, 51, 51, 0.05);
   }
   .navbar-collapse .navbar-nav .nav-item:first-child {
     padding-top: 0;
@@ -12627,7 +12854,7 @@ textarea.form-control-lg {
     gap: 1rem;
   }
 }
-/* -------- Scrolling effet -------- */
+/* -------- Scrolling effet header -------- */
 .custom-navbar.scrolled {
   background-color: rgba(251.634, 246.6224, 237.966, 0.98);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -12638,11 +12865,11 @@ textarea.form-control-lg {
    =============================== */
 /* -------- Conteneur principal du footer -------- */
 .footer-dark {
-  background-color: #1f1f1f;
-  color: #e0e0e0;
+  background-color: #1F1F1F;
+  color: #FCF7EE;
   padding: 3rem 0 0;
-  margin-top: 4rem;
-  border-top: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
+  margin-top: 0;
+  border-top: none;
 }
 
 /* -------- Texte général du footer -------- */
@@ -12650,7 +12877,7 @@ textarea.form-control-lg {
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 0.75rem;
-  color: #b8b8b8;
+  color: #999999;
 }
 
 /* -------- Logo du footer -------- */
@@ -12666,7 +12893,7 @@ textarea.form-control-lg {
 .footer-dark h5, .footer-dark .h5,
 .footer-dark h6,
 .footer-dark .h6 {
-  color: white;
+  color: #FFFFFF;
   font-weight: 600;
   margin-bottom: 1rem;
   display: flex;
@@ -12692,7 +12919,7 @@ textarea.form-control-lg {
 /* first-child = le PREMIER enfant span de hours-row (le jour) */
 .hours-row span:first-child {
   font-weight: 500;
-  color: #d0d0d0;
+  color: #F5F5F5;
 }
 
 /* last-child = représente le DERNIER enfant span de hours-row  (l'horaire) */
@@ -12703,7 +12930,7 @@ textarea.form-control-lg {
 
 /* -------- Liens du footer -------- */
 .footer-dark .nav-link {
-  color: #b8b8b8 !important;
+  color: #666666 !important;
   padding: 0 !important;
   font-size: 0.95rem;
   transition: color var(--transition-smooth);
@@ -12733,7 +12960,7 @@ textarea.form-control-lg {
 .footer-dark .col-lg-4:nth-child(3) .h6,
 .footer-dark .col-lg-4 h5,
 .footer-dark .col-lg-4 .h5,
-.footer-logo .mb-3 {
+.footer-logo {
   justify-content: center;
 }
 
@@ -12795,5 +13022,975 @@ textarea.form-control-lg {
   }
   .footer-dark p {
     text-align: center;
+  }
+}
+/* ===============================
+   STYLES DE L'ACCEUIL - VITE & GOURMAND
+   =============================== */
+/* ===============================
+   SECTION HERO
+   =============================== */
+/* -------- Conteneur principal du hero -------- */
+.hero-scene {
+  background-image: url("/Assets/Images/premium_photo.avif");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  min-height: 100vh;
+  padding: 4rem 2rem;
+}
+
+/* Overlay dégradé par-dessus l'image pour que le texte soit lisible */
+.hero-scene::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(88, 31, 13, 0.95) 0%, rgba(120, 33, 6, 0.95));
+  z-index: 0;
+}
+
+/* Assure que le contenu est au-dessus de l'overlay */
+.hero-scene-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+/* -------- Contenu du hero -------- */
+.hero-scene-content {
+  max-width: 800px;
+}
+
+/* -------- Badge artisan -------- */
+.badge-artisan {
+  background-color: rgba(206.805, 157.998, 73.695, 0.3) !important;
+  color: hsl(38, 58%, 55%) !important;
+  border: 1px solid hsl(38, 58%, 55%) !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* -------- Titre principal -------- */
+.hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* -------- Sous-titre italic (depuis 25 ans) -------- */
+.hero-title .text-secondary {
+  color: hsl(38, 58%, 55%) !important;
+  font-style: italic;
+  font-size: 2.8rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* -------- Description -------- */
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #FCF7EE;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* -------- Boutons du hero -------- */
+.hero-scene .btn {
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.hero-scene .btn-primary {
+  background-color: hsl(14, 61%, 47%);
+  border-color: hsl(14, 61%, 47%);
+  color: #FCF7EE;
+}
+
+.hero-scene .btn-primary:hover {
+  background-color: hsl(14, 61%, 39%);
+  border-color: hsl(14, 61%, 39%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+.hero-scene .btn-outline-light {
+  background-color: hsl(38, 58%, 55%);
+  border-color: hsl(38, 58%, 55%);
+  color: #FCF7EE;
+  font-weight: 600;
+}
+
+.hero-scene .btn-outline-light:hover {
+  background-color: hsl(38, 58%, 47%);
+  border-color: hsl(38, 58%, 47%);
+  color: #FCF7EE;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(206.805, 157.998, 73.695, 0.3);
+}
+
+/* -------- Bouton scroll indicator -------- */
+.hero-scroll-btn {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  color: hsl(38, 58%, 55%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero-scroll-btn:hover {
+  color: #EF4444;
+}
+
+.hero-scroll-btn i {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+/* ===============================
+   STYLES SECTION 1 - STATISTIQUE version statique 
+   =============================== */
+/*Voir si je récupere les valeurs du back*/
+/* -------- Conteneur globale de la section -------- */
+#section_1 {
+  padding: 3rem 0;
+  background-color: #1F1F1F;
+}
+
+/* -------- Conteneur de chaque bloc  -------- */
+.stat-item {
+  text-align: center;
+}
+
+/* -------- Icône -------- */
+.stat-item i {
+  display: block;
+  font-size: 2rem;
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Nombre principal -------- */
+.stat-number {
+  color: hsl(14, 61%, 47%);
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Texte descriptif -------- */
+.stat-label {
+  color: #666666;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+/* ===============================
+   STYLES SECTION 2 - NOTRE HISTOIRE
+   =============================== */
+/* -------- Conteneur de la section -------- */
+#section-2 {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+}
+
+/* -------- Label "Notre histoire" -------- */
+.section-2-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: hsl(14, 61%, 47%);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+/* -------- Titre principal -------- */
+.section-2-title {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #333333;
+  line-height: 1.2;
+}
+
+/* -------- Gradient du sous-titre -------- */
+.section-2-gradient {
+  background: linear-gradient(135deg, #C1613A 0%, #803050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* -------- Paragraphes descriptifs -------- */
+.section-2-description {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #666666;
+}
+
+/* -------- Bouton de la section -------- */
+.btn-section-2 {
+  background-color: hsl(14, 61%, 47%);
+  color: #FCF7EE !important;
+  border: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-section-2:hover {
+  background-color: hsl(14, 61%, 39%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(192.9585, 80.8588, 46.7415, 0.3);
+  color: #FCF7EE !important;
+}
+
+.btn-section-2 i {
+  font-size: 1rem;
+}
+
+/* -------- Wrapper de l'image -------- */
+.section-2-image-wrapper {
+  position: relative;
+}
+
+/* -------- Image principale -------- */
+.section-2-image {
+  width: 100%;
+  height: 420px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* -------- Badge "Depuis 2000" -------- */
+.section-2-badge {
+  position: absolute;
+  bottom: -1.5rem;
+  left: -1.5rem;
+  background: hsl(38, 67%, 96%);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-2-badge i {
+  font-size: 1.5rem;
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Texte du badge -------- */
+.section-2-badge-title {
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  color: #1F1F1F;
+  font-size: 0.95rem;
+}
+
+.section-2-badge-subtitle {
+  font-size: 0.75rem;
+  color: #999999;
+}
+
+/* ===============================
+   STYLES SECTION 3 - ENGAGEMENTS
+   =============================== */
+/* -------- Conteneur de la section -------- */
+#section-3 {
+  padding: 4rem 0;
+  background-color: #F5E6D3;
+}
+
+/* -------- Titre principal -------- */
+.engagement-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1rem;
+}
+
+/* -------- Description -------- */
+.engagement-description {
+  font-size: 1rem;
+  color: #696763;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* -------- Carte d'engagement -------- */
+.engagement-card {
+  background: #FCF7EE;
+  border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  height: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* -------- Effect hover sur les cartes -------- */
+.engagement-card:hover {
+  box-shadow: 0 12px 24px rgba(192.9585, 80.8588, 46.7415, 0.15);
+  transform: translateY(-4px);
+  border-color: hsl(14, 61%, 47%);
+}
+
+/* -------- Icône de la carte -------- */
+.engagement-icon {
+  font-size: 2.5rem;
+  color: hsl(14, 61%, 47%);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.engagement-icon i {
+  font-size: 2.5rem;
+}
+
+/* -------- Titre de la carte -------- */
+.engagement-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Description de la carte -------- */
+.engagement-card-description {
+  font-size: 0.95rem;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ===============================
+   STYLES SECTION 4 - TEMOIGNAGES
+   =============================== */
+/* -------- Conteneur de la section -------- */
+#section-4 {
+  padding: 4rem 0;
+  background-color: #1F1F1F;
+}
+
+/* -------- Label de la section -------- */
+.temoignages-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: hsl(14, 61%, 47%);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+/* -------- Titre principal -------- */
+.temoignages-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- Conteneur de la note globale -------- */
+.temoignages-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* -------- Étoiles de la note globale -------- */
+.temoignages-stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.temoignages-stars i {
+  font-size: 1.5rem;
+  color: hsl(38, 58%, 55%);
+}
+
+/* -------- Note texte (4.9/5) -------- */
+.temoignages-note {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* -------- Carousel de temoignages -------- */
+.temoignages-carousel {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+/* -------- Carte de testimonial -------- */
+.temoignages-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+/* -------- Étoiles du testimonial -------- */
+.temoignages-card-stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.temoignages-card-stars i {
+  font-size: 1.25rem;
+  color: hsl(38, 58%, 55%);
+}
+
+/* -------- Étoiles remplies -------- */
+.temoignages-card-stars i.bi-star-fill {
+  color: hsl(38, 58%, 55%); /* Couleur dorée */
+  font-size: 1.25rem;
+}
+
+/* -------- Étoiles vides -------- */
+.temoignages-card-stars i.bi-star {
+  color: #333333;
+  font-size: 1.25rem;
+}
+
+/* -------- Texte du testimonial -------- */
+.temoignages-card-text {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- Auteur du testimonial -------- */
+.temoignages-card-author {
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Date du testimonial -------- */
+.temoignages-card-date {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* -------- Contrôles du carousel -------- */
+.temoignages-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* -------- Boutons de navigation -------- */
+.temoignages-btn-nav {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: transparent;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.temoignages-btn-nav:hover {
+  border-color: hsl(14, 61%, 47%);
+  background-color: rgba(192.9585, 80.8588, 46.7415, 0.1);
+  color: hsl(14, 61%, 47%);
+}
+
+.temoignages-btn-nav i {
+  font-size: 1.25rem;
+}
+
+/* -------- Pagination dots -------- */
+.temoignages-pagination {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.temoignages-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.temoignages-dot.active {
+  background-color: hsl(14, 61%, 47%);
+  width: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+.temoignages-dot:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===============================
+   STYLES SECTION 5 - APPEL À L'ACTION
+   =============================== */
+/* -------- Conteneur de la section -------- */
+#section-5 {
+  background: hsl(38, 67%, 96%);
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  margin-bottom: 0;
+}
+
+/* -------- Titre principal -------- */
+.cta-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+/* -------- Description -------- */
+.cta-description {
+  font-size: 1rem;
+  color: #666666;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* -------- Conteneur des boutons -------- */
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* -------- Bouton primaire (Explorer les menus) -------- */
+.btn-cta-primary {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF !important;
+  border: none;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(192.9585, 80.8588, 46.7415, 0.2);
+}
+
+/* -------- Bouton secondaire (Devis sur mesure) -------- */
+.btn-cta-secondary {
+  background-color: transparent;
+  color: hsl(14, 61%, 47%) !important;
+  border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-cta-primary:hover {
+  background-color: hsl(14, 61%, 39%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(192.9585, 80.8588, 46.7415, 0.3);
+  color: #FFFFFF !important;
+}
+
+.btn-cta-primary:active,
+.btn-cta-secondary {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.2);
+}
+
+.btn-cta-secondary:hover {
+  background-color: hsl(338, 48%, 34%);
+  border-color: hsl(338, 48%, 34%);
+  color: #FCF7EE !important;
+}
+
+.btn-cta-secondary:active {
+  background-color: hsl(338, 48%, 34%);
+  color: #FCF7EE !important;
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .hero-scene {
+    min-height: 80vh;
+    padding: 3rem 2rem;
+  }
+  .hero-title {
+    font-size: 2.8rem;
+  }
+  .hero-title .text-secondary {
+    font-size: 2.2rem;
+  }
+  .hero-description {
+    font-size: 1rem;
+  }
+  .hero-scene .btn {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  /* ===============================
+   STYLES SECTION 1 STATISTIQUE
+   =============================== */
+  .stat-item i {
+    font-size: 1.75rem;
+  }
+  .stat-number {
+    font-size: 1.75rem;
+  }
+  /* ===============================
+   STYLES SECTION 2 - NOTRE HISTOIRE
+   =============================== */
+  #section-2 {
+    padding: 3rem 0;
+  }
+  .section-2-title {
+    font-size: 2.5rem;
+  }
+  .section-2-description {
+    font-size: 0.95rem;
+  }
+  .section-2-image {
+    height: 350px;
+  }
+  .section-2-badge {
+    bottom: -1rem;
+    left: -1rem;
+    padding: 0.75rem;
+  }
+  .section-2-badge i {
+    font-size: 1.25rem;
+  }
+  .section-2-badge-title {
+    font-size: 0.9rem;
+  }
+  .section-2-badge-subtitle {
+    font-size: 0.7rem;
+  }
+  /* ===============================
+    STYLES SECTION 3 - ENGAGEMENTS
+    =============================== */
+  #section-3 {
+    padding: 3rem 0;
+  }
+  .engagement-title {
+    font-size: 2rem;
+  }
+  .engagement-description {
+    font-size: 0.95rem;
+  }
+  .engagement-card {
+    padding: 1.25rem;
+  }
+  .engagement-icon i {
+    font-size: 2rem;
+  }
+  .engagement-card-title {
+    font-size: 1.1rem;
+  }
+  .engagement-card-description {
+    font-size: 0.9rem;
+  }
+  /* ===============================
+   STYLES SECTION 4 - TEMOIGNAGES
+   =============================== */
+  #section-4 {
+    padding: 3rem 0;
+  }
+  .temoignages-title {
+    font-size: 2rem;
+  }
+  .temoignages-card {
+    padding: 1.5rem;
+  }
+  .temoignages-card-text {
+    font-size: 1rem;
+  }
+  .temoignages-controls {
+    gap: 1.5rem;
+  }
+  /* ===============================
+   STYLES SECTION 5 - APPEL À L'ACTION
+   =============================== */
+  #section-5 {
+    min-height: 50vh;
+    padding: 3rem 0;
+  }
+  .cta-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .cta-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  .btn-cta-primary,
+  .btn-cta-secondary {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .hero-scene {
+    min-height: 90vh;
+    padding: 2rem 1rem;
+  }
+  .hero-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  .hero-title .text-secondary {
+    font-size: 1.6rem;
+  }
+  .hero-description {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-scene .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    flex: 1 1 100%;
+  }
+  .hero-scroll-btn {
+    bottom: 1rem;
+    font-size: 0.75rem;
+  }
+  .hero-scroll-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  /* ===============================
+   STYLES SECTION 1 - STATISTIQUE
+   =============================== */
+  #stats-section {
+    padding: 2rem 0;
+  }
+  .stat-item i {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .stat-number {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-size: 0.9rem;
+  }
+  /* ===============================
+   STYLES SECTION 2 - NOTRE HISTOIRE
+   =============================== */
+  #section-2 {
+    padding: 2rem 0;
+  }
+  .section-2-label {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .section-2-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .section-2-description {
+    font-size: 0.9rem;
+    margin-bottom: 1rem !important;
+  }
+  .section-2-image {
+    height: 300px;
+    border-radius: 1rem;
+  }
+  .section-2-badge {
+    bottom: -0.75rem;
+    left: -0.75rem;
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+  .section-2-badge i {
+    font-size: 1rem;
+  }
+  .section-2-badge-title {
+    font-size: 0.85rem;
+  }
+  .section-2-badge-subtitle {
+    font-size: 0.65rem;
+  }
+  .btn-section-2 {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  /* ===============================
+    STYLES SECTION 3 - ENGAGEMENTS
+    =============================== */
+  #section-3 {
+    padding: 2rem 0;
+  }
+  .engagement-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .engagement-description {
+    font-size: 0.9rem;
+  }
+  .engagement-card {
+    padding: 1rem;
+  }
+  .engagement-icon i {
+    font-size: 1.75rem;
+  }
+  .engagement-card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .engagement-card-description {
+    font-size: 0.85rem;
+  }
+  /* ===============================
+   STYLES SECTION 4 - TEMOIGNAGES
+   =============================== */
+  #section-4 {
+    padding: 2rem 0;
+  }
+  .temoignages-label {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .temoignages-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+  .temoignages-rating {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .temoignages-stars i {
+    font-size: 1.25rem;
+  }
+  .temoignages-note {
+    font-size: 0.9rem;
+  }
+  .temoignages-card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+  .temoignages-card-stars i {
+    font-size: 1rem;
+  }
+  .temoignages-card-text {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  .temoignages-controls {
+    gap: 1rem;
+  }
+  .temoignages-btn-nav {
+    width: 2rem;
+    height: 2rem;
+  }
+  .temoignages-btn-nav i {
+    font-size: 1rem;
+  }
+  /* ===============================
+   STYLES SECTION 5 - APPEL À L'ACTION
+   =============================== */
+  #section-5 {
+    min-height: auto;
+    padding: 2rem 0;
+  }
+  .cta-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .cta-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+  .cta-buttons {
+    gap: 0.75rem;
+    flex-direction: column;
+  }
+  .btn-cta-primary,
+  .btn-cta-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.9rem;
   }
 }/*# sourceMappingURL=main.css.map */
