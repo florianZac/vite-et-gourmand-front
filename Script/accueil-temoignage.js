@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ========================================
   // RÉINITIALISATION LORS DE LA NAVIGATION SPA
   // ========================================
-  // Si l'utilisateur revient à la home, réinitialise le carousel
+  // Si l'utilisateur revient à la accueil, réinitialise le carousel
   
   window.addEventListener('popstate', () => {
     setTimeout(() => {

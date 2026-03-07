@@ -57,7 +57,7 @@ export function initInscriptionPage() {
     // Regex: min 3 char avant @, @ obligatoire, min 3 après, .fr ou .com obligatoire
     const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
     return emailRegex.test(email);
-  } */
+  }
 
   /* ===============================
      FONCTIONS DE VALIDATION - CODE POSTAL

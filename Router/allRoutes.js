@@ -8,7 +8,7 @@ import Route from "./Route.js";
    DÉFINITION DES ROUTES DE L'APPLICATION SPA
    ===================================================== */
 export const allRoutes = [
-   new Route("/", "Accueil", "Pages/home.html", [], "", true),
+   new Route("/", "Accueil", "Pages/accueil.html", [], "", true),
    new Route("/login", "Connexion", "Pages/Auth/login.html", ["disconnected"], "/Script/connection.js", true),
    new Route("/inscription", "Inscription", "Pages/Auth/inscription.html", ["disconnected"], "/Script/inscription.js", true),
    new Route("/reset_login", "Resetpassword", "Pages/Auth/reset-password.html", ["disconnected"], "/Script/reset-password.js", true),

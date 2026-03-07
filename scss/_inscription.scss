@@ -98,7 +98,7 @@
 
 /* -------- Inputs -------- */
 .inscription-input {
-  border: 1px solid rgba($terracotta, 0.15);
+  border: 1px solid $gray-900;
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
@@ -162,6 +162,10 @@
 .btn-inscription-submit {
   background-color: $terracotta;
   color: $white-pure !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   border: none;
   border-radius: 0.75rem;
   padding: 0.85rem 1.5rem;
@@ -246,11 +250,6 @@
   }
 
   .inscription-form .form-label {
-    font-size: 0.9rem;
-  }
-
-  .inscription-input {
-    padding: 0.7rem 0.9rem;
     font-size: 0.9rem;
   }
 
