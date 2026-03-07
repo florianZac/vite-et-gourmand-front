@@ -204,6 +204,24 @@
   text-decoration: underline;
 }
 
+/* -------- Message d'erreur -------- */
+.inscription-login-error-message {
+  display: none;
+  text-align: center;
+  color: $error-message;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+/* -------- Message de succès -------- */
+.inscription-login-success-message {
+  display: none;
+  text-align: center;
+  color: $success-message;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
 /* -------- Responsive Tablette -------- */
 @media (max-width: 1200px) {
   .inscription-hero {
