@@ -31,8 +31,7 @@ logs
 # IDE / Editors
 # ===============================
 .vscode/
-
-
+server.js
 
 # ===============================
 # Temporary files

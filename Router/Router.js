@@ -80,12 +80,31 @@ export const LoadContentPage = async () => {
     const allRolesArray = actualRoute.authorize;
 
     // Vérification droits
+/*
+
     if (allRolesArray.length > 0) {
         if (allRolesArray.includes("disconnected") && isConnected()) {
             return navigate("/");
         } else if (!allRolesArray.includes("disconnected") && !isConnected()) {
             return navigate("/login");
         } else {
+            const roleUser = getRole();
+            if (!allRolesArray.includes(roleUser)) return navigate("/");
+        }
+    }
+        */
+    if (allRolesArray.length > 0) {
+    if (allRolesArray.includes("disconnected")) {
+            // Route réservée aux déconnectés
+            if (isConnected()) {
+                return navigate("/");  // Si connecté, redirige
+            }
+            // Sinon on laisse passer (déconnecté = OK)
+        } else if (!isConnected()) {
+            // Route réservée aux connectés
+            return navigate("/login");
+        } else {
+            // Route réservée à des rôles spécifiques
             const roleUser = getRole();
             if (!allRolesArray.includes(roleUser)) return navigate("/");
         }

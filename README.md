@@ -46,14 +46,6 @@ Le fichier router.js : importe la classe Route et les variables « allRoutes » 
 │ ├─ main.scss
 
 
-index.html
-
-# Installation du framework css bootstrap
-
-pourquoi : respect des normes standardiser, est gain de temps sur le css du site
-installation de bootstrap 1. 
-
-npm install bootstrap
 # NPM windows installation via choco pour s'il n'est pas déjà installer.
 https://nodejs.org/en/download
 Etape 1 : powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
@@ -65,6 +57,28 @@ node -v #
 
 # Verification de la version de npm
 npm -v #
+
+# Installation du serveur Express
+npm install express
+# Lance le serveur
+node server.js
+
+
+# Netoyage des COOKIES
+taper dans la console 
+document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+
+
+
+
+# Installation du framework css bootstrap
+
+pourquoi : respect des normes standardiser, est gain de temps sur le css du site
+installation de bootstrap 1. 
+
+npm install bootstrap
+
 
 # Instalation de la version 5.3 de Bootstrap
 npm install bootstrap@v5.3.8

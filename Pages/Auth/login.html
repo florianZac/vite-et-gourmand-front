@@ -1,0 +1,72 @@
+<!-- ================= Section Hero connexion ================= -->
+<section class="login-hero py-5">
+  <div class="container">
+    <!-- Titre -->
+    <h1 class="login-hero-title">Connexion</h1>
+    <!-- Description -->
+    <p class="login-hero-description">Accédez à votre espace personnel.</p>
+  </div>
+</section>
+<section class="login-section">
+  <div class="container">
+    <div class="login-card">
+      
+      <!-- Titre -->
+      <h1 class="login-title">Connexion</h1>
+      
+      <!-- Formulaire -->
+      <form class="login-form">
+        
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="EmailInput" class="form-label">Email <span class="required">*</span></label>
+          <input 
+            type="email" 
+            class="form-control login-input" 
+            id="EmailInput" 
+            placeholder="votre@email.com" 
+            name="Email"
+            required
+          > 
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="mb-4">
+          <label for="PasswordInput" class="form-label">Mot de passe <span class="required">*</span></label>
+          <div class="password-wrapper">
+            <input 
+              type="password" 
+              class="form-control login-input" 
+              id="PasswordInput" 
+              placeholder="Votre mot de passe"
+              name="Password"
+              required
+            >
+            <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher/masquer le mot de passe">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mot de passe oublié -->
+        <div class="mb-4">
+          <a href="/forgot-password" class="login-forgot">Mot de passe oublié ?</a>
+        </div>
+
+        <!-- Bouton de connexion -->
+        <button type="submit" class="btn btn-login">
+          Se connecter
+          <i class="bi bi-arrow-right"></i>
+        </button>
+
+      </form>
+
+      <!-- Lien inscription -->
+      <div class="login-signup">
+        <span>Pas encore de compte ?</span>
+        <a href="/signup">S'inscrire</a>
+      </div>
+
+    </div>
+  </div>
+</section>
