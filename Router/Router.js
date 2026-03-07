@@ -165,8 +165,9 @@ export const LoadContentPage = async () => {
                 // Import dynamique du module
                 const mod = await import(scriptPath);
 
-                // Appelle initLoginPage si elle existe
-                if (mod.initLoginPage) mod.initLoginPage();
+                // Appelle la fonction d'initialisation correspondant à la route
+                const functionName = `init${actualRoute.title.replace(/\s/g, '')}Page`;
+                if (mod[functionName]) mod[functionName]();
 
             } catch (err) {
                 console.error("Erreur import module JS:", err);
@@ -188,13 +189,11 @@ export const LoadContentPage = async () => {
         }
     }
 
-
     /* =====================================================
        MISE À JOUR DU TITRE DE LA PAGE
        ===================================================== */
 
     document.title = `${actualRoute.title} - ${websiteName}`;
-
 
     /* =====================================================
        LOG DEBUG
@@ -202,7 +201,6 @@ export const LoadContentPage = async () => {
 
     if (debug)
         console.log(`[SPA Router] Navigué vers ${path} à ${getFormattedTime()}`);
-
 
     /* =====================================================
        MISE À JOUR DE LA NAVBAR SELON LE RÔLE

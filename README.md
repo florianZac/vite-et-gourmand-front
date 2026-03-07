@@ -63,8 +63,7 @@ npm install express
 # Lance le serveur
 node server.js
 
-
-# Netoyage des COOKIES
+# Netoyage des COOKIES peut creer des problemes avec les roles
 taper dans la console 
 document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";

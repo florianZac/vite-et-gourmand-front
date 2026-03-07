@@ -13150,7 +13150,7 @@ textarea.form-control-lg {
 @media (max-width: 1200px) {
   .footer-dark {
     padding: 2rem 0 0;
-    margin-top: 3rem;
+    margin-top: 0;
   }
   .footer-dark h5, .footer-dark .h5,
   .footer-dark h6,
@@ -13161,8 +13161,9 @@ textarea.form-control-lg {
 /* -------- Responsive Mobile -------- */
 @media (max-width: 768px) {
   .footer-dark {
+    min-height: auto;
     padding: 1.5rem 0 0;
-    margin-top: 2rem;
+    margin-top: 0;
   }
   .footer-divider {
     flex-direction: column;
@@ -14205,12 +14206,11 @@ textarea.form-control-lg {
 
 /* -------- Section de connexion -------- */
 .login-section {
-  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #F5E6D3;
-  padding: 6rem 2rem 2rem;
+  padding: 6rem 2rem 3rem;
 }
 
 /* -------- Carte de connexion -------- */
@@ -14377,6 +14377,24 @@ textarea.form-control-lg {
   text-decoration: underline;
 }
 
+/* -------- Bouton désactivé -------- */
+.btn-login:disabled {
+  background-color: #333333 !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* -------- Message d'erreur connexion -------- */
+.login-error-message {
+  display: none;
+  text-align: center;
+  color: #EF4444;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
 /* -------- Responsive Tablette -------- */
 @media (max-width: 1200px) {
   .login-hero {
@@ -14408,6 +14426,12 @@ textarea.form-control-lg {
     font-size: 0.95rem;
   }
 }
+/* -------- Responsive Desktop (100vh pour corrigé le probleme de barre blanche) -------- */
+@media (min-width: 1201px) {
+  .login-section {
+    min-height: 100vh;
+  }
+}
 /* -------- Responsive Mobile -------- */
 @media (max-width: 768px) {
   .login-hero {
@@ -14421,7 +14445,8 @@ textarea.form-control-lg {
     font-size: 0.9rem;
   }
   .login-section {
-    padding: 1rem;
+    min-height: auto;
+    padding: 3rem 1rem 4rem;
   }
   .login-card {
     padding: 2.5rem 2rem;
@@ -14449,5 +14474,304 @@ textarea.form-control-lg {
   .login-signup {
     margin-top: 1.5rem;
     font-size: 0.9rem;
+  }
+}
+/* ===============================
+   STYLES PAGE DE INSCRIPTION - VITE & GOURMAND
+   =============================== */
+/* -------- Section hero -------- */
+.inscription-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* Conteneur interne centré */
+.inscription-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* -------- Titre hero -------- */
+.inscription-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Description hero -------- */
+.inscription-hero-description {
+  font-size: 1rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* -------- Section d'inscription -------- */
+.inscription-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5E6D3;
+  padding: 3rem 2rem;
+}
+
+/* -------- Icône -------- */
+.inscription-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+  z-index: 10;
+}
+
+.inscription-icon-img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+}
+
+/* -------- Carte d'inscription -------- */
+.inscription-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  padding: 4rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto 5rem;
+}
+
+/* -------- Formulaire -------- */
+.inscription-form {
+  width: 100%;
+}
+
+/* -------- Labels -------- */
+.inscription-form .form-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4A4A4A;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+/* -------- Astérisque (champ requis) -------- */
+.required {
+  color: hsl(14, 61%, 47%);
+  font-weight: bold;
+}
+
+/* -------- Inputs -------- */
+.inscription-input {
+  border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.15);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  transition: all 0.3s ease;
+}
+
+.inscription-input:focus {
+  border-color: hsl(14, 61%, 47%);
+  box-shadow: 0 0 0 3px rgba(192.9585, 80.8588, 46.7415, 0.1);
+  background-color: #FFFFFF;
+  outline: none;
+}
+
+.inscription-input::-moz-placeholder {
+  color: #999999;
+}
+
+.inscription-input::placeholder {
+  color: #999999;
+}
+
+/* -------- Small text (aide) -------- */
+.inscription-form .form-text {
+  font-size: 0.85rem;
+  color: #666666;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+/* -------- Wrapper pour l'icône œil -------- */
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.password-wrapper .inscription-input {
+  padding-right: 2.5rem;
+  width: 100%;
+}
+
+/* -------- Bouton afficher/masquer mot de passe -------- */
+.btn-show-password {
+  position: absolute;
+  right: 1rem;
+  border: none;
+  background: transparent;
+  color: #999999;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-show-password:hover {
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Bouton d'inscription -------- */
+.btn-inscription-submit {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.2);
+}
+
+.btn-inscription-submit:hover {
+  background-color: hsl(14, 61%, 39%);
+  box-shadow: 0 4px 16px rgba(192.9585, 80.8588, 46.7415, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-inscription-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(192.9585, 80.8588, 46.7415, 0.2);
+}
+
+/* -------- Lien vers connexion -------- */
+.inscription-login {
+  text-align: center;
+  color: #666666;
+  font-size: 0.95rem;
+  margin-top: 2rem;
+}
+
+.inscription-login a {
+  color: hsl(14, 61%, 47%);
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+  margin-left: 0.25rem;
+}
+
+.inscription-login a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .inscription-hero {
+    padding: 2.5rem 0;
+  }
+  .inscription-hero-title {
+    font-size: 2rem;
+  }
+  .inscription-hero-description {
+    font-size: 0.95rem;
+  }
+  .inscription-card {
+    padding: 2rem 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .inscription-icon-img {
+    max-width: 80px;
+  }
+  .inscription-form .form-label {
+    font-size: 0.9rem;
+  }
+  .inscription-input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  .btn-inscription-submit {
+    padding: 0.75rem 1.2rem;
+    font-size: 0.95rem;
+  }
+}
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .inscription-hero {
+    padding: 2rem 0;
+  }
+  .inscription-hero-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .inscription-hero-description {
+    font-size: 0.9rem;
+  }
+  .inscription-section {
+    padding: 2rem 1rem 3rem;
+  }
+  .inscription-card {
+    padding: 2.5rem 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .inscription-icon {
+    margin-bottom: 1.5rem;
+  }
+  .inscription-icon-img {
+    max-width: 70px;
+  }
+  .inscription-form .form-label {
+    font-size: 0.85rem;
+  }
+  .inscription-input {
+    padding: 0.65rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .btn-show-password {
+    right: 0.75rem;
+    font-size: 1rem;
+  }
+  .btn-inscription-submit {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+  .inscription-login {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+  }
+  /* Permet aux colonnes d'être à côté même sur mobile */
+  .row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+  .row > * {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+/* -------- Responsive Desktop (100vh pour corrigé les espacements) -------- */
+@media (min-width: 1201px) {
+  .inscription-section {
+    min-height: 100vh;
   }
 }/*# sourceMappingURL=main.css.map */
