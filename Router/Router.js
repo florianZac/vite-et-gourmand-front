@@ -60,13 +60,42 @@ const getFormattedTime = () => {
 };
 
 /* =====================================================
+   MISE À JOUR DU LIEN ACTIF DANS LA NAVBAR
+   Centralise la gestion du lien actif dans le Router
+   car pushState (utilisé par navigate) ne déclenche pas
+   l'événement popstate — seul le Router sait quand la
+   page change réellement
+   ===================================================== */
+
+const updateActiveLink = () => {
+
+    // Récupère le chemin actuel de l'URL
+    const path = window.location.pathname;
+
+    // Parcourt tous les liens de la navbar
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+
+        // Récupère la destination du lien
+        const href = link.getAttribute('href');
+
+        // Si le href correspond au chemin actuel → lien actif
+        if (href === path) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        }
+    });
+};
+
+/* =====================================================
    CHARGER LE CONTENU HTML D'UNE PAGE (SPA)
    ===================================================== */
 
 export const LoadContentPage = async () => {
 
     // Récupère le chemin de l'URL actuelle dans le navigateur
-    //const path = window.location.pathname;
     const path = window.location.pathname;
 
     // Trouve la route correspondant à cette URL
@@ -80,21 +109,8 @@ export const LoadContentPage = async () => {
     const allRolesArray = actualRoute.authorize;
 
     // Vérification droits
-/*
-
     if (allRolesArray.length > 0) {
-        if (allRolesArray.includes("disconnected") && isConnected()) {
-            return navigate("/");
-        } else if (!allRolesArray.includes("disconnected") && !isConnected()) {
-            return navigate("/login");
-        } else {
-            const roleUser = getRole();
-            if (!allRolesArray.includes(roleUser)) return navigate("/");
-        }
-    }
-        */
-    if (allRolesArray.length > 0) {
-    if (allRolesArray.includes("disconnected")) {
+        if (allRolesArray.includes("disconnected")) {
             // Route réservée aux déconnectés
             if (isConnected()) {
                 return navigate("/");  // Si connecté, redirige
@@ -211,6 +227,12 @@ export const LoadContentPage = async () => {
         // Affiche ou cache les éléments admin/client
         showAndHideElementsForRole();
     }
+
+    /* =====================================================
+       MISE À JOUR DU LIEN ACTIF DANS LA NAVBAR
+       ===================================================== */
+
+    updateActiveLink();
 };
 
 /* =====================================================

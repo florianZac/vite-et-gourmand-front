@@ -4,10 +4,9 @@
    =============================== */
   // 0. GESTION DE L'OUVERTURE / FERMETURE DU MENU BURGER
   // 1. EFFET DE SCROLL SUR LE HEADER
-  // 2. GESTION DU LIEN ACTIF
-  // 3. FERMER LE MENU MOBILE AU CLIC
-  // 4. FERMER LE MENU EN CLIQUANT DEHORS
-  // 5. SMOOTH SCROLL AVEC JAVASCRIPT
+  // 2. FERMER LE MENU MOBILE AU CLIC
+  // 3. FERMER LE MENU EN CLIQUANT DEHORS
+  // 4. SMOOTH SCROLL AVEC JAVASCRIPT
 
 // Attend que le DOM soit complètement chargé avant d'exécuter le code afin de garantir que tous les éléments HTML sont disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,51 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
      SECTION 2 : GESTION DU LIEN ACTIF
      ======================================== */
 
-  // Fonction qui met à jour le lien actif selon la route actuelle
-  function updateActiveLink() {
-    
-    // Récupère le chemin de l'URL actuelle
-    // window.location.pathname retourne la partie après le domaine
-    const currentPath = window.location.pathname;
-
-    // Boucle sur CHAQUE lien de navigation forEach exécute la fonction pour chaque élément de la liste
-    navLinks.forEach(link => {
-      
-      // Récupère l'attribut 'href' du lien (sa destination)
-      // getAttribute('href') retourne la valeur de l'attribut href
-      const href = link.getAttribute('href');
-      
-      // Condition 1: Le lien correspond exactement à la route actuelle
-      // Condition 2: Cas spécial pour la page d'accueil (/ == /)
-      // Si l'une de ces conditions est vraie, c'est le lien actif
-      if (href === currentPath || (currentPath === '/' && href === '/')) {
-        
-        // Ajoute la classe 'active' au lien (underline)
-        link.classList.add('active');
-        
-        // Ajoute l'attribut aria-current='page' pour l'accessibilité
-        // Cela indique aux lecteurs d'écran que c'est la page actuelle
-        link.setAttribute('aria-current', 'page');
-        
-      } else {
-        
-        // Retire la classe 'active' si ce n'est pas le lien actif
-        link.classList.remove('active');
-        
-        // Retire l'attribut aria-current pour les liens inactifs
-        link.removeAttribute('aria-current');
-      }
-    });
-  }
-
-  // Appel initial de la fonction au chargement de la page
-  // Cela met en évidence le lien correspondant à l'URL actuelle
-  updateActiveLink();
-
-  // Écoute l'événement 'popstate'
-  // Cet événement se déclenche quand l'utilisateur navigue (bouton retour, etc.)
-  // Dans une SPA (Single Page App), cet événement signale un changement de route
-  window.addEventListener('popstate', updateActiveLink);
+  // La gestion du lien actif est désormais centralisée dans Router.js
+  // via la fonction updateActiveLink() appelée à chaque changement de page
+  // Raison : pushState (utilisé par navigate()) ne déclenche pas popstate,
+  // donc seul le Router peut savoir quand la page change réellement
 
   /* ========================================
      SECTION 3 : FERMER LE MENU MOBILE AU CLIC
@@ -160,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 4 : FERMER LE MENU EN CLIQUANT DEHORS
+     SECTION 3 : FERMER LE MENU EN CLIQUANT DEHORS
      ======================================== */
 
   // Écoute TOUS les clics sur la page
@@ -179,8 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
       toggler.click();
     }
   });
+
   /* ========================================
-     SECTION 5 : SMOOTH SCROLL AVEC JAVASCRIPT
+     SECTION 4 : SMOOTH SCROLL AVEC JAVASCRIPT
      ======================================== */
   // Trouve TOUS les liens qui pointent vers des ancres (#)
   document.querySelectorAll('a[href^="#"]').forEach(link => {
