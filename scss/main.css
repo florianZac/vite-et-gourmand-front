@@ -15324,4 +15324,145 @@ textarea.form-control-lg {
     padding: 0.7rem 1rem;
     font-size: 0.9rem;
   }
+}
+/* ===============================
+   STYLES MENTIONS LÉGALES - VITE & GOURMAND
+   =============================== */
+/* -------- Section hero -------- */
+.mentions-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* Conteneur interne centré */
+.mentions-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* -------- Titre hero -------- */
+.mentions-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Description mentions -------- */
+.mentions-hero-description {
+  font-size: 1rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* -------- Section de mentions -------- */
+.mentions-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(38, 67%, 96%);
+  padding: 6rem 2rem 3rem;
+}
+
+/* -------- Carte -------- */
+.mentions-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  padding: 4rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+/* -------- Titres -------- */
+.mentions-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: hsl(14, 61%, 47%);
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Texte -------- */
+.mentions-text {
+  font-size: 0.95rem;
+  color: #696763;
+  line-height: 1.8;
+}
+
+/* -------- lien e-mail et téléphone dans les textes -------- */
+.mentions-text a {
+  color: hsl(14, 61%, 47%);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+.mentions-text a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* -------- Texte mis en avant -------- */
+.mentions-highlight {
+  color: #EF4444;
+  font-weight: 600;
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .mentions-hero {
+    padding: 2.5rem 0;
+  }
+  .mentions-hero-title {
+    font-size: 2rem;
+  }
+  .mentions-hero-description {
+    font-size: 0.95rem;
+  }
+  .mentions-card {
+    padding: 2rem 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .mentions-title {
+    font-size: 1.15rem;
+  }
+  .mentions-text {
+    font-size: 0.9rem;
+  }
+}
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .mentions-hero {
+    padding: 2rem 0;
+  }
+  .mentions-hero-title {
+    font-size: 1.75rem;
+    margin-bottom: 0.25rem;
+  }
+  .mentions-hero-description {
+    font-size: 0.9rem;
+  }
+  .mentions-section {
+    min-height: auto;
+    padding: 3rem 1rem 4rem;
+  }
+  .mentions-card {
+    padding: 2.5rem 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .mentions-title {
+    font-size: 1.1rem;
+  }
+  .mentions-text {
+    font-size: 0.85rem;
+  }
 }/*# sourceMappingURL=main.css.map */
