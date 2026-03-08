@@ -1,0 +1,376 @@
+/* ===============================
+   STYLES PAGE COMMANDER - VITE & GOURMAND
+   =============================== */
+
+/* -------- Section hero -------- */
+.commander-hero {
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  border-bottom: 1px solid rgba($terracotta, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px; 
+}
+
+.commander-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* -------- Titre hero -------- */
+.commander-hero-title {
+  font-family: $headings-font-family;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0;
+}
+
+/* -------- Section commander -------- */
+.commander-section {
+  background-color: $bg-gradient-start;
+  padding: 2rem 2rem 4rem;
+}
+
+/* -------- Stepper -------- */
+.commander-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.commander-step {
+  background-color: $ocre-light;
+  color: $white-pure;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+}
+
+/* Étape active */
+.commander-step.active {
+  background-color: $terracotta-dark;
+}
+
+/* Étape complétée */
+.commander-step.completed {
+  background-color: $terracotta;
+}
+
+/* Séparateur chevron */
+.commander-step-separator {
+  color: $gray-600;
+  font-size: 0.85rem;
+}
+
+/* Titre cartes */
+.commander-card-title{
+  font-family: $headings-font-family;
+  font-size: 1.25rem;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* -------- Sous-titre -------- */
+.commander-subtitle {
+  font-family: $headings-font-family;
+  font-size: 1.25rem;
+  font-weight: $font-weight-semibold;
+  color: $dark;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- Carte -------- */
+.commander-card {
+  background-color: $white-pure;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+/* --------  check Labels -------- */
+.commander-form .form-check-label {
+  font-size: 0.5rem;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* -------- small -------- */
+.commander-material-note {
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+  color: $gray-800;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* -------- Inputs -------- */
+.commander-input {
+  border: 1px solid $gray-400;
+  border-radius: 2rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  background-color: rgba($creme, 0.5);
+  transition: all 0.3s ease;
+}
+
+.commander-input:focus {
+  border-color: $terracotta;
+  box-shadow: 0 0 0 3px rgba($terracotta, 0.3);
+  background-color: $white-pure;
+}
+
+.commander-input::placeholder {
+  color: $gray-600;
+}
+
+/* -------- Bouton suivant -------- */
+.btn-commander-next {
+  background-color: $terracotta;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba($terracotta, 0.3);
+}
+
+.btn-commander-next:hover:not(:disabled) {
+  background-color: $terracotta-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba($terracotta, 0.3);
+}
+
+.btn-commander-next:disabled {
+  background-color: $gray-900 !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* -------- Bouton retour -------- */
+.btn-commander-prev {
+  background-color: $ocre-light;
+  color: $white-pure !important;
+  border: 1px solid $gray-400;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-commander-prev:hover {
+  background-color: $ocre-dark;
+  transform: translateY(-2px);
+}
+
+/* -------- Bouton confirmer -------- */
+.btn-commander-submit {
+  background-color: $terracotta-light;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px  $terracotta;
+}
+
+.btn-commander-submit:hover {
+  background-color:  $terracotta-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px  $terracotta;
+}
+
+/* -------- Récapitulatif -------- */
+.commander-recap {
+  font-size: 0.9rem;
+  color: $gray-700;
+  line-height: 1.8;
+}
+
+.commander-recap strong {
+  color: $dark;
+}
+
+/* -------- Page confirmation (étape 4) -------- */
+.commander-confirm-icon {
+  margin-bottom: 1rem;
+}
+
+.commander-confirm-icon i {
+  font-size: 3rem;
+  color: $sucess-icon;
+}
+
+.commander-confirm-title {
+  font-family: $headings-font-family;
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 1rem;
+}
+
+.commander-confirm-text {
+  font-size: 1.25rem;
+  color: $gray-700;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.commander-confirm-text strong {
+  color: $terracotta;
+}
+
+.commander-confirm-recap {
+  background-color: rgba($creme, 0.5);
+  border: 1px solid rgba($ocre, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+/* -------- Container récapitulatif de commande -------- */
+.commander-recap-row {
+  display: flex;
+  width: 100%;
+}
+
+/* -------- Titre récapitulatif de commande -------- */
+.commander-recap-row .title {
+  font-size: 1.25rem;
+  color: $gray-700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+/* -------- Titre TTC récapitulatif de commande -------- */
+.commander-recap-row .title_ttc {
+  font-size: 1.4rem;
+  color: $gray-900;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+}
+
+/* -------- content Récapitulatif de commande -------- */
+.commander-recap-row .content {
+  font-size: 1.25rem;
+  background: linear-gradient(90deg, $btn-gradient-start, $btn-gradient-end);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  margin-left: auto;
+  text-align: right;
+} 
+
+/* -------- Bouton outline (voir mes commandes) -------- */
+.btn-commander-outline {
+  background-color: $terracotta-light;
+  color: $white-pure !important;
+  border: 1px solid rgba($terracotta, 0.3);
+  border-radius: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+}
+
+.btn-commander-outline:hover {
+  background-color: $terracotta-dark;
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .commander-hero-title {
+    font-size: 2rem;
+  }
+
+  .commander-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .commander-step {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .commander-hero {
+    padding: 2rem 0;
+  }
+
+  .commander-hero-title {
+    font-size: 1.75rem;
+  }
+
+  .commander-section {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .commander-stepper {
+    gap: 0.25rem;
+  }
+
+  .commander-step {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .commander-step-separator {
+    font-size: 0.7rem;
+  }
+
+  .commander-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+  }
+
+  .commander-input {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-commander-next,
+  .btn-commander-prev,
+  .btn-commander-submit {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
+}

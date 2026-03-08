@@ -15465,4 +15465,370 @@ textarea.form-control-lg {
   .mentions-text {
     font-size: 0.85rem;
   }
+}
+/* ===============================
+   STYLES PAGE COMMANDER - VITE & GOURMAND
+   =============================== */
+/* -------- Section hero -------- */
+.commander-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.commander-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* -------- Titre hero -------- */
+.commander-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0;
+}
+
+/* -------- Section commander -------- */
+.commander-section {
+  background-color: #F5E6D3;
+  padding: 2rem 2rem 4rem;
+}
+
+/* -------- Stepper -------- */
+.commander-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.commander-step {
+  background-color: hsl(38, 58%, 70%);
+  color: #FFFFFF;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/* Étape active */
+.commander-step.active {
+  background-color: hsl(14, 61%, 35%);
+}
+
+/* Étape complétée */
+.commander-step.completed {
+  background-color: hsl(14, 61%, 47%);
+}
+
+/* Séparateur chevron */
+.commander-step-separator {
+  color: #999999;
+  font-size: 0.85rem;
+}
+
+/* Titre cartes */
+.commander-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------- Sous-titre -------- */
+.commander-subtitle {
+  font-family: "Playfair Display", serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- Carte -------- */
+.commander-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+/* --------  check Labels -------- */
+.commander-form .form-check-label {
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: #4A4A4A;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* -------- small -------- */
+.commander-material-note {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4A4A4A;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* -------- Inputs -------- */
+.commander-input {
+  border: 1px solid #E8E8E8;
+  border-radius: 2rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  transition: all 0.3s ease;
+}
+
+.commander-input:focus {
+  border-color: hsl(14, 61%, 47%);
+  box-shadow: 0 0 0 3px rgba(192.9585, 80.8588, 46.7415, 0.3);
+  background-color: #FFFFFF;
+}
+
+.commander-input::-moz-placeholder {
+  color: #999999;
+}
+
+.commander-input::placeholder {
+  color: #999999;
+}
+
+/* -------- Bouton suivant -------- */
+.btn-commander-next {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+.btn-commander-next:hover:not(:disabled) {
+  background-color: hsl(14, 61%, 35%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+.btn-commander-next:disabled {
+  background-color: #333333 !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* -------- Bouton retour -------- */
+.btn-commander-prev {
+  background-color: hsl(38, 58%, 70%);
+  color: #FFFFFF !important;
+  border: 1px solid #E8E8E8;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-commander-prev:hover {
+  background-color: hsl(38, 58%, 40%);
+  transform: translateY(-2px);
+}
+
+/* -------- Bouton confirmer -------- */
+.btn-commander-submit {
+  background-color: hsl(14, 61%, 62%);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px hsl(14, 61%, 47%);
+}
+
+.btn-commander-submit:hover {
+  background-color: hsl(14, 61%, 35%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px hsl(14, 61%, 47%);
+}
+
+/* -------- Récapitulatif -------- */
+.commander-recap {
+  font-size: 0.9rem;
+  color: #666666;
+  line-height: 1.8;
+}
+
+.commander-recap strong {
+  color: #333333;
+}
+
+/* -------- Page confirmation (étape 4) -------- */
+.commander-confirm-icon {
+  margin-bottom: 1rem;
+}
+
+.commander-confirm-icon i {
+  font-size: 3rem;
+  color: #15803D;
+}
+
+.commander-confirm-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1rem;
+}
+
+.commander-confirm-text {
+  font-size: 1.25rem;
+  color: #666666;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.commander-confirm-text strong {
+  color: hsl(14, 61%, 47%);
+}
+
+.commander-confirm-recap {
+  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  border: 1px solid rgba(206.805, 157.998, 73.695, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+/* -------- Container récapitulatif de commande -------- */
+.commander-recap-row {
+  display: flex;
+  width: 100%;
+}
+
+/* -------- Titre récapitulatif de commande -------- */
+.commander-recap-row .title {
+  font-size: 1.25rem;
+  color: #666666;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+/* -------- Titre TTC récapitulatif de commande -------- */
+.commander-recap-row .title_ttc {
+  font-size: 1.4rem;
+  color: #333333;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* -------- content Récapitulatif de commande -------- */
+.commander-recap-row .content {
+  font-size: 1.25rem;
+  color: linear-gradient(90deg, #C1613A, #803050);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  text-align: right;
+  margin-left: auto;
+  text-align: right;
+}
+
+/* -------- Bouton outline (voir mes commandes) -------- */
+.btn-commander-outline {
+  background-color: hsl(14, 61%, 62%);
+  color: #FFFFFF !important;
+  border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  border-radius: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-commander-outline:hover {
+  background-color: hsl(14, 61%, 35%);
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .commander-hero-title {
+    font-size: 2rem;
+  }
+  .commander-card {
+    padding: 2rem 1.5rem;
+  }
+  .commander-step {
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .commander-hero {
+    padding: 2rem 0;
+  }
+  .commander-hero-title {
+    font-size: 1.75rem;
+  }
+  .commander-section {
+    padding: 1.5rem 1rem 3rem;
+  }
+  .commander-stepper {
+    gap: 0.25rem;
+  }
+  .commander-step {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.7rem;
+  }
+  .commander-step-separator {
+    font-size: 0.7rem;
+  }
+  .commander-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .commander-input {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  .btn-commander-next,
+  .btn-commander-prev,
+  .btn-commander-submit {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
 }/*# sourceMappingURL=main.css.map */

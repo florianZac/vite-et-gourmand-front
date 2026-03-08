@@ -88,9 +88,27 @@ npm i bootstrap-icons
 # Installation de Sass 
 But :  possibilité de modifier les couleurs par défaut de bootstrap est surchargé le css pour appliqué notre propre style.
 
+Test de gestion des utilisateurs 
+Ouvrir la console du navigateur (F12) taper les commandes ci-dessous pour tester les roles 
+Client :
+jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=client; path=/; SameSite=Lax";
+location.reload();
 
+Employé :
+jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=employee; path=/; SameSite=Lax";
+location.reload();
 
+Admin :
+jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=admin; path=/; SameSite=Lax";
+location.reload();
 
+Pour se déconnecter :
+jsdocument.cookie = "accesstoken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+location.reload();
 
 
 
