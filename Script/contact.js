@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initContactPage() {
 
   /* ===============================
@@ -14,6 +15,13 @@ export function initContactPage() {
   const contactForm = document.querySelector('.contact-form');
   const submitButton = document.querySelector('.btn-contact');
   const charCount = document.querySelector('.contact-char-count');
+
+  /* ===============================
+     CONFIGURATION API
+     =============================== */
+
+  // URL de base de l'API Symfony
+  const apiContact = `${API_URL}/api/contact`;
 
   /* ===============================
      CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
@@ -150,7 +158,7 @@ export function initContactPage() {
 
       // Appel de l'API :
       // try {
-      //   const response = await fetch('/api/contact', {
+      //   const response = await fetch(apiContact, {
       //     method: 'POST',
       //     headers: { 'Content-Type': 'application/json' },
       //     body: JSON.stringify(formData)

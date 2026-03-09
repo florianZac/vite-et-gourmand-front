@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 /* ===============================
    CAROUSEL DE TÉMOIGNAGES
    Gère la navigation entre 5 avis clients différents
@@ -73,6 +74,13 @@ export function initAccueilPage() {
   
   // Les 5 petits points de pagination en bas
   const dots = document.querySelectorAll('.temoignages-dot');
+
+  /* ===============================
+    CONFIGURATION API
+    =============================== */
+
+  // URL de récupération des avis de l'API Symfony
+  const apiAvisclient = `${API_URL}/api/avis`;
 
   // ========================================
   // VÉRIFICATIONS: Les éléments existent-ils?

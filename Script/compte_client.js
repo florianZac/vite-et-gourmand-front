@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initcompte_clientPage() {
 
   /* ===============================
@@ -18,8 +19,9 @@ export function initcompte_clientPage() {
       pour authentifier les requêtes
      =============================== */
 
-  const BASE_URL = 'http://127.0.0.1:8000/api';
+  const apiCompte_client = `${API_URL}/api/login`;
 
+  
   // Récupère le token JWT pour l'authentification des requêtes
   const token = localStorage.getItem('token');
 
@@ -261,7 +263,7 @@ export function initcompte_clientPage() {
 
     if (!confirmed) return;
 
-    console.log('⏸️ Demande de désactivation du compte...');
+    console.log(' Demande de désactivation du compte...');
 
     try {
       const response = await fetch(`${BASE_URL}/me/deactivate`, {

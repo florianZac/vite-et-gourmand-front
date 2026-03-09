@@ -5,7 +5,7 @@
 // - afficher/cacher certains éléments selon le rôle
 // - récupérer le rôle de l'utilisateur
 // Import des fonctions utilitaires depuis Script/script.js
-import { isConnected, showAndHideElementsForRole, getRole } from "../Script/script.js";
+import { isConnected, showAndHideElementsForRole, getRole } from "/Script/script.js";
 
 console.log("Router chargé");
 
@@ -27,6 +27,8 @@ const route404 = new Route(
     "404",                      // nom interne de la route
     "Page introuvable",         // titre affiché dans le navigateur
     "Pages/404.html",           // chemin vers le fichier HTML de la page 404
+    [],
+    
 );
 
 // Cache qui mémorise les scripts JS déjà chargés
@@ -78,7 +80,7 @@ const updateActiveLink = () => {
         // Récupère la destination du lien
         const href = link.getAttribute('href');
 
-        // Si le href correspond au chemin actuel → lien actif
+        // Si le href correspond au chemin actuel -> lien actif
         if (href === path) {
             link.classList.add('active');
             link.setAttribute('aria-current', 'page');
@@ -257,7 +259,7 @@ document.addEventListener("click", (event) => {
     // Cherche si on a cliqué sur un lien interne
     const link = event.target.closest('a[href^="/"]');
 
-    // Si ce n'est pas un lien interne → on ignore
+    // Si ce n'est pas un lien interne on ignore
     if (!link) return;
 
     // Empêche le comportement normal du lien

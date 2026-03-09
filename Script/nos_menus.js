@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initNosMenuPage() {
 
   /* ===============================
@@ -16,7 +17,7 @@ export function initNosMenuPage() {
      =============================== */
 
   // URL de base de l'API Symfony
-  const BASE_URL = 'http://127.0.0.1:8000/api';
+  const apiReturnMenus = `${API_URL}/api/menus`;
 
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM

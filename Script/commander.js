@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initCommanderPage() {
 
   /* ===============================
@@ -32,6 +33,14 @@ export function initCommanderPage() {
   // Variable pour stocker les frais de livraison calculés par l'API
   // Par défaut à 0 (= livraison gratuite)
   let deliveryFee = 0;
+
+  /* ===============================
+      CONFIGURATION API
+      =============================== */
+
+  // URL de base de l'API Symfony
+  const apiCommander = `${API_URL}/api/commander`;
+
 
   /* ===============================
      FONCTION : AFFICHER UNE ÉTAPE
@@ -386,7 +395,7 @@ export function initCommanderPage() {
 
       // Appel de l'API (commenté en attendant que l'endpoint soit prêt) :
       // try {
-      //   const response = await fetch('/api/orders', {
+      //   const response = await fetch('${API_URL}/api/orders', {
       //     method: 'POST',
       //     headers: {
       //       'Content-Type': 'application/json',

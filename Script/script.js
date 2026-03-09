@@ -1,6 +1,8 @@
-// =======================
-// Gestion des cookies et rôle
-// =======================
+import { API_URL } from './config.js';
+
+/* ===============================
+   GESTION DES COOKIES et ROLE
+	=============================== */
 
 // Nom du cookie pour le token d'accès
 const tokenCookieName = "accesstoken";
@@ -8,20 +10,15 @@ const tokenCookieName = "accesstoken";
 // Nom du cookie pour le rôle de l'utilisateur
 const roleCookieName = "role";
 
+/* ===============================
+   Configuration API
+   =============================== */
 
-// =======================
-// Configuration API à modifier pour les valeur futur du back
-// =======================
+const apiAccountMeUrl = `${API_URL}/api/login`;
 
-// URL de base de l'API
-const apiBaseUrl = "https://aizac.alwaysdata.net//api";
-
-// URL de base pour récupérer les infos utilisateur
-const apiAccountMeUrl = "http://127.0.0.1:8000/api/account/me";
-
-// =======================
-// Initialisation globale
-// =======================
+/* ===============================
+   Initialisation globale
+	=============================== */
 
 // Au chargement complet du DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -39,9 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     getInfosUser();
 });
 
-// =======================
-// Gestion du token
-// =======================
+/* ===============================
+	 Gestion du token
+	=============================== */
 
 // Fonction pour sauvegarder le token dans un cookie
 function setToken(){
@@ -53,9 +50,9 @@ function getToken(){
     return getCookie(tokenCookieName);
 }
 
-// =======================
-// Gestion des cookies
-// =======================
+/* ===============================
+	 Gestion des cookies
+	=============================== */
 
 // Fonction pour récupérer la valeur d'un cookie par son nom
 export function getCookie(name) {
@@ -96,9 +93,10 @@ export function eraseCookie(name) {
     }
 }
 
-// =======================
-// Affichage dynamique de la navbar
-// =======================
+/* ===============================
+	 Affichage dynamique de la navbar 
+
+	=============================== */
 
 export function showAndHideElementsForRole() {
     // Vérifie si l'utilisateur est connecté
@@ -111,43 +109,44 @@ export function showAndHideElementsForRole() {
     const allElements = document.querySelectorAll('[data-show]');
 
     // Parcourt chaque élément pour décider de l'afficher ou non
-    for (const el of allElements) {
-        el.classList.remove("d-none"); // réinitialise la visibilité
+    for (const element of allElements) {
+			
+        element.classList.remove("d-none"); // réinitialise la visibilité
 
         // Selon le rôle requis dans data-show
-        switch(el.dataset.show) {
+        switch(element.dataset.show) {
             case 'disconnected':
                 if(userConnected){
-                    el.classList.add("d-none");    
+                    element.classList.add("d-none");    
                 }  
                 break;
             case 'connected':
                 if(!userConnected){
-                    el.classList.add("d-none");    
+                    element.classList.add("d-none");    
                 }  
                 break;
             case 'admin':
                 if(!userConnected || role !== "admin"){
-                    el.classList.add("d-none");    
+                    element.classList.add("d-none");    
                 }  
                 break;
             case 'client':
                 if(!userConnected || role !== "client"){
-                    el.classList.add("d-none");  
+                    element.classList.add("d-none");  
                 }
                 break;
             case 'employee':     
-                if(!userConnected || role !== "employée"){
-                    el.classList.add("d-none"); 
+                if(!userConnected || role !== "employee"){
+                    element.classList.add("d-none"); 
                 }  
                 break;
         }
     }
 }
 
-// =======================
-// Déconnexion
-// =======================
+/* ===============================
+	 Déconnexion
+	=============================== */
 
 export function signout() {
     // Supprime les cookies connus
@@ -172,9 +171,10 @@ export function signout() {
     globalThis.dispatchEvent(new Event('popstate'));
 }
 
-// =======================
-// Récupération des infos utilisateur
-// =======================
+
+/* ===============================
+	 Récupération des infos utilisateur
+	=============================== */
 
 function getInfosUser() {
     const token = getToken();

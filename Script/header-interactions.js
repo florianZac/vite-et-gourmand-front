@@ -1,3 +1,4 @@
+
 /* ===============================
    Ce fichier centralise les intéractions et les effets concernant le header
    RÉSUMÉ DU FONCTIONNEMENT

@@ -21,9 +21,9 @@
 
             <!-- Boutons modifier/supprimer (visible admin/employé uniquement) -->
             <!-- Caché par défaut avec d-none, le JS le retire si le rôle est admin ou employé -->
-            <div class="action-image-buttons d-none" id="action-image-buttons">
+            <div class="action-image-buttons d-none" data-show="admin" id="action-image-buttons">
               <!-- Bouton modifier ->  ouvre la modale EditionPhotoModal -->
-              <button type="button" class="btn btn-outline-light btn-sm" id="btn-edit-photo" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal">
+              <button  type="button" class="btn btn-outline-light btn-sm" id="btn-edit-photo" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal">
                 <i class="bi bi-pencil-square"></i>
               </button>
               <!-- Bouton supprimer ->  ouvre la modale SuppresionPhotoModal -->

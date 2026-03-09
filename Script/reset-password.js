@@ -1,8 +1,15 @@
+import { API_URL } from './config.js';
 export function initResetpasswordPage() {
 
   /* ===============================
    SCRIPT PAGE RESET PASSWORD
    =============================== */
+
+  /* ===============================
+    Configuration API
+    =============================== */
+   
+  const apiResetpassword = `${API_URL}/api/forgot-password`;
 
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM

@@ -1,3 +1,5 @@
+import { API_URL } from './config.js';
+import { setCookie, showAndHideElementsForRole } from './script.js';
 export function initConnexionPage() {
 
   /* ===============================
@@ -14,8 +16,13 @@ export function initConnexionPage() {
   const connectionForm = document.querySelector('.login-form');
   const submitButton = document.querySelector('.btn-login');
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+  /* ===============================
+     CONFIGURATION API
+     =============================== */
+
+  // URL de base de l'API Symfony
+  const apiConnectionUser = `${API_URL}/api/login`;
+
   /* ===============================
      CRÉATION DU MESSAGE D'ERREUR
      =============================== */
@@ -26,7 +33,7 @@ export function initConnexionPage() {
     errorMessage = document.createElement('p');
     errorMessage.className = 'login-error-message';
     // Insère après le bouton submit
-    submitButton.insertAdjacentElement('afterend', errorMessage);
+  submitButton.insertAdjacentElement('afterend', errorMessage);
   }
 
   /* ===============================
@@ -156,40 +163,61 @@ export function initConnexionPage() {
   /* ===============================
      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
-  
-  if (connectionForm) {
-    connectionForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
+  // Le bouton est type="button", on écoute le click
+
+  const btnLogin = document.getElementById('btnLogin');
+
+  if (btnLogin) {
+    btnLogin.addEventListener('click', async () => {
+
       const formData = {
         email: emailInput.value.trim(),
         password: passwordInput.value
       };
-      
-      console.log(' Connexion envoyée:', formData);
-      
+
+      // Désactive le bouton pendant l'envoi
+      btnLogin.disabled = true;
+      btnLogin.textContent = 'Connexion en cours...';
+      hideError();
+
       // Appel de l'API :
-      // try {
-      //   const response = await fetch('/api/login', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(formData)
-      //   });
-      //   const data = await response.json();
-      //
-      //   if (response.ok) {
-      //     // Stocke le token JWT
-      //     localStorage.setItem('token', data.token);
-      //     // Redirige vers l'accueil
-      //     navigate('/');
-      //   } else {
-      //     // Affiche l'erreur retournée par l'API
-      //     showError(data.message || 'Email ou mot de passe incorrect.');
-      //   }
-      // } catch (err) {
-      //   console.error('Erreur réseau:', err);
-      //   showError('Erreur de connexion au serveur. Veuillez réessayer.');
-      // }
+      try {
+        const response = await fetch(apiConnectionUser, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Stocke le token JWT dans un cookie (7 jours)
+            setCookie('accesstoken', data.token, 7);
+            
+            // Stocke le rôle depuis la réponse API
+            setCookie('role', data.utilisateur.role, 7);
+            
+            console.log('Connecté !', data.utilisateur.email, data.utilisateur.role);
+
+            // Met à jour la navbar
+            showAndHideElementsForRole();
+
+            // Redirige vers l'accueil
+            window.location.href = '/';
+        } else {
+          // 401 = identifiants incorrects
+          showError(data.message || 'Email ou mot de passe incorrect.');
+          emailInput.classList.add('is-invalid');
+          passwordInput.classList.add('is-invalid');
+        }
+      } catch (err) {
+        console.error('Erreur réseau:', err);
+        showError('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = '<i class="bi bi-person-fill-check"></i> Se connecter';
+        checkFormValidity();
+      }
     });
   }
 

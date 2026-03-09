@@ -70,10 +70,16 @@
 
         <!-- Partie droite (Connexion/Inscription ou Nom/Déconnexion) -->
         <div class="navbar-right-section">
-          <a href="/login" class="btn btn-connexion" id="btn-header-connexion">
+          <a href="/login" class="btn btn-connexion" data-show="disconnected">
             Connexion
           </a>
-          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription">
+          <a href="#"
+            class="btn btn-connexion"
+            id="signout-btn"
+            data-show="connected">
+            Déconnexion
+          </a>
+          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription" data-show="disconnected">
             <i class="bi bi-box-arrow-in-right"></i> Inscription
           </a>
         </div>

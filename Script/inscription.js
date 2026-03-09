@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initInscriptionPage() {
 
   /* ===============================
@@ -21,9 +22,15 @@ export function initInscriptionPage() {
   const submitButton = document.querySelector('.btn-inscription-submit');
 
   /* ===============================
+     CONFIGURATION API
+     =============================== */
+
+  // URL de base de l'API Symfony
+  const apiInscriptionUser = `${API_URL}/api/register`;
+
+  /* ===============================
      FONCTIONS DE VALIDATION - TÉLÉPHONE
      =============================== */
-  
   /**
    * Vérifie si le téléphone est valide
    * Doit commencer par 06, 07, +336 ou +337
@@ -379,30 +386,59 @@ export function initInscriptionPage() {
      =============================== */
   
   if (inscriptionForm) {
-    inscriptionForm.addEventListener('submit', (e) => {
+    inscriptionForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+        
       // Les validations ont déjà été faites, on peut envoyer
+      // Mapping des champs HTML pour l'API Symfony
       const formData = {
-        firstName: firstNameInput.value,
-        lastName: lastNameInput.value,
-        phone: phoneInput.value,
+        nom: lastNameInput.value,
+        prenom: firstNameInput.value,
+        telephone: phoneInput.value,
         email: emailInput.value,
-        address: addressInput.value,
-        city: villeInput.value,
-        postalCode: postalInput.value,
-        password: passwordInput.value
+        password: passwordInput.value,
+        pays: 'France',
+        ville: villeInput.value,
+        code_postal: postalInput.value,
+        adresse_postale: addressInput.value,
+        site_web: ''  // Honeypot : toujours vide pour un vrai utilisateur
       };
-      
-      console.log('✓ Inscription valide:', formData);
-      
-      // Appel de l'API :
-      // fetch('/api/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // })
+
+      // Désactive le bouton pendant l'envoi
+      submitButton.disabled = true;
+      submitButton.textContent = 'Inscription en cours...';
+
+      try {
+        const response = await fetch(apiInscriptionUser, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Succès on redirige vers la page de connexion
+          alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
+          window.location.href = '/login';
+        } else {
+          // Erreur retournée par l'API (400, 409...)
+          alert(data.message || 'Erreur lors de l\'inscription.');
+        }
+      } catch (err) {
+
+        console.error('Erreur réseau:', err);
+        alert('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
+
+      } finally {
+        
+        // Réactive le bouton dans tous les cas
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="bi bi-person-fill-add me-2"></i> Créer mon compte';
+        checkFormValidity();
+      }
     });
+
   }
 
   /* ===============================

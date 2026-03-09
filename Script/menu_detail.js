@@ -1,3 +1,4 @@
+import { API_URL } from './config.js';
 export function initDetailMenuPage() {
 
 /* ===============================
@@ -13,12 +14,13 @@ export function initDetailMenuPage() {
 		8. La modale suppression photo (double vérification)
 	=============================== */
 
-	/* ===============================
-		CONFIGURATION API
-		=============================== */
+  /* ===============================
+     CONFIGURATION API
+     =============================== */
 
-	const BASE_URL = 'http://127.0.0.1:8000/api';
-
+  // URL de base de l'API Symfony
+  const apiReturnMenus = `${API_URL}/api/menus`;
+  
 	/* ===============================
 		 RÉCUPÉRATION DE L'ID DU MENU DEPUIS L'URL
 			- 1.	L'URL est de la forme /menu/3

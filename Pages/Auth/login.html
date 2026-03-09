@@ -28,7 +28,13 @@
             name="Email"
             aria-describedby="emailHelp"
             required
-          > 
+          >
+          <div class="invalid-feedback">
+            Le mail ou le mot de passe ne correspondent pas.
+          </div>
+          <div class="valid-feedback">
+            Le mail est correct.
+          </div>
         </div>
 
         <!-- Mot de passe -->
@@ -43,6 +49,12 @@
               name="Password"
               required
             >
+            <div class="invalid-feedback">
+              Le mot de passe ne correspondent pas.
+            </div>
+            <div class="valid-feedback">
+              Le mot de passe est correct.
+            </div>
             <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher/masquer le mot de passe">
               <i class="bi bi-eye"></i>
             </button>
@@ -55,7 +67,7 @@
         </div>
 
         <!-- Bouton de connexion -->
-        <button type="submit" class="btn btn-login">
+        <button type="submit" class="btn-login" id="btnLogin">
           <i class="bi bi-person-fill-check"></i>
           Se connecter
         </button>

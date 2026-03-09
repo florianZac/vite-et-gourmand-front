@@ -16,11 +16,12 @@ export const allRoutes = [
    new Route("/Mentions_CGV", "Mentions_CGV", "Pages/Mention_legale/Mentions_CGV.html", [], "", true),
    new Route("/nos_menu", "Nos Menus", "Pages/Menus/nos_menus.html", [], "/Script/nos_menus.js", true),
    new Route("/detail_menu", "Detail Menus", "Pages/Menus/menu_detail.html", [], "/Script/menu_detail.js", true),
-
+   new Route("/reset_login", "Resetpassword", "Pages/Auth/reset-password.html", [], "/Script/reset-password.js", true),
+   
    /* Role DECONNECTER*/
    new Route("/login", "Connexion", "Pages/Auth/login.html", ["disconnected"], "/Script/connection.js", true),
    new Route("/inscription", "Inscription", "Pages/Auth/inscription.html", ["disconnected"], "/Script/inscription.js", true),
-   new Route("/reset_login", "Resetpassword", "Pages/Auth/reset-password.html", ["disconnected"], "/Script/reset-password.js", true),
+  
 
    /* Role CLIENT */
    new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["client"], "/Script/commander.js", true), 
