@@ -1,0 +1,334 @@
+/* ===============================
+   STYLES PAGE compte_client - VITE & GOURMAND
+   =============================== */
+
+/* -------- Texte bienvenue sous le h1 -------- */
+.compte_client-hero-welcome {
+  font-size: 1.15rem;
+  color: $gray-700;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+/* -------- Prénom en couleur terracotta -------- */
+.compte_client-hero-welcome span {
+  color: $terracotta;
+  font-weight: $font-weight-bold;
+}
+
+/* -------- Section hero -------- */
+.compte_client-hero {
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  border-bottom: 1px solid rgba($terracotta, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.compte_client-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+/* -------- Titre hero -------- */
+.compte_client-hero-title {
+  font-family: $headings-font-family;
+  font-size: 2.5rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0;
+}
+
+/* -------- Section compte_client -------- */
+.compte_client-section {
+  background-color: $bg-gradient-start;
+  padding: 2rem 2rem 4rem;
+}
+
+/* ===============================
+   ONGLETS (TABS) - Mes commandes / Mon compte_client
+   =============================== */
+
+.compte_client-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Onglet par défaut (inactif) */
+.compte_client-tab {
+  background-color: $ocre-light;
+  color: $white-pure;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Onglet au survol */
+.compte_client-tab:hover {
+  background-color: $ocre-dark;
+  color: $white-pure;
+  text-decoration: none;
+}
+
+/* Onglet actif (sélectionné) */
+.compte_client-tab.active {
+  background-color: $terracotta-dark;
+  color: $white-pure;
+}
+
+/* ===============================
+   CARTE IDENTITE AVATAR
+   =============================== */
+
+.compte_client-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Cercle avatar */
+.compte_client-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: $ocre-light;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+/* Icône dans l'avatar */
+.compte_client-avatar i {
+  font-size: 2rem;
+  color: $white-pure;
+}
+
+/* Nom de l'utilisateur */
+.compte_client-name {
+  font-family: $headings-font-family;
+  font-size: 1.15rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0.15rem;
+}
+
+/* Email de l'utilisateur */
+.compte_client-email {
+  font-size: 0.85rem;
+  color: $gray-600;
+  margin-bottom: 0;
+}
+
+/* ===============================
+   CARTE FORMULAIRE
+   =============================== */
+
+.compte_client-card {
+  background-color: $white-pure;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* ===============================
+   INPUTS
+   =============================== */
+
+.compte_client-input {
+  border: 1px solid $gray-400;
+  border-radius: 2rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  background-color: rgba($creme, 0.5);
+  transition: all 0.3s ease;
+}
+
+.compte_client-input:focus {
+  border-color: $terracotta;
+  box-shadow: 0 0 0 3px rgba($terracotta, 0.3);
+  background-color: $white-pure;
+}
+
+.compte_client-input::placeholder {
+  color: $gray-600;
+}
+
+/* ===============================
+   BOUTON SAUVEGARDER
+   =============================== */
+
+.btn-compte_client-save {
+  background: linear-gradient(90deg, $btn-gradient-start, $btn-gradient-end);
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba($terracotta, 0.3);
+}
+
+.btn-compte_client-save:hover {
+  background: linear-gradient(90deg, $btn-gradient-end, $btn-gradient-start);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba($terracotta, 0.3);
+}
+
+/* ===============================
+   BOUTON SUPPRIMER MON COMPTE
+   =============================== */
+
+.btn-compte_client-delete {
+  background-color: $gray-900;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+}
+
+.btn-compte_client-delete:hover {
+  background-color: $dark;
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   SECTION DÉSACTIVATION DU COMPTE
+   Séparée visuellement du formulaire principal
+   =============================== */
+
+.compte_client-deactivation {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+/* Titre désactivation */
+.compte_client-deactivation-title {
+  font-family: $headings-font-family;
+  font-size: 1.25rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0.75rem;
+}
+
+/* Texte explicatif */
+.compte_client-deactivation-text {
+  font-size: 0.9rem;
+  color: $gray-700;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+/* Bouton demander la désactivation (outline terracotta) */
+.btn-compte_client-deactivate {
+  background-color: transparent;
+  color: $terracotta !important;
+  border: 1px solid $terracotta;
+  border-radius: 2rem;
+  padding: 0.65rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+}
+
+.btn-compte_client-deactivate:hover {
+  background-color: $terracotta;
+  color: $white-pure !important;
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   RESPONSIVE TABLETTE
+   =============================== */
+
+@media (max-width: 1200px) {
+  .compte_client-hero-title {
+    font-size: 2rem;
+  }
+
+  .compte_client-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .compte_client-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* ===============================
+   RESPONSIVE MOBILE
+   =============================== */
+
+@media (max-width: 768px) {
+  .compte_client-hero {
+    padding: 2rem 0;
+  }
+
+  .compte_client-hero-title {
+    font-size: 1.75rem;
+  }
+
+  .compte_client-section {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .compte_client-tabs {
+    gap: 0.25rem;
+  }
+
+  .compte_client-tab {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .compte_client-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+  }
+
+  .compte_client-input {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .compte_client-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .compte_client-avatar i {
+    font-size: 1.75rem;
+  }
+
+  .btn-compte_client-save,
+  .btn-compte_client-delete {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .compte_client-deactivation {
+    padding: 1.5rem 1rem;
+  }
+}

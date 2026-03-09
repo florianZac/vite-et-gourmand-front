@@ -1,0 +1,111 @@
+<!------ Section Hero Nos Menus -------->
+<section class="nos_menu-hero py-5">
+  <div class="container text-center">
+    <span class="nos_menu-hero-subtitle">NOS CRÉATIONS</span>
+    <h1 class="nos_menu-hero-title">Tous nos menus</h1>
+    <p class="nos_menu-hero-text">
+      Découvrez notre sélection de menus élaborés avec passion, pour tous vos
+      événements et tous les régimes alimentaires.
+    </p>
+  </div>
+</section>
+
+<!------ Section Filtres + Cartes Menus -------->
+<section class="nos_menu-section">
+  <div class="container">
+    <div class="row">
+
+      <!------ COLONNE GAUCHE : Filtres -------->
+      <div class="col-12 col-lg-3">
+        <div class="nos_menu-filters" id="menu-filters">
+
+          <!-- Titre filtres -->
+          <div class="nos_menu-filters-header">
+            <i class="bi bi-funnel"></i>
+            <span>Filtrer</span>
+          </div>
+
+          <!-- Recherche par nom / ingrédient / thème / régime / allergène -->
+          <div class="nos_menu-filter-group">
+            <label class="nos_menu-filter-label">Recherche</label>
+            <input
+              type="text"
+              class="form-control nos_menu-filter-input"
+              id="filter-search"
+              placeholder="Nom, Ingrédient..."
+            >
+          </div>
+
+          <!-- Filtre par thème badges dynamiques depuis l'API -->
+          <div class="nos_menu-filter-group">
+            <label class="nos_menu-filter-label">Thème</label>
+            <div class="nos_menu-filter-badges" id="filter-themes">
+              <!-- Les badges seront injectés  par le JS -->
+              <!-- Exemple : <button class="nos_menu-badge active">Tous</button> -->
+            </div>
+          </div>
+
+          <!-- Filtre par régime (badges dynamiques depuis l'API) -->
+          <div class="nos_menu-filter-group">
+            <label class="nos_menu-filter-label">Régime</label>
+            <div class="nos_menu-filter-badges" id="filter-regimes">
+              <!-- Les badges seront injectés par le JS -->
+            </div>
+          </div>
+
+          <!-- Filtre prix max / personne (slider) -->
+          <div class="nos_menu-filter-group">
+            <label class="nos_menu-filter-label">
+              Prix max / personne : <strong id="filter-price-value">100 €</strong>
+            </label>
+            <input
+              type="range"
+              class="form-range nos_menu-filter-range"
+              id="filter-price"
+              min="0"
+              max="100"
+              value="100"
+            >
+            <!-- Affichage min / max sous le slider -->
+            <div class="nos_menu-filter-range-labels">
+              <span>0€</span>
+              <span id="filter-price-max-label">100€</span>
+            </div>
+          </div>
+
+          <!-- Filtre nombre de personnes minimum -->
+          <div class="nos_menu-filter-group">
+            <label class="nos_menu-filter-label">Nb de personnes</label>
+            <input
+              type="number"
+              class="form-control nos_menu-filter-input"
+              id="filter-persons"
+              placeholder="Jusqu'à 30 pers."
+              min="1"
+            >
+          </div>
+
+          <!-- Bouton réinitialiser les filtres -->
+          <button type="button" class="btn nos_menu-filter-reset" id="btn-reset-filters">
+            Réinitialiser les filtres
+          </button>
+
+        </div>
+      </div>
+
+      <!------ COLONNE DROITE : Grille des menus -------->
+      <div class="col-12 col-lg-9">
+
+        <!-- Compteur de résultats -->
+        <p class="nos_menu-count" id="menu-count">0 menus trouvés</p>
+
+        <!-- Grille des cards injectées dynamiquement par le JS -->
+        <div class="nos_menu-grid" id="menu-grid">
+          <!-- Les cards seront injectées ici par le JS via AJAX -->
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,817 @@
+/* ===============================
+   STYLES PAGE DÉTAIL MENU - VITE & GOURMAND
+   =============================== */
+
+/* -------- Fil d’Ariane  -------- */
+.detail_menu-breadcrumb {
+  background-color: $bg-gradient-start;
+  padding: 1rem 0;
+  margin-top: 80px;
+}
+
+/* -------- lien du Fil d’Ariane  -------- */
+.detail_menu-breadcrumb-link {
+  font-size: 0.9rem;
+  color: $gray-700;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* -------- Couleur au survol du Fil d’Ariane  -------- */
+.detail_menu-breadcrumb-link:hover {
+  color: $terracotta;
+}
+
+/* -------- Séparateur entre les éléments du fil d’Ariane  -------- */
+.detail_menu-breadcrumb-separator {
+  font-size: 0.75rem;
+  color: $gray-600;
+  margin: 0 0.5rem;
+}
+
+/* -------- Élément courant du fil d’Ariane (menu affiché)  -------- */
+.detail_menu-breadcrumb-current {
+  font-size: 0.9rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+}
+
+/* ===============================
+   SECTION PRINCIPALE
+   =============================== */
+
+/* -------- fond général et espace haut et bas  -------- */
+.detail_menu-main {
+  background-color: $bg-gradient-start;
+  padding: 1.5rem 0 3rem;
+}
+
+/* ===============================
+   GALERIE PHOTOS (colonne gauche)
+   =============================== */
+
+.detail_menu-gallery {
+  margin-bottom: 2rem;
+}
+
+/* -------- Photo mise en avant  -------- */
+.detail_menu-gallery-main {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Image principale  -------- */
+.detail_menu-gallery-main-img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+/* -------- Flèches de navigation sur la photo principale -------- */
+.detail_menu-gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba($white-pure, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+/* -------- mode hover des flèches de navigation sur la photo principale -------- */
+.detail_menu-gallery-arrow:hover {
+  background-color: rgba($white-pure, 0.95);
+}
+/* -------- flèche gauche -------- */
+.detail_menu-gallery-arrow-left {
+  left: 0.75rem;
+}
+/* -------- flèche gauche -------- */
+.detail_menu-gallery-arrow-right {
+  right: 0.75rem;
+}
+/* -------- Icône dans la flèche -------- */
+.detail_menu-gallery-arrow i {
+  font-size: 1.1rem;
+  color: $dark;
+}
+
+/* ===============================
+   BOUTONS ACTION IMAGE (admin/employé uniquement)
+   - Apparaissent au hover sur la photo principale
+   - Modifier + Supprimer
+   =============================== */
+
+.action-image-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+/* -------- Au hover sur la photo principale : assombrit l'image + affiche les boutons -------- */
+.detail_menu-gallery-main:hover .action-image-buttons {
+  opacity: 1;
+}
+
+/* -------- Assombrit la photo quand on la survole -------- */
+.detail_menu-gallery-main:hover .detail_menu-gallery-main-img {
+  filter: brightness(0.3);
+}
+
+/* -------- Conteneur des miniatures sous la photo mise en avant -------- */
+.detail_menu-gallery-thumbs {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* -------- Miniature individuelle -------- */
+.detail_menu-gallery-thumb {
+  flex: 1;
+  height: 80px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+/* --------  Survol miniature individuelle -------- */
+.detail_menu-gallery-thumb:hover {
+  opacity: 0.9;
+}
+
+/* --------  Miniature active (photo affichée) -------- */
+.detail_menu-gallery-thumb.active {
+  opacity: 1;
+  border-color: $terracotta;
+}
+
+/* --------  Image miniature en dessous -------- */
+.detail_menu-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===============================
+   INFOS DU MENU (colonne droite)
+   Contient le titre, description,
+   prix, badges et bouton commander
+   =============================== */
+
+.detail_menu-info {
+  padding-left: 1rem;
+}
+
+/* -------- Badges (thème + régime + statut) -------- */
+.detail_menu-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* -------- Badge thème du menu -------- */
+.detail_menu-badge-theme {
+  background-color: rgba($terracotta, 0.1);
+  color: $terracotta;
+  border: 1px solid rgba($terracotta, 0.3);
+  padding: 0.3rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge régime du menu -------- */
+.detail_menu-badge-regime {
+  background-color: rgba($gray-700, 0.1);
+  color: $gray-700;
+  border: 1px solid rgba($gray-700, 0.2);
+  padding: 0.3rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge statut "Disponible" à la commande-------- */
+.detail_menu-badge-available {
+  background-color: rgba($sucess-icon, 0.1);
+  color: $sucess-icon;
+  border: 1px solid rgba($sucess-icon, 0.3);
+  padding: 0.3rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge statut "Indisponible à la commande-------- */
+.detail_menu-badge-unavailable {
+  background-color: rgba(#dc3545, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(#dc3545, 0.3);
+  padding: 0.3rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Titre du menu -------- */
+.detail_menu-title {
+  font-family: $headings-font-family;
+  font-size: 2rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Description du menu -------- */
+.detail_menu-description {
+  font-size: 0.95rem;
+  color: $gray-700;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* -------- Tags ingrédients principaux -------- */
+.detail_menu-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail_menu-tag {
+  background-color: rgba($dark, 0.08);
+  color: $dark;
+  border: 1px solid rgba($dark, 0.15);
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* ===============================
+   CARD PRIX DU MENU
+   Contient l'affichage du prix,
+   les informations associées et
+   le style visuel de la carte
+   =============================== */
+
+.detail_menu-price-card {
+  background-color: $white-pure;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.25rem;
+}
+
+/* -------- Conteneur principal du prix -------- */
+.detail_menu-price {
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Montant principal du prix -------- */
+.detail_menu-price-amount {
+  font-family: $headings-font-family;
+  font-size: 2rem;
+  font-weight: $font-weight-bold;
+  color: $terracotta;
+}
+
+/* -------- Unité du prix -------- */
+.detail_menu-price-unit {
+  font-family: $headings-font-family;
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  color: $terracotta;
+}
+
+/* -------- Texte complémentaire  -------- */
+.detail_menu-price-per {
+  font-size: 1rem;
+  color: $gray-600;
+  margin-left: 0.25rem;
+}
+
+/* -------- Texte d'information sous le prix  -------- */
+.detail_menu-price-info p {
+  font-size: 0.9rem;
+  color: $gray-700;
+  margin-bottom: 0.35rem;
+}
+
+/* -------- Icône devant les informations  -------- */
+.detail_menu-price-info i {
+  color: $terracotta;
+  margin-right: 0.35rem;
+}
+
+/* -------- Mise en valeur de certains mots dans les infos  -------- */
+.detail_menu-price-info strong {
+  color: $dark;
+}
+
+/* ===============================
+   BOUTON COMMANDER
+   Bouton principal permettant
+   d'ajouter le menu à la commande
+   =============================== */
+
+.btn-detail_menu-order {
+  background-color: $terracotta;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba($terracotta, 0.35);
+  margin-bottom: 1.25rem;
+}
+
+/* -------- Effet au survol du bouton  -------- */
+.btn-detail_menu-order:hover {
+  background-color: $terracotta-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba($terracotta, 0.4);
+}
+
+/* -------- Style du bouton lorsqu'il est désactivé  -------- */
+.btn-detail_menu-order:disabled {
+  background-color: $gray-600;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ===============================
+   CARD CONDITIONS DU MENU
+   Affiche les conditions de commande
+   =============================== */
+
+.detail_menu-conditions-card {
+  background-color: $white-pure;
+  border-left: 3px solid $terracotta;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* -------- En-tête de la section conditions -------- */
+.detail_menu-conditions-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Icône de la section -------- */
+.detail_menu-conditions-header i {
+  color: $terracotta;
+  font-size: 1rem;
+}
+
+/* -------- Titre de la section -------- */
+.detail_menu-conditions-header strong {
+  font-size: 0.95rem;
+  color: $dark;
+}
+
+/* -------- Texte explicatif des conditions -------- */
+.detail_menu-conditions-text {
+  font-size: 0.85rem;
+  color: $gray-700;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ===============================
+   SECTION COMPOSITION DU MENU
+   Cette section affiche les plats
+   qui composent le menu :
+   - entrée
+   - plat
+   - dessert
+   =============================== */
+
+.detail_menu-composition {
+  background-color: $bg-gradient-start;
+  padding: 2rem 0 3rem;
+}
+
+/* -------- Titre de la section "Composition du menu" -------- */
+.detail_menu-composition-title {
+  font-family: $headings-font-family;
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 1.5rem;
+}
+
+/* -------- Card contenant un plat du menu (entrée / plat / dessert) -------- */
+.detail_menu-dish-card {
+  background-color: $white-pure;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  height: 100%;
+  border-left: 3px solid rgba($terracotta, 0.3);
+}
+
+/* -------- type de plat (Entrée / Plat / Dessert) -------- */
+.detail_menu-dish-type {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Icône du type de plat -------- */
+.detail_menu-dish-type-icon {
+  font-size: 1.25rem;
+}
+
+/* -------- Texte indiquant le type de plat -------- */
+.detail_menu-dish-type-label {
+  font-size: 0.85rem;
+  font-weight: $font-weight-bold;
+  color: $terracotta;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* -------- Nom du plat -------- */
+.detail_menu-dish-name {
+  font-family: $headings-font-family;
+  font-size: 1.1rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Description du plat -------- */
+.detail_menu-dish-description {
+  font-size: 0.85rem;
+  color: $gray-700;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Label indiquant la présence d’allergènes -------- */
+.detail_menu-dish-allergens-label {
+  font-size: 0.8rem;
+  color: $gray-600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+/* -------- Icône allergènes -------- */
+.detail_menu-dish-allergens-label i {
+  font-size: 0.8rem;
+}
+
+/* -------- Conteneur des badges d’allergènes -------- */
+.detail_menu-dish-allergens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* -------- Badge d’un allergène -------- */
+.detail_menu-dish-allergen-badge {
+  background-color: rgba($dark, 0.06);
+  color: $dark;
+  border: 1px solid rgba($dark, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge lorsqu'il n'y a aucun allergène -------- */
+.detail_menu-dish-allergen-none {
+  background-color: rgba($sucess-icon, 0.1);
+  color: $sucess-icon;
+  border: 1px solid rgba($sucess-icon, 0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* ===============================
+   LIEN RETOUR AUX MENUS
+   Permet de revenir à la liste
+   complète des menus
+   =============================== */
+
+.detail_menu-back {
+  margin-top: 2rem;
+}
+
+/* -------- Lien cliquable -------- */
+.detail_menu-back-link {
+  font-size: 0.9rem;
+  color: $dark;
+  text-decoration: underline;
+  font-weight: $font-weight-semibold;
+  transition: color 0.3s ease;
+}
+/* -------- Couleur au survol du lien cliquable -------- */
+.detail_menu-back-link:hover {
+  color: $terracotta;
+}
+/* -------- Icône du lien -------- */
+.detail_menu-back-link i {
+  margin-right: 0.25rem;
+}
+
+/* ===============================
+   MODALES (Édition photo + Suppression photo)
+   Styles comuns entre les deux modales
+   =============================== */
+
+/* -------- Contenu de la modale -------- */
+.detail_menu-modal-content {
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* -------- En-tête de la modale -------- */
+.detail_menu-modal-header {
+  background-color: $terracotta;
+  color: $white-pure;
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+}
+
+/* -------- En-tête de la modale variante danger (suppression) -------- */
+.detail_menu-modal-header-danger {
+  background-color: #dc3545;
+}
+
+/* -------- Titre de la modale -------- */
+.detail_menu-modal-header .modal-title {
+  font-family: $headings-font-family;
+  font-size: 1.1rem;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* -------- Bouton fermer (croix) -------- */
+.detail_menu-modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+/* -------- Pied de la modale -------- */
+.detail_menu-modal-footer {
+  border-top: 1px solid rgba($gray-400, 0.3);
+  padding: 1rem 1.5rem;
+}
+
+/* -------- Champs de formulaire dans les modales -------- */
+.detail_menu-modal-input {
+  border: 1px solid $gray-400;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+/* -------- Style lorsque l’input est actif -------- */
+.detail_menu-modal-input:focus {
+  border-color: $terracotta;
+  box-shadow: 0 0 0 3px rgba($terracotta, 0.2);
+}
+
+/* -------- Variante danger pour confirmation de suppression -------- */
+.detail_menu-modal-input-danger:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(#dc3545, 0.2);
+}
+
+/* -------- Prévisualisation image dans la modale -------- */
+.detail_menu-modal-preview {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: rgba($creme, 0.5);
+  text-align: center;
+}
+
+.detail_menu-modal-preview img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* -------- Texte sous l'aperçu -------- */
+.detail_menu-modal-preview-text {
+  font-size: 0.8rem;
+  color: $gray-600;
+  padding: 0.5rem 0;
+  margin-bottom: 0;
+}
+
+/* -------- Prévisualisation variante danger bordure rouge -------- */
+.detail_menu-modal-preview-danger {
+  border: 2px solid rgba(#dc3545, 0.3);
+}
+
+/* -------- Alerte dans la modale suppression -------- */
+.detail_menu-modal-alert {
+  display: flex;
+  gap: 0.75rem;
+  background-color: rgba(#dc3545, 0.08);
+  border: 1px solid rgba(#dc3545, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+/* -------- Alert modale -------- */
+.detail_menu-modal-alert i {
+  color: #dc3545;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+/* -------- Mise en gras de l'alert modal -------- */
+.detail_menu-modal-alert strong {
+  color: #dc3545;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+/* -------- Information de l'alert modal  -------- */
+.detail_menu-modal-alert p {
+  color: $gray-700;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* -------- Texte de confirmation étape 2 suppression -------- */
+.detail_menu-modal-confirm-text {
+  font-size: 0.9rem;
+  color: $dark;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* -------- Boutons des modales -------- */
+
+/* -------- Bouton annuler -------- */
+.detail_menu-modal-btn-cancel {
+  background-color: transparent;
+  color: $gray-700;
+  border: 1px solid $gray-400;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
+  transition: all 0.3s ease;
+}
+/* -------- survole de la modale alert 2ème valid -------- */
+.detail_menu-modal-btn-cancel:hover {
+  background-color: $gray-400;
+  color: $dark;
+}
+
+/* -------- Bouton sauvegarder pour le modale d'édition -------- */
+.detail_menu-modal-btn-save {
+  background-color: $terracotta;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.3s ease;
+}
+/* --------  survole du bouton save -------- */
+.detail_menu-modal-btn-save:hover {
+  background-color: $terracotta-dark;
+}
+
+/* -------- Bouton danger / supprimer pour le modale de suppression -------- */
+.detail_menu-modal-btn-danger {
+  background-color: #dc3545;
+  color: $white-pure !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.3s ease;
+}
+/* -------- survole du btn de la modale de suppresion -------- */
+.detail_menu-modal-btn-danger:hover {
+  background-color: darken(#dc3545, 8%);
+}
+
+/* -------- Bouton danger désactivé tant que SUPPRIMER n'est pas tapé -------- */
+.detail_menu-modal-btn-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   RESPONSIVE TABLETTE
+   =============================== */
+
+@media (max-width: 991px) {
+  .detail_menu-info {
+    padding-left: 0;
+    margin-top: 1.5rem;
+  }
+
+  .detail_menu-gallery-main-img {
+    height: 450px;
+  }
+}
+
+/* ===============================
+   RESPONSIVE MOBILE
+   =============================== */
+
+@media (max-width: 768px) {
+  .detail_menu-breadcrumb {
+    padding: 0.75rem 0;
+    margin-top: 70px;
+  }
+
+  .detail_menu-main {
+    padding: 1rem 0 2rem;
+  }
+
+  .detail_menu-gallery-main-img {
+    height: 300px;
+  }
+
+  .detail_menu-gallery-thumb {
+    height: 65px;
+  }
+
+  .detail_menu-title {
+    font-size: 1.5rem;
+  }
+
+  .detail_menu-description {
+    font-size: 0.9rem;
+  }
+
+  .detail_menu-price-amount {
+    font-size: 1.75rem;
+  }
+
+  .detail_menu-composition {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .detail_menu-composition-title {
+    font-size: 1.25rem;
+  }
+
+  .detail_menu-dish-card {
+    padding: 1.25rem;
+  }
+
+  /* Modale : prévisualisation plus petite sur mobile */
+  .detail_menu-modal-preview img {
+    height: 150px;
+  }
+}

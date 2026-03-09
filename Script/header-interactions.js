@@ -178,4 +178,85 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  
+/* ========================================
+     SECTION 5 : MISE À JOUR DU HEADER SELON LA CONNEXION
+     - 1. Si un token JWT existe dans le localStorage -> l'utilisateur est connecté
+     - 2. Le bouton "Connexion" devient : icône user + prénom -> lien vers /compte
+     - 3. Le bouton "Inscription" devient : "Déconnexion"
+     - 4. Si pas de token -> on laisse les boutons par défaut
+     ======================================== */
+
+  // Récupère les deux boutons du header via leurs ID
+  const btnConnexion = document.getElementById('btn-header-connexion');
+  const btnInscription = document.getElementById('btn-header-inscription');
+
+  // Fonction qui met à jour les boutons selon l'état de connexion
+  function updateHeaderAuth() {
+
+    // Récupère le token JWT depuis le localStorage
+    const token = localStorage.getItem('token');
+
+    // Si pas de token -> l'utilisateur n'est pas connecté
+    // On remet les boutons dans leur état par défaut
+    if (!token) {
+      if (btnConnexion) {
+        btnConnexion.href = '/login';
+        btnConnexion.innerHTML = 'Connexion';
+      }
+      if (btnInscription) {
+        btnInscription.href = '/inscription';
+        btnInscription.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Inscription';
+
+        // On retire le listener de déconnexion si il existe
+        btnInscription.removeAttribute('id-logout');
+      }
+      return;
+    }
+
+    // Si on a un token -> on le décode pour récupérer le prénom
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload));
+
+      // Récupère le prénom depuis le payload
+      const firstName = decoded.firstName || decoded.prenom || decoded.username || 'Mon compte';
+
+      // BOUTON 1 : "Connexion" -> icône user + prénom -> lien vers /compte
+      if (btnConnexion) {
+        btnConnexion.href = '/compte';
+        btnConnexion.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+      }
+
+      // BOUTON 2 : "Inscription" -> "Déconnexion"
+      if (btnInscription) {
+        btnInscription.href = '#';
+        btnInscription.innerHTML = '<i class="bi bi-box-arrow-right"></i> Déconnexion';
+
+        // Ajoute le listener de déconnexion
+        if (!btnInscription.hasAttribute('data-logout')) {
+          btnInscription.setAttribute('data-logout', 'true');
+          btnInscription.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Supprime le token
+            localStorage.removeItem('token');
+            // Remet les boutons en mode "non connecté"
+            updateHeaderAuth();
+            // Redirige vers l'accueil
+            window.location.href = '/';
+          });
+        }
+      }
+
+    } catch (err) {
+      // Si le token est invalide, on le supprime et on remet l'état par défaut
+      console.error('Token JWT invalide:', err);
+      localStorage.removeItem('token');
+    }
+  }
+
+  // Appelle la fonction au chargement de la page
+  updateHeaderAuth();
+
 });
