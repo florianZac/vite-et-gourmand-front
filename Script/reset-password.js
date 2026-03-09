@@ -91,6 +91,24 @@ export function initResetpasswordPage() {
 
   if (emailInput) {
     emailInput.addEventListener('input', () => {
+      const email = emailInput.value.trim();
+
+      // Si le champ est vide on retire les deux classes (état neutre)
+      if (email === '') {
+        emailInput.classList.remove('is-valid', 'is-invalid');
+      }
+      // Si l'email est valide bordure verte
+      else if (validateEmail(email)) {
+        emailInput.classList.add('is-valid');
+        emailInput.classList.remove('is-invalid');
+      }
+      // Si l'email est invalide bordure rouge
+      else {
+        emailInput.classList.add('is-invalid');
+        emailInput.classList.remove('is-valid');
+      }
+
+      // Met à jour l'état
       checkFormValidity();
     });
   }

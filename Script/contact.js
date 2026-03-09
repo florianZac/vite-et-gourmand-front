@@ -77,6 +77,43 @@ export function initContactPage() {
   }
 
   /* ===============================
+    FACTORISATION DE LA VALIDATION
+    =============================== */
+  function updateFieldState(input, isValid) {
+    if (input.value.trim() === '') {
+      input.classList.remove('is-valid', 'is-invalid');
+    } else if (isValid) {
+      input.classList.add('is-valid');
+      input.classList.remove('is-invalid');
+    } else {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+    }
+  }
+
+  /* ===============================
+     LISTENERS SUR LES INPUTS
+     =============================== */
+  if (subjectInput) {
+    subjectInput.addEventListener('input', () => {
+      checkFormValidity();
+      updateFieldState(subjectInput, subjectInput.value.trim().length >= 3 && subjectInput.value.trim().length <= 100);
+    });
+  }
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      checkFormValidity();
+      updateFieldState(emailInput, validateEmail(emailInput.value.trim()));
+    });
+  }
+  if (messageInput) {
+    messageInput.addEventListener('input', () => {
+      checkFormValidity();
+        updateFieldState(messageInput, messageInput.value.trim().length > 10 && messageInput.value.trim().length <= 500);
+    });
+  }
+
+  /* ===============================
      FONCTION POUR VÉRIFIER L'ÉTAT DU FORMULAIRE
      =============================== */
 
@@ -93,22 +130,6 @@ export function initContactPage() {
     submitButton.disabled = !isFormValid;
 
     hideMessages();
-  }
-
-  /* ===============================
-     LISTENERS SUR LES INPUTS
-     =============================== */
-
-  if (subjectInput) {
-    subjectInput.addEventListener('input', () => {
-      checkFormValidity();
-    });
-  }
-
-  if (emailInput) {
-    emailInput.addEventListener('input', () => {
-      checkFormValidity();
-    });
   }
 
   /* ===============================

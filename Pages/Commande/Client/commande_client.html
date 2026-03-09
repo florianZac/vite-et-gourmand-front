@@ -1,0 +1,34 @@
+<!------ Section Hero commande_client -------->
+<section class="commande_client-hero py-5">
+  <div class="container">
+    <h1 class="commande_client-hero-title">Mon Espace</h1>
+    <p class="commande_client-hero-welcome">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section commande_client -------->
+<section class="commande_client-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-10 col-xl-8">
+
+        <!------ Onglets Navigation -------->
+        <div class="commande_client-tabs">
+          <a href="/mes-commandes" class="commande_client-tab active">
+            Mes commandes
+          </a>
+          <a href="/compte" class="commande_client-tab">
+            Mon profil
+          </a>
+        </div>
+
+        <!------ Liste des commandes injectée dynamiquement par le JS -------->
+        <div id="commandes-list">
+          <!-- Les cards de commandes seront injectées ici par le JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

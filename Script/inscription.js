@@ -162,6 +162,22 @@ export function initInscriptionPage() {
     updateMessageColor(messageElement, isValid);
   }
 
+  
+  /* ===============================
+    FACTORISATION DE LA VALIDATION
+    =============================== */
+  function updateFieldState(input, isValid) {
+    if (input.value.trim() === '') {
+      input.classList.remove('is-valid', 'is-invalid');
+    } else if (isValid) {
+      input.classList.add('is-valid');
+      input.classList.remove('is-invalid');
+    } else {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+    }
+  }
+
   /* ===============================
      FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
@@ -205,17 +221,22 @@ export function initInscriptionPage() {
 
   /* ===============================
      LISTENERS SUR LES INPUTS - PRÉNOM & NOM
-     (AJOUTÉ - manquait pour déclencher checkFormValidity)
      =============================== */
-  
+
   if (firstNameInput) {
     firstNameInput.addEventListener('input', () => {
+      const value = firstNameInput.value.trim();
+      const isValid = value.length > 0; 
+      updateFieldState(firstNameInput, isValid); 
       checkFormValidity();
     });
   }
 
   if (lastNameInput) {
     lastNameInput.addEventListener('input', () => {
+      const value = lastNameInput.value.trim();
+      const isValid = value.length > 0; 
+      updateFieldState(lastNameInput, isValid); 
       checkFormValidity();
     });
   }
@@ -229,12 +250,12 @@ export function initInscriptionPage() {
       const phone = e.target.value;
       const isValid = validatePhone(phone);
       
+      updateFieldState(phoneInput, isValid);
       updateValidationMessage(
         phoneInput,
         isValid,
         isValid ? 'Téléphone valide (06/07 ou +336/+337 + 10 chiffres)' : 'Format : 06/07 ou +336/+337 suivi de 10 chiffres'
       );
-      
       checkFormValidity();
     });
   }
@@ -242,18 +263,16 @@ export function initInscriptionPage() {
   /* ===============================
      LISTENERS SUR LES INPUTS - EMAIL
      =============================== */
-  
   if (emailInput) {
     emailInput.addEventListener('input', (e) => {
       const email = e.target.value;
       const isValid = validateEmail(email);
-      
+      updateFieldState(emailInput, isValid); 
       updateValidationMessage(
         emailInput,
         isValid,
         isValid ? 'Email valide (.fr ou .com)' : 'Min 3 caractères @ min 3 caractères .fr/.com'
       );
-      
       checkFormValidity();
     });
   }
@@ -261,18 +280,16 @@ export function initInscriptionPage() {
   /* ===============================
      LISTENERS SUR LES INPUTS - CODE POSTAL
      =============================== */
-  
   if (postalInput) {
     postalInput.addEventListener('input', (e) => {
       const postal = e.target.value;
       const isValid = validatePostalCode(postal);
-      
+      updateFieldState(postalInput, isValid); 
       updateValidationMessage(
         postalInput,
         isValid,
         isValid ? 'Code postal valide (5 chiffres)' : 'Doit contenir exactement 5 chiffres'
       );
-      
       checkFormValidity();
     });
   }
@@ -281,15 +298,20 @@ export function initInscriptionPage() {
      LISTENERS SUR LES INPUTS - ADRESSE & VILLE
      (AJOUTÉ - manquait pour déclencher checkFormValidity)
      =============================== */
-  
   if (addressInput) {
     addressInput.addEventListener('input', () => {
+      const value = addressInput.value.trim();
+      const isValid = value.length > 0;
+      updateFieldState(addressInput, isValid); 
       checkFormValidity();
     });
   }
 
   if (villeInput) {
     villeInput.addEventListener('input', () => {
+      const value = villeInput.value.trim();
+      const isValid = value.length > 0;
+      updateFieldState(villeInput, isValid); 
       checkFormValidity();
     });
   }
@@ -329,7 +351,7 @@ export function initInscriptionPage() {
       
       messageElement.innerHTML = messageHTML;
       updateMessageColor(messageElement, validation.isValid);
-      
+      updateFieldState(passwordInput, validation.isValid); 
       checkFormValidity();
     });
   }

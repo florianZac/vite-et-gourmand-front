@@ -121,6 +121,13 @@
   padding-right: 2.5rem;
 }
 
+/* -------- décalage de is_valid bootstrap
+            Pour éviter la superposition avec l'oeil -------- */
+#PasswordInput.is-valid,
+#PasswordInput.is-invalid {
+  background-position: right 2.5rem center;
+}
+
 /* -------- Bouton afficher/masquer mot de passe -------- */
 .btn-show-password {
   position: absolute;

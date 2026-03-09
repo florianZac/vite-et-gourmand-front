@@ -14,6 +14,8 @@ export function initConnexionPage() {
   const connectionForm = document.querySelector('.login-form');
   const submitButton = document.querySelector('.btn-login');
 
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
   /* ===============================
      CRÉATION DU MESSAGE D'ERREUR
      =============================== */
@@ -80,13 +82,28 @@ export function initConnexionPage() {
   }
 
   /* ===============================
+    FACTORISATION DE LA VALIDATION
+    =============================== */
+  function updateFieldState(input, isValid) {
+    if (input.value.trim() === '') {
+      input.classList.remove('is-valid', 'is-invalid');
+    } else if (isValid) {
+      input.classList.add('is-valid');
+      input.classList.remove('is-invalid');
+    } else {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+    }
+  }
+
+  /* ===============================
      FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
   
   function checkFormValidity() {
     // Récupère les valeurs
     const email = emailInput.value.trim();
-    const password = passwordInput.value;
+    const password = passwordInput.value.trim();
 
     // Vérifie que les champs sont remplis ET les validations OK
     const isFormValid = email !== '' && password !== '' && validateEmail(email) && validatePassword(password);
@@ -101,16 +118,20 @@ export function initConnexionPage() {
   /* ===============================
      LISTENERS SUR LES INPUTS
      =============================== */
-  
-  if (emailInput) {
-    emailInput.addEventListener('input', () => {
-      checkFormValidity();
-    });
-  }
 
   if (passwordInput) {
     passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value.trim(); // valeur actuelle
       checkFormValidity();
+      updateFieldState(passwordInput, validatePassword(password));
+    });
+  }
+
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      const email = emailInput.value.trim();
+      checkFormValidity();
+      updateFieldState(emailInput, validateEmail(emailInput.value.trim()));
     });
   }
 
@@ -145,7 +166,7 @@ export function initConnexionPage() {
         password: passwordInput.value
       };
       
-      console.log('✓ Connexion envoyée:', formData);
+      console.log(' Connexion envoyée:', formData);
       
       // Appel de l'API :
       // try {

@@ -14289,6 +14289,13 @@ textarea.form-control-lg {
   padding-right: 2.5rem;
 }
 
+/* -------- décalage de is_valid bootstrap
+            Pour éviter la superposition avec l'oeil -------- */
+#PasswordInput.is-valid,
+#PasswordInput.is-invalid {
+  background-position: right 2.5rem center;
+}
+
 /* -------- Bouton afficher/masquer mot de passe -------- */
 .btn-show-password {
   position: absolute;
@@ -14626,6 +14633,13 @@ textarea.form-control-lg {
 .password-wrapper .inscription-input {
   padding-right: 2.5rem;
   width: 100%;
+}
+
+/* -------- décalage de is_valid bootstrap
+            Pour éviter la superposition avec l'oeil -------- */
+#PasswordInput.is-valid,
+#PasswordInput.is-invalid {
+  background-position: right 2.5rem center;
 }
 
 /* -------- Bouton afficher/masquer mot de passe -------- */
@@ -16579,7 +16593,6 @@ textarea.form-control-lg {
 }
 
 /* -------- Card contenant un plat du menu (entrée / plat / dessert) -------- */
-/* Card composition (Entrée / Plat / Dessert) */
 .detail_menu-dish-card {
   background-color: #FFFFFF;
   border-radius: 1rem;
@@ -16589,6 +16602,7 @@ textarea.form-control-lg {
   border-left: 3px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
 }
 
+/* -------- type de plat (Entrée / Plat / Dessert) -------- */
 .detail_menu-dish-type {
   display: flex;
   align-items: center;
@@ -16596,10 +16610,12 @@ textarea.form-control-lg {
   margin-bottom: 0.75rem;
 }
 
+/* -------- Icône du type de plat -------- */
 .detail_menu-dish-type-icon {
   font-size: 1.25rem;
 }
 
+/* -------- Texte indiquant le type de plat -------- */
 .detail_menu-dish-type-label {
   font-size: 0.85rem;
   font-weight: 700;
@@ -16608,6 +16624,7 @@ textarea.form-control-lg {
   letter-spacing: 0.5px;
 }
 
+/* -------- Nom du plat -------- */
 .detail_menu-dish-name {
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
@@ -16616,6 +16633,7 @@ textarea.form-control-lg {
   margin-bottom: 0.5rem;
 }
 
+/* -------- Description du plat -------- */
 .detail_menu-dish-description {
   font-size: 0.85rem;
   color: #666666;
@@ -16623,6 +16641,7 @@ textarea.form-control-lg {
   margin-bottom: 0.75rem;
 }
 
+/* -------- Label indiquant la présence d’allergènes -------- */
 .detail_menu-dish-allergens-label {
   font-size: 0.8rem;
   color: #999999;
@@ -16632,16 +16651,19 @@ textarea.form-control-lg {
   margin-bottom: 0.4rem;
 }
 
+/* -------- Icône allergènes -------- */
 .detail_menu-dish-allergens-label i {
   font-size: 0.8rem;
 }
 
+/* -------- Conteneur des badges d’allergènes -------- */
 .detail_menu-dish-allergens {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
 }
 
+/* -------- Badge d’un allergène -------- */
 .detail_menu-dish-allergen-badge {
   background-color: rgba(51, 51, 51, 0.06);
   color: #333333;
@@ -16652,6 +16674,7 @@ textarea.form-control-lg {
   font-weight: 600;
 }
 
+/* -------- Badge lorsqu'il n'y a aucun allergène -------- */
 .detail_menu-dish-allergen-none {
   background-color: rgba(21, 128, 61, 0.1);
   color: #15803D;
@@ -16664,11 +16687,14 @@ textarea.form-control-lg {
 
 /* ===============================
    LIEN RETOUR AUX MENUS
+   Permet de revenir à la liste
+   complète des menus
    =============================== */
 .detail_menu-back {
   margin-top: 2rem;
 }
 
+/* -------- Lien cliquable -------- */
 .detail_menu-back-link {
   font-size: 0.9rem;
   color: #333333;
@@ -16677,26 +16703,28 @@ textarea.form-control-lg {
   transition: color 0.3s ease;
 }
 
+/* -------- Couleur au survol du lien cliquable -------- */
 .detail_menu-back-link:hover {
   color: hsl(14, 61%, 47%);
 }
 
+/* -------- Icône du lien -------- */
 .detail_menu-back-link i {
   margin-right: 0.25rem;
 }
 
 /* ===============================
    MODALES (Édition photo + Suppression photo)
-   Styles partagés entre les deux modales
+   Styles comuns entre les deux modales
    =============================== */
-/* Contenu de la modale (fond + border-radius) */
+/* -------- Contenu de la modale -------- */
 .detail_menu-modal-content {
   border: none;
   border-radius: 1rem;
   overflow: hidden;
 }
 
-/* En-tête de la modale */
+/* -------- En-tête de la modale -------- */
 .detail_menu-modal-header {
   background-color: hsl(14, 61%, 47%);
   color: #FFFFFF;
@@ -16704,12 +16732,12 @@ textarea.form-control-lg {
   padding: 1rem 1.5rem;
 }
 
-/* En-tête de la modale variante danger (suppression) */
+/* -------- En-tête de la modale variante danger (suppression) -------- */
 .detail_menu-modal-header-danger {
   background-color: #dc3545;
 }
 
-/* Titre de la modale */
+/* -------- Titre de la modale -------- */
 .detail_menu-modal-header .modal-title {
   font-family: "Playfair Display", serif;
   font-size: 1.1rem;
@@ -16719,18 +16747,18 @@ textarea.form-control-lg {
   gap: 0.5rem;
 }
 
-/* Bouton fermer (croix) en blanc sur fond coloré */
+/* -------- Bouton fermer (croix) -------- */
 .detail_menu-modal-header .btn-close {
   filter: brightness(0) invert(1);
 }
 
-/* Pied de la modale */
+/* -------- Pied de la modale -------- */
 .detail_menu-modal-footer {
   border-top: 1px solid rgba(232, 232, 232, 0.3);
   padding: 1rem 1.5rem;
 }
 
-/* Inputs à l'intérieur des modales */
+/* -------- Champs de formulaire dans les modales -------- */
 .detail_menu-modal-input {
   border: 1px solid #E8E8E8;
   border-radius: 0.5rem;
@@ -16739,12 +16767,13 @@ textarea.form-control-lg {
   transition: all 0.3s ease;
 }
 
+/* -------- Style lorsque l’input est actif -------- */
 .detail_menu-modal-input:focus {
   border-color: hsl(14, 61%, 47%);
   box-shadow: 0 0 0 3px rgba(192.9585, 80.8588, 46.7415, 0.2);
 }
 
-/* Input variante danger (champ de confirmation suppression) */
+/* -------- Variante danger pour confirmation de suppression -------- */
 .detail_menu-modal-input-danger:focus {
   border-color: #dc3545;
   box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
@@ -16766,7 +16795,7 @@ textarea.form-control-lg {
      object-fit: cover;
 }
 
-/* Texte sous l'aperçu */
+/* -------- Texte sous l'aperçu -------- */
 .detail_menu-modal-preview-text {
   font-size: 0.8rem;
   color: #999999;
@@ -16774,7 +16803,7 @@ textarea.form-control-lg {
   margin-bottom: 0;
 }
 
-/* Prévisualisation variante danger (bordure rouge) */
+/* -------- Prévisualisation variante danger bordure rouge -------- */
 .detail_menu-modal-preview-danger {
   border: 2px solid rgba(220, 53, 69, 0.3);
 }
@@ -16790,6 +16819,7 @@ textarea.form-control-lg {
   margin-top: 1rem;
 }
 
+/* -------- Alert modale -------- */
 .detail_menu-modal-alert i {
   color: #dc3545;
   font-size: 1.25rem;
@@ -16797,6 +16827,7 @@ textarea.form-control-lg {
   margin-top: 0.1rem;
 }
 
+/* -------- Mise en gras de l'alert modal -------- */
 .detail_menu-modal-alert strong {
   color: #dc3545;
   display: block;
@@ -16804,6 +16835,7 @@ textarea.form-control-lg {
   font-size: 0.9rem;
 }
 
+/* -------- Information de l'alert modal  -------- */
 .detail_menu-modal-alert p {
   color: #666666;
   font-size: 0.85rem;
@@ -16811,7 +16843,7 @@ textarea.form-control-lg {
   line-height: 1.5;
 }
 
-/* -------- Texte de confirmation (étape 2 suppression) -------- */
+/* -------- Texte de confirmation étape 2 suppression -------- */
 .detail_menu-modal-confirm-text {
   font-size: 0.9rem;
   color: #333333;
@@ -16820,7 +16852,7 @@ textarea.form-control-lg {
 }
 
 /* -------- Boutons des modales -------- */
-/* Bouton annuler */
+/* -------- Bouton annuler -------- */
 .detail_menu-modal-btn-cancel {
   background-color: transparent;
   color: #666666;
@@ -16832,12 +16864,13 @@ textarea.form-control-lg {
   transition: all 0.3s ease;
 }
 
+/* -------- survole de la modale alert 2ème valid -------- */
 .detail_menu-modal-btn-cancel:hover {
   background-color: #E8E8E8;
   color: #333333;
 }
 
-/* Bouton sauvegarder (modale édition) */
+/* -------- Bouton sauvegarder pour le modale d'édition -------- */
 .detail_menu-modal-btn-save {
   background-color: hsl(14, 61%, 47%);
   color: #FFFFFF !important;
@@ -16852,11 +16885,12 @@ textarea.form-control-lg {
   transition: all 0.3s ease;
 }
 
+/* --------  survole du bouton save -------- */
 .detail_menu-modal-btn-save:hover {
   background-color: hsl(14, 61%, 35%);
 }
 
-/* Bouton danger / supprimer (modale suppression) */
+/* -------- Bouton danger / supprimer pour le modale de suppression -------- */
 .detail_menu-modal-btn-danger {
   background-color: #dc3545;
   color: #FFFFFF !important;
@@ -16871,11 +16905,12 @@ textarea.form-control-lg {
   transition: all 0.3s ease;
 }
 
+/* -------- survole du btn de la modale de suppresion -------- */
 .detail_menu-modal-btn-danger:hover {
   background-color: rgb(197.9088607595, 34.2911392405, 49.9670886076);
 }
 
-/* Bouton danger désactivé (tant que SUPPRIMER n'est pas tapé) */
+/* -------- Bouton danger désactivé tant que SUPPRIMER n'est pas tapé -------- */
 .detail_menu-modal-btn-danger:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -16931,5 +16966,411 @@ textarea.form-control-lg {
   /* Modale : prévisualisation plus petite sur mobile */
   .detail_menu-modal-preview img {
     height: 150px;
+  }
+}
+/* ===============================
+   STYLES PAGE COMMANDES CLIENT - VITE & GOURMAND
+   Structure :
+   - Hero avec nom de l'utilisateur
+   - Onglets Mes commandes / Mon profil
+   - Cards de commandes dynamiques
+   =============================== */
+/* ===============================
+   SECTION HERO
+   =============================== */
+/* -------- container hero commande client -------- */
+.commande_client-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.commande_client-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* -------- Titre "Mon Espace"  -------- */
+.commande_client-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.25rem;
+}
+
+/* -------- Texte "Bienvenue, Nom user  -------- */
+.commande_client-hero-welcome {
+  font-size: 1.15rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* -------- Texte prenom mis en accentuattion  -------- */
+.commande_client-hero-welcome span {
+  color: hsl(14, 61%, 47%);
+  font-weight: 600;
+}
+
+/* ===============================
+   SECTION COMMANDES
+   =============================== */
+.commande_client-section {
+  background-color: #F5E6D3;
+  padding: 2rem 0 4rem;
+}
+
+/* ===============================
+   ONGLETS (TABS) - Mes commandes / Mon profil
+   =============================== */
+.commande_client-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/* -------- Onglet par défaut (inactif)  -------- */
+.commande_client-tab {
+  background-color: transparent;
+  color: #333333;
+  border: 1px solid #E8E8E8;
+  padding: 0.6rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* -------- Onglet au survol  -------- */
+.commande_client-tab:hover {
+  border-color: hsl(14, 61%, 47%);
+  color: hsl(14, 61%, 47%);
+  text-decoration: none;
+}
+
+/* -------- Onglet actif sélectionné  -------- */
+.commande_client-tab.active {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF;
+  border-color: hsl(14, 61%, 47%);
+}
+
+/* ===============================
+   CARD DE COMMANDE
+   Une card par commande, contient :
+   - 1. En-tête (nom du menu + badge statut)
+   - 2. Référence commande + date
+   - 3. Ligne d'infos (personnes, livraison, réduction, total)
+   - 4. Timeline de suivi
+   - 5. Section avis (si commande terminée)
+   - 6. Section prêt de matériel (si applicable)
+   - 7. Bouton annuler (si commande en attente)
+   =============================== */
+.commande_client-order-card {
+  background-color: #FFFFFF;
+  border-radius: 1rem;
+  padding: 1.75rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.5rem;
+  border-left: 3px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+/* -------- En-tête : nom du menu + badge statut -------- */
+.commande_client-order-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+/* -------- Nom du menu -------- */
+.commande_client-order-menu-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0;
+}
+
+/* -------- Badge statut de la commande -------- */
+.commande_client-order-status {
+  padding: 0.25rem 0.85rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* -------- Statut : En attente -------- */
+.commande_client-status-pending {
+  background-color: rgba(253, 126, 20, 0.1);
+  color: #fd7e14;
+  border: 1px solid rgba(253, 126, 20, 0.3);
+}
+
+/* -------- Statut : Acceptée -------- */
+.commande_client-status-accepted {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+  border: 1px solid rgba(13, 110, 253, 0.3);
+}
+
+/* -------- Statut : En préparation -------- */
+.commande_client-status-preparing {
+  background-color: rgba(111, 66, 193, 0.1);
+  color: #6f42c1;
+  border: 1px solid rgba(111, 66, 193, 0.3);
+}
+
+/* -------- Statut : En livraison -------- */
+.commande_client-status-delivering {
+  background-color: rgba(13, 202, 240, 0.1);
+  color: #0dcaf0;
+  border: 1px solid rgba(13, 202, 240, 0.3);
+}
+
+/* -------- Statut : Terminée -------- */
+.commande_client-status-completed {
+  background-color: rgba(21, 128, 61, 0.1);
+  color: #15803D;
+  border: 1px solid rgba(21, 128, 61, 0.3);
+}
+
+/* -------- Statut : Annulée  -------- */
+.commande_client-status-cancelled {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* -------- Référence commande + date -------- */
+.commande_client-order-ref {
+  font-size: 0.8rem;
+  color: hsl(14, 61%, 47%);
+  margin-bottom: 1rem;
+}
+
+/* -------- Ligne d'infos (personnes, livraison, réduction, total) -------- */
+.commande_client-order-infos {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* -------- Un bloc info  -------- */
+.commande_client-order-info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------- Label du bloc info  -------- */
+.commande_client-order-info-label {
+  font-size: 0.8rem;
+  color: #999999;
+  margin-bottom: 0.15rem;
+}
+
+/* -------- Valeur du bloc info -------- */
+.commande_client-order-info-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #333333;
+}
+
+/* -------- Valeur du total -------- */
+.commande_client-order-info-value-total {
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Valeur réduction en vert -------- */
+.commande_client-order-info-value-reduction {
+  color: #15803D;
+}
+
+/* ===============================
+   TIMELINE DE SUIVI
+   Affiche les étapes de la commande sous forme de badges horizontaux
+   =============================== */
+/* -------- Titre "Suivi (du plus ancien au plus récent)" -------- */
+.commande_client-order-timeline-label {
+  font-size: 0.8rem;
+  color: #999999;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* -------- icone du Suivi -------- */
+.commande_client-order-timeline-label i {
+  font-size: 0.8rem;
+}
+
+/* -------- Conteneur des badges de suivi -------- */
+.commande_client-order-timeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+/* -------- Badge de suivi individuel -------- */
+.commande_client-timeline-badge {
+  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  color: #333333;
+  border: 1px solid #E8E8E8;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* ===============================
+   SECTION AVIS (commande terminée)
+   =============================== */
+.commande_client-order-review {
+  font-size: 0.8rem;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.commande_client-order-review i {
+  font-size: 0.85rem;
+  color: #15803D;
+}
+
+/* ===============================
+   SECTION PRÊT DE MATÉRIEL
+   Card interne affichée uniquement si la commande inclut du matériel
+   =============================== */
+.commande_client-material-card {
+  background-color: rgba(251.634, 246.6224, 237.966, 0.4);
+  border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.2);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- Titre "Prêt de matériel" -------- */
+.commande_client-material-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- icone du titre pret de matériel -------- */
+.commande_client-material-title i {
+  font-size: 1rem;
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Statut restitution -------- */
+.commande_client-material-status {
+  font-size: 0.85rem;
+  color: #666666;
+  margin-bottom: 0.25rem;
+}
+
+/* -------- Texte "En attente de restitution" -------- */
+.commande_client-material-status-pending {
+  color: #dc3545;
+  font-weight: 600;
+}
+
+/* -------- Texte "Restitué" -------- */
+.commande_client-material-status-returned {
+  color: #15803D;
+  font-weight: 600;
+}
+
+/* -------- Texte d'info sous le statut -------- */
+.commande_client-material-info {
+  font-size: 0.8rem;
+  color: #999999;
+  margin-bottom: 0;
+}
+
+/* ===============================
+   BOUTON ANNULER
+   Affiché uniquement si la commande est en attente
+   =============================== */
+.btn-commande_client-cancel {
+  background-color: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
+  border-radius: 2rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.3s ease;
+  margin-top: 0.75rem;
+}
+
+.btn-commande_client-cancel:hover {
+  background-color: #dc3545;
+  color: #FFFFFF;
+}
+
+/* ===============================
+   RESPONSIVE TABLETTE
+   =============================== */
+@media (max-width: 1200px) {
+  .commande_client-hero-title {
+    font-size: 2rem;
+  }
+  .commande_client-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+/* ===============================
+   RESPONSIVE MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .commande_client-hero {
+    padding: 2rem 0;
+  }
+  .commande_client-hero-title {
+    font-size: 1.75rem;
+  }
+  .commande_client-section {
+    padding: 1.5rem 0 3rem;
+  }
+  .commande_client-tabs {
+    gap: 0.25rem;
+  }
+  .commande_client-tab {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+  }
+  .commande_client-order-card {
+    padding: 1.25rem;
+  }
+  .commande_client-order-infos {
+    gap: 1rem;
+  }
+  .commande_client-order-menu-name {
+    font-size: 1rem;
   }
 }/*# sourceMappingURL=main.css.map */

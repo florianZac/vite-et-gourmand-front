@@ -23,8 +23,13 @@ export const allRoutes = [
    new Route("/reset_login", "Resetpassword", "Pages/Auth/reset-password.html", ["disconnected"], "/Script/reset-password.js", true),
 
    /* Role CLIENT */
-   new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["client","employee","admin"], "/Script/commander.js", true), 
+   new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["client"], "/Script/commander.js", true), 
    new Route("/compte", "compte_client", "Pages/Commande/Client/compte_client.html", ["client"], "/Script/compte_client.js", true), 
+   new Route("/commande", "Commande", "Pages/Commande/Client/commande_client.html", ["client"], "/Script/commande_client.js", true), 
+
+   /* Role EMPLOYER */
+
+   /* Role ADMIN */
 
 
 ];
