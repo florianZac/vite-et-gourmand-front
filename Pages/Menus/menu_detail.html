@@ -23,22 +23,26 @@
             <!-- Caché par défaut avec d-none, le JS le retire si le rôle est admin ou employé -->
             <div class="action-image-buttons d-none" data-show="admin" id="action-image-buttons">
               <!-- Bouton modifier ->  ouvre la modale EditionPhotoModal -->
-              <button  type="button" class="btn btn-outline-light btn-sm" id="btn-edit-photo" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal">
+              <button  type="button" class="btn btn-outline-light btn-sm" id="btn-edit-photo" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal" aria-label="Modifier la photo" title="Modifier la photo">
                 <i class="bi bi-pencil-square"></i>
+                <span class="visually-hidden">Modifier la photo</span>
               </button>
               <!-- Bouton supprimer ->  ouvre la modale SuppresionPhotoModal -->
-              <button type="button" class="btn btn-outline-light btn-sm" id="btn-delete-photo" data-bs-toggle="modal" data-bs-target="#SuppresionPhotoModal">
+              <button type="button" class="btn btn-outline-light btn-sm" id="btn-delete-photo" data-bs-toggle="modal" data-bs-target="#SuppresionPhotoModal" aria-label="Supprimer la photo" title="Supprimer la photo">
                 <i class="bi bi-trash"></i>
+                <span class="visually-hidden">Supprimer la photo</span>
               </button>
             </div>
 
             <!-- Flèches de navigation -->
-            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-left" id="gallery-prev">
+            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-left" id="gallery-prev" aria-label="image précédente">
               <i class="bi bi-chevron-left"></i>
+              <span class="visually-hidden">image précédente</span>
             </button>
             <img src="" alt="" id="gallery-main-img" class="detail_menu-gallery-main-img">
-            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-right" id="gallery-next">
+            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-right" id="gallery-next" aria-label="image suivante">
               <i class="bi bi-chevron-right"></i>
+              <span class="visually-hidden">image suivante</span>
             </button>
           </div>
           

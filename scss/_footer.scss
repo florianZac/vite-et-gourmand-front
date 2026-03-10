@@ -11,6 +11,11 @@
   border-top: none;
 }
 
+/* -------- Mise à jour du logo du footer -------- */
+.logo-footer {
+  object-fit: cover;
+}
+
 /* -------- Texte général du footer -------- */
 .footer-dark p {
   font-size: 0.95rem;

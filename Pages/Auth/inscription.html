@@ -27,13 +27,14 @@
         <!-- Prénom et Nom (2 colonnes) -->
         <div class="row mb-4">
           <div class="col-md-6">
-            <label for="FirstNameInput" class="form-label">Prénom <span class="required">*</span></label>
+            <label for="PrenomInput" class="form-label">Prénom <span class="required">*</span></label>
             <input 
               type="text" 
               class="form-control inscription-input" 
-              id="FirstNameInput" 
+              id="PrenomInput" 
               placeholder="Julie"
-              name="FirstName"
+              name="Prenom"
+              autocomplete="given-name"
               required
             >
             <div class="invalid-feedback">
@@ -44,13 +45,14 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label for="LastNameInput" class="form-label">Nom <span class="required">*</span></label>
+            <label for="NomInput" class="form-label">Nom <span class="required">*</span></label>
             <input 
               type="text" 
               class="form-control inscription-input" 
-              id="LastNameInput" 
+              id="NomInput" 
               placeholder="Moreau"
-              name="LastName"
+              name="Nom"
+              
               required
             >
             <div class="invalid-feedback">
@@ -169,7 +171,7 @@
               name="Password"
               required
             >
-            <button type="button" class="btn-show-password" id="togglePassword">
+            <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher / masquer le mot de passe">
               <i class="bi bi-eye"></i>
             </button>
           </div>

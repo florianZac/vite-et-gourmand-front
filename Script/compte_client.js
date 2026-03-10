@@ -19,7 +19,7 @@ export function initcompte_clientPage() {
       pour authentifier les requêtes
      =============================== */
 
-  const apiCompte_client = `${API_URL}/api/login`;
+  //const apiCompte_client = `${API_URL}/api/login`;
 
   
   // Récupère le token JWT pour l'authentification des requêtes

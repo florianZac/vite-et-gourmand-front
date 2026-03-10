@@ -10,12 +10,10 @@ export default class Route {
   }
 }
 
-
-
 /** Tableau de chaine de charactere perméttant de faire le choix pour un utilisateur spécifique 
  * tout le monde peut y acceder (cas visiteur et public access)
  * ['connected'] -> Réserver aux utilisateurs connectée
- * ['disconnected] -> Réserver aux utilisateurs admin et client et employée
+ * ['disconnected] -> Réserver aux utilisateurs admin, client, employée et visiteur deconnecté
  * ['ROLE_CLIENT'] -> Réserver aux utilisateurs ayant le role client
  * ['ROLE_EMPLOYE'] -> Réserver aux utilisateurs ayant le role employée
  * ['ROLE_ADMIN] -> Réserver aux utilisateurs ayant le role admin

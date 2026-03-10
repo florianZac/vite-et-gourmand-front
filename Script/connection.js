@@ -1,5 +1,5 @@
 import { API_URL } from './config.js';
-import { setCookie, showAndHideElementsForRole } from './script.js';
+import { setToken, setCookie, showAndHideElementsForRole } from './script.js';
 export function initConnexionPage() {
 
   /* ===============================
@@ -22,6 +22,12 @@ export function initConnexionPage() {
 
   // URL de base de l'API Symfony
   const apiConnectionUser = `${API_URL}/api/login`;
+
+  // Variable debug console si à true
+  let DebugConsole = true;
+
+  // Variable pour éviter le double click lors de la connection
+  let isSubmitting = false; 
 
   /* ===============================
      CRÉATION DU MESSAGE D'ERREUR
@@ -164,21 +170,29 @@ export function initConnexionPage() {
      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
   // Le bouton est type="button", on écoute le click
-
+  
   const btnLogin = document.getElementById('btnLogin');
 
   if (btnLogin) {
-    btnLogin.addEventListener('click', async () => {
+    btnLogin.addEventListener('click', async (e) => {
+      e.preventDefault();
 
-      const formData = {
-        email: emailInput.value.trim(),
-        password: passwordInput.value
-      };
+      // si déjà envoi du login, on bloque tout
+      if (isSubmitting) return; 
+      isSubmitting = true;
 
       // Désactive le bouton pendant l'envoi
       btnLogin.disabled = true;
-      btnLogin.textContent = 'Connexion en cours...';
+      btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Connexion en cours...';
       hideError();
+
+      // Mapping des champs HTML pour l'API Symfony
+      // Pour l'email on enlèves les espaces avant/après
+      // Pour l'email non car cela peut faire partie du mdp
+      const formData = {
+        email: emailInput.value.trim(), 
+        password: passwordInput.value
+      };
 
       // Appel de l'API :
       try {
@@ -188,32 +202,55 @@ export function initConnexionPage() {
           body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
+        let data = null;
+        // évite que le script crash si la réponse n'est pas du JSON
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
 
         if (response.ok) {
+
           // Stocke le token JWT dans un cookie (7 jours)
-            setCookie('accesstoken', data.token, 7);
-            
-            // Stocke le rôle depuis la réponse API
-            setCookie('role', data.utilisateur.role, 7);
-            
-            console.log('Connecté !', data.utilisateur.email, data.utilisateur.role);
+          setToken(data.token);
 
-            // Met à jour la navbar
-            showAndHideElementsForRole();
+          setCookie('accesstoken', data.token, 7);
 
-            // Redirige vers l'accueil
-            window.location.href = '/';
-        } else {
-          // 401 = identifiants incorrects
+          // Stocke le rôle depuis la réponse API
+          setCookie('role', data.utilisateur.role, 7);
+          
+          if(DebugConsole){
+            console.log("Utilisateur Connecté :", {
+              token: data.token,
+              email: data.utilisateur.email,
+              prenom: data.utilisateur.prenom,
+              role: data.utilisateur.role,
+            });
+          }
+          // Met à jour la navbar
+          showAndHideElementsForRole();
+
+          // Redirige vers l'accueil
+          window.location.href = '/';
+
+        }
+        else {
+          // 401 = identifiants incorrects ou autre erreur API
           showError(data.message || 'Email ou mot de passe incorrect.');
           emailInput.classList.add('is-invalid');
           passwordInput.classList.add('is-invalid');
         }
+
       } catch (err) {
-        console.error('Erreur réseau:', err);
+        // Gestion des erreurs réseau
+        if(DebugConsole){
+          console.error("Erreur réseau :", { err });
+        }
         showError('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
       } finally {
+        // Réactive le bouton dans tous les cas et reset flag
+        isSubmitting = false;
         btnLogin.disabled = false;
         btnLogin.innerHTML = '<i class="bi bi-person-fill-check"></i> Se connecter';
         checkFormValidity();

@@ -44,6 +44,11 @@
   }
 }
 
+/* -------- Mise à jour du logo du header -------- */
+.logo-header {
+  object-fit: cover;
+}
+
 /* -------- Mise à jour de la couleur du & dans Vite et Gourmand -------- */
 .navbar-brand .lh-sm span.text-secondary {
   color: $bordeaux !important;

@@ -12818,6 +12818,12 @@ textarea.form-control-lg {
   box-shadow: 0 4px 12px rgba(192.9585, 80.8588, 46.7415, 0.3);
 }
 
+/* -------- Mise à jour du logo du header -------- */
+.logo-header {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 /* -------- Mise à jour de la couleur du & dans Vite et Gourmand -------- */
 .navbar-brand .lh-sm span.text-secondary {
   color: hsl(338, 48%, 34%) !important;
@@ -13038,6 +13044,12 @@ textarea.form-control-lg {
   padding: 3rem 0 0;
   margin-top: 0;
   border-top: none;
+}
+
+/* -------- Mise à jour du logo du footer -------- */
+.logo-footer {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 /* -------- Texte général du footer -------- */

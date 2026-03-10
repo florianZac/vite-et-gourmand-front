@@ -14,12 +14,18 @@ export function initInscriptionPage() {
   const phoneInput = document.getElementById('PhoneInput');
   const emailInput = document.getElementById('EmailInput');
   const postalInput = document.getElementById('PostalInput');
-  const firstNameInput = document.getElementById('FirstNameInput');
-  const lastNameInput = document.getElementById('LastNameInput');
+  const prenom = document.getElementById('PrenomInput');
+  const nom = document.getElementById('NomInput');
   const addressInput = document.getElementById('AddressInput');
   const villeInput = document.getElementById('VilleInput');
   const inscriptionForm = document.querySelector('.inscription-form');
   const submitButton = document.querySelector('.btn-inscription-submit');
+
+  //Variable debug console si à true
+  let DebugConsole = true;
+
+  // varibale pour évité le double click inscription
+  let isSubmitting = false; 
 
   /* ===============================
      CONFIGURATION API
@@ -195,13 +201,13 @@ export function initInscriptionPage() {
     const email = emailInput.value;
     const postalCode = postalInput.value;
     const password = passwordInput.value;
-    const firstName = firstNameInput.value;
-    const lastName = lastNameInput.value;
+    const prenomValue  = prenom.value;
+    const nomValue = nom.value;
     const address = addressInput.value;
     const city = villeInput.value;
 
     // Vérifie que tous les champs requis sont remplis
-    const allFieldsFilled = firstName && lastName && phone && email && address && city && postalCode && password;
+    const allFieldsFilled = prenomValue && nomValue && phone && email && address && city && postalCode && password;
 
     // Vérifie que toutes les validations regex sont OK
     const phoneValid = validatePhone(phone);
@@ -230,20 +236,20 @@ export function initInscriptionPage() {
      LISTENERS SUR LES INPUTS - PRÉNOM & NOM
      =============================== */
 
-  if (firstNameInput) {
-    firstNameInput.addEventListener('input', () => {
-      const value = firstNameInput.value.trim();
+  if (prenom) {
+    prenom.addEventListener('input', () => {
+      const value = prenom.value.trim();
       const isValid = value.length > 0; 
-      updateFieldState(firstNameInput, isValid); 
+      updateFieldState(prenom, isValid); 
       checkFormValidity();
     });
   }
 
-  if (lastNameInput) {
-    lastNameInput.addEventListener('input', () => {
-      const value = lastNameInput.value.trim();
+  if (nom) {
+    nom.addEventListener('input', () => {
+      const value = nom.value.trim();
       const isValid = value.length > 0; 
-      updateFieldState(lastNameInput, isValid); 
+      updateFieldState(nom, isValid); 
       checkFormValidity();
     });
   }
@@ -388,12 +394,20 @@ export function initInscriptionPage() {
   if (inscriptionForm) {
     inscriptionForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-        
+      
+      // si déjà envoi, on bloque tout
+      if (isSubmitting) return; 
+      isSubmitting = true;
+         
+      // Désactive le bouton pendant l'envoi
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Inscription...';
+
       // Les validations ont déjà été faites, on peut envoyer
       // Mapping des champs HTML pour l'API Symfony
       const formData = {
-        nom: lastNameInput.value,
-        prenom: firstNameInput.value,
+        nom: nom.value,
+        prenom: prenom.value,
         telephone: phoneInput.value,
         email: emailInput.value,
         password: passwordInput.value,
@@ -404,10 +418,6 @@ export function initInscriptionPage() {
         site_web: ''  // Honeypot : toujours vide pour un vrai utilisateur
       };
 
-      // Désactive le bouton pendant l'envoi
-      submitButton.disabled = true;
-      submitButton.textContent = 'Inscription en cours...';
-
       try {
         const response = await fetch(apiInscriptionUser, {
           method: 'POST',
@@ -415,24 +425,42 @@ export function initInscriptionPage() {
           body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
+        let data = null;
+        // évite que le script crash si la réponse n'est pas du JSON
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
 
         if (response.ok) {
           // Succès on redirige vers la page de connexion
-          alert('Compte créé avec succès ! Vous pouvez maintenant vous connecter.');
+          alert("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit, Vous pouvez maintenant vous connecter.");
+          if(DebugConsole){
+            console.log("Utilisateur inscrit :", {
+              prenom: prenom.value,
+              nom: nom.value,
+              email: emailInput.value
+            });
+
+          }
           window.location.href = '/login';
         } else {
           // Erreur retournée par l'API (400, 409...)
           alert(data.message || 'Erreur lors de l\'inscription.');
         }
       } catch (err) {
-
-        console.error('Erreur réseau:', err);
+        if(DebugConsole){
+          console.error("Erreur réseau :", {
+            err
+          });
+        }
         alert('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
 
       } finally {
-        
+
         // Réactive le bouton dans tous les cas
+        isSubmitting = false; // reset flag
         submitButton.disabled = false;
         submitButton.innerHTML = '<i class="bi bi-person-fill-add me-2"></i> Créer mon compte';
         checkFormValidity();

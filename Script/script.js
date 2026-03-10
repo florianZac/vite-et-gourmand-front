@@ -10,11 +10,15 @@ const tokenCookieName = "accesstoken";
 // Nom du cookie pour le rôle de l'utilisateur
 const roleCookieName = "role";
 
+// Variable debug console si à true
+let DebugConsole = true;
+
 /* ===============================
    Configuration API
    =============================== */
 
-const apiAccountMeUrl = `${API_URL}/api/login`;
+//récupere les informations de l'utilisateur concerné
+const apiAccountMeUrl = `${API_URL}/api/me`;
 
 /* ===============================
    Initialisation globale
@@ -41,12 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	=============================== */
 
 // Fonction pour sauvegarder le token dans un cookie
-function setToken(){
+export function setToken(token){
     return setCookie(tokenCookieName, token, 7); // 7 jours de validité
 }
 
 // Fonction pour récupérer le token depuis le cookie
-function getToken(){
+export function getToken(){
     return getCookie(tokenCookieName);
 }
 
@@ -125,18 +129,18 @@ export function showAndHideElementsForRole() {
                     element.classList.add("d-none");    
                 }  
                 break;
-            case 'admin':
-                if(!userConnected || role !== "admin"){
+            case 'ROLE_ADMIN':
+                if(!userConnected || role !== "ROLE_ADMIN"){
                     element.classList.add("d-none");    
                 }  
                 break;
-            case 'client':
-                if(!userConnected || role !== "client"){
+            case 'ROLE_CLIENT':
+                if(!userConnected || role !== "ROLE_CLIENT"){
                     element.classList.add("d-none");  
                 }
                 break;
-            case 'employee':     
-                if(!userConnected || role !== "employee"){
+            case 'ROLE_EMPLOYE':     
+                if(!userConnected || role !== "ROLE_EMPLOYE"){
                     element.classList.add("d-none"); 
                 }  
                 break;
@@ -171,12 +175,12 @@ export function signout() {
     globalThis.dispatchEvent(new Event('popstate'));
 }
 
-
 /* ===============================
 	 Récupération des infos utilisateur
 	=============================== */
 
-function getInfosUser() {
+export async function getInfosUser() {
+    
     const token = getToken();
 
     // Si pas de token, on met à jour la navbar et on quitte
@@ -185,33 +189,34 @@ function getInfosUser() {
         return;
     }
 
-    // Prépare les headers pour la requête API
-    const myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", token);
+    try {
+      // Prépare les headers pour la requête API
+      // Requête pour récupérer les infos utilisateur
+      const response = await fetch(apiAccountMeUrl, {
+          method: "GET",
+          headers: { "Authorization": `Bearer ${token}` },
+          redirect: "follow"
+      });
 
-    // Requête pour récupérer les infos utilisateur
-    fetch(apiAccountMeUrl, {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow"
-    })
-    .then(async (response) => {
-        if (!response.ok) {
-            // Si le token est invalide, déconnexion automatique
-            if (response.status === 401 || response.status === 403) {
-                signout(); 
-            }
-            throw new Error(`Erreur API (${response.status})`);
-        }
-        return response.json(); // Convertit la réponse en JSON
-    })
-    .then((user) => {
-        // Si l'utilisateur a un rôle, on le stocke dans le cookie
-        if (user && user.role) {
-            setCookie(roleCookieName, user.role, 7);
-        }
-        // Met à jour la navbar selon le rôle
-        showAndHideElementsForRole();
-    })
-    .catch((error) => console.error(error)); // Affiche les erreurs
+      if (!response.ok) {
+          // Si le token est invalide, déconnexion automatique
+          if (response.status === 401 || response.status === 403) {
+              signout();
+          }
+          throw new Error(`Erreur API (${response.status})`);
+      }
+      // Convertit la réponse en JSON
+      const user = await response.json();
+
+      // Si l'utilisateur a un rôle, on le stocke dans le cookie
+      if (user && user.utilisateur && user.utilisateur.role) {
+          setCookie(roleCookieName, user.utilisateur.role, 7);
+      }
+      // Met à jour la navbar selon le rôle
+      showAndHideElementsForRole();
+
+    } catch (error) {
+        // Affiche les erreurs
+        console.error("Erreur getInfosUser:", error);
+    }
 }
