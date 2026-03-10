@@ -47,6 +47,17 @@ const getRouteByUrl = (url) => {
     return allRoutes.find(route => route.url === url) || route404;
 };
 
+/* =====================================================
+   CHANGEMENT DE LA ROUTE
+   ===================================================== */
+
+// Liste des callbacks à exécuter après chaque changement de route
+const onRouteChangeCallbacks = [];
+
+// Fonction pour suivre les changements de route
+export function onRouteChange(cb) {
+  onRouteChangeCallbacks.push(cb);
+}
 
 /* =====================================================
    FORMATTER L'HEURE POUR LES LOGS DEBUG
@@ -89,6 +100,7 @@ const updateActiveLink = () => {
             link.removeAttribute('aria-current');
         }
     });
+
 };
 
 /* =====================================================
@@ -144,6 +156,7 @@ export const LoadContentPage = async () => {
 
         // Injection du HTML dans la div principale
         document.getElementById("main-page").innerHTML = html;
+
 
     } catch (err) {
 
@@ -235,6 +248,27 @@ export const LoadContentPage = async () => {
        ===================================================== */
 
     updateActiveLink();
+
+ 
+    /* =====================================================
+       MISE À JOUR DES VALEURS DU SCROLL POUR TOUJOURS ETRE EN HAUT 
+       DE PAGE LORS DE L'OUVERTURE D4UNE NOUVELLE PAGE
+       ===================================================== */
+
+    // Scroll en haut après injection du HTML et scripts
+    const scrollToTop = () => {
+        const main = document.getElementById("main-page");
+
+        if (main.offsetHeight === 0) {
+            // Si le contenu n'est pas encore rendu, réessaie après 50ms
+            setTimeout(scrollToTop, 50);
+        } else {
+            // Contenu prêt, scroll en haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+    scrollToTop();
+
 };
 
 /* =====================================================
@@ -248,6 +282,9 @@ export const navigate = (url) => {
 
     // Recharge le contenu correspondant à la nouvelle route
     LoadContentPage();
+
+    // Notification à tous les abonnés que la route a changé
+    onRouteChangeCallbacks.forEach(cb => cb());
 };
 
 /* =====================================================

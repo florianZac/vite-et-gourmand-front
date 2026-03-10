@@ -84,16 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 2 : GESTION DU LIEN ACTIF
-     ======================================== */
-
-  // La gestion du lien actif est désormais centralisée dans Router.js
-  // via la fonction updateActiveLink() appelée à chaque changement de page
-  // Raison : pushState (utilisé par navigate()) ne déclenche pas popstate,
-  // donc seul le Router peut savoir quand la page change réellement
-
-  /* ========================================
-     SECTION 3 : FERMER LE MENU MOBILE AU CLIC
+     SECTION 2 : FERMER LE MENU MOBILE AU CLIC
      ======================================== */
 
   // Boucle sur CHAQUE lien de navigation
@@ -257,7 +248,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Tous les liens du header
+  const headerLinks = document.querySelectorAll('.custom-navbar a');
+
+  // Scroll en haut de la page pour tous les liens HEADER sauf les ancres
+  headerLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const href = link.getAttribute('href');
+      if (!href.startsWith('#')) { 
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
+  window.addEventListener('popstate', () => {
+    window.scrollTo(0, 0);
+  });
+
   // Appelle la fonction au chargement de la page
   updateHeaderAuth();
+
 
 });

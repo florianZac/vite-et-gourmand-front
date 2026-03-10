@@ -207,4 +207,5 @@ export function initAccueilPage() {
     INITIALISATION
     ======================================== */
   updateCarousel();
+
 }
