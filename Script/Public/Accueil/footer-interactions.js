@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+import { API_URL } from '../../config.js';
 
 // URL de base de l'API Symfony pour récupérer les horaires
 const apiHoraire = `${API_URL}/api/horaires`;

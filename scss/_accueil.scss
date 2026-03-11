@@ -470,23 +470,25 @@
   gap: 0.25rem;
 }
 
-.temoignages-card-stars i {
+.temoignages-card-stars i,
+.temoignages-stars-global i {
   font-size: 1.25rem;
   color: $ocre;
 }
 
 /* -------- Étoiles remplies -------- */
-.temoignages-card-stars i.bi-star-fill {
+.temoignages-card-stars i.bi-star-fill,
+.temoignages-stars-global i.bi-star-fill {
   color: $ocre;  /* Couleur dorée */
   font-size: 1.25rem;
 }
 
 /* -------- Étoiles vides -------- */
-.temoignages-card-stars i.bi-star {
+.temoignages-card-stars i.bi-star
+.temoignages-stars-global i.bi-star {
   color: $gray-900; 
   font-size: 1.25rem;
 }
-
 
 /* -------- Texte du testimonial -------- */
 .temoignages-card-text {

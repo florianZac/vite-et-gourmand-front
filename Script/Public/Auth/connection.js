@@ -1,5 +1,5 @@
-import { API_URL } from './config.js';
-import { setToken, setCookie, showAndHideElementsForRole } from './script.js';
+import { API_URL } from '../../config.js';
+import { setToken, setCookie, showAndHideElementsForRole } from '../../script.js';
 export function initConnexionPage() {
 
   /* ===============================
