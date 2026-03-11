@@ -1,4 +1,5 @@
 import { API_URL } from './config.js';
+
 export function initContactPage() {
 
   /* ===============================
@@ -9,12 +10,13 @@ export function initContactPage() {
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
-  const subjectInput = document.getElementById('SubjectInput');
-  const emailInput = document.getElementById('EmailInput');
-  const messageInput = document.getElementById('MessageInput');
+  const SujetInput = document.getElementById('SujetInput');
+  const EmailInput = document.getElementById('EmailInput');
+  const MessageInput = document.getElementById('MessageInput');
   const contactForm = document.querySelector('.contact-form');
   const submitButton = document.querySelector('.btn-contact');
   const charCount = document.querySelector('.contact-char-count');
+  const honeypot = document.getElementById('site_web');
 
   /* ===============================
      CONFIGURATION API
@@ -22,6 +24,12 @@ export function initContactPage() {
 
   // URL de base de l'API Symfony
   const apiContact = `${API_URL}/api/contact`;
+
+  // Variable debug console si à true
+  let DebugConsole = true;
+
+  // Variable pour éviter le double click lors de la connection
+  let isSubmitting = false; 
 
   /* ===============================
      CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
@@ -69,7 +77,8 @@ export function initContactPage() {
      =============================== */
 
   function validateEmail(email) {
-    const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
+    //const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
@@ -77,9 +86,9 @@ export function initContactPage() {
      COMPTEUR DE CARACTÈRES - TEXTAREA
      =============================== */
 
-  if (messageInput && charCount) {
-    messageInput.addEventListener('input', () => {
-      charCount.textContent = `${messageInput.value.length}/500`;
+  if (MessageInput && charCount) {
+    MessageInput.addEventListener('input', () => {
+      charCount.textContent = `${MessageInput.value.length}/500`;
       checkFormValidity();
     });
   }
@@ -87,6 +96,7 @@ export function initContactPage() {
   /* ===============================
     FACTORISATION DE LA VALIDATION
     =============================== */
+  
   function updateFieldState(input, isValid) {
     if (input.value.trim() === '') {
       input.classList.remove('is-valid', 'is-invalid');
@@ -102,22 +112,46 @@ export function initContactPage() {
   /* ===============================
      LISTENERS SUR LES INPUTS
      =============================== */
-  if (subjectInput) {
-    subjectInput.addEventListener('input', () => {
+
+     
+  if (SujetInput) {
+    SujetInput.addEventListener('input', () => {
+
       checkFormValidity();
-      updateFieldState(subjectInput, subjectInput.value.trim().length >= 3 && subjectInput.value.trim().length <= 100);
+
+      updateFieldState(
+        SujetInput,
+        SujetInput.value.trim().length >= 3 &&
+        SujetInput.value.trim().length <= 100
+      );
+
     });
   }
-  if (emailInput) {
-    emailInput.addEventListener('input', () => {
+
+  if (EmailInput) {
+    EmailInput.addEventListener('input', () => {
+
       checkFormValidity();
-      updateFieldState(emailInput, validateEmail(emailInput.value.trim()));
+
+      updateFieldState(
+        EmailInput,
+        validateEmail(EmailInput.value.trim())
+      );
+
     });
   }
-  if (messageInput) {
-    messageInput.addEventListener('input', () => {
+
+  if (MessageInput) {
+    MessageInput.addEventListener('input', () => {
+
       checkFormValidity();
-        updateFieldState(messageInput, messageInput.value.trim().length > 10 && messageInput.value.trim().length <= 500);
+
+      updateFieldState(
+        MessageInput,
+        MessageInput.value.trim().length >= 10 &&
+        MessageInput.value.trim().length <= 500
+      );
+
     });
   }
 
@@ -126,14 +160,18 @@ export function initContactPage() {
      =============================== */
 
   function checkFormValidity() {
-    const subject = subjectInput.value.trim();
-    const email = emailInput.value.trim();
-    const message = messageInput.value.trim();
 
-    // Sujet entre 3 et 100 caractères, email valide, message non vide
-    const isFormValid = subject.length >= 3 && subject.length <= 100 
-                        && validateEmail(email) 
-                        && message.length > 0 && message.length <= 500;
+    const Sujet = SujetInput.value.trim();
+    const Email = EmailInput.value.trim();
+    const message = MessageInput.value.trim();
+
+    // Sujet entre 3 et 100 caractères, Email valide, message non vide
+    const isFormValid =
+      Sujet.length >= 3 &&
+      Sujet.length <= 100 &&
+      validateEmail(Email) &&
+      message.length >= 10 &&
+      message.length <= 500;
 
     submitButton.disabled = !isFormValid;
 
@@ -146,39 +184,102 @@ export function initContactPage() {
 
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
+
       e.preventDefault();
 
+      // si déjà envoi du formulaire, on bloque tout
+      if (isSubmitting) return;
+      isSubmitting = true;
+
+      // Désactive le bouton pendant l'envoi
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Envoi en cours...';
+
+      hideMessages();
+
+      // Mapping des champs HTML pour l'API Symfony
       const formData = {
-        subject: subjectInput.value.trim(),
-        email: emailInput.value.trim(),
-        message: messageInput.value.trim()
+        email: EmailInput.value.trim(),
+        sujet: SujetInput.value.trim(),
+        message: MessageInput.value.trim(),
+        site_web: honeypot.value.trim(),
       };
 
-      console.log('✓ Contact envoyé:', formData);
+      // On intialise la données avant l'appel API
+      let response = null;
 
       // Appel de l'API :
-      // try {
-      //   const response = await fetch(apiContact, {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(formData)
-      //   });
-      //   const data = await response.json();
-      //
-      //   if (response.ok) {
-      //     showSuccess('Votre message a bien été envoyé. Nous vous répondrons sous 24h.');
-      //     subjectInput.value = '';
-      //     emailInput.value = '';
-      //     messageInput.value = '';
-      //     charCount.textContent = '0/500';
-      //     submitButton.disabled = true;
-      //   } else {
-      //     showError(data.message || 'Une erreur est survenue. Veuillez réessayer.');
-      //   }
-      // } catch (err) {
-      //   console.error('Erreur réseau:', err);
-      //   showError('Erreur de connexion au serveur. Veuillez réessayer.');
-      // }
+      try {
+        const response = await fetch(apiContact, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        let data = null;
+        // évite que le script crash si la réponse n'est pas du JSON
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+
+        if (response.ok) {
+
+          showSuccess(
+            'Votre message a bien été envoyé. Nous vous répondrons sous 24h.'
+          );
+
+          SujetInput.value = '';
+          EmailInput.value = '';
+          MessageInput.value = '';
+
+          if (charCount) {
+            charCount.textContent = '0/500';
+          }
+          submitButton.disabled = true;
+          
+          if(DebugConsole){
+            console.log("Message envoyé :", formData);
+          }
+
+          // Redirige vers l'accueil apres 2 sec
+          setTimeout(()=>{
+            window.location.href='/';
+          },2000);
+
+        }else{
+
+          if(DebugConsole){
+            console.error("Erreur API :", data);
+          }
+          showError(data.message || 'Une erreur est survenue.');
+
+          SujetInput.classList.add('is-invalid');
+          EmailInput.classList.add('is-invalid');
+          MessageInput.classList.add('is-invalid');
+        }
+
+      } catch (err) {
+        // Gestion des erreurs réseau
+        showError(
+          'Impossible de contacter le serveur. Vérifiez que l\'API est lancée.'
+        );
+
+      } finally {
+
+        isSubmitting = false;
+
+        if(!response?.ok){
+          submitButton.disabled = false;
+        }
+
+        // Réactive le bouton dans tous les cas et reset flag
+        submitButton.innerHTML = 
+          '<i class="bi bi-send-fill"></i> Envoyer le message';
+
+        checkFormValidity();
+      }
     });
   }
 

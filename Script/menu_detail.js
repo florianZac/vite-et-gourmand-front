@@ -28,7 +28,7 @@ export function initDetailMenuPage() {
 		 =============================== */
 
 	// Découpe l'URL en segments et récupère le dernier
-	// Exemple : "/menu/3" -> ["", "menu", "3"] -> "3"
+	// Exemple : "/menu/3" on ["", "menu", "3"] on "3"
 	const pathSegments = window.location.pathname.split('/');
 	const menuId = pathSegments[pathSegments.length - 1];
 
@@ -134,7 +134,7 @@ export function initDetailMenuPage() {
 	}
 
 	/* ===============================
-		FONCTION : BREADCRUMB
+		FONCTION : fil d'ariane
 			- 1.	Affiche le nom du menu dans le fil d'ariane
 		=============================== */
 
@@ -215,7 +215,7 @@ export function initDetailMenuPage() {
 				detailReduction.innerHTML = `<i class="bi bi-tag"></i> ${menu.reductionText}`;
 				detailReduction.style.display = 'block';
 			} else {
-				// Pas de réduction -> on cache la ligne
+				// Pas de réduction on cache la ligne
 				detailReduction.style.display = 'none';
 			}
 		}
@@ -294,19 +294,19 @@ export function initDetailMenuPage() {
 					const payload = JSON.parse(atob(token.split('.')[1]));
 					const roles = payload.roles || [];
 
-					// Si admin ou employé → retire d-none pour afficher la div
+					// Si admin ou employé on retire d-none pour afficher la div
 					if (roles.includes('ROLE_ADMIN') || roles.includes('ROLE_EMPLOYE')) {
 						actionButtons.classList.remove('d-none');
 					} else {
-						// Client ou visiteur → garde la div cachée
+						// Client ou visiteur on garde la div cachée
 						actionButtons.classList.add('d-none');
 					}
 				} catch (err) {
-					// Token invalide → cache les boutons par sécurité
+					// Token invalide on cache les boutons par sécurité
 					actionButtons.classList.add('d-none');
 				}
 			} else {
-				// Pas de token (non connecté) → cache les boutons
+				// Pas de token on cache les boutons
 				actionButtons.classList.add('d-none');
 			}
 		}
@@ -386,7 +386,7 @@ export function initDetailMenuPage() {
 		 		1. Sélectionner une nouvelle image (prévisualisation en temps réel)
 				2. Saisir un titre (utilisé pour le champ alt de l'image)
 				3. Saisir une description (méta-donnée stockée en BDD)
-		  - Au clic sur "Sauvegarder" → envoie le tout à l'API en POST (FormData)
+		  - Au clic sur "Sauvegarder" on envoie le tout à l'API en POST (FormData)
 		  - Endpoint API : POST /api/menus/{id}/photos/{index}
 		 =============================== */
 
@@ -418,7 +418,7 @@ export function initDetailMenuPage() {
 			// Cela permet d'afficher l'image dans la modale AVANT l'envoi à l'API
 			const reader = new FileReader();
 
-			// Quand la lecture est terminée → met à jour l'aperçu
+			// Quand la lecture est terminée on met à jour l'aperçu
 			reader.onload = (e) => {
 				if (editPhotoPreviewImg) {
 					editPhotoPreviewImg.src = e.target.result;
@@ -474,8 +474,6 @@ export function initDetailMenuPage() {
 					method: 'POST',
 					headers: {
 						'Authorization': `Bearer ${token}`
-						// Pas de 'Content-Type' → le navigateur le définit
-						// automatiquement avec le boundary pour multipart/form-data
 					},
 					body: formData
 				});
@@ -516,7 +514,7 @@ export function initDetailMenuPage() {
 		 	- Double vérification en 2 étapes :
 				Étape 1 : Aperçu de la photo + message d'avertissement + bouton "Continuer"
 				Étape 2 : L'utilisateur doit taper "SUPPRIMER" pour activer le bouton final
-		 	- Au clic sur "Supprimer définitivement" → envoie DELETE à l'API
+		 	- Au clic sur "Supprimer définitivement" on envoie DELETE à l'API
 		 	- Endpoint API : DELETE /api/menus/{id}/photos/{index}
 		 	- Protection : impossible de supprimer la dernière photo
 		 =============================== */
@@ -626,7 +624,7 @@ export function initDetailMenuPage() {
 				});
 
 				if (response.ok) {
-					console.log('✓ Photo supprimée avec succès');
+					console.log(' Photo supprimée avec succès');
 
 					// Retire la photo du tableau local avec splice
 					photos.splice(photoIndex, 1);
@@ -700,7 +698,7 @@ export function initDetailMenuPage() {
 			let allergensHtml = '';
 
 			if (allergens.length === 0) {
-				// Pas d'allergènes -> badge vert "Aucun"
+				// Pas d'allergènes on badge vert "Aucun"
 				allergensHtml = '<span class="detail_menu-dish-allergen-none">Aucun</span>';
 			} else {
 				// Un badge par allergène
@@ -714,19 +712,19 @@ export function initDetailMenuPage() {
 			col.className = 'col-12 col-lg-4 mb-3';
 			col.innerHTML = `
 				<div class="detail_menu-dish-card">
-					<!-- Type du plat : icône + label statique -->
+					<!-- Type du plat : icône + label statique -on
 					<div class="detail_menu-dish-type">
 						<span class="detail_menu-dish-type-icon">${dish.icon}</span>
 						<span class="detail_menu-dish-type-label">${dish.label}</span>
 					</div>
 
-					<!-- Titre du plat -->
+					<!-- Titre du plat -on
 					<h3 class="detail_menu-dish-name">${dishData.name || '—'}</h3>
 
-					<!-- Description du plat -->
+					<!-- Description du plat -on
 					<p class="detail_menu-dish-description">${dishData.description || ''}</p>
 
-					<!-- Allergènes -->
+					<!-- Allergènes -on
 					<div class="detail_menu-dish-allergens-label">
 						<i class="bi bi-shield-exclamation"></i>
 						<span>Allergènes :</span>
@@ -743,10 +741,10 @@ export function initDetailMenuPage() {
 
 	/* ===============================
 		FONCTION : BOUTON COMMANDER
-		 - 1.	Si le menu est indisponible -> bouton désactivé
-		 - 2.	Si l'utilisateur n'est pas connecté -> redirige vers /login
-		 - 3.	Si connecté + rôle ROLE_CLIENT -> redirige vers /commander
-		 - 4.	Sinon (employé, admin) -> redirige vers /
+		 - 1.	Si le menu est indisponible on bouton désactivé
+		 - 2.	Si l'utilisateur n'est pas connecté on redirige vers /login
+		 - 3.	Si connecté + rôle ROLE_CLIENT on redirige vers /commander
+		 - 4.	Sinon (employé, admin) on redirige vers /
 		 =============================== */
 
 	function setupOrderButton(menu) {
@@ -764,21 +762,21 @@ export function initDetailMenuPage() {
 			const token = localStorage.getItem('token');
 
 			if (!token) {
-				// Pas connecté -> redirige vers la page de connexion
+				// Pas connecté on redirige vers la page de connexion
 				window.location.href = '/login';
 				return;
 			}
 
-			// Connecté -> vérifie le rôle dans le token
+			// Connecté on vérifie le rôle dans le token
 			try {
 				const payload = JSON.parse(atob(token.split('.')[1]));
 				const roles = payload.roles || [];
 
 				if (roles.includes('ROLE_CLIENT')) {
-					// Client connecté -> page commande
+					// Client connecté, page commande
 					window.location.href = '/commander';
 				} else {
-					// Employé ou admin -> pas accès à la commande
+					// Employé ou admin, pas accès à la commande
 					console.log('Accès commande réservé aux clients');
 					window.location.href = '/';
 				}

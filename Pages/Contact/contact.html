@@ -23,16 +23,16 @@
 
             <!-- Sujet -->
             <div class="mb-4">
-              <label for="SubjectInput" class="form-label">
+              <label for="SujetInput" class="form-label">
                 Sujet <span class="required">*</span>
                 <span class="contact-hint">(3 à 100 caractères)</span>
               </label>
               <input 
                 type="text" 
                 class="form-control contact-input" 
-                id="SubjectInput" 
+                id="SujetInput" 
                 placeholder="Objet de votre message"
-                name="Subject"
+                name="Sujet"
                 minlength="3"
                 maxlength="100"
                 required
@@ -73,6 +73,12 @@
               <div class="d-flex justify-content-end mt-1">
                 <small class="contact-char-count">0/500</small>
               </div>
+            </div>
+
+            <!-- Honeypot anti-spam -->
+            <div style="display:none;">
+              <label for="site_web">Site web</label>
+              <input type="text" id="site_web" name="site_web" autocomplete="off">
             </div>
 
             <!-- Bouton d'envoi -->
