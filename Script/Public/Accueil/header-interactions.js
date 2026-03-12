@@ -30,6 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastScrollTop = 0;
   // isSmoothing = indique si un smooth scroll est en cours (pour éviter les conflits)
   let isSmoothing = false;
+  let DebugConsole = false;
+
+  if (DebugConsole) {
+    console.log("=== DEBUG INIT HEADER ===");
+    console.log("Navbar :", navbar);
+    console.log("Nav links :", navLinks);
+    console.log("Navbar collapse :", navbarCollapse);
+    console.log("Burger icon :", burgerIcon);
+    console.log("Close icon :", closeIcon);
+    console.log("Bouton connexion :", btnConnexion);
+    console.log("Bouton inscription :", btnInscription);
+    console.log("=========================");
+  }
+
 
   /* ========================================
      SECTION 0 : GESTION DU X POUR FERMER LE MENU
@@ -39,12 +53,14 @@ document.addEventListener('DOMContentLoaded', () => {
   navbarCollapse.addEventListener('show.bs.collapse', () => {
     burgerIcon.classList.add('d-none');
     closeIcon.classList.remove('d-none');
+    if (DebugConsole) console.log("Menu ouvert : burger caché, X visible");
   });
 
   // Cache le X et affiche le hamburger quand le menu se ferme
   navbarCollapse.addEventListener('hide.bs.collapse', () => {
     burgerIcon.classList.remove('d-none');
     closeIcon.classList.add('d-none');
+    if (DebugConsole) console.log("Menu fermé : burger visible, X caché");
   });
 
   /* ========================================
@@ -70,12 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // navbar.style.transform = '-100px' = déplace le header vers le haut de -100 pixels
       // Comme le header fait 80px de haut, il disparaît complètement de l'écran
       navbar.style.transform = '-100px';
+      if (DebugConsole) console.log("Scroll DOWN, header caché", currentScroll);
     } else {
       // On scroll vers le HAUT = affiche le header
       // navbar.style.transform = '0' = ramène le header à sa position normale (en haut de l'écran)
       navbar.style.transform = '0';
+      if (DebugConsole) console.log("Scroll UP, header visible", currentScroll);
     }
-
     // Met à jour la position de scroll pour la prochaine vérification
     // Si on est tout en haut (currentScroll <= 0), lastScrollTop = 0
     // Sinon, lastScrollTop = la position actuelle du scroll
@@ -106,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Cache le menu collapse
       // Cette méthode ferme le menu
       bsCollapse.hide();
+      if (DebugConsole) console.log("Lien clic : menu mobile fermé", link);
     });
   });
 
@@ -127,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Simule un clic sur le bouton toggler
       // Cela ferme le menu en appelant le comportement du bouton burger
       toggler.click();
+      if (DebugConsole) console.log("Clic hors menu : menu fermé");
     }
   });
 
@@ -167,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           top: targetPosition,
           behavior: 'smooth'
         });
+        if (DebugConsole) console.log("Smooth scroll vers :", targetId, "position :", targetPosition);
       }
     });
   });
@@ -204,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // On retire le listener de déconnexion si il existe
         btnInscription.removeAttribute('id-logout');
       }
+      if (DebugConsole) console.log("Utilisateur NON connecté, boutons réinitialisés");
       return;
     }
 
@@ -237,14 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
             updateHeaderAuth();
             // Redirige vers l'accueil
             window.location.href = '/';
+            if (DebugConsole) console.log("Utilisateur déconnecté via header");
           });
         }
       }
+      if (DebugConsole) console.log("Utilisateur connecté :", firstName, "Token :", token);
 
     } catch (err) {
       // Si le token est invalide, on le supprime et on remet l'état par défaut
       console.error('Token JWT invalide:', err);
       localStorage.removeItem('token');
+      if (DebugConsole) console.log("Token supprimé car invalide");
     }
   }
 
@@ -257,16 +281,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = link.getAttribute('href');
       if (!href.startsWith('#')) { 
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (DebugConsole) console.log("Clic lien header -> scroll top", href);
       }
     });
   });
 
   window.addEventListener('popstate', () => {
     window.scrollTo(0, 0);
+    if (DebugConsole) console.log("Popstate event -> scroll top");
   });
 
   // Appelle la fonction au chargement de la page
   updateHeaderAuth();
-
 
 });

@@ -132,7 +132,6 @@ export function initContactPage() {
     EmailInput.addEventListener('input', () => {
 
       checkFormValidity();
-
       updateFieldState(
         EmailInput,
         validateEmail(EmailInput.value.trim())
@@ -145,7 +144,6 @@ export function initContactPage() {
     MessageInput.addEventListener('input', () => {
 
       checkFormValidity();
-
       updateFieldState(
         MessageInput,
         MessageInput.value.trim().length >= 10 &&
@@ -172,7 +170,6 @@ export function initContactPage() {
       validateEmail(Email) &&
       message.length >= 10 &&
       message.length <= 500;
-
     submitButton.disabled = !isFormValid;
 
     hideMessages();
@@ -242,7 +239,6 @@ export function initContactPage() {
           if(DebugConsole){
             console.log("Message envoyé :", formData);
           }
-
           // Redirige vers l'accueil apres 2 sec
           setTimeout(()=>{
             window.location.href='/';

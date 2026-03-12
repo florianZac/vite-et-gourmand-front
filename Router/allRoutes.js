@@ -16,7 +16,9 @@ export const allRoutes = [
    new Route("/Mentions_CGV", "Mentions_CGV", "Pages/Mention_legale/Mentions_CGV.html", [], "", true),
    new Route("/nos_menu", "Nos Menus", "Pages/Menus/nos_menus.html", [], "/Script/Menus/nos_menus.js", true),
    new Route("/detail_menu", "Detail Menus", "Pages/Menus/menu_detail.html", [], "/Script/Menus/menu_detail.js", true),
-   new Route("/reset_login", "Resetpassword", "Pages/Auth/reset-password.html", [], "/Script/Public/Auth/reset-password.js", true),
+   new Route("/reset_login", "forgotpassword", "Pages/Auth/forgot-password.html", [], "/Script/Public/Auth/forgot-password.js", true),
+   new Route("/reset-password", "Resetpassword", "Pages/Auth/reset-password.html", [], "/Script/Public/Auth/reset-password.js", true),
+
    
    /* Role DECONNECTER*/
    new Route("/login", "Connexion", "Pages/Auth/login.html", ["disconnected"], "/Script/Public/Auth/connection.js", true),

@@ -81,7 +81,7 @@ export async function initAccueilPage() {
   const apiAvisclient = `${API_URL}/api/avis`;
 
   // Variable debug console : si true, affichage des logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   // Vérifie que les éléments existent
   if (!carouselContainer || !prevBtn || !nextBtn || dots.length === 0) {

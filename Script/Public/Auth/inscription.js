@@ -5,10 +5,22 @@ export function initInscriptionPage() {
    SCRIPT PAGE INSCRIPTION
    =============================== */
 
+  //Variable debug console si à true
+  let DebugConsole = false;
+
+  // varibale pour évité le double click inscription
+  let isSubmitting = false; 
+
+  /* ===============================
+     CONFIGURATION API
+     =============================== */
+
+  // URL de base de l'API Symfony
+  const apiInscriptionUser = `${API_URL}/api/register`;
+
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
-  
   const passwordInput = document.getElementById('PasswordInput');
   const toggleButton = document.getElementById('togglePassword');
   const phoneInput = document.getElementById('PhoneInput');
@@ -21,18 +33,21 @@ export function initInscriptionPage() {
   const inscriptionForm = document.querySelector('.inscription-form');
   const submitButton = document.querySelector('.btn-inscription-submit');
 
-  //Variable debug console si à true
-  let DebugConsole = true;
-
-  // varibale pour évité le double click inscription
-  let isSubmitting = false; 
-
-  /* ===============================
-     CONFIGURATION API
-     =============================== */
-
-  // URL de base de l'API Symfony
-  const apiInscriptionUser = `${API_URL}/api/register`;
+  if (DebugConsole) {
+    console.log("=== DEBUG INIT INSCRIPTION PAGE ===");
+    console.log("prenom :", prenom);
+    console.log("nom :", nom);
+    console.log("emailInput :", emailInput);
+    console.log("passwordInput :", passwordInput);
+    console.log("phoneInput :", phoneInput);
+    console.log("postalInput :", postalInput);
+    console.log("addressInput :", addressInput);
+    console.log("villeInput :", villeInput);
+    console.log("inscriptionForm :", inscriptionForm);
+    console.log("submitButton :", submitButton);
+    console.log("API URL :", apiInscriptionUser);
+    console.log("==================================");
+  }
 
   /* ===============================
      FONCTIONS DE VALIDATION - TÉLÉPHONE
@@ -51,10 +66,12 @@ export function initInscriptionPage() {
     
     // Vérifie qu'il y a exactement 10 chiffres au total
     const hasCorrectLength = cleanPhone.replace(/\D/g, '').length === 10;
-    
-    return startsCorrectly && hasCorrectLength;
-  }
+    const valid =startsCorrectly && hasCorrectLength;
 
+    if (DebugConsole) console.log(`validatePhone("${phone}") =>`, valid);
+    return valid;
+
+  }
   /* ===============================
      FONCTIONS DE VALIDATION - EMAIL
      =============================== */
@@ -69,7 +86,11 @@ export function initInscriptionPage() {
   function validateEmail(email) {
     // Regex: min 3 char avant @, @ obligatoire, min 3 après, .fr ou .com obligatoire
     const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
-    return emailRegex.test(email);
+    
+    const valid = emailRegex.test(email);
+    
+    if (DebugConsole) console.log(`validateEmail("${email}") =>`, valid);
+    return valid;
   }
 
   /* ===============================
@@ -83,13 +104,14 @@ export function initInscriptionPage() {
   function validatePostalCode(postalCode) {
     // Vérifie qu'il contient exactement 5 chiffres
     const postalRegex = /^\d{5}$/;
-    return postalRegex.test(postalCode);
+    const valid = postalRegex.test(postalCode);
+    if (DebugConsole) console.log(`validatePostalCode("${postalCode}") =>`, valid);
+    return valid;
   }
 
   /* ===============================
      FONCTIONS DE VALIDATION - MOT DE PASSE
      =============================== */
-  
   /**
    * Vérifie si le mot de passe est valide
    * Min 10 caractères
@@ -99,29 +121,37 @@ export function initInscriptionPage() {
    * Au moins 1 caractère spécial (!@#$...)
    */
   function validatePassword(password) {
-    // Min 10 caractères
-    const hasCorrectLength = password.length >= 10;
-    
-    // Au moins 1 majuscule
-    const hasUpperCase = /[A-Z]/.test(password);
-    
-    // Au moins 1 minuscule
-    const hasLowerCase = /[a-z]/.test(password);
-    
-    // Au moins 1 chiffre
-    const hasDigit = /\d/.test(password);
-    
-    // Au moins 1 caractère spécial
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};:'",.<>?/\\|`~]/.test(password);
-    
-    return {
-      isValid: hasCorrectLength && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar,
-      hasCorrectLength,
-      hasUpperCase,
-      hasLowerCase,
-      hasDigit,
-      hasSpecialChar
+    const validation = {
+      // Min 10 caractères
+      hasCorrectLength: password.length >= 10,
+      // Au moins 1 majuscule
+      hasUpperCase: /[A-Z]/.test(password),
+      // Au moins 1 minuscule
+      hasLowerCase: /[a-z]/.test(password),
+      // Au moins 1 chiffre
+      hasDigit: /\d/.test(password),
+      // Au moins 1 caractère spécial
+      hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};:'",.<>?/\\|`~]/.test(password)
     };
+    validation.isValid = Object.values(validation).every(v => v === true);
+    if (DebugConsole) console.log(`validatePassword("${password}") =>`, validation);
+    return validation;
+  }
+  
+  /* ===============================
+    FACTORISATION DE LA VALIDATION
+    =============================== */
+  function updateFieldState(input, isValid) {
+    if (input.value.trim() === '') {
+      input.classList.remove('is-valid', 'is-invalid');
+    } else if (isValid) {
+      input.classList.add('is-valid');
+      input.classList.remove('is-invalid');
+    } else {
+      input.classList.add('is-invalid');
+      input.classList.remove('is-valid');
+    }
+    if (DebugConsole) console.log(`updateFieldState(${input.id}, ${isValid}) Classes:`, input.className);
   }
 
   /* ===============================
@@ -173,28 +203,13 @@ export function initInscriptionPage() {
     
     // Change la couleur
     updateMessageColor(messageElement, isValid);
+    if (DebugConsole) console.log('updateValidationMessage(${inputElement.id}): ${messageText} (isValid=${isValid})');
   }
 
-  
-  /* ===============================
-    FACTORISATION DE LA VALIDATION
-    =============================== */
-  function updateFieldState(input, isValid) {
-    if (input.value.trim() === '') {
-      input.classList.remove('is-valid', 'is-invalid');
-    } else if (isValid) {
-      input.classList.add('is-valid');
-      input.classList.remove('is-invalid');
-    } else {
-      input.classList.add('is-invalid');
-      input.classList.remove('is-valid');
-    }
-  }
 
   /* ===============================
      FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
-  
   function checkFormValidity() {
     // Récupère les valeurs
     const phone = phoneInput.value;
@@ -230,6 +245,7 @@ export function initInscriptionPage() {
       submitButton.style.opacity = '0.5';
       submitButton.style.cursor = 'not-allowed';
     }
+    if (DebugConsole) console.log("Form validity checked =>", isFormValid);
   }
 
   /* ===============================
@@ -384,6 +400,7 @@ export function initInscriptionPage() {
         passwordInput.type = 'password';
         toggleButton.innerHTML = '<i class="bi bi-eye"></i>';
       }
+      if (DebugConsole) console.log(" Champ du password =>", passwordInput.type);
     });
   }
 
@@ -418,6 +435,8 @@ export function initInscriptionPage() {
         site_web: ''  // Honeypot : toujours vide pour un vrai utilisateur
       };
 
+      if (DebugConsole) console.log("Form data to submit:", formData);
+
       try {
         const response = await fetch(apiInscriptionUser, {
           method: 'POST',
@@ -435,7 +454,7 @@ export function initInscriptionPage() {
 
         if (response.ok) {
           // Succès on redirige vers la page de connexion
-          alert("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit, Vous pouvez maintenant vous connecter.");
+          //alert("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit, Vous pouvez maintenant vous connecter.");
           if(DebugConsole){
             console.log("Utilisateur inscrit :", {
               prenom: prenom.value,
@@ -448,6 +467,7 @@ export function initInscriptionPage() {
         } else {
           // Erreur retournée par l'API (400, 409...)
           alert(data.message || 'Erreur lors de l\'inscription.');
+          if (DebugConsole) console.warn("Erreur inscription:", data);
         }
       } catch (err) {
         if(DebugConsole){
@@ -472,11 +492,11 @@ export function initInscriptionPage() {
   /* ===============================
      INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
      =============================== */
-  
   if (submitButton) {
     submitButton.disabled = true;
     submitButton.style.backgroundColor = '#333333'; // Gris foncé dès le départ
     submitButton.style.opacity = '0.5';
     submitButton.style.cursor = 'not-allowed';
   }
+  if (DebugConsole) console.log("Inscription page initialisée avec DebugConsole activé.");
 }
