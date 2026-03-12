@@ -1,0 +1,148 @@
+// Le _ permet de dire à Sass que ce fichier ne doit pas etre compilé
+/* 1️ Fonctions Bootstrap */
+@import "../node_modules/bootstrap/scss/functions";
+
+/* ===============================
+   PALETTE VITE & GOURMAND - COULEURS PRIMAIRES
+   =============================== */
+
+$terracotta: hsl(14, 61%, 47%);
+$ocre: hsl(38, 58%, 55%);
+$bordeaux: hsl(338, 48%, 34%);
+$olive: hsl(79, 31%, 35%);
+$creme: hsl(38, 67%, 96%);
+
+/* ===============================
+   PALETTE ÉTENDUE - COULEURS SECONDAIRES
+   =============================== */
+
+/* Variantes terracotta */
+$terracotta-light: hsl(14, 61%, 62%);
+$terracotta-dark: hsl(14, 61%, 35%);
+
+/* Variantes ocre */
+$ocre-light: hsl(38, 58%, 70%);
+$ocre-dark: hsl(38, 58%, 40%);
+
+/* Variantes bordeaux */
+$bordeaux-light: hsl(338, 48%, 50%);
+$bordeaux-dark: hsl(338, 48%, 20%);
+
+/* Variantes olive */
+$olive-light: hsl(79, 30%, 50%);
+$olive-dark: hsl(79, 31%, 22%);
+
+/*Variante rouge */
+$Rouge-coquine: #EF4444;
+
+/* Gradient coloré */
+$btn-gradient-start: #C1613A;
+$btn-gradient-end: #803050;
+
+$error-message:#dc3545;
+$success-message:#22c55e;
+$sucess-icon:#15803D;
+
+/* ===============================
+   PALETTE NEUTRES - GRIS & NOIRS
+   =============================== */
+
+/* Noirs et fonds sombres */
+$dark-bg: #1F1F1F;        /* Noir très foncé pour les fonds */
+$dark-bg-secondary: #2A2A2A;  /* Noir légèrement plus clair */
+
+/* Gris pour textes et bordures */
+$gray-900: #333333;       /* Très foncé */
+$gray-800: #4A4A4A;       /* Foncé */
+$gray-700: #666666;       /* Moyen */
+$gray-600: #999999;       /* Clair */
+$gray-500: #CCCCCC;       /* Très clair */
+$gray-400: #E8E8E8;       /* Quasi blanc */
+
+$divider-border:  rgba(255, 255, 255, 0.1); 
+$divider-color:  #888; 
+
+/* Gris marron pour certains textes avec fond blanc */
+$gray-brownish: #696763;
+
+/* ===============================
+   PALETTE CLAIRES - BLANCS & CRÈMES
+   =============================== */
+
+/* Blanc pur */
+$white-pure: #FFFFFF;
+
+/* Crèmes et blancs chauds */
+$white-warm: #FCF7EE;     /* Blanc chaud (crème) */
+$white-cold: #F5F5F5;     /* Blanc froid */
+$bg-gradient-start: #F5E6D3;
+$bg-gradient-end: #E8D4BE;
+
+
+/* ===============================
+   VARIANTES TRANSPARENTES
+   =============================== */
+
+$white-95: rgba(255, 255, 255, 0.95);
+$white-85: rgba(255, 255, 255, 0.85);
+$white-60: rgba(255, 255, 255, 0.60);
+
+/* ===============================
+   BOOTSTRAP THEME MISE À JOUR VARIABLE
+   =============================== */
+$primary: $terracotta;
+$secondary: $ocre;
+$success: $olive;
+$danger: $bordeaux;
+$light: $creme;
+$dark: $gray-900;
+
+/* ===============================
+   TYPOGRAPHIE
+   =============================== */
+
+/* Police pour le texte */
+$font-family-sans-serif: "Inter", sans-serif !default;
+
+/* Police pour les titres */
+$headings-font-family: "Playfair Display", serif !default;
+
+/* Poids du texte */
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+/* ===============================
+   VARIABLES BOOTSTRAP
+   =============================== */
+@import "../node_modules/bootstrap/scss/variables";
+
+/* ===============================
+   COULEURS CUSTOM POUR BOOTSTRAP
+   =============================== */
+$custom-colors: (
+  "terracotta": $terracotta,
+  "ocre": $ocre,
+  "bordeaux": $bordeaux,
+  "olive": $olive,
+  "gray-700": $gray-700,
+  "gray-600": $gray-600
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+/* Bootstrap complet */
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+/* ===============================
+   VARIABLES CSS pour du inline
+    ( jaime pas sa à part pour certain cas obligatoire je n'utilise pas le inline )  
+   =============================== */
+
+:root {
+  --terracotta: hsl(14, 61%, 47%);
+  --terracotta-light: hsl(14, 61%, 62%);
+  --terracotta-dark: hsl(14, 61%, 35%);
+}
+

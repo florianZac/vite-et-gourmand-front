@@ -1,0 +1,176 @@
+/* ===============================
+   STYLES DU FOOTER - VITE & GOURMAND
+   =============================== */
+
+/* -------- Conteneur principal du footer -------- */
+.footer-dark {
+  background-color: $dark-bg;
+  color: $white-warm;
+  padding: 3rem 0 0;
+  margin-top: 0;
+  border-top: none;
+}
+
+/* -------- Mise à jour du logo du footer -------- */
+.logo-footer {
+  object-fit: cover;
+}
+
+/* -------- Texte général du footer -------- */
+.footer-dark p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  color: $gray-600;
+}
+
+/* -------- Logo du footer -------- */
+.footer-logo {
+  font-size: 1.25rem;
+  font-weight: $font-weight-bold;
+  color: $terracotta;
+  display: flex;
+  align-items: center;
+}
+
+/* -------- Titres du footer (h5, h6) -------- */
+.footer-dark h5,
+.footer-dark h6 {
+  color: $white-pure;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* -------- Icônes colorées en ocre -------- */
+.icon-orange {
+  color: $terracotta;
+  margin-right: 0.5rem;
+}
+
+/* -------- Lignes des horaires d'ouverture -------- */
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: none;
+  font-size: 0.95rem;
+}
+/* first-child = le PREMIER enfant span de hours-row (le jour) */
+.hours-row span:first-child {
+  font-weight: $font-weight-medium;
+  color: $white-cold;
+}
+
+/* last-child = représente le DERNIER enfant span de hours-row  (l'horaire) */
+.hours-row span:last-child {
+  color: $ocre;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Liens du footer -------- */
+.footer-dark .nav-link {
+  color: $gray-700 !important;
+  padding: 0 !important;
+  font-size: 0.95rem;
+  transition: color var(--transition-smooth);
+  text-decoration: none;
+
+  &:hover {
+    color: $terracotta !important;
+  }
+}
+
+/* augmentation de la distance entre le bloc horraire et Navigation */
+.footer-dark .col-lg-4 {
+  padding-right: 2rem;
+}
+
+.footer-dark .col-lg-4:last-child {
+  padding-right: 0;
+}
+
+.footer-dark .col-lg-4:nth-child(3),
+.footer-dark .col-lg-4:nth-child(3) .col-6,
+.footer-divider div {
+  text-align: center;
+}
+
+.footer-dark .col-lg-4:nth-child(3) h5,
+.footer-dark .col-lg-4:nth-child(3) h6,
+.footer-dark .col-lg-4 h5,
+.footer-logo {
+  justify-content: center;
+}
+
+/* -------- Séparateur horizontal -------- */
+.footer-dark .border-secondary {
+  border-color: $divider-border !important;
+
+}
+
+/* -------- Diviseur du footer (bas) -------- */
+.footer-divider {
+  border-top: 1px solid  $divider-border;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: $divider-color;
+}
+
+/* -------- Responsive Tablette -------- */
+@media (max-width: 1200px) {
+  .footer-dark {
+    padding: 2rem 0 0;
+    margin-top: 0;
+  }
+
+  .footer-dark h5,
+  .footer-dark h6 {
+    font-size: 1rem;
+
+  }
+}
+
+/* -------- Responsive Mobile -------- */
+@media (max-width: 768px) {
+  .footer-dark {
+    min-height: 5rem;
+    padding: 1.5rem 0 0;
+    margin-top: 0;
+  }
+
+  .footer-divider {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    padding: 1.5rem 0;
+  }
+
+  .footer-divider div {
+    text-align: center;
+    font-size: 0.85rem;
+  }
+
+  .footer-logo {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-dark h5,
+  .footer-dark h6,
+  .row,
+  .footer-dark h5 {
+    justify-content: center;
+  }
+
+  .footer-dark .col-6 {
+    text-align: center;
+  }
+
+  .footer-dark p {
+    text-align: center;
+  }
+}

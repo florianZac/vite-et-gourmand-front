@@ -1,0 +1,195 @@
+<!-- ================= Section Hero Inscription ================= -->
+<section class="inscription-hero py-5">
+  <div class="container">
+    <!-- Titre -->
+    <h1 class="inscription-hero-title">Créer un compte</h1>
+    <!-- Description -->
+    <p class="inscription-hero-description">Rejoignez Vite & Gourmand pour commander votre première douceur en ligne.</p>
+  </div>
+</section>
+
+<!-- ================= Section Formulaire Inscription ================= -->
+<section class="inscription-section">
+  <div class="container">
+    <!-- Icône -->
+    <div class="inscription-icon">
+      <img src="/Assets/Images/logo-vite-gourmand_transparent.png" 
+           alt="Logo Vite & Gourmand"
+           class="inscription-icon-img"> 
+    </div>
+    
+    <!-- Carte d'inscription -->
+    <div class="inscription-card">
+      
+      <!-- Formulaire -->
+      <form class="inscription-form">
+        
+        <!-- Prénom et Nom (2 colonnes) -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="PrenomInput" class="form-label">Prénom <span class="required">*</span></label>
+            <input 
+              type="text" 
+              class="form-control inscription-input" 
+              id="PrenomInput" 
+              placeholder="Julie"
+              name="Prenom"
+              autocomplete="given-name"
+              required
+            >
+            <div class="invalid-feedback">
+              Le Prénom est requis.
+            </div>
+            <div class="valid-feedback">
+              Le Prénom est remplis.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="NomInput" class="form-label">Nom <span class="required">*</span></label>
+            <input 
+              type="text" 
+              class="form-control inscription-input" 
+              id="NomInput" 
+              placeholder="Moreau"
+              name="Nom"
+              
+              required
+            >
+            <div class="invalid-feedback">
+              Le Nom est requis.
+            </div>
+            <div class="valid-feedback">
+              Le Nom est remplis.
+            </div>
+          </div>
+        </div>
+
+        <!-- Téléphone -->
+        <div class="mb-4">
+          <label for="PhoneInput" class="form-label">Téléphone <span class="required">*</span></label>
+          <input 
+            type="tel" 
+            class="form-control inscription-input" 
+            id="PhoneInput" 
+            placeholder="06 12 34 56 78"
+            name="Phone"
+            required
+          >
+          <div class="invalid-feedback">
+            Le Téléphone est requis.
+          </div>
+          <div class="valid-feedback">
+            Le Téléphone est correct.
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label for="EmailInput" class="form-label">Email <span class="required">*</span></label>
+          <input 
+            type="email" 
+            class="form-control inscription-input" 
+            id="EmailInput" 
+            placeholder="nom@exemple.com"
+            name="Email"
+            required
+          >
+          <div class="invalid-feedback">
+            Le mail est requis.
+          </div>
+          <div class="valid-feedback">
+            Le mail est correct.
+          </div>
+        </div>
+
+        <!-- Adresse -->
+        <div class="mb-4">
+          <label for="AddressInput" class="form-label">Adresse <span class="required">*</span></label>
+          <input 
+            type="text" 
+            class="form-control inscription-input" 
+            id="AddressInput" 
+            placeholder="12 rue des Roses"
+            name="Address"
+            required
+          >
+          <div class="invalid-feedback">
+            L'Adresse est requis.
+          </div>
+          <div class="valid-feedback">
+            L'Adresse est correct.
+          </div>
+        </div>
+
+        <!-- Ville et Code Postal (2 colonnes) -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <label for="VilleInput" class="form-label">Ville <span class="required">*</span></label>
+            <input 
+              type="text" 
+              class="form-control inscription-input" 
+              id="VilleInput" 
+              placeholder="Bordeaux"
+              name="City"
+              required
+            >
+            <div class="invalid-feedback">
+              Le Ville est requis.
+            </div>
+            <div class="valid-feedback">
+              Le Ville est remplis.
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="PostalInput" class="form-label">Code postal <span class="required">*</span></label>
+            <input 
+              type="text" 
+              class="form-control inscription-input" 
+              id="PostalInput" 
+              placeholder="33000"
+              name="PostalCode"
+              required
+            >
+            <div class="invalid-feedback">
+              Le Code postal est requis.
+            </div>
+            <div class="valid-feedback">
+              Le Code postal est remplis.
+            </div>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="mb-4">
+          <label for="PasswordInput" class="form-label">Mot de passe <span class="required">*</span></label>
+          <div class="password-wrapper">
+            <input 
+              type="password" 
+              class="form-control inscription-input" 
+              id="PasswordInput" 
+              placeholder="Votre mot de passe"
+              name="Password"
+              required
+            >
+            <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher / masquer le mot de passe">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bouton d'inscription -->
+        <button type="submit" class="btn btn-inscription-submit w-100 mb-3">
+          <i class="bi bi-person-fill-add me-2"></i> Créer mon compte
+        </button>
+
+      </form>
+
+      <!-- Lien vers connexion -->
+      <div class="inscription-login">
+        <span>Déjà un compte ?</span>
+        <a href="/login">Se connecter</a>
+      </div>
+
+    </div>
+  </div>
+</section>

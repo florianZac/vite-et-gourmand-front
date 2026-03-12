@@ -1,0 +1,284 @@
+<!------ Détail d'un menus -------->
+<section class="detail_menu-breadcrumb">
+  <div class="container">
+    <a href="/nos_menu" class="detail_menu-breadcrumb-link">Nos menus</a>
+    <i class="bi bi-chevron-right detail_menu-breadcrumb-separator"></i>
+    <span class="detail_menu-breadcrumb-current" id="breadcrumb-menu-name">—</span>
+  </div>
+</section>
+
+<!------ Section principale : Galerie + Infos -------->
+<section class="detail_menu-main">
+  <div class="container">
+    <div class="row">
+
+      <!------ COLONNE GAUCHE : Galerie photos -------->
+      <div class="col-12 col-lg-5">
+        <div class="detail_menu-gallery">
+
+          <!-- Photo mise en avant (grande) -->
+          <div class="detail_menu-gallery-main">
+
+            <!-- Boutons modifier/supprimer (visible admin/employé uniquement) -->
+            <!-- Caché par défaut avec d-none, le JS le retire si le rôle est admin ou employé -->
+            <div class="action-image-buttons d-none" data-show="admin" id="action-image-buttons">
+              <!-- Bouton modifier ->  ouvre la modale EditionPhotoModal -->
+              <button  type="button" class="btn btn-outline-light btn-sm" id="btn-edit-photo" data-bs-toggle="modal" data-bs-target="#EditionPhotoModal" aria-label="Modifier la photo" title="Modifier la photo">
+                <i class="bi bi-pencil-square"></i>
+                <span class="visually-hidden">Modifier la photo</span>
+              </button>
+              <!-- Bouton supprimer ->  ouvre la modale SuppresionPhotoModal -->
+              <button type="button" class="btn btn-outline-light btn-sm" id="btn-delete-photo" data-bs-toggle="modal" data-bs-target="#SuppresionPhotoModal" aria-label="Supprimer la photo" title="Supprimer la photo">
+                <i class="bi bi-trash"></i>
+                <span class="visually-hidden">Supprimer la photo</span>
+              </button>
+            </div>
+
+            <!-- Flèches de navigation -->
+            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-left" id="gallery-prev" aria-label="image précédente">
+              <i class="bi bi-chevron-left"></i>
+              <span class="visually-hidden">image précédente</span>
+            </button>
+            <img src="" alt="" id="gallery-main-img" class="detail_menu-gallery-main-img">
+            <button class="detail_menu-gallery-arrow detail_menu-gallery-arrow-right" id="gallery-next" aria-label="image suivante">
+              <i class="bi bi-chevron-right"></i>
+              <span class="visually-hidden">image suivante</span>
+            </button>
+          </div>
+          
+          <!-- Miniatures 2 petites photos cliquables -->
+          <div class="detail_menu-gallery-thumbs" id="gallery-thumbs">
+            <!-- Les miniatures seront injectées ici par le JS -->
+          </div>
+
+        </div>
+      </div>
+
+      <!------ COLONNE DROITE : Infos du menu -------->
+      <div class="col-12 col-lg-7">
+        <div class="detail_menu-info">
+
+          <!-- Badges : thème + régime + statut -->
+          <div class="detail_menu-badges" id="detail-badges">
+            <!-- Injectés par le JS -->
+          </div>
+
+          <!-- Titre du menu -->
+          <h1 class="detail_menu-title" id="detail-title">—</h1>
+
+          <!-- Description -->
+          <p class="detail_menu-description" id="detail-description">—</p>
+
+          <!-- Tags des ingrédients principaux -->
+          <div class="detail_menu-tags" id="detail-tags">
+            <!-- Injectés par le JS -->
+          </div>
+
+          <!-- Card prix -->
+          <div class="detail_menu-price-card">
+            <div class="detail_menu-price">
+              <span class="detail_menu-price-amount" id="detail-price">0</span>
+              <span class="detail_menu-price-unit">€</span>
+              <span class="detail_menu-price-per">/personne</span>
+            </div>
+            <div class="detail_menu-price-info">
+              <p class="detail_menu-price-persons">
+                <i class="bi bi-people"></i>
+                Minimum <strong id="detail-min-persons">0</strong> personnes
+              </p>
+              <p class="detail_menu-price-reduction" id="detail-reduction">
+                <i class="bi bi-tag"></i>
+                <!-- Texte de réduction injecté par le JS -->
+              </p>
+            </div>
+          </div>
+
+          <!-- Bouton Commander -->
+          <div class="d-grid">
+            <button type="button" class="btn btn-detail_menu-order" id="btn-order-menu">
+              <i class="bi bi-clipboard-check"></i> Commander ce menu
+            </button>
+          </div>
+
+          <!-- Card Conditions du menu -->
+          <div class="detail_menu-conditions-card">
+            <div class="detail_menu-conditions-header">
+              <i class="bi bi-exclamation-triangle"></i>
+              <strong>Conditions du menu</strong>
+            </div>
+            <p class="detail_menu-conditions-text" id="detail-conditions">
+              <!-- Texte dynamique injecté par le JS -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!------ Section Composition du menu -------->
+<section class="detail_menu-composition">
+  <div class="container">
+
+    <h2 class="detail_menu-composition-title">Composition du menu</h2>
+
+    <!-- Grille des 3 cards : Entrée, Plat, Dessert -->
+    <div class="row" id="composition-grid">
+      <!-- Les 3 cards seront injectées ici par le JS -->
+    </div>
+
+    <!-- Lien retour aux menus -->
+    <div class="detail_menu-back">
+      <a href="/nos_menu" class="detail_menu-back-link">
+        <i class="bi bi-chevron-left"></i> Retour aux menus
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     MODALE 1 : ÉDITION / AJOUT DE PHOTO
+     Déclenchée par le bouton crayon (btn-edit-photo)
+     Permet de :
+     - Sélectionner une nouvelle image (input file)
+     - Saisir un titre (utilisé pour le champ alt de l'image)
+     - Saisir une description (méta-donnée stockée en BDD)
+     - Prévisualiser l'image avant l'envoi
+     ================================================================ -->
+<div class="modal fade" id="EditionPhotoModal" tabindex="-1" aria-labelledby="EditionPhotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content detail_menu-modal-content">
+
+      <!-- En-tête de la modale -->
+      <div class="modal-header detail_menu-modal-header">
+        <h5 class="modal-title" id="EditionPhotoModalLabel">
+          <i class="bi bi-image"></i> Modifier la photo
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+
+      <!-- Corps de la modale -->
+      <div class="modal-body">
+
+        <!-- Prévisualisation de l'image -->
+        <!-- L'image est remplacée par la nouvelle quand l'utilisateur en sélectionne une -->
+        <div class="detail_menu-modal-preview" id="edit-photo-preview">
+          <img src="" alt="Prévisualisation" id="edit-photo-preview-img">
+          <p class="detail_menu-modal-preview-text">Aperçu de l'image</p>
+        </div>
+
+        <!-- Input file pour sélectionner une nouvelle image -->
+        <div class="mb-3">
+          <label for="edit-photo-file" class="form-label">Nouvelle image <span class="required">*</span></label>
+          <input type="file" class="form-control detail_menu-modal-input" id="edit-photo-file" accept="image/*" required>
+          <small class="text-muted">Formats acceptés : JPG, PNG, WebP. Taille max : 5 Mo.</small>
+        </div>
+
+        <!-- Champ titre (sera utilisé pour l'attribut alt de l'image) -->
+        <div class="mb-3">
+          <label for="edit-photo-title" class="form-label">Titre de l'image <span class="required">*</span></label>
+          <input type="text" class="form-control detail_menu-modal-input" id="edit-photo-title" placeholder="Ex: Festin de Noël - Vue d'ensemble" required>
+        </div>
+
+        <!-- Champ description 
+        <div class="mb-3">
+          <label for="edit-photo-description" class="form-label">Description</label>
+          <textarea class="form-control detail_menu-modal-input" id="edit-photo-description" rows="3" placeholder="Description de l'image (optionnel)"></textarea>
+        </div>
+        -->
+      </div>
+
+      <!-- Pied de la modale -->
+      <div class="modal-footer detail_menu-modal-footer">
+        <!-- Bouton annuler ->  ferme la modale sans rien faire -->
+        <button type="button" class="btn detail_menu-modal-btn-cancel" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <!-- Bouton sauvegarder qui déclenche l'envoi vers l'API via le JS -->
+        <button type="button" class="btn detail_menu-modal-btn-save" id="btn-save-photo">
+          <i class="bi bi-check-lg"></i> Sauvegarder
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     MODALE 2 : SUPPRESSION DE PHOTO avec double validation
+     Déclenchée par le bouton (btn-delete-photo)
+     Étape 1 : Message d'avertissement + demande de confirmation
+     Étape 2 : L'utilisateur doit taper "SUPPRIMER" pour confirmer
+     ================================================================ -->
+<div class="modal fade" id="SuppresionPhotoModal" tabindex="-1" aria-labelledby="SuppresionPhotoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content detail_menu-modal-content">
+
+      <!-- En-tête de la modale -->
+      <div class="modal-header detail_menu-modal-header detail_menu-modal-header-danger">
+        <h5 class="modal-title" id="SuppresionPhotoModalLabel">
+          <i class="bi bi-exclamation-triangle"></i> Supprimer la photo
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+
+      <!-- Corps de la modale -->
+      <div class="modal-body">
+
+        <!-- ÉTAPE 1 : Message d'avertissement -->
+        <div id="delete-step-1">
+          <!-- Aperçu de la photo qui sera supprimée -->
+          <div class="detail_menu-modal-preview detail_menu-modal-preview-danger" id="delete-photo-preview">
+            <img src="" alt="Photo à supprimer" id="delete-photo-preview-img">
+          </div>
+
+          <!-- Message d'alerte -->
+          <div class="detail_menu-modal-alert">
+            <i class="bi bi-exclamation-circle"></i>
+            <div>
+              <strong>Attention, cette action est irréversible !</strong>
+              <p>Cette photo sera définitivement supprimée du menu. Elle ne pourra pas être récupérée.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ÉTAPE 2 : Double vérification (caché par défaut) -->
+        <div id="delete-step-2" class="d-none">
+          <p class="detail_menu-modal-confirm-text">
+            Pour confirmer la suppression, veuillez taper <strong>SUPPRIMER</strong> dans le champ ci-dessous :
+          </p>
+          <input type="text" class="form-control detail_menu-modal-input detail_menu-modal-input-danger" id="delete-confirm-input" placeholder="Tapez SUPPRIMER ici">
+          <!-- Message d'erreur si le texte ne correspond pas -->
+          <small class="text-danger d-none" id="delete-confirm-error">
+            Le texte saisi ne correspond pas. Veuillez taper exactement "SUPPRIMER".
+          </small>
+        </div>
+
+      </div>
+
+      <!-- Pied de la modale -->
+      <div class="modal-footer detail_menu-modal-footer">
+        <!-- Bouton annuler ferme la modale et remet l'étape 1 -->
+        <button type="button" class="btn detail_menu-modal-btn-cancel" data-bs-dismiss="modal" id="btn-delete-cancel">
+          Annuler
+        </button>
+
+        <!-- Bouton étape 1 "Continuer" ->  passe à l'étape 2 -->
+        <button type="button" class="btn detail_menu-modal-btn-danger" id="btn-delete-continue">
+          Continuer <i class="bi bi-chevron-right"></i>
+        </button>
+
+        <!-- Bouton étape 2 "Supprimer définitivement" ->  envoie le DELETE caché par défaut -->
+        <button type="button" class="btn detail_menu-modal-btn-danger d-none" id="btn-delete-confirm">
+          <i class="bi bi-trash"></i> Supprimer définitivement
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

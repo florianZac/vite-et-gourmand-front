@@ -1,0 +1,318 @@
+// Router/Router.js
+
+// Import des fonctions utilitaires :
+// - vérifier si un utilisateur est connecté
+// - afficher/cacher certains éléments selon le rôle
+// - récupérer le rôle de l'utilisateur
+// Import des fonctions utilitaires depuis Script/script.js
+import { isConnected, showAndHideElementsForRole, getRole } from "/Script/script.js";
+
+console.log("Router chargé");
+
+// Import de la classe Route qui sert de modèle pour définir une route
+import Route from "./Route.js";
+
+// Import de toutes les routes du site + le nom du site
+import { allRoutes, websiteName } from "./allRoutes.js";
+
+/* =====================================================
+   LOGIQUE DE ROUTAGE SPA (Single Page Application)
+   ===================================================== */
+
+// Mode debug - affichera des logs dans la console si égale à True
+const debug = true;
+
+// Création d'une route spéciale pour les pages introuvables (404)
+const route404 = new Route(
+    "404",                      // nom interne de la route
+    "Page introuvable",         // titre affiché dans le navigateur
+    "Pages/404.html",           // chemin vers le fichier HTML de la page 404
+    [],
+    
+);
+
+// Cache qui mémorise les scripts JS déjà chargés
+// Permet d'éviter de recharger plusieurs fois le même fichier JS
+const loadedScripts = new Set();
+
+/* =====================================================
+   RÉCUPÉRER LA ROUTE CORRESPONDANT À L'URL
+   ===================================================== */
+
+const getRouteByUrl = (url) => {
+    // Si l'URL est index.html ou vide on la remplace par "/"
+    if (url === "/index.html" || url === "") url = "/";
+    // Recherche dans la liste des routes celle qui correspond à l'URL
+    // Si aucune correspondance on retourne la route 404
+    return allRoutes.find(route => route.url === url) || route404;
+};
+
+/* =====================================================
+   CHANGEMENT DE LA ROUTE
+   ===================================================== */
+
+// Liste des callbacks à exécuter après chaque changement de route
+const onRouteChangeCallbacks = [];
+
+// Fonction pour suivre les changements de route
+export function onRouteChange(cb) {
+  onRouteChangeCallbacks.push(cb);
+}
+
+/* =====================================================
+   FORMATTER L'HEURE POUR LES LOGS DEBUG
+   ===================================================== */
+
+const getFormattedTime = () => {
+
+    // Récupère la date actuelle
+    const now = new Date();
+
+    // Retourne l'heure au format français sans AM/PM
+    return now.toLocaleTimeString("fr-FR", { hour12: false });
+};
+
+/* =====================================================
+   MISE À JOUR DU LIEN ACTIF DANS LA NAVBAR
+   Centralise la gestion du lien actif dans le Router
+   car pushState (utilisé par navigate) ne déclenche pas
+   l'événement popstate — seul le Router sait quand la
+   page change réellement
+   ===================================================== */
+
+const updateActiveLink = () => {
+
+    // Récupère le chemin actuel de l'URL
+    const path = window.location.pathname;
+
+    // Parcourt tous les liens de la navbar
+    document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+
+        // Récupère la destination du lien
+        const href = link.getAttribute('href');
+
+        // Si le href correspond au chemin actuel -> lien actif
+        if (href === path) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        } else {
+            link.classList.remove('active');
+            link.removeAttribute('aria-current');
+        }
+    });
+
+};
+
+/* =====================================================
+   CHARGER LE CONTENU HTML D'UNE PAGE (SPA)
+   ===================================================== */
+
+export const LoadContentPage = async () => {
+
+    // Récupère le chemin de l'URL actuelle dans le navigateur
+    const path = window.location.pathname;
+
+    // Trouve la route correspondant à cette URL
+    const actualRoute = getRouteByUrl(path);
+
+    /* =====================================================
+       VÉRIFICATION DES DROITS D'ACCÈS
+       ===================================================== */
+
+    // Tableau des rôles autorisés pour la route
+    const allRolesArray = actualRoute.authorize;
+
+    // Vérification droits
+    if (allRolesArray.length > 0) {
+        if (allRolesArray.includes("disconnected")) {
+            // Route réservée aux déconnectés
+            if (isConnected()) {
+                return navigate("/");  // Si connecté, redirige
+            }
+            // Sinon on laisse passer (déconnecté = OK)
+        } else if (!isConnected()) {
+            // Route réservée aux connectés
+            return navigate("/login");
+        } else {
+            // Route réservée à des rôles spécifiques
+            const roleUser = getRole();
+            if (!allRolesArray.includes(roleUser)) return navigate("/");
+        }
+    }
+
+    /* =====================================================
+       CHARGEMENT DU HTML DE LA PAGE
+       ===================================================== */
+    try {
+
+        // Requête HTTP pour récupérer le fichier HTML
+        const res = await fetch(actualRoute.pathHtml);
+
+        // Si erreur HTTP
+        if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+
+        // Conversion de la réponse en texte HTML
+        const html = await res.text();
+
+        // Injection du HTML dans la div principale
+        document.getElementById("main-page").innerHTML = html;
+
+
+    } catch (err) {
+
+        // Affiche l'erreur dans la console
+        console.error("Erreur chargement page :", err);
+
+        // Affiche un message d'erreur dans la page
+        document.getElementById("main-page").innerHTML = "<h2>Erreur chargement</h2>";
+    }
+
+    /* =====================================================
+       INITIALISATION DES MODALS BOOTSTRAP
+       ===================================================== */
+
+    // Recherche tous les modals présents dans la page injectée
+    document.querySelectorAll('#main-page .modal').forEach(modalEl => {
+
+        // Initialisation du modal avec Bootstrap
+        new bootstrap.Modal(modalEl);
+    });
+
+    /* =====================================================
+       CHARGEMENT DU JS SPÉCIFIQUE À LA PAGE
+       ===================================================== */
+
+    if (actualRoute.pathJS && actualRoute.pathJS.trim() !== "") {
+
+        // Fonction qui importe dynamiquement le module JS
+        const loadScript = async () => {
+            try {
+                // On force un chemin relatif correct
+                let scriptPath = actualRoute.pathJS;
+                if (!scriptPath.startsWith("./") && !scriptPath.startsWith("../") && !scriptPath.startsWith("/")) {
+                    scriptPath = "./" + scriptPath;
+                }
+
+                // Import dynamique du module
+                const mod = await import(scriptPath);
+
+                // Appelle la fonction d'initialisation correspondant à la route
+                const functionName = `init${actualRoute.title.replace(/\s/g, '')}Page`;
+                if (mod[functionName]) mod[functionName]();
+
+            } catch (err) {
+                console.error("Erreur import module JS:", err);
+            }
+        };
+
+        // Si le script doit être rechargé ou n'a jamais été chargé
+        if (actualRoute.reloadJS || !loadedScripts.has(actualRoute.pathJS)) {
+
+            // On charge le(s) script
+            loadScript();
+
+            // On ajoute le script au cache
+            if (!actualRoute.reloadJS) loadedScripts.add(actualRoute.pathJS);
+
+        } else {
+            // Sinon on recharge quand même le script
+            loadScript();
+        }
+    }
+
+    /* =====================================================
+       MISE À JOUR DU TITRE DE LA PAGE
+       ===================================================== */
+
+    document.title = `${actualRoute.title} - ${websiteName}`;
+
+    /* =====================================================
+       LOG DEBUG
+       ===================================================== */
+
+    if (debug)
+        console.log(`[SPA Router] Navigué vers ${path} à ${getFormattedTime()}`);
+
+    /* =====================================================
+       MISE À JOUR DE LA NAVBAR SELON LE RÔLE
+       ===================================================== */
+
+    if (typeof showAndHideElementsForRole === "function") {
+
+        // Affiche ou cache les éléments admin/client
+        showAndHideElementsForRole();
+    }
+
+    /* =====================================================
+       MISE À JOUR DU LIEN ACTIF DANS LA NAVBAR
+       ===================================================== */
+
+    updateActiveLink();
+
+ 
+    /* =====================================================
+       MISE À JOUR DES VALEURS DU SCROLL POUR TOUJOURS ETRE EN HAUT 
+       DE PAGE LORS DE L'OUVERTURE D4UNE NOUVELLE PAGE
+       ===================================================== */
+
+    // Scroll en haut après injection du HTML et scripts
+    const scrollToTop = () => {
+        const main = document.getElementById("main-page");
+
+        if (main.offsetHeight === 0) {
+            // Si le contenu n'est pas encore rendu, réessaie après 50ms
+            setTimeout(scrollToTop, 50);
+        } else {
+            // Contenu prêt, scroll en haut
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+    scrollToTop();
+
+};
+
+/* =====================================================
+   NAVIGATION SPA
+   ===================================================== */
+
+export const navigate = (url) => {
+
+    // Change l'URL dans la barre du navigateur sans recharger la page
+    window.history.pushState({}, "", url);
+
+    // Recharge le contenu correspondant à la nouvelle route
+    LoadContentPage();
+
+    // Notification à tous les abonnés que la route a changé
+    onRouteChangeCallbacks.forEach(cb => cb());
+};
+
+/* =====================================================
+   INTERCEPTION DES CLICS SUR LES LIENS INTERNES
+   ===================================================== */
+// Event delegation pour les liens internes SPA
+document.addEventListener("click", (event) => {
+
+    // Cherche si on a cliqué sur un lien interne
+    const link = event.target.closest('a[href^="/"]');
+
+    // Si ce n'est pas un lien interne on ignore
+    if (!link) return;
+
+    // Empêche le comportement normal du lien
+    event.preventDefault();
+
+    // Navigation SPA
+    navigate(link.getAttribute("href"));
+});
+
+
+/* =====================================================
+   GESTION DU BOUTON RETOUR / AVANT DU NAVIGATEUR
+   ===================================================== */
+
+// Lorsque l'utilisateur clique sur retour ou avance
+window.onpopstate = LoadContentPage;
+
+// Charge la page correspondant à l'URL actuelle
+LoadContentPage();

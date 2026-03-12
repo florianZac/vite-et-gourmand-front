@@ -1,0 +1,260 @@
+<!------ Section Hero Commander -------->
+<section class="commander-hero py-5">
+  <div class="container">
+    <h1 class="commander-hero-title">Ma commande</h1>
+  </div>
+</section>
+
+<!------ Section Formulaire Commander -------->
+<section class="commander-section">
+  <div class="container">
+
+    <!-- Stepper -->
+    <div class="commander-stepper">
+      <div class="commander-step active" data-step="1">
+        <span class="commander-step-number">1. Informations</span>
+      </div>
+      <i class="bi bi-chevron-right commander-step-separator"></i>
+      <div class="commander-step" data-step="2">
+        <span class="commander-step-number">2. Livraison</span>
+      </div>
+      <i class="bi bi-chevron-right commander-step-separator"></i>
+      <div class="commander-step" data-step="3">
+        <span class="commander-step-number">3. Menu &amp; Récap</span>
+      </div>
+    </div>
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+         <!------ ÉTAPE 1 : Informations -------->
+        <div class="commander-panel" id="step-1">
+          <h2 class="commander-subtitle">Vos informations</h2>
+
+          <div class="commander-card">
+            <form class="commander-form" id="form-step-1">
+
+              <!-- Prénom et Nom -->
+              <div class="row mb-4">
+                <div class="col-6">
+                  <label for="CommandFirstName" class="form-label">Prénom <span class="required">*</span></label>
+                  <input type="text" class="form-control commander-input" id="CommandFirstName" placeholder="Marie" required>
+                </div>
+                <div class="col-6">
+                  <label for="CommandLastName" class="form-label">Nom <span class="required">*</span></label>
+                  <input type="text" class="form-control commander-input" id="CommandLastName" placeholder="Dupont" required>
+                </div>
+              </div>
+
+              <!-- Téléphone -->
+              <div class="mb-4">
+                <label for="CommandPhone" class="form-label">Téléphone <span class="required">*</span></label>
+                <input type="tel" class="form-control commander-input" id="CommandPhone" placeholder="06 12 34 56 78" required>
+              </div>
+
+              <!-- Email -->
+              <div class="mb-4">
+                <label for="CommandEmail" class="form-label">Email <span class="required">*</span></label>
+                <input type="email" class="form-control commander-input" id="CommandEmail" placeholder="marie.dupont@email.com" required>
+              </div>
+
+              <!-- Bouton suivant -->
+              <div class="d-grid">
+                <button type="button" class="btn btn-commander-next" id="btn-next-1">
+                  Étape suivante <i class="bi bi-chevron-right"></i>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+
+        <!------ ÉTAPE 2 : Livraison -------->
+        <div class="commander-panel d-none" id="step-2">
+          <h2 class="commander-subtitle">Date et lieu de commande</h2>
+
+          <div class="commander-card">
+            <form class="commander-form" id="form-step-2">
+
+              <!-- Adresse -->
+              <div class="mb-4">
+                <label for="CommandAddress" class="form-label">Adresse <span class="required">*</span></label>
+                <input type="text" class="form-control commander-input" id="CommandAddress" placeholder="12 rue des Roses" required>
+              </div>
+
+              <!-- Ville et Code Postal -->
+              <div class="row mb-4">
+                <div class="col-6">
+                  <label for="CommandCity" class="form-label">Ville <span class="required">*</span></label>
+                  <input type="text" class="form-control commander-input" id="CommandCity" placeholder="Bordeaux" required>
+                </div>
+                <div class="col-6">
+                  <label for="CommandPostal" class="form-label">Code Postal <span class="required">*</span></label>
+                  <input type="text" class="form-control commander-input" id="CommandPostal" placeholder="33000" required>
+                </div>
+              </div>
+
+              <!-- Date et Heure -->
+              <div class="row mb-4">
+                <div class="col-6">
+                  <label for="CommandDate" class="form-label">Date <span class="required">*</span></label>
+                  <input type="date" class="form-control commander-input" id="CommandDate" required>
+                </div>
+                <div class="col-6">
+                  <label for="CommandTime" class="form-label">Heure <span class="required">*</span></label>
+                  <input type="time" class="form-control commander-input" id="CommandTime" required>
+                </div>
+              </div>
+
+              <!-- Boutons -->
+              <div class="d-flex gap-3">
+                <button type="button" class="btn btn-commander-prev flex-fill" id="btn-prev-2">
+                  Retour
+                </button>
+                <button type="button" class="btn btn-commander-next flex-fill" id="btn-next-2">
+                  Étape suivante <i class="bi bi-chevron-right"></i>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!------ ÉTAPE 3 : Menu & Récap -------->
+        <div class="commander-panel d-none" id="step-3">
+          <h2 class="commander-subtitle">Récapitulatif de commande</h2>
+
+          <!-- Carte choix menu -->
+          <div class="commander-card mb-4">
+            <h3 class="commander-card-title">Choix du menu &amp; récapitulatif</h3>
+
+            <!-- Sélection du menu -->
+            <div class="mb-4">
+              <label for="CommandMenu" class="form-label">Menus <span class="required">*</span></label>
+              <select class="form-select commander-input" id="CommandMenu" required>
+                <option value="" disabled selected>Choisir un menu</option>
+                <option value="traditionnel" data-price="58">Festin de Noël Traditionnel</option>
+                <option value="prestige" data-price="75">Menu Prestige</option>
+                <option value="vegetarien" data-price="45">Menu Végétarien</option>
+                <option value="brunch" data-price="35">Brunch Gourmand</option>
+              </select>
+            </div>
+
+            <!-- Nombre de personnes -->
+            <div class="mb-3">
+              <label for="CommandPersons" class="form-label">Nombre de personnes <span class="required">*</span></label>
+              <input type="number" class="form-control commander-input" id="CommandPersons" min="1" value="10" required>
+            </div>
+          </div>
+
+          <!-- Carte prêt de matériel -->
+          <div class="commander-card mb-4">
+            <h3 class="commander-card-title">Prêt de matériel</h3>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="CommandMaterial">
+              <label class="form-check-label" for="CommandMaterial">
+                Je souhaite bénéficier du prêt de matériel de cuisine événementiel
+              </label>
+            </div>
+            <small class="commander-material-note">*voir conditions CGV pour les frais de non restitution du matériel</small>
+          </div>
+
+          <!-- Carte récapitulatif prix -->
+          <div class="commander-card mb-4">
+            <h3 class="commander-card-title">Récapitulatif</h3>
+            <div class="commander-recap-prices">
+              <div class="commander-recap-row">
+                <span class="title" >Menus :</span>
+                <span class="content" id="recap-menu-name">—</span>
+              </div>
+              <div class="commander-recap-row">
+                <span class="title" >Prix unitaire :</span>
+                <span class="content" id="recap-unit-price">—</span>
+              </div>
+              <div class="commander-recap-row">
+                <span class="title" >Nombre de personne :</span>
+                <span class="content" id="recap-persons">—</span>
+              </div>
+              <div class="commander-recap-row">
+                <span class="title" >Sous-total :</span>
+                <span class="content" id="recap-subtotal">—</span>
+              </div>
+              <div class="commander-recap-row">
+                <span class="title" >Livraison :</span>
+                <span class="content" id="recap-delivery">Gratuite</span>
+              </div>
+              <hr>
+              <div class="commander-recap-row commander-recap-total">
+                <span class="title_ttc" >Total TTC :</span>
+                <span class="content" id="recap-total">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Boutons -->
+          <div class="d-flex gap-3">
+            <button type="button" class="btn btn-commander-prev flex-fill" id="btn-prev-3">
+              Retour
+            </button>
+            <button type="button" class="btn btn-commander-submit flex-fill" id="btn-submit">
+              Confirmer la commande
+            </button>
+          </div>
+        </div>
+
+        <!------ ÉTAPE 4 : Confirmation -------->
+        <div class="commander-panel d-none" id="step-4">
+          <h2 class="commander-subtitle">Confirmation commande</h2>
+
+          <div class="commander-card text-center">
+            <!-- Icône succès -->
+            <div class="commander-confirm-icon">
+              <i class="bi bi-check-circle-fill"></i>
+            </div>
+
+            <h3 class="commander-confirm-title">Commande confirmée !</h3>
+
+            <p class="commander-confirm-text">
+              Votre commande <strong id="confirm-order-id">CMD-2026-0000</strong> a bien été enregistrée.<br>
+              Un email de confirmation vous a été envoyé à <strong id="confirm-email"></strong>.<br>
+              Julie et José vous recontacteront très prochainement.
+            </p>
+
+            <!-- Récap final -->
+            <div class="commander-confirm-recap">
+              <h4 class="commander-card-title">Récapitulatif</h4>
+              <div class="commander-recap-prices">
+                <div class="commander-recap-row">
+                  <span>Menus :</span>
+                  <span id="confirm-menu">—</span>
+                </div>
+                <div class="commander-recap-row">
+                  <span>Nombre de personne :</span>
+                  <span id="confirm-persons">—</span>
+                </div>
+                <div class="commander-recap-row">
+                  <span>Date :</span>
+                  <span id="confirm-date">—</span>
+                </div>
+                <div class="commander-recap-row commander-recap-total">
+                  <span>Total</span>
+                  <span id="confirm-total">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bouton voir mes commandes -->
+            <div class="d-grid mt-4">
+              <a href="/" class="btn btn-commander-outline">
+                Voir mes commandes
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
