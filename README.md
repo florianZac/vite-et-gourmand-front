@@ -138,10 +138,19 @@ heroku login
 heroku create vite-et-gourmand
 
 # Modification de fichier package.json
-ajouter :
+{
+  "name": "vite-et-gourmand",
+  "version": "1.0.0",
+  "description": "Vite et Gourmand - site web",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "deploy": "git add . && git commit -m \"Deploy to Heroku\" && git push heroku main"
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "http-proxy-middleware": "^3.0.5"
   }
 }
 
@@ -161,3 +170,6 @@ git push heroku main
 
 # Ouvrir le  site 
 heroku open
+
+# SI sa plante Vérifier les logs Heroku
+heroku logs --tail

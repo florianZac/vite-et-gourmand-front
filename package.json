@@ -2,9 +2,9 @@
   "name": "vite-et-gourmand",
   "version": "1.0.0",
   "description": "Vite et Gourmand - site web",
-  "main": "index.js",
+  "main": "server_prod.js",
   "scripts": {
-    "start": "node server_prod.js",
+    "start": "node server_prod.js"
   },
   "dependencies": {
     "express": "^5.2.1",
