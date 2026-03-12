@@ -4,7 +4,7 @@
   "description": "Vite et Gourmand - site web",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server_prod.js",
   },
   "dependencies": {
     "express": "^5.2.1",
