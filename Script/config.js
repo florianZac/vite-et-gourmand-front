@@ -1,2 +1,6 @@
 // config.js — URL de base de l'API
-export const API_URL = 'http://127.0.0.1:8000';
+const dev = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+
+export const API_URL = dev 
+    ? 'http://127.0.0.1:8000' 
+    : 'https://vite-et-gourmand-api.herokuapp.com';
