@@ -9,6 +9,5 @@
   "scripts": {
     "start": "node index.js",
     "deploy": "git add . && git commit -m \"Deploy to Heroku\" && git push heroku main"
-    "deploy": "npm run build && heroku deploy:jar dist --app vite-et-gourmand"
   }
 }

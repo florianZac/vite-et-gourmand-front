@@ -132,6 +132,11 @@ git init
 git add .
 git commit -m "first deploy"
 
+# Créer un compte sur heroku et lié à GIThub en ayant merger sur la branch main  et se connecté
+heroku login
+
+heroku create vite-et-gourmand
+
 # Modification de fichier package.json
 ajouter :
   "scripts": {
@@ -140,10 +145,19 @@ ajouter :
   }
 }
 
-# Créer un compt sur heroku et lié à GIThub en ayant merger sur la branch main 
-
-# créer un nom d'application  : vite-et-gourmand
-
-# Lancer la commande 
+# Créer l’application : vite-et-gourmand
 heroku create "nomdel'application"
 heroku create vite-et-gourmand
+
+# Faire le lien avec heroku 
+// fait le lien Heroku à ton projet actuelle
+heroku git:remote -a vite-et-gourmand
+
+//vérifie 
+git remote -v
+
+# Déployer le projet 
+git push heroku main
+
+# Ouvrir le  site 
+heroku open
