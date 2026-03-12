@@ -2,7 +2,11 @@
   "dependencies": {
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "express": "^5.2.1",
+    "express": "^5.2.1",,
     "http-proxy-middleware": "^3.0.5"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "git add . && git commit -m \"Deploy to Heroku\" && git push heroku main"
   }
 }
