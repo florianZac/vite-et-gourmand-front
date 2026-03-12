@@ -115,3 +115,35 @@ location.reload();
 
 
 # Déploiment
+
+# instalation de heroku via npm
+npm install -g heroku
+
+# Verifier les dépendances
+git --version
+heroku --version
+node -v
+
+# Se déplacer dans le dossier à déployer
+cd D:\wamp64\www\vite-et-gourmand-front
+
+# Initialiser Git
+git init
+git add .
+git commit -m "first deploy"
+
+# Modification de fichier package.json
+ajouter :
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "git add . && git commit -m \"Deploy to Heroku\" && git push heroku main"
+  }
+}
+
+# Créer un compt sur heroku et lié à GIThub en ayant merger sur la branch main 
+
+# créer un nom d'application  : vite-et-gourmand
+
+# Lancer la commande 
+heroku create "nomdel'application"
+heroku create vite-et-gourmand
