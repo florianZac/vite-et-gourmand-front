@@ -3,4 +3,4 @@ const dev = window.location.hostname === '127.0.0.1' || window.location.hostname
 
 export const API_URL = dev 
     ? 'http://127.0.0.1:8000' 
-    : 'https://vite-et-gourmand-api.herokuapp.com';
+    : 'https://vite-et-gourmand-api-2b0eeb54e8d5.herokuapp.com';
