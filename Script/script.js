@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+import { API_URL } from './config';
 
 /* ===============================
    GESTION DES COOKIES et ROLE
@@ -229,11 +229,9 @@ export async function getInfosUser() {
 
     const headers = new Headers();
     headers.append("Authorization", `Bearer ${token}`);
-    headers.append("X-AUTH-TOKEN", token); 
 
     if (DebugConsole) console.log("=== DEBUG HEADERS ===", {
       "Authorization": `Bearer ${token}`,
-      "X-AUTH-TOKEN": token
     });
 
     try {
