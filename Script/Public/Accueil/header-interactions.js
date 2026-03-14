@@ -26,12 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const burgerIcon = document.querySelector('.burger-icon');
   const closeIcon = document.querySelector('.close-icon');
 
-  // Sélectionne boutons connection inscription et déconnection
-  const btnConnexion = document.getElementById('btn-header-connexion');
-  const btnInscription = document.getElementById('btn-header-inscription');
+  // Sélectionne le Bouton utilisateur (visible quand connecté) -> affiche le prénom et redirige vers le compte
   const btnUser = document.getElementById('btn-user');
-
-  // Tous les liens du header
+  // Sélectionne le Bouton connexion (visible quand déconnecté) -> redirige vers /login
+  const btnConnexion = document.getElementById('btn-header-connexion');
+  // Sélectionne le Bouton déconnexion (visible quand connecté) -> déconnecte et redirige vers /
+  const btnSignout = document.getElementById('signout-btn');
+  // Sélectionne le Bouton inscription (visible quand déconnecté) -> redirige vers /inscription
+  const btnInscription = document.getElementById('btn-header-inscription');
+  // Sélectionne Tous les liens du header
   const headerLinks = document.querySelectorAll('.custom-navbar a');
 
   // Déclare les variables globales
@@ -50,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Close icon :", closeIcon);
     console.log("Bouton connexion :", btnConnexion);
     console.log("Bouton inscription :", btnInscription);
+    console.log("Bouton users :", btnUser);
     console.log("=========================");
   }
 
@@ -202,12 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
 /* ========================================
-     SECTION 5 : MISE À JOUR DU HEADER SELON LA CONNEXION
-     - 1. Si un token JWT existe dans le localStorage -> l'utilisateur est connecté
-     - 2. Le bouton "Connexion" devient : icône user + prénom -> lien vers /compte
-     - 3. Le bouton "Inscription" devient : "Déconnexion"
-     - 4. Si pas de token -> on laisse les boutons par défaut
-     ======================================== */
+    SECTION 5 : MISE À JOUR DU HEADER SELON LA CONNEXION
+    - 1. Si un token JWT existe dans le localStorage -> l'utilisateur est connecté
+    - 2. Le bouton "Connexion" devient : icône user + prénom -> lien vers /compte
+    - 3. Le bouton "Inscription" devient : "Déconnexion"
+    - 4. Si pas de token -> on laisse les boutons par défaut
+  - btnUser        : icône + prénom -> visible quand CONNECTÉ -> lien vers /commande_client.html
+  - btnSignout     : "Déconnexion"  -> visible quand CONNECTÉ -> supprime le token et redirige vers /
+  - btnConnexion   : "Connexion"    -> visible quand DÉCONNECTÉ  -> lien vers /login
+  - btnInscription : "Inscription"  -> visible quand DÉCONNECTÉ  -> lien vers /inscription
+    ======================================== */
 
   // Fonction qui met à jour les boutons selon l'état de connexion
   function updateHeaderAuth() {
@@ -215,82 +223,83 @@ document.addEventListener('DOMContentLoaded', () => {
     // Récupère le token JWT depuis le localStorage
     const token = localStorage.getItem('token');
 
-    // Si pas de token -> l'utilisateur n'est pas connecté
-    // On remet les boutons dans leur état par défaut
+    /* =============================================
+     CAS 1 : UTILISATEUR NON CONNECTÉ (pas de token)
+     ============================================= */
     if (!token) {
-      if (btnUser){
-        btnUser.style.display = 'none';
-      } 
+
+      // Cache les boutons "connecté"
+      if (btnUser) btnUser.style.display = 'none';
+      if (btnSignout) btnSignout.style.display = 'none';
+
+      // Affiche les boutons "déconnecté"
       if (btnConnexion) {
+        btnConnexion.style.display = 'inline-flex';
         btnConnexion.href = '/login';
         btnConnexion.innerHTML = 'Connexion';
       }
       if (btnInscription) {
+        btnInscription.style.display = 'inline-flex';
         btnInscription.href = '/inscription';
         btnInscription.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Inscription';
-        btnInscription.removeAttribute('id-logout');
       }
-      if (DebugConsole) console.log("Utilisateur NON connecté, boutons réinitialisés");
+
+      if (DebugConsole) console.log("Header : utilisateur NON connecté, boutons réinitialisés");
       return;
     }
 
-    // Si l'utilisateur est connecté on décode son token pour récupérer le prénom
+    /* =============================================
+     CAS 2 : UTILISATEUR CONNECTÉ (token présent)
+     ============================================= */
     try {
+      // Décode le payload du token JWT pour récupérer le prénom
       const payload = token.split('.')[1];
       const decoded = JSON.parse(atob(payload));
 
-      // Récupère le prénom depuis le payload
+      // Récupère le prénom depuis le payload du token
+      // Teste plusieurs clés possibles selon la config du JWT
       const firstName = decoded.firstName || decoded.prenom || decoded.username || 'Mon compte';
 
-      // BOUTON 1 : "Connexion" -> icône user + prénom -> lien vers /compte
-      if (btnConnexion) {
-        btnConnexion.href = '/compte';
-        btnConnexion.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+      // Cache les boutons "déconnecté"
+      if (btnConnexion) btnConnexion.style.display = 'none';
+      if (btnInscription) btnInscription.style.display = 'none';
+
+      // Affiche le bouton utilisateur avec le prénom
+      if (btnUser) {
+        btnUser.style.display = 'inline-flex';
+        btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+        btnUser.href = '/commande_client.html';
       }
 
-      // BOUTON 2 : "Inscription" -> "Déconnexion"
-      if (btnInscription) {
-        btnInscription.href = '#';
-        btnInscription.innerHTML = '<i class="bi bi-box-arrow-right"></i> Déconnexion';
+      // Affiche le bouton déconnexion et ajoute le listener
+      if (btnSignout) {
+        btnSignout.style.display = 'inline-flex';
 
-        // Ajoute le listener de déconnexion
-        if (!btnInscription.hasAttribute('data-logout')) {
-          btnInscription.setAttribute('data-logout', 'true');
-          btnInscription.addEventListener('click', (e) => {
+        // Vérifie si le listener n'a pas déjà été ajouté (évite les doublons)
+        if (!btnSignout.hasAttribute('data-logout-bound')) {
+          btnSignout.setAttribute('data-logout-bound', 'true');
+          btnSignout.addEventListener('click', (e) => {
             e.preventDefault();
-            // Supprime le token
+            // Supprime le token du localStorage
             localStorage.removeItem('token');
             // Remet les boutons en mode "non connecté"
             updateHeaderAuth();
             // Redirige vers l'accueil
             window.location.href = '/';
-            if (DebugConsole) console.log("Utilisateur déconnecté via header");
+            if (DebugConsole) console.log("Utilisateur déconnecté via bouton header");
           });
         }
       }
-      if (DebugConsole) console.log("Utilisateur connecté :", firstName, "Token :", token);
 
-      // Bouton utilisateur
-      if (btnUser) {
-        btnUser.style.display = 'inline-flex';
-        btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+      if (DebugConsole) console.log("Header : utilisateur connecté :", firstName);
 
-        // Retire tous les anciens listeners et ajoute le bon
-        const newBtnUser = btnUser.cloneNode(true);
-        btnUser.replaceWith(newBtnUser);
-        newBtnUser.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.location.href = '/commande_client.html';
-        });
-      }
     } catch (err) {
-      // Si le token est invalide, on le supprime et on remet l'état par défaut
+      // Si le token est invalide ou corrompu, on le supprime et on remet l'état par défaut
       console.error('Token JWT invalide:', err);
       localStorage.removeItem('token');
       updateHeaderAuth();
       if (DebugConsole) console.log("Token supprimé car invalide");
     }
-
   }
 
   // Scroll en haut de la page pour tous les liens HEADER sauf les ancres

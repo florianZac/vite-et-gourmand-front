@@ -70,24 +70,21 @@
         <!-- Partie droite (Connexion/Inscription ou Nom/Déconnexion) -->
         <div class="navbar-right-section">
           <!-- Bouton utilisateur -->
-          <a href="#" class="btn btn-connexion" id="btn-user" style="display:none;">
+          <a href="/commande_client.html" class="btn btn-connexion" id="btn-user" style="display:none;">
             <i class="bi bi-person"></i> Nom
           </a>
-          <!-- Bouton de connection -->
-          <a href="/login" class="btn btn-connexion" id="btn-header-connexion" data-show="disconnected">
-            Connexion
-          </a>
-          <!-- Bouton de Déconnexion -->
-          <a href="#"
-            class="btn btn-connexion"
-            id="signout-btn"
-            data-show="connected">
+          <!-- Bouton déconnexion -->
+          <a href="#" class="btn btn-connexion" id="signout-btn" style="display:none;">
             Déconnexion
           </a>
-          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription" data-show="disconnected">
+          <!-- Bouton connexion-->
+          <a href="/login" class="btn btn-connexion" id="btn-header-connexion">
+            Connexion
+          </a>
+          <!-- Bouton inscription -->
+          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription">
             <i class="bi bi-box-arrow-in-right"></i> Inscription
           </a>
-
         </div>
 
       </div>
