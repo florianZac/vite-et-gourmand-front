@@ -8,6 +8,7 @@
   // 2. FERMER LE MENU MOBILE AU CLIC
   // 3. FERMER LE MENU EN CLIQUANT DEHORS
   // 4. SMOOTH SCROLL AVEC JAVASCRIPT
+  // 5. GESTION CONNEXION / DÉCONNEXION / BOUTON UTILISATEUR
 
 // Attend que le DOM soit complètement chargé avant d'exécuter le code afin de garantir que tous les éléments HTML sont disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,6 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Sélectionne les icônes burger et X pour l'affichage/masquage
   const burgerIcon = document.querySelector('.burger-icon');
   const closeIcon = document.querySelector('.close-icon');
+
+  // Sélectionne boutons connection inscription et déconnection
+  const btnConnexion = document.getElementById('btn-header-connexion');
+  const btnInscription = document.getElementById('btn-header-inscription');
+  const btnUser = document.getElementById('btn-user');
+
+  // Tous les liens du header
+  const headerLinks = document.querySelectorAll('.custom-navbar a');
 
   // Déclare les variables globales
   // lastScrollTop = sauvegarde la dernière position du scroll pour détecter la direction
@@ -200,10 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
      - 4. Si pas de token -> on laisse les boutons par défaut
      ======================================== */
 
-  // Récupère les deux boutons du header via leurs ID
-  const btnConnexion = document.getElementById('btn-header-connexion');
-  const btnInscription = document.getElementById('btn-header-inscription');
-
   // Fonction qui met à jour les boutons selon l'état de connexion
   function updateHeaderAuth() {
 
@@ -213,6 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si pas de token -> l'utilisateur n'est pas connecté
     // On remet les boutons dans leur état par défaut
     if (!token) {
+      if (btnUser){
+        btnUser.style.display = 'none';
+      } 
       if (btnConnexion) {
         btnConnexion.href = '/login';
         btnConnexion.innerHTML = 'Connexion';
@@ -220,15 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (btnInscription) {
         btnInscription.href = '/inscription';
         btnInscription.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Inscription';
-
-        // On retire le listener de déconnexion si il existe
         btnInscription.removeAttribute('id-logout');
       }
       if (DebugConsole) console.log("Utilisateur NON connecté, boutons réinitialisés");
       return;
     }
 
-    // Si on a un token -> on le décode pour récupérer le prénom
+    // Si l'utilisateur est connecté on décode son token pour récupérer le prénom
     try {
       const payload = token.split('.')[1];
       const decoded = JSON.parse(atob(payload));
@@ -264,34 +270,28 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (DebugConsole) console.log("Utilisateur connecté :", firstName, "Token :", token);
 
+      // Bouton utilisateur
+      if (btnUser) {
+        btnUser.style.display = 'inline-flex';
+        btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+
+        // Retire tous les anciens listeners et ajoute le bon
+        const newBtnUser = btnUser.cloneNode(true);
+        btnUser.replaceWith(newBtnUser);
+        newBtnUser.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = '/commande_client.html';
+        });
+      }
     } catch (err) {
       // Si le token est invalide, on le supprime et on remet l'état par défaut
       console.error('Token JWT invalide:', err);
       localStorage.removeItem('token');
+      updateHeaderAuth();
       if (DebugConsole) console.log("Token supprimé car invalide");
     }
 
-    // Récupère le bouton utilisateur
-    const btnUser = document.getElementById('btn-user');
-
-    // Si connecté
-    if (token && btnUser) {
-      btnUser.style.display = 'inline-flex'; // Affiche le bouton
-      btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
-
-      // Redirection vers commande_client.html au clic
-      btnUser.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = '/commande_client.html';
-      });
-    } else if (btnUser) {
-      btnUser.style.display = 'none'; // Cache le bouton si pas connecté
-    }
-
   }
-
-  // Tous les liens du header
-  const headerLinks = document.querySelectorAll('.custom-navbar a');
 
   // Scroll en haut de la page pour tous les liens HEADER sauf les ancres
   headerLinks.forEach(link => {
