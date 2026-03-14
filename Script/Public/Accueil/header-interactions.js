@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastScrollTop = 0;
   // isSmoothing = indique si un smooth scroll est en cours (pour éviter les conflits)
   let isSmoothing = false;
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   if (DebugConsole) {
     console.log("=== DEBUG INIT HEADER ===");
