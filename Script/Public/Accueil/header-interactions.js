@@ -270,6 +270,24 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('token');
       if (DebugConsole) console.log("Token supprimé car invalide");
     }
+
+    // Récupère le bouton utilisateur
+    const btnUser = document.getElementById('btn-user');
+
+    // Si connecté
+    if (token && btnUser) {
+      btnUser.style.display = 'inline-flex'; // Affiche le bouton
+      btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
+
+      // Redirection vers commande_client.html au clic
+      btnUser.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '/commande_client.html';
+      });
+    } else if (btnUser) {
+      btnUser.style.display = 'none'; // Cache le bouton si pas connecté
+    }
+
   }
 
   // Tous les liens du header
