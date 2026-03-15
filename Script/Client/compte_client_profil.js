@@ -1,4 +1,6 @@
 import { API_URL } from '../config.js';
+import { getToken, getRole } from '../script.js';
+
 export function initcompte_client_profilPage() {
 
   /* ===============================
@@ -19,9 +21,44 @@ export function initcompte_client_profilPage() {
       pour authentifier les requêtes
      =============================== */
 
+  // Variable debug console si à true
+  let DebugConsole = false;
+
+  // URL de récupération des infos de l'utilisateur
+  const apiMeUrl = `${API_URL}/api/me`;
   
-  // Récupère le token JWT pour l'authentification des requêtes
-  const token = localStorage.getItem('token');
+  if (DebugConsole) {
+    console.log("=== DEBUG CONFIG API ===");
+    console.log("API_URL :", API_URL);
+    console.log("apiMeUrl :", apiMeUrl);
+    console.log("========================");
+  }
+
+  /* ===============================
+      RECUPERATION DES INFOS UTILISATEURS
+     =============================== */
+
+  // Récupère le token JWT depuis le cookie (géré par script.js)
+  const token = getToken();
+
+  if (!token) {
+    console.error('Pas de token, impossible de charger les commandes');
+    return;
+  }
+
+  if (DebugConsole) {
+    console.log("=== DEBUG INIT COMPTE CLIENT ===");
+    console.log("Cookies actuels :", document.cookie);
+    console.log("Token actuel :", token);
+    console.log("Rôle actuel :", getRole());
+    console.log("================================");
+  }
+
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
 
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
@@ -56,12 +93,16 @@ export function initcompte_client_profilPage() {
       const payload = token.split('.')[1];
       const decoded = JSON.parse(atob(payload));
       const firstName = decoded.firstName || decoded.prenom || decoded.username || '';
-
+      
+      if (DebugConsole){
+        console.log("Token décodé :", decoded);
+      }
       const heroName = document.getElementById('hero-user-name');
-      if (heroName) heroName.textContent = firstName;
-
+      if (heroName) {
+        heroName.textContent = firstName;
+      }
     } catch (err) {
-      console.error('Erreur décodage token:', err);
+      if (DebugConsole) console.error('Erreur décodage token:', err);
     }
   }
 
@@ -73,24 +114,29 @@ export function initcompte_client_profilPage() {
      =============================== */
 
   async function loadUsercompte_client_profil() {
+    if (DebugConsole) console.log("[loadUsercompte_client_profil] Début - Appel GET", apiCommandesUrl);
+    
     try {
-      const response = await fetch(`${BASE_URL}/me`, {
+      const response = await fetch(apiCommandesUrl, {
         method: 'GET',
-        headers: {
-          // Le token JWT permet à l'API de savoir quel utilisateur est connecté
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+        headers: authHeaders
       });
+
+
+      if (DebugConsole) console.log("[loadUsercompte_client_profil] Réponse status :", response.status);
+
 
       // Si la réponse n'est pas OK (401 non autorisé, 500 erreur serveur, etc.)
       if (!response.ok) {
         console.error('Erreur chargement profil:', response.status);
+        if (DebugConsole) console.error('Erreur chargement profil:', response.status);
         return;
       }
 
       // Parse la réponse JSON contenant les données utilisateur
       const user = await response.json();
+
+      if (DebugConsole) console.log("Profil reçu depuis l'API :", user);
 
       // Remplit chaque champ du formulaire avec les données de l'API
       // L'opérateur ?. évite une erreur si l'élément DOM n'existe pas
@@ -105,11 +151,11 @@ export function initcompte_client_profilPage() {
       // Met à jour le nom et l'email affichés sous l'avatar
       updateDisplayIdentity();
 
-      console.log(' Profil chargé avec succès');
+      if (DebugConsole) console.log('Profil chargé avec succès');
 
     } catch (err) {
       // Erreur réseau
-      console.error('Erreur réseau chargement profil:', err);
+      if (DebugConsole) console.error('Erreur réseau chargement profil:', err);
     }
   }
 
@@ -127,12 +173,21 @@ export function initcompte_client_profilPage() {
     const lastName = lastNameInput?.value || '';
     const email = emailInput?.value || '';
 
+    if (DebugConsole) {
+      console.log("Mise à jour affichage identité");
+      console.log("Prénom :", firstName);
+      console.log("Nom :", lastName);
+      console.log("Email :", email);
+    }
+
     // Met à jour le nom affiché sous l'avatar
     // Si les deux champs sont vides, affiche un tiret
     if (displayName) {
-      displayName.textContent = (firstName || lastName)
-        ? `${firstName} ${lastName}`.trim()
-        : '—';
+      if (firstName || lastName) {
+        displayName.textContent = (firstName + " " + lastName).trim();
+      } else {
+        displayName.textContent = "—";
+      }
     }
 
     // Met à jour l'email affiché sous le nom
@@ -161,7 +216,7 @@ export function initcompte_client_profilPage() {
       postalCode: postalInput?.value || ''
     };
 
-    console.log(' Données profil à sauvegarder:', compte_client_profilData);
+    if (DebugConsole) console.log('Données profil à sauvegarder:', compte_client_profilData);
 
     try {
       const response = await fetch(`${BASE_URL}/me`, {
@@ -180,19 +235,20 @@ export function initcompte_client_profilPage() {
       if (response.ok) {
         // Succès : met à jour l'affichage sous l'avatar
         updateDisplayIdentity();
-        console.log(' Profil sauvegardé avec succès');
+        
+        if (DebugConsole) console.log('Profil sauvegardé avec succès');
 
         // Affiche un message de confirmation à l'utilisateur
         showNotification('Vos modifications ont été sauvegardées.', 'success');
       } else {
         // L'API a retourné une erreur (validation, etc.)
-        console.error('Erreur sauvegarde profil:', data.message || data);
+        if (DebugConsole) console.error('Erreur sauvegarde profil:', data.message || data);
         showNotification('Erreur lors de la sauvegarde.', 'error');
       }
-
     } catch (err) {
-      console.error('Erreur réseau sauvegarde profil:', err);
+      if (DebugConsole) console.error('Erreur réseau sauvegarde profil:', err);
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
+
     }
   }
 
@@ -213,7 +269,7 @@ export function initcompte_client_profilPage() {
     // Si l'utilisateur annule, on ne fait rien
     if (!confirmed) return;
 
-    console.log('🗑️ Demande de suppression du compte...');
+    if (DebugConsole) console.log('Demande de suppression du compte...');
 
     try {
       const response = await fetch(`${BASE_URL}/me`, {
@@ -225,8 +281,8 @@ export function initcompte_client_profilPage() {
       });
 
       if (response.ok) {
-        console.log(' Compte supprimé avec succès');
-
+       
+        if (DebugConsole) console.log('Compte supprimé avec succès');
         // Supprime le token JWT lors de la déconnexion
         localStorage.removeItem('token');
 
@@ -234,12 +290,13 @@ export function initcompte_client_profilPage() {
         window.location.href = '/';
       } else {
         const data = await response.json();
-        console.error('Erreur suppression compte:', data.message || data);
+        if (DebugConsole) console.error('Erreur suppression compte:', data.message || data);
         showNotification('Erreur lors de la suppression du compte.', 'error');
+
       }
 
     } catch (err) {
-      console.error('Erreur réseau suppression compte:', err);
+      if (DebugConsole) console.error('Erreur réseau suppression compte:', err);
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
     }
   }
@@ -261,7 +318,7 @@ export function initcompte_client_profilPage() {
 
     if (!confirmed) return;
 
-    console.log(' Demande de désactivation du compte...');
+    if (DebugConsole) console.log('Demande de désactivation du compte...');
 
     try {
       const response = await fetch(`${BASE_URL}/me/deactivate`, {
@@ -273,19 +330,22 @@ export function initcompte_client_profilPage() {
       });
 
       if (response.ok) {
-        console.log(' Demande de désactivation envoyée');
+        if (DebugConsole) console.log('Demande de désactivation envoyée');
         showNotification(
           'Votre demande de désactivation a été envoyée. Un administrateur la traitera prochainement.',
           'success'
         );
       } else {
+
         const data = await response.json();
-        console.error('Erreur désactivation:', data.message || data);
+        if (DebugConsole) console.error('Erreur désactivation:', data.message || data);
         showNotification('Erreur lors de la demande de désactivation.', 'error');
+
       }
 
     } catch (err) {
-      console.error('Erreur réseau désactivation:', err);
+      
+      if (DebugConsole) console.error('Erreur réseau désactivation:', err);
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
     }
   }
@@ -299,7 +359,8 @@ export function initcompte_client_profilPage() {
      =============================== */
 
   function showNotification(message, type = 'success') {
-
+    
+    if (DebugConsole) console.log("Notification :", message, type);
     // Supprime une éventuelle notification déjà affichée
     const existing = document.querySelector('.compte_client_profil-notification');
     if (existing) existing.remove();

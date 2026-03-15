@@ -26,7 +26,7 @@ export function initContactPage() {
   const apiContact = `${API_URL}/api/contact`;
 
   // Variable debug console si à true
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   // Variable pour éviter le double click lors de la connection
   let isSubmitting = false; 

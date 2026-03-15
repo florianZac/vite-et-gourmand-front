@@ -34,6 +34,9 @@ export function initCommanderPage() {
   // Par défaut à 0 (= livraison gratuite)
   let deliveryFee = 0;
 
+  // Variable debug console si à true
+  let DebugConsole = false;
+
   /* ===============================
       CONFIGURATION API
       =============================== */
