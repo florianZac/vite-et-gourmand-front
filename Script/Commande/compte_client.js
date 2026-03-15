@@ -625,7 +625,10 @@ export function initCommandePage() {
 
     // Branche les listeners sur les boutons annuler après injection dans le DOM
     setupCancelButtons();
-    if (DebugConsole) console.log("[renderOrders] Terminé - Tous les listeners annuler branchés");
+
+    // Branche les listeners sur les boutons "Laisser un avis"
+    setupAvisButtons();
+    if (DebugConsole) console.log("[renderOrders] Terminé - Tous les listeners branchés");
   }
 
 
