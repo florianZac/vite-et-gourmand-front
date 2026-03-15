@@ -333,20 +333,14 @@ export function initcompte_client_profilPage() {
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
     }
   }
-
   
   /* ===============================
      FONCTION : SUPPRIMER LE COMPTE
-     Note : Ton back n'a pas de route DELETE pour supprimer le compte client.
-     Pour l'instant, on redirige vers la demande de désactivation.
-     Si tu ajoutes une route DELETE /api/client/profil plus tard, 
-     il suffira de remplacer le contenu de cette fonction.
      =============================== */
-
   async function deleteAccount() {
     const confirmed = confirm(
       'Êtes-vous sûr de vouloir supprimer votre compte ?\n\n' +
-      'Cette action enverra une demande de désactivation à l\'administrateur.'
+      'Cette action est irréversible. Toutes vos données (commandes, avis) seront définitivement supprimées.'
     );
 
     if (!confirmed) {
@@ -354,11 +348,34 @@ export function initcompte_client_profilPage() {
       return;
     }
 
-    if (DebugConsole) console.log("[deleteAccount] Redirection vers demande de désactivation");
+    if (DebugConsole) console.log("[deleteAccount] Appel DELETE", apiProfilUrl);
 
-    // Pour l'instant, même comportement que la désactivation
-    // car le back n'a pas de route DELETE /api/client/profil
-    await requestDeactivation();
+    try {
+      const response = await fetch(apiProfilUrl, {
+        method: 'DELETE',
+        headers: authHeaders
+      });
+
+      const result = await response.json();
+
+      if (DebugConsole) {
+        console.log("[deleteAccount] Réponse status :", response.status);
+        console.log("[deleteAccount] Réponse body :", result);
+      }
+
+      if (response.ok) {
+        if (DebugConsole) console.log("[deleteAccount] Compte supprimé avec succès");
+        alert('Votre compte a été supprimé.');
+        // Déconnecte l'utilisateur et redirige vers l'accueil
+        signout();
+      } else {
+        showNotification(result.message || 'Erreur lors de la suppression du compte.', 'error');
+      }
+
+    } catch (err) {
+      console.error('[deleteAccount] Erreur réseau :', err);
+      showNotification('Erreur réseau, veuillez réessayer.', 'error');
+    }
   }
 
   /* ===============================
