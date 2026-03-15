@@ -1,37 +1,41 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { getToken, getRole, signout } from '../script.js';
 
 export function initcompte_client_profilPage() {
 
   /* ===============================
-   SCRIPT PAGE compte client profil
+   SCRIPT PAGE COMPTE CLIENT PROFIL
    Gère :
-    0. Le mise à jour du nom en haut de page
-    1. Le chargement des données utilisateur depuis l'API (GET)
-    2. La sauvegarde des modifications du compte client profil (PUT)
-    3. La suppression du compte (DELETE)
-    4. La demande de désactivation du compte (PATCH)
-    5. La navigation par onglets (Mes commandes / Mon compte client profil)
+    0. L'affichage du prénom dans le hero via /api/me
+    1. Le chargement des données utilisateur via GET /api/client/profil
+    2. La sauvegarde des modifications via PUT /api/client/profil
+    3. La demande de désactivation du compte via POST /api/client/compte/desactivation
+    4. La navigation par onglets (Mes commandes / Mon profil)
    =============================== */
+
+  // Variable debug console
+  let DebugConsole = true;
 
   /* ===============================
      CONFIGURATION API
-     - 1. BASE_URL : URL de base de l'API Symfony
-     - 2. On récupère le token JWT stocké dans le localStorage
-      pour authentifier les requêtes
      =============================== */
 
-  // Variable debug console si à true
-  let DebugConsole = false;
-
-  // URL de récupération des infos de l'utilisateur
+  // URL de récupération des infos utilisateur (prénom hero)
   const apiMeUrl = `${API_URL}/api/me`;
-  
+
+  // URL du profil client (GET pour charger, PUT pour sauvegarder)
+  const apiProfilUrl = `${API_URL}/api/client/profil`;
+
+  // URL de demande de désactivation du compte
+  const apiDesactivationUrl = `${API_URL}/api/client/compte/desactivation`;
+ 
   if (DebugConsole) {
-    console.log("=== DEBUG CONFIG API ===");
+    console.log("=== DEBUG CONFIG API PROFIL ===");
     console.log("API_URL :", API_URL);
     console.log("apiMeUrl :", apiMeUrl);
-    console.log("========================");
+    console.log("apiProfilUrl :", apiProfilUrl);
+    console.log("apiDesactivationUrl :", apiDesactivationUrl);
+    console.log("===============================");
   }
 
   /* ===============================
@@ -42,12 +46,12 @@ export function initcompte_client_profilPage() {
   const token = getToken();
 
   if (!token) {
-    console.error('Pas de token, impossible de charger les commandes');
+    console.error('Pas de token, impossible de charger le profil');
     return;
   }
 
   if (DebugConsole) {
-    console.log("=== DEBUG INIT COMPTE CLIENT ===");
+    console.log("=== DEBUG INIT PROFIL ===");
     console.log("Cookies actuels :", document.cookie);
     console.log("Token actuel :", token);
     console.log("Rôle actuel :", getRole());
@@ -64,11 +68,11 @@ export function initcompte_client_profilPage() {
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
-  // Champs du formulaire compte client profil
+  // Champs du formulaire profil
   const firstNameInput = document.getElementById('compte_client_profilFirstName');
   const lastNameInput = document.getElementById('compte_client_profilLastName');
   const phoneInput = document.getElementById('compte_client_profilPhone');
-  const emailInput = document.getElementById('compte_client_profilmail');
+  const emailInput = document.getElementById('compte_client_profilEmail');
   const addressInput = document.getElementById('compte_client_profilAddress');
   const cityInput = document.getElementById('compte_client_profilCity');
   const postalInput = document.getElementById('compte_client_profilPostal');
@@ -82,80 +86,108 @@ export function initcompte_client_profilPage() {
   const btnDelete = document.getElementById('btn-delete-account');
   const btnDeactivate = document.getElementById('btn-deactivate-account');
 
+  if (DebugConsole) {
+    console.log("[DOM] Champs trouvés :", {
+      firstNameInput: !!firstNameInput,
+      lastNameInput: !!lastNameInput,
+      phoneInput: !!phoneInput,
+      emailInput: !!emailInput,
+      addressInput: !!addressInput,
+      cityInput: !!cityInput,
+      postalInput: !!postalInput,
+      displayName: !!displayName,
+      displayEmail: !!displayEmail,
+      btnSave: !!btnSave,
+      btnDelete: !!btnDelete,
+      btnDeactivate: !!btnDeactivate,
+    });
+  }
+
   /* ===============================
     AFFICHAGE DU PRÉNOM DANS LE HERO
-    - 1.  Décode le token JWT pour récupérer le prénom
-    - 2.  Remplit le span #hero-user-name avec le prénom
+    - 1.  Appelle GET /api/me
+    - 2.  Récupère le prénom depuis { utilisateur: { prenom, ... } }
+    - 3.  Remplit le span #hero-user-name
     =============================== */
 
-  if (token) {
+
+  async function loadHeroName() {
+    if (DebugConsole) console.log("[loadHeroName] Début - Appel GET", apiMeUrl);
+
     try {
-      const payload = token.split('.')[1];
-      const decoded = JSON.parse(atob(payload));
-      const firstName = decoded.firstName || decoded.prenom || decoded.username || '';
-      
-      if (DebugConsole){
-        console.log("Token décodé :", decoded);
-      }
+      const response = await fetch(apiMeUrl, {
+        method: 'GET',
+        headers: authHeaders
+      });
+
+      if (DebugConsole) console.log("[loadHeroName] Réponse status :", response.status);
+
+      if (!response.ok) return;
+
+      const data = await response.json();
+      if (DebugConsole) console.log("[loadHeroName] Données reçues :", data);
+
       const heroName = document.getElementById('hero-user-name');
-      if (heroName) {
-        heroName.textContent = firstName;
+      if (heroName && data.utilisateur) {
+        heroName.textContent = data.utilisateur.prenom || data.utilisateur.email || '';
+        if (DebugConsole) console.log("[loadHeroName] Prénom affiché :", data.utilisateur.prenom);
       }
+
     } catch (err) {
-      if (DebugConsole) console.error('Erreur décodage token:', err);
+      console.error('[loadHeroName] Erreur :', err);
     }
   }
 
   /* ===============================
      FONCTION : CHARGER LES DONNÉES UTILISATEUR
      - 1. Appelle GET /api/me qui retourne le compte client profil connecté
-     - 2. Remplit tous les champs du formulaire avec les données reçues
-     - 3. Met à jour le nom et l'email affichés sous l'avatar
+     - 2. Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
+     - 3. Remplit tous les champs du formulaire avec les données reçues
+     - 4. Met à jour le nom et l'email affichés sous l'avatar
      =============================== */
 
-  async function loadUsercompte_client_profil() {
-    if (DebugConsole) console.log("[loadUsercompte_client_profil] Début - Appel GET", apiCommandesUrl);
-    
+  async function loadUserProfil() {
+    if (DebugConsole) console.log("[loadUserProfil] Début - Appel GET", apiProfilUrl);
+
     try {
-      const response = await fetch(apiCommandesUrl, {
+      const response = await fetch(apiProfilUrl, {
         method: 'GET',
         headers: authHeaders
       });
 
+      if (DebugConsole) console.log("[loadUserProfil] Réponse status :", response.status);
 
-      if (DebugConsole) console.log("[loadUsercompte_client_profil] Réponse status :", response.status);
-
-
-      // Si la réponse n'est pas OK (401 non autorisé, 500 erreur serveur, etc.)
       if (!response.ok) {
-        console.error('Erreur chargement profil:', response.status);
-        if (DebugConsole) console.error('Erreur chargement profil:', response.status);
+        console.error('[loadUserProfil] Erreur chargement profil:', response.status);
         return;
       }
 
-      // Parse la réponse JSON contenant les données utilisateur
-      const user = await response.json();
+      const data = await response.json();
+      if (DebugConsole) console.log("[loadUserProfil] Données reçues :", data);
 
-      if (DebugConsole) console.log("Profil reçu depuis l'API :", user);
+      // L'API retourne { status: "Succès", utilisateur: { ... } }
+      const user = data.utilisateur;
+      if (!user) {
+        console.error('[loadUserProfil] Pas de données utilisateur dans la réponse');
+        return;
+      }
 
       // Remplit chaque champ du formulaire avec les données de l'API
-      // L'opérateur ?. évite une erreur si l'élément DOM n'existe pas
-      if (firstNameInput) firstNameInput.value = user.firstName || '';
-      if (lastNameInput) lastNameInput.value = user.lastName || '';
-      if (phoneInput) phoneInput.value = user.phone || '';
+      if (firstNameInput) firstNameInput.value = user.prenom || '';
+      if (lastNameInput) lastNameInput.value = user.nom || '';
+      if (phoneInput) phoneInput.value = user.telephone || '';
       if (emailInput) emailInput.value = user.email || '';
-      if (addressInput) addressInput.value = user.address || '';
-      if (cityInput) cityInput.value = user.city || '';
-      if (postalInput) postalInput.value = user.postalCode || '';
+      if (addressInput) addressInput.value = user.adresse_postale || '';
+      if (cityInput) cityInput.value = user.ville || '';
+      if (postalInput) postalInput.value = user.code_postal || '';
+
+      if (DebugConsole) console.log("[loadUserProfil] Champs remplis avec succès");
 
       // Met à jour le nom et l'email affichés sous l'avatar
       updateDisplayIdentity();
 
-      if (DebugConsole) console.log('Profil chargé avec succès');
-
     } catch (err) {
-      // Erreur réseau
-      if (DebugConsole) console.error('Erreur réseau chargement profil:', err);
+      console.error('[loadUserProfil] Erreur réseau :', err);
     }
   }
 
@@ -194,118 +226,70 @@ export function initcompte_client_profilPage() {
     if (displayEmail) {
       displayEmail.textContent = email || '—';
     }
+
+    if (DebugConsole) console.log("[updateDisplayIdentity] Nom:", `${firstName} ${lastName}`, "Email:", email);
   }
+
 
   /* ===============================
      FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte client profil
      - 1. Collecte toutes les valeurs du formulaire
-     - 2. Envoie une requête PUT /api/me avec les nouvelles données
-     - 3. Met à jour l'affichage sous l'avatar après la sauvegarde
+     - 2. Envoie une requête PUT /api/client/profil avec les nouvelles données
+     - 3. Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
+     - 4. Met à jour l'affichage sous l'avatar après la sauvegarde
      =============================== */
 
-  async function savecompte_client_profil() {
-
+  async function saveProfil() {
     // Collecte les données du formulaire dans un objet
-    const compte_client_profilData = {
-      firstName: firstNameInput?.value || '',
-      lastName: lastNameInput?.value || '',
-      phone: phoneInput?.value || '',
+    // Les clés correspondent aux noms attendus par le back (ClientController::updateUserById)
+    const profilData = {
+      prenom: firstNameInput?.value || '',
+      nom: lastNameInput?.value || '',
+      telephone: phoneInput?.value || '',
       email: emailInput?.value || '',
-      address: addressInput?.value || '',
-      city: cityInput?.value || '',
-      postalCode: postalInput?.value || ''
+      adresse_postale: addressInput?.value || '',
+      ville: cityInput?.value || '',
+      code_postal: postalInput?.value || ''
     };
 
-    if (DebugConsole) console.log('Données profil à sauvegarder:', compte_client_profilData);
+    if (DebugConsole) console.log("[saveProfil] Données à sauvegarder :", profilData);
+    if (DebugConsole) console.log("[saveProfil] Appel PUT", apiProfilUrl);
 
     try {
-      const response = await fetch(`${BASE_URL}/me`, {
+      const response = await fetch(apiProfilUrl, {
         method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        // Envoie les données au format JSON dans le body de la requête
-        body: JSON.stringify(compte_client_profilData)
+        headers: authHeaders,
+        body: JSON.stringify(profilData)
       });
 
-      // Parse la réponse de l'API
-      const data = await response.json();
+      const result = await response.json();
+
+      if (DebugConsole) {
+        console.log("[saveProfil] Réponse status :", response.status);
+        console.log("[saveProfil] Réponse body :", result);
+      }
 
       if (response.ok) {
         // Succès : met à jour l'affichage sous l'avatar
         updateDisplayIdentity();
-        
-        if (DebugConsole) console.log('Profil sauvegardé avec succès');
-
-        // Affiche un message de confirmation à l'utilisateur
-        showNotification('Vos modifications ont été sauvegardées.', 'success');
+        if (DebugConsole) console.log("[saveProfil] Profil sauvegardé avec succès");
+        showNotification(result.message || 'Vos modifications ont été sauvegardées.', 'success');
       } else {
-        // L'API a retourné une erreur (validation, etc.)
-        if (DebugConsole) console.error('Erreur sauvegarde profil:', data.message || data);
-        showNotification('Erreur lors de la sauvegarde.', 'error');
-      }
-    } catch (err) {
-      if (DebugConsole) console.error('Erreur réseau sauvegarde profil:', err);
-      showNotification('Erreur réseau, veuillez réessayer.', 'error');
-
-    }
-  }
-
-  /* ===============================
-     FONCTION : SUPPRIMER LE COMPTE
-     - 1. Demande une confirmation à l'utilisateur (double sécurité)
-     - 2. Envoie une requête DELETE /api/me
-     - 3. Redirige vers la page d'accueil après suppression
-     =============================== */
-
-  async function deleteAccount() {
-    // Première confirmation : popup navigateur
-    const confirmed = confirm(
-      'Êtes-vous sûr de vouloir supprimer votre compte ?\n\n' +
-      'Cette action est irréversible. Toutes vos données seront supprimées.'
-    );
-
-    // Si l'utilisateur annule, on ne fait rien
-    if (!confirmed) return;
-
-    if (DebugConsole) console.log('Demande de suppression du compte...');
-
-    try {
-      const response = await fetch(`${BASE_URL}/me`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-       
-        if (DebugConsole) console.log('Compte supprimé avec succès');
-        // Supprime le token JWT lors de la déconnexion
-        localStorage.removeItem('token');
-
-        // Redirige vers la page d'accueil
-        window.location.href = '/';
-      } else {
-        const data = await response.json();
-        if (DebugConsole) console.error('Erreur suppression compte:', data.message || data);
-        showNotification('Erreur lors de la suppression du compte.', 'error');
-
+        // L'API a retourné une erreur (validation, doublon email/téléphone, etc.)
+        console.error('[saveProfil] Erreur :', result.message);
+        showNotification(result.message || 'Erreur lors de la sauvegarde.', 'error');
       }
 
     } catch (err) {
-      if (DebugConsole) console.error('Erreur réseau suppression compte:', err);
+      console.error('[saveProfil] Erreur réseau :', err);
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
     }
   }
 
   /* ===============================
      FONCTION : DEMANDER LA DÉSACTIVATION DU COMPTE
-     - 1. Envoie une requête PATCH /api/me/deactivate
-     - 2. Ne supprime pas le compte, mais envoie une demande
-       qui sera traitée par un administrateur
+     - 1. Envoie une requête POST /api/client/compte/desactivation
+     - 2. Le back change le statut en "en_attente_desactivation" et envoie un mail à l'admin
      - 3. L'utilisateur reste connecté après la demande
      =============================== */
 
@@ -316,51 +300,78 @@ export function initcompte_client_profilPage() {
       'Cette demande sera traitée par un administrateur.'
     );
 
-    if (!confirmed) return;
+    if (!confirmed) {
+      if (DebugConsole) console.log("[requestDeactivation] Demande annulée par l'utilisateur");
+      return;
+    }
 
-    if (DebugConsole) console.log('Demande de désactivation du compte...');
+    if (DebugConsole) console.log("[requestDeactivation] Appel POST", apiDesactivationUrl);
 
     try {
-      const response = await fetch(`${BASE_URL}/me/deactivate`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      const response = await fetch(apiDesactivationUrl, {
+        method: 'POST',
+        headers: authHeaders
       });
 
+      const result = await response.json();
+
+      if (DebugConsole) {
+        console.log("[requestDeactivation] Réponse status :", response.status);
+        console.log("[requestDeactivation] Réponse body :", result);
+      }
+
       if (response.ok) {
-        if (DebugConsole) console.log('Demande de désactivation envoyée');
-        showNotification(
-          'Votre demande de désactivation a été envoyée. Un administrateur la traitera prochainement.',
-          'success'
-        );
+        if (DebugConsole) console.log("[requestDeactivation] Demande envoyée avec succès");
+        showNotification(result.message || 'Votre demande de désactivation a été envoyée.', 'success');
       } else {
-
-        const data = await response.json();
-        if (DebugConsole) console.error('Erreur désactivation:', data.message || data);
-        showNotification('Erreur lors de la demande de désactivation.', 'error');
-
+        console.error('[requestDeactivation] Erreur :', result.message);
+        showNotification(result.message || 'Erreur lors de la demande de désactivation.', 'error');
       }
 
     } catch (err) {
-      
-      if (DebugConsole) console.error('Erreur réseau désactivation:', err);
+      console.error('[requestDeactivation] Erreur réseau :', err);
       showNotification('Erreur réseau, veuillez réessayer.', 'error');
     }
+  }
+
+  
+  /* ===============================
+     FONCTION : SUPPRIMER LE COMPTE
+     Note : Ton back n'a pas de route DELETE pour supprimer le compte client.
+     Pour l'instant, on redirige vers la demande de désactivation.
+     Si tu ajoutes une route DELETE /api/client/profil plus tard, 
+     il suffira de remplacer le contenu de cette fonction.
+     =============================== */
+
+  async function deleteAccount() {
+    const confirmed = confirm(
+      'Êtes-vous sûr de vouloir supprimer votre compte ?\n\n' +
+      'Cette action enverra une demande de désactivation à l\'administrateur.'
+    );
+
+    if (!confirmed) {
+      if (DebugConsole) console.log("[deleteAccount] Suppression annulée par l'utilisateur");
+      return;
+    }
+
+    if (DebugConsole) console.log("[deleteAccount] Redirection vers demande de désactivation");
+
+    // Pour l'instant, même comportement que la désactivation
+    // car le back n'a pas de route DELETE /api/client/profil
+    await requestDeactivation();
   }
 
   /* ===============================
      FONCTION : AFFICHER UNE NOTIFICATION
      - 1. Crée dynamiquement un élément de notification
-     - 2. L'ajoute en haut de la section compte client profil
+     - 2. L'ajoute en haut de la section profil
      - 3. La notification disparaît automatiquement après 4 secondes
      - 4. type : 'success' (vert) ou 'error' (rouge)
      =============================== */
 
   function showNotification(message, type = 'success') {
-    
-    if (DebugConsole) console.log("Notification :", message, type);
+    if (DebugConsole) console.log(`[showNotification] ${type} : ${message}`);
+
     // Supprime une éventuelle notification déjà affichée
     const existing = document.querySelector('.compte_client_profil-notification');
     if (existing) existing.remove();
@@ -369,27 +380,34 @@ export function initcompte_client_profilPage() {
     const notification = document.createElement('div');
     notification.className = `compte_client_profil-notification compte_client_profil-notification-${type}`;
 
-    // Icône Bootstrap selon le type check pour succès, exclamation pour erreur
+    // Icône Bootstrap selon le type
     const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
     notification.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
 
-    // Insère la notification au début de la section profil
-    const section = document.querySelector('.compte_client_profil-section .col-12');
-    if (section) {
-      // Insère après les onglets mais avant le contenu
-      const identity = document.querySelector('.compte_client_profil-identity');
-      if (identity) {
-        section.insertBefore(notification, identity);
-      } else {
-        section.prepend(notification);
-      }
+    // Style inline pour la notification
+    notification.style.cssText = `
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
+      color: ${type === 'success' ? '#155724' : '#721c24'};
+      border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
+    `;
+
+    // Insère la notification avant le formulaire
+    const identity = document.querySelector('.compte_client_profil-identity');
+    if (identity) {
+      identity.parentNode.insertBefore(notification, identity);
     }
 
     // La notification disparaît après 4 secondes avec un fondu
     setTimeout(() => {
       notification.style.opacity = '0';
       notification.style.transition = 'opacity 0.3s ease';
-      // Supprime l'élément du DOM après la transition
       setTimeout(() => notification.remove(), 300);
     }, 4000);
   }
@@ -401,13 +419,15 @@ export function initcompte_client_profilPage() {
   // Bouton "Sauvegarder les modifications"
   if (btnSave) {
     btnSave.addEventListener('click', () => {
-      savecompte_client_profil();
+      if (DebugConsole) console.log("[listener] Clic sur Sauvegarder");
+      saveProfil();
     });
   }
 
   // Bouton "Supprimer mon compte"
   if (btnDelete) {
     btnDelete.addEventListener('click', () => {
+      if (DebugConsole) console.log("[listener] Clic sur Supprimer");
       deleteAccount();
     });
   }
@@ -415,6 +435,7 @@ export function initcompte_client_profilPage() {
   // Bouton "Demander la désactivation de mon compte"
   if (btnDeactivate) {
     btnDeactivate.addEventListener('click', () => {
+      if (DebugConsole) console.log("[listener] Clic sur Désactivation");
       requestDeactivation();
     });
   }
@@ -441,9 +462,11 @@ export function initcompte_client_profilPage() {
 
   /* ===============================
      INITIALISATION
-      Au chargement de la page, on récupère les données
-       du compte client profil depuis l'API pour pré-remplir le formulaire
+     - 1. Charge le prénom dans le hero
+     - 2. Charge les données du profil depuis l'API pour pré-remplir le formulaire
      =============================== */
-     
-  loadUsercompte_client_profil();
+
+  if (DebugConsole) console.log("=== INITIALISATION PAGE PROFIL ===");
+  loadHeroName();
+  loadUserProfil();
 }

@@ -17,7 +17,7 @@ export function initCommandePage() {
     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
