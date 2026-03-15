@@ -24,14 +24,14 @@ export const allRoutes = [
    new Route("/login", "Connexion", "Pages/Auth/login.html", ["disconnected"], "/Script/Public/Auth/connection.js", true),
    new Route("/inscription", "Inscription", "Pages/Auth/inscription.html", ["disconnected"], "/Script/Public/Auth/inscription.js", true),
 
-   /* Role CLIENT */
-   new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["client"], "/Script/Commande/commander.js", true), 
-   new Route("/compte_client", "Commande", "Pages/Commande/Client/compte_client.html", ["client"], "/Script/Commande/compte_client.js", true), 
-   new Route("/mon_compte_profil", "compte_client_profil", "Pages/Commande/Client/compte_client_profil.html", ["client"], "/Script/Client/compte_client_profil.js", true), 
+   /* Role CLIENT  (ROLE_CLIENT) */
+   new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["ROLE_CLIENT"], "/Script/Commande/commander.js", true), 
+   new Route("/compte_client", "Commande", "Pages/Commande/Client/compte_client.html", ["ROLE_CLIENT"], "/Script/Commande/compte_client.js", true), 
+   new Route("/mon_compte_profil", "compte_client_profil", "Pages/Commande/Client/compte_client_profil.html", ["ROLE_CLIENT"], "/Script/Client/compte_client_profil.js", true), 
 
-   /* Role EMPLOYER */
+   /* Role EMPLOYER (ROLE_EMPLOYE) */
 
-   /* Role ADMIN */
+   /* Role ADMIN (ROLE_ADMIN)*/
 
 
 ];
