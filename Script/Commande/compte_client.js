@@ -631,7 +631,6 @@ export function initCommandePage() {
     if (DebugConsole) console.log("[renderOrders] Terminé - Tous les listeners branchés");
   }
 
-
   /* ===============================
     FONCTION : GÉNÉRER LA TIMELINE DE SUIVI
       - 1.  Affiche les étapes de la commande sous forme de badges horizontaux
@@ -820,7 +819,6 @@ export function initCommandePage() {
         if (!orderId) return;
 
         if (DebugConsole) console.log(`[setupCancelButtons] Clic annuler sur commande ${orderId}`);
-
 
         // Demande confirmation à l'utilisateur
         const confirmed = confirm(
