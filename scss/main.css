@@ -17242,7 +17242,7 @@ textarea.form-control-lg {
 }
 
 /* ===============================
-   TIMELINE DE SUIVI
+   TIMELINE DU SUIVI
    Affiche les étapes de la commande sous forme de badges horizontaux
    =============================== */
 /* -------- Titre "Suivi (du plus ancien au plus récent)" -------- */
@@ -17294,6 +17294,23 @@ textarea.form-control-lg {
 .compte_client-order-review i {
   font-size: 0.85rem;
   color: #15803D;
+}
+
+.btn-compte_client-avis {
+  background: transparent;
+  color: #c8956c;
+  border: 1px solid #c8956c;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 0.75rem;
+  transition: all 0.2s;
+}
+
+.btn-compte_client-avis:hover {
+  background: #c8956c;
+  color: #fff;
 }
 
 /* ===============================

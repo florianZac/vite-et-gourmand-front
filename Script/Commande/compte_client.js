@@ -11,11 +11,12 @@ export function initCommandePage() {
     3. La génération dynamique des cards de commande
     4. La timeline de suivi via GET /api/client/commandes/{id}/suivi
     5. La section avis (si commande terminée + avis déposé)
-    6. La section prêt de matériel (si applicable)
-    7. Le bouton annuler via POST /api/client/commandes/{id}/annuler
+    6. La modale de dépôt d'avis via POST /api/client/commandes/{id}/avis
+    7. La section prêt de matériel (si applicable)
+    8. Le bouton annuler via POST /api/client/commandes/{id}/annuler
     =============================== */
   
-  // Variable debug console si à true
+  // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = true;
 
   /* ===============================
@@ -64,9 +65,9 @@ export function initCommandePage() {
 
   /* ===============================
     MAPPING DES STATUTS
-    - Les clés correspondent exactement aux valeurs retournées par le back Symfony
-    - label : texte affiché dans le badge
-    - css : classe CSS pour la couleur du badge
+    - 1.  Les clés correspondent exactement aux valeurs retournées par le back Symfony
+    - 2.  label : texte affiché dans le badge
+    - 3.  css : classe CSS pour la couleur du badge
   =============================== */
 
   const STATUS_MAP = {
@@ -80,11 +81,294 @@ export function initCommandePage() {
     'Annulée':                       { label: 'Annulée',                    css: 'compte_client-status-cancelled' }
   };
 
+ /* ===============================
+    INJECTION DE LA MODALE D'AVIS DANS LE DOM
+    - 1.  Insérée une seule fois au chargement de la page
+    - 2.  Contient : sélecteur de note 1-5 étoiles + textarea description
+    - 3.  Réutilisée pour chaque commande via data-commande-id
+    =============================== */
+
+  function injectAvisModal() {
+    // Vérifie que la modale n'existe pas déjà
+    if (document.getElementById('modal-avis')) {
+      if (DebugConsole) console.log("[injectAvisModal] Modale déjà présente dans le DOM");
+      return;
+    }
+
+    const modalHtml = `
+      <div class="modal fade" id="modal-avis" tabindex="-1" aria-labelledby="modal-avis-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content" style="background: var(--cream-bg, #fdf8f0); border-radius: 16px; border: none;">
+            
+            <!-- Header de la modale -->
+            <div class="modal-header" style="border-bottom: 1px solid #e8dfd4; padding: 1.25rem 1.5rem;">
+              <h5 class="modal-title" id="modal-avis-label" style="font-family: 'Playfair Display', serif; font-weight: 600; color: #2c1810;">
+                <i class="bi bi-chat-left-dots" style="color: #c8956c;"></i> Laisser un avis
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+
+            <!-- Corps de la modale -->
+            <div class="modal-body" style="padding: 1.5rem;">
+
+              <!-- Nom du menu concerné -->
+              <p id="modal-avis-menu" style="font-weight: 500; color: #5a4a3a; margin-bottom: 1rem;"></p>
+
+              <!-- Sélecteur de note (étoiles cliquables) -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-weight: 500; color: #5a4a3a; margin-bottom: 0.5rem;">
+                  Votre note
+                </label>
+                <div id="modal-avis-stars" style="display: flex; gap: 6px; cursor: pointer;">
+                  <i class="bi bi-star" data-note="1" style="font-size: 1.75rem; color: #d4c5b0; transition: color 0.2s;"></i>
+                  <i class="bi bi-star" data-note="2" style="font-size: 1.75rem; color: #d4c5b0; transition: color 0.2s;"></i>
+                  <i class="bi bi-star" data-note="3" style="font-size: 1.75rem; color: #d4c5b0; transition: color 0.2s;"></i>
+                  <i class="bi bi-star" data-note="4" style="font-size: 1.75rem; color: #d4c5b0; transition: color 0.2s;"></i>
+                  <i class="bi bi-star" data-note="5" style="font-size: 1.75rem; color: #d4c5b0; transition: color 0.2s;"></i>
+                </div>
+                <input type="hidden" id="modal-avis-note" value="0">
+              </div>
+
+              <!-- Zone de texte pour la description -->
+              <div style="margin-bottom: 1rem;">
+                <label for="modal-avis-description" style="display: block; font-weight: 500; color: #5a4a3a; margin-bottom: 0.5rem;">
+                  Votre commentaire <small style="color: #9a8a7a;">(255 caractères max)</small>
+                </label>
+                <textarea 
+                  id="modal-avis-description" 
+                  maxlength="255" 
+                  rows="4" 
+                  placeholder="Décrivez votre expérience..."
+                  style="width: 100%; border: 1px solid #d4c5b0; border-radius: 10px; padding: 0.75rem; font-size: 0.95rem; resize: vertical; background: #fff; color: #2c1810;"
+                ></textarea>
+                <small id="modal-avis-char-count" style="color: #9a8a7a; float: right;">0 / 255</small>
+              </div>
+
+              <!-- Message d'erreur -->
+              <div id="modal-avis-error" style="display: none; color: #c0392b; font-size: 0.9rem; margin-bottom: 0.75rem;">
+                <i class="bi bi-exclamation-circle"></i> <span></span>
+              </div>
+
+            </div>
+
+            <!-- Footer de la modale -->
+            <div class="modal-footer" style="border-top: 1px solid #e8dfd4; padding: 1rem 1.5rem;">
+              <button type="button" class="btn" data-bs-dismiss="modal" style="color: #5a4a3a;">Annuler</button>
+              <button type="button" id="modal-avis-submit" class="btn" style="background: #c8956c; color: #fff; border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 500;">
+                <i class="bi bi-send"></i> Envoyer mon avis
+              </button>
+            </div>
+
+            <!-- ID de la commande -->
+            <input type="hidden" id="modal-avis-commande-id" value="">
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Injecte la modale dans le body
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    if (DebugConsole) console.log("[injectAvisModal] Modale injectée dans le DOM");
+
+    // ====== LISTENERS DE LA MODALE ======
+
+    // Gestion des étoiles cliquables
+    const starsContainer = document.getElementById('modal-avis-stars');
+    const noteInput = document.getElementById('modal-avis-note');
+
+    starsContainer.addEventListener('click', (e) => {
+      const star = e.target.closest('[data-note]');
+      if (!star) return;
+
+      const note = parseInt(star.dataset.note);
+      noteInput.value = note;
+
+      // Met à jour l'affichage des étoiles
+      starsContainer.querySelectorAll('i').forEach(s => {
+        const starNote = parseInt(s.dataset.note);
+        if (starNote <= note) {
+          s.classList.remove('bi-star');
+          s.classList.add('bi-star-fill');
+          s.style.color = '#c8956c';
+        } else {
+          s.classList.remove('bi-star-fill');
+          s.classList.add('bi-star');
+          s.style.color = '#d4c5b0';
+        }
+      });
+
+      if (DebugConsole) console.log(`[modal-avis] Note sélectionnée : ${note}`);
+    });
+
+    // Survol des étoiles (effet hover)
+    starsContainer.addEventListener('mouseover', (e) => {
+      const star = e.target.closest('[data-note]');
+      if (!star) return;
+      const hoverNote = parseInt(star.dataset.note);
+
+      starsContainer.querySelectorAll('i').forEach(s => {
+        const starNote = parseInt(s.dataset.note);
+        if (starNote <= hoverNote) {
+          s.style.color = '#c8956c';
+        }
+      });
+    });
+
+    // Fin du survol, retour à la note sélectionnée
+    starsContainer.addEventListener('mouseout', () => {
+      const currentNote = parseInt(noteInput.value);
+      starsContainer.querySelectorAll('i').forEach(s => {
+        const starNote = parseInt(s.dataset.note);
+        if (starNote <= currentNote) {
+          s.style.color = '#c8956c';
+        } else {
+          s.style.color = '#d4c5b0';
+        }
+      });
+    });
+
+    // Compteur de caractères sur la description
+    const descriptionInput = document.getElementById('modal-avis-description');
+    const charCount = document.getElementById('modal-avis-char-count');
+
+    descriptionInput.addEventListener('input', () => {
+      charCount.textContent = `${descriptionInput.value.length} / 255`;
+    });
+
+    // Bouton d'envoi de l'avis
+    const submitBtn = document.getElementById('modal-avis-submit');
+    submitBtn.addEventListener('click', () => submitAvis());
+  }
+
+  /* ===============================
+    FONCTION : OUVRIR LA MODALE D'AVIS
+      - Réinitialise les champs
+      - Renseigne l'ID de la commande et le nom du menu
+      - Ouvre la modale Bootstrap
+    =============================== */
+
+  function openAvisModal(commandeId, menuTitre) {
+    if (DebugConsole) console.log(`[openAvisModal] Ouverture pour commande ${commandeId} (${menuTitre})`);
+
+    // Réinitialise les champs
+    document.getElementById('modal-avis-note').value = '0';
+    document.getElementById('modal-avis-description').value = '';
+    document.getElementById('modal-avis-char-count').textContent = '0 / 255';
+    document.getElementById('modal-avis-commande-id').value = commandeId;
+    document.getElementById('modal-avis-menu').textContent = `Commande : ${menuTitre}`;
+
+    // Réinitialise les étoiles
+    document.querySelectorAll('#modal-avis-stars i').forEach(s => {
+      s.classList.remove('bi-star-fill');
+      s.classList.add('bi-star');
+      s.style.color = '#d4c5b0';
+    });
+
+    // Cache le message d'erreur
+    const errorDiv = document.getElementById('modal-avis-error');
+    errorDiv.style.display = 'none';
+
+    // Ouvre la modale Bootstrap
+    const modalEl = document.getElementById('modal-avis');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  }
+
+  /* ===============================
+    FONCTION : SOUMETTRE L'AVIS
+      - Valide les champs (note 1-5, description non vide)
+      - Appelle POST /api/client/commandes/{id}/avis
+      - Corps JSON : { "note": 5, "description": "..." }
+      - Ferme la modale et recharge les commandes si succès
+    =============================== */
+
+  async function submitAvis() {
+    const commandeId = document.getElementById('modal-avis-commande-id').value;
+    const note = parseInt(document.getElementById('modal-avis-note').value);
+    const description = document.getElementById('modal-avis-description').value.trim();
+    const errorDiv = document.getElementById('modal-avis-error');
+    const errorSpan = errorDiv.querySelector('span');
+
+    if (DebugConsole) console.log(`[submitAvis] Commande ${commandeId} - Note: ${note}, Description: "${description}"`);
+
+    // Validation côté front
+    if (note < 1 || note > 5) {
+      errorSpan.textContent = 'Veuillez sélectionner une note entre 1 et 5 étoiles.';
+      errorDiv.style.display = 'block';
+      if (DebugConsole) console.log("[submitAvis] Erreur : note invalide");
+      return;
+    }
+
+    if (!description || description.length === 0) {
+      errorSpan.textContent = 'Veuillez écrire un commentaire.';
+      errorDiv.style.display = 'block';
+      if (DebugConsole) console.log("[submitAvis] Erreur : description vide");
+      return;
+    }
+
+    if (description.length > 255) {
+      errorSpan.textContent = 'Le commentaire ne doit pas dépasser 255 caractères.';
+      errorDiv.style.display = 'block';
+      if (DebugConsole) console.log("[submitAvis] Erreur : description trop longue");
+      return;
+    }
+
+    // Cache l'erreur
+    errorDiv.style.display = 'none';
+
+    const url = `${apiCommandesUrl}/${commandeId}/avis`;
+    if (DebugConsole) console.log(`[submitAvis] Appel POST ${url}`);
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: authHeaders,
+        body: JSON.stringify({
+          note: note,
+          description: description
+        })
+      });
+
+      const result = await response.json();
+
+      if (DebugConsole) {
+        console.log(`[submitAvis] Réponse status :`, response.status);
+        console.log(`[submitAvis] Réponse body :`, result);
+      }
+
+      if (response.ok) {
+        // Ferme la modale
+        const modalEl = document.getElementById('modal-avis');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) modal.hide();
+
+        // Message de succès
+        alert(result.message || 'Avis soumis avec succès !');
+        if (DebugConsole) console.log(`[submitAvis] Avis soumis avec succès, rechargement...`);
+
+        // Recharge les commandes pour afficher le nouvel avis
+        loadOrders();
+
+      } else {
+        // Affiche l'erreur retournée par l'API dans la modale
+        errorSpan.textContent = result.message || 'Erreur lors de l\'envoi de l\'avis.';
+        errorDiv.style.display = 'block';
+        if (DebugConsole) console.log(`[submitAvis] Erreur API :`, result.message);
+      }
+
+    } catch (err) {
+      console.error('[submitAvis] Erreur réseau :', err);
+      errorSpan.textContent = 'Erreur réseau, veuillez réessayer.';
+      errorDiv.style.display = 'block';
+    }
+  }
+
   /* ===============================
       AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1. Appelle GET /api/me
-      - 2. Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3. Remplit le span #hero-user-name avec le prenom récuperer du token
+      - 1.  Appelle GET /api/me
+      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
       =============================== */
 
   async function loadUserName() {
@@ -129,9 +413,9 @@ export function initCommandePage() {
 
   /* ===============================
     FONCTION : CHARGER LES COMMANDES DEPUIS L'API
-      - Appelle GET /api/client/commandes
-      - Le back filtre automatiquement les commandes du client connecté grâce au token JWT
-      - Réponse attendue : { status: "Succès", total: X, commandes: [...] }
+      - 1.  Appelle GET /api/client/commandes
+      - 2.  Le back filtre automatiquement les commandes du client connecté grâce au token JWT
+      - 3.  Réponse attendue : { status: "Succès", total: X, commandes: [...] }
     =============================== */
 
   async function loadOrders() {
@@ -174,8 +458,8 @@ export function initCommandePage() {
 
  /* ===============================
     FONCTION : CHARGER LE SUIVI D'UNE COMMANDE
-      - Appelle GET /api/client/commandes/{id}/suivi
-      - Réponse attendue : { status, total, suivis: [{ statut, date_statut }] }
+      - 1.  Appelle GET /api/client/commandes/{id}/suivi
+      - 2.  Réponse attendue : { status, total, suivis: [{ statut, date_statut }] }
     =============================== */
 
   async function loadSuivi(commandeId) {
@@ -212,13 +496,13 @@ export function initCommandePage() {
     FONCTION : GÉNÉRER LES CARDS DE COMMANDE
       - Crée une card HTML pour chaque commande
       - Chaque card contient :
-        1. Titre du menu en gras + badge statut à droite
-        2. Numéro commande — date prestation à heure
-        3. Ligne d'infos : Personnes | Livraison | Réduction | Total
-        4. Timeline de suivi (badges horizontaux)
-        5. Section avis déposé (si commande terminée + avis existant)
-        6. Section prêt de matériel (si en attente de restitution)
-        7. Bouton Annuler (si commande en attente)
+        1.  Titre du menu en gras + badge statut à droite
+        2.  Numéro commande — date prestation à heure
+        3.  Ligne d'infos : Personnes | Livraison | Réduction | Total
+        4.  Timeline de suivi (badges horizontaux)
+        5.  Section avis déposé (si commande terminée + avis existant)
+        6.  Section prêt de matériel (si en attente de restitution)
+        7.  Bouton Annuler (si commande en attente)
     =============================== */
 
   async function renderOrders(orders) {
@@ -381,20 +665,19 @@ export function initCommandePage() {
 
   /* ===============================
     FONCTION : GÉNÉRER LA SECTION AVIS
-      - 1.  Affichée uniquement si commande "Terminée" ET un avis existe
-      - 2.  Utilise order.avis retourné par l'API : { id, note, statut }
-       Statuts possibles : "validé", "en_attente", "refusé"
+      - 1.  Si commande "Terminée" + avis existant, on affiche "Avis déposé (statut)"
+      - 2.  Si commande "Terminée" + pas d'avis on affiche le bouton "Laisser un avis"
+      - 3.  Sinon on fait rien
     =============================== */
 
-function renderAvis(order) {
-
-    // Si la commande n'est pas terminée, pas de section avis
+  function renderAvis(order) {
+    // Si la commande n'est pas terminée pas de section avis
     if (order.statut !== 'Terminée') {
       if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Statut "${order.statut}" != "Terminée", pas d'avis`);
       return '';
     }
 
-    // Si un avis existe pour cette commande
+    // Si un avis existe déjà pour cette commande, affiche le statut
     if (order.avis) {
       let avisStatutText = '';
       switch (order.avis.statut) {
@@ -413,7 +696,6 @@ function renderAvis(order) {
 
       if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Avis trouvé, statut: ${avisStatutText}, note: ${order.avis.note}`);
 
-      // retourne le html formatée
       return `
         <div class="compte_client-order-review">
           <i class="bi bi-chat-left-dots"></i>
@@ -422,9 +704,36 @@ function renderAvis(order) {
       `;
     }
 
-    // Pas d'avis déposé, rien à afficher
-    if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Terminée mais pas d'avis déposé`);
-    return '';
+    // Pas d'avis déposé on affiche le bouton "Laisser un avis"
+    if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Terminée mais pas d'avis, affichage bouton`);
+
+    return `
+      <button type="button" class="btn btn-compte_client-avis" data-commande-id="${order.id}" data-menu-titre="${order.menu_titre || ''}">
+        <i class="bi bi-chat-left-dots"></i> Laisser un avis
+      </button>
+    `;
+  }
+
+  /* ===============================
+    FONCTION : BRANCHER LES LISTENERS SUR LES BOUTONS "LAISSER UN AVIS"
+      Au clic on ouvre la modale d'avis pré-remplie avec l'ID commande et le nom du menu
+    =============================== */
+
+  function setupAvisButtons() {
+    const avisButtons = commandesList.querySelectorAll('.btn-compte_client-avis');
+
+    if (DebugConsole) console.log("[setupAvisButtons] Nombre de boutons avis trouvés :", avisButtons.length);
+
+    avisButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const commandeId = btn.dataset.commandeId;
+        const menuTitre = btn.dataset.menuTitre;
+
+        if (DebugConsole) console.log(`[setupAvisButtons] Clic "Laisser un avis" - Commande ${commandeId} (${menuTitre})`);
+
+        openAvisModal(commandeId, menuTitre);
+      });
+    });
   }
 
   /* ===============================
@@ -573,11 +882,13 @@ function renderAvis(order) {
 
   /* ===============================
     INITIALISATION
-      - 1. Charge le prénom dans le hero
-      - 2. Charge les commandes du client depuis l'API
+      - 1. Injecte la modale d'avis dans le DOM
+      - 2. Charge le prénom dans le hero
+      - 3. Charge les commandes du client depuis l'API
     =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE COMPTE CLIENT ===");
+  injectAvisModal();
   loadUserName();
   loadOrders();
 }
