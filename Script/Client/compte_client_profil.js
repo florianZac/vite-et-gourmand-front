@@ -1,15 +1,15 @@
 import { API_URL } from '../config.js';
-export function initcompte_clientPage() {
+export function initcompte_client_profilPage() {
 
   /* ===============================
-   SCRIPT PAGE compte_client
+   SCRIPT PAGE compte client profil
    Gère :
     0. Le mise à jour du nom en haut de page
     1. Le chargement des données utilisateur depuis l'API (GET)
-    2. La sauvegarde des modifications du compte_client (PUT)
+    2. La sauvegarde des modifications du compte client profil (PUT)
     3. La suppression du compte (DELETE)
     4. La demande de désactivation du compte (PATCH)
-    5. La navigation par onglets (Mes commandes / Mon compte_client)
+    5. La navigation par onglets (Mes commandes / Mon compte client profil)
    =============================== */
 
   /* ===============================
@@ -19,8 +19,6 @@ export function initcompte_clientPage() {
       pour authentifier les requêtes
      =============================== */
 
-  //const apiCompte_client = `${API_URL}/api/login`;
-
   
   // Récupère le token JWT pour l'authentification des requêtes
   const token = localStorage.getItem('token');
@@ -29,21 +27,21 @@ export function initcompte_clientPage() {
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
-  // Champs du formulaire compte_client
-  const firstNameInput = document.getElementById('compte_clientFirstName');
-  const lastNameInput = document.getElementById('compte_clientLastName');
-  const phoneInput = document.getElementById('compte_clientPhone');
-  const emailInput = document.getElementById('compte_clientmail');
-  const addressInput = document.getElementById('compte_clientAddress');
-  const cityInput = document.getElementById('compte_clientCity');
-  const postalInput = document.getElementById('compte_clientPostal');
+  // Champs du formulaire compte client profil
+  const firstNameInput = document.getElementById('compte_client_profilFirstName');
+  const lastNameInput = document.getElementById('compte_client_profilLastName');
+  const phoneInput = document.getElementById('compte_client_profilPhone');
+  const emailInput = document.getElementById('compte_client_profilmail');
+  const addressInput = document.getElementById('compte_client_profilAddress');
+  const cityInput = document.getElementById('compte_client_profilCity');
+  const postalInput = document.getElementById('compte_client_profilPostal');
 
   // Éléments d'affichage de l'avatar zone
-  const displayName = document.getElementById('compte_client-display-name');
-  const displayEmail = document.getElementById('compte_client-display-email');
+  const displayName = document.getElementById('compte_client_profil-display-name');
+  const displayEmail = document.getElementById('compte_client_profil-display-email');
 
   // Boutons d'action
-  const btnSave = document.getElementById('btn-save-compte_client');
+  const btnSave = document.getElementById('btn-save-compte_client_profil');
   const btnDelete = document.getElementById('btn-delete-account');
   const btnDeactivate = document.getElementById('btn-deactivate-account');
 
@@ -69,12 +67,12 @@ export function initcompte_clientPage() {
 
   /* ===============================
      FONCTION : CHARGER LES DONNÉES UTILISATEUR
-     - 1. Appelle GET /api/me qui retourne le compte_client connecté
+     - 1. Appelle GET /api/me qui retourne le compte client profil connecté
      - 2. Remplit tous les champs du formulaire avec les données reçues
      - 3. Met à jour le nom et l'email affichés sous l'avatar
      =============================== */
 
-  async function loadUsercompte_client() {
+  async function loadUsercompte_client_profil() {
     try {
       const response = await fetch(`${BASE_URL}/me`, {
         method: 'GET',
@@ -144,16 +142,16 @@ export function initcompte_clientPage() {
   }
 
   /* ===============================
-     FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte_client
+     FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte client profil
      - 1. Collecte toutes les valeurs du formulaire
      - 2. Envoie une requête PUT /api/me avec les nouvelles données
      - 3. Met à jour l'affichage sous l'avatar après la sauvegarde
      =============================== */
 
-  async function savecompte_client() {
+  async function savecompte_client_profil() {
 
     // Collecte les données du formulaire dans un objet
-    const compte_clientData = {
+    const compte_client_profilData = {
       firstName: firstNameInput?.value || '',
       lastName: lastNameInput?.value || '',
       phone: phoneInput?.value || '',
@@ -163,7 +161,7 @@ export function initcompte_clientPage() {
       postalCode: postalInput?.value || ''
     };
 
-    console.log(' Données profil à sauvegarder:', compte_clientData);
+    console.log(' Données profil à sauvegarder:', compte_client_profilData);
 
     try {
       const response = await fetch(`${BASE_URL}/me`, {
@@ -173,7 +171,7 @@ export function initcompte_clientPage() {
           'Content-Type': 'application/json'
         },
         // Envoie les données au format JSON dans le body de la requête
-        body: JSON.stringify(compte_clientData)
+        body: JSON.stringify(compte_client_profilData)
       });
 
       // Parse la réponse de l'API
@@ -295,7 +293,7 @@ export function initcompte_clientPage() {
   /* ===============================
      FONCTION : AFFICHER UNE NOTIFICATION
      - 1. Crée dynamiquement un élément de notification
-     - 2. L'ajoute en haut de la section compte_client
+     - 2. L'ajoute en haut de la section compte client profil
      - 3. La notification disparaît automatiquement après 4 secondes
      - 4. type : 'success' (vert) ou 'error' (rouge)
      =============================== */
@@ -303,22 +301,22 @@ export function initcompte_clientPage() {
   function showNotification(message, type = 'success') {
 
     // Supprime une éventuelle notification déjà affichée
-    const existing = document.querySelector('.compte_client-notification');
+    const existing = document.querySelector('.compte_client_profil-notification');
     if (existing) existing.remove();
 
     // Crée l'élément de notification
     const notification = document.createElement('div');
-    notification.className = `compte_client-notification compte_client-notification-${type}`;
+    notification.className = `compte_client_profil-notification compte_client_profil-notification-${type}`;
 
     // Icône Bootstrap selon le type check pour succès, exclamation pour erreur
     const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
     notification.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
 
     // Insère la notification au début de la section profil
-    const section = document.querySelector('.compte_client-section .col-12');
+    const section = document.querySelector('.compte_client_profil-section .col-12');
     if (section) {
       // Insère après les onglets mais avant le contenu
-      const identity = document.querySelector('.compte_client-identity');
+      const identity = document.querySelector('.compte_client_profil-identity');
       if (identity) {
         section.insertBefore(notification, identity);
       } else {
@@ -342,7 +340,7 @@ export function initcompte_clientPage() {
   // Bouton "Sauvegarder les modifications"
   if (btnSave) {
     btnSave.addEventListener('click', () => {
-      savecompte_client();
+      savecompte_client_profil();
     });
   }
 
@@ -383,8 +381,8 @@ export function initcompte_clientPage() {
   /* ===============================
      INITIALISATION
       Au chargement de la page, on récupère les données
-       du compte_client depuis l'API pour pré-remplir le formulaire
+       du compte client profil depuis l'API pour pré-remplir le formulaire
      =============================== */
      
-  loadUsercompte_client();
+  loadUsercompte_client_profil();
 }

@@ -26,8 +26,8 @@ export const allRoutes = [
 
    /* Role CLIENT */
    new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["client"], "/Script/Commande/commander.js", true), 
-   new Route("/compte", "compte_client", "Pages/Commande/Client/compte_client.html", ["client"], "/Script/Commande/compte_client.js", true), 
-   new Route("/commande", "Commande", "Pages/Commande/Client/commande_client.html", ["client"], "/Script/Commande/commande_client.js", true), 
+   new Route("/compte_client", "Commande", "Pages/Commande/Client/compte_client.html", ["client"], "/Script/Commande/compte_client.js", true), 
+   new Route("/mon_compte_profil", "compte_client_profil", "Pages/Commande/Client/compte_client_profil.html", ["client"], "/Script/Client/compte_client_profil.js", true), 
 
    /* Role EMPLOYER */
 

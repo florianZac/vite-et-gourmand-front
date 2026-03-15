@@ -1,4 +1,4 @@
-<!------ Section Hero compte_client -------->
+<!------ Section Hero compte client -------->
 <section class="compte_client-hero py-5">
   <div class="container">
     <h1 class="compte_client-hero-title">Mon Espace Client</h1>
@@ -6,7 +6,7 @@
   </div>
 </section>
 
-<!------ Section compte_client -------->
+<!------ Section compte client -------->
 <section class="compte_client-section">
   <div class="container">
 
@@ -15,103 +15,19 @@
       <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
 
         <!------ Onglets Navigation -------->
-        <div class="compte_client-tabs">
-          <a href="/mes-commandes" class="compte_client-tab">
+        <div class="compte_client_profil-tabs">
+          <a href="/mes-commandes" class="compte_client_profil-tab">
             Mes commandes
           </a>
-          <a href="/mon-compte_client" class="compte_client-tab active">
+          <a href="/mon_compte_profil" class="compte_client_profil-tab active">
             Mon profil
           </a>
         </div>
 
-        <!------ Carte compte_client (avatar + nom + email) -------->
-        <div class="compte_client-identity">
-          <!-- Avatar utilisateur -->
-          <div class="compte_client-avatar">
-            <i class="bi bi-person-fill"></i>
-          </div>
-          <!-- Nom et email affichés sous l'avatar -->
-          <h2 class="compte_client-name" id="compte_client-display-name">Marie Dupont</h2>
-          <p class="compte_client-email" id="compte_client-display-email">marie.dupont@email.com</p>
+        <!------ Liste des commandes injectée dynamiquement par le JS -------->
+        <div id="commandes-list">
+          <!-- Les cards de commandes seront injectées ici par le JS -->
         </div>
-
-        <!------ Formulaire Informations Personnelles -------->
-        <div class="compte_client-card">
-          <form class="compte_client-form" id="form-compte_client">
-
-            <!-- Prénom et Nom -->
-            <div class="row mb-4">
-              <div class="col-6">
-                <label for="compte_clientFirstName" class="form-label">Prénom</label>
-                <input type="text" class="form-control compte_client-input" id="compte_clientFirstName" placeholder="Marie">
-              </div>
-              <div class="col-6">
-                <label for="compte_clientLastName" class="form-label">Nom</label>
-                <input type="text" class="form-control compte_client-input" id="compte_clientLastName" placeholder="Dupont">
-              </div>
-            </div>
-
-            <!-- Téléphone -->
-            <div class="mb-4">
-              <label for="compte_clientPhone" class="form-label">Téléphone</label>
-              <input type="tel" class="form-control compte_client-input" id="compte_clientPhone" placeholder="06 12 34 56 78">
-            </div>
-
-            <!-- Email -->
-            <div class="mb-4">
-              <label for="compte_clientEmail" class="form-label">Email</label>
-              <input type="email" class="form-control compte_client-input" id="compte_clientEmail" placeholder="marie.dupont@email.com">
-            </div>
-
-            <!-- Adresse -->
-            <div class="mb-4">
-              <label for="compte_clientAddress" class="form-label">Adresse</label>
-              <input type="text" class="form-control compte_client-input" id="compte_clientAddress" placeholder="12 rue des Roses">
-            </div>
-
-            <!-- Ville et Code Postal -->
-            <div class="row mb-4">
-              <div class="col-6">
-                <label for="compte_clientCity" class="form-label">Ville</label>
-                <input type="text" class="form-control compte_client-input" id="compte_clientCity" placeholder="Bordeaux">
-              </div>
-              <div class="col-6">
-                <label for="compte_clientPostal" class="form-label">Code Postal</label>
-                <input type="text" class="form-control compte_client-input" id="compte_clientPostal" placeholder="33000">
-              </div>
-            </div>
-
-            <!-- Bouton sauvegarder -->
-            <div class="d-grid mb-3">
-              <button type="button" class="btn btn-compte_client-save" id="btn-save-compte_client">
-                Sauvegarder les modifications
-              </button>
-            </div>
-
-            <!-- Bouton supprimer le compte -->
-            <div class="d-grid">
-              <button type="button" class="btn btn-compte_client-delete" id="btn-delete-account">
-                Supprimer mon compte
-              </button>
-            </div>
-
-          </form>
-        </div>
-
-        <!------ Section Désactivation du Compte -------->
-        <div class="compte_client-deactivation">
-          <h3 class="compte_client-deactivation-title">Désactivation du compte</h3>
-          <p class="compte_client-deactivation-text">
-            Vous pouvez demander la désactivation de votre compte. Cette demande sera traitée par un administrateur.
-          </p>
-          <!-- Bouton demander la désactivation -->
-          <div class="d-grid">
-            <button type="button" class="btn btn-compte_client-deactivate" id="btn-deactivate-account">
-              Demander la désactivation de mon compte
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>

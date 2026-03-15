@@ -1,4 +1,4 @@
-import { API_URL } from '../config.js';
+import { API_URL } from '../../config.js';
 export function initCommandeClientPage() {
 
   /* ===============================
@@ -57,12 +57,12 @@ export function initCommandeClientPage() {
     =============================== */
 
   const STATUS_MAP = {
-    'en_attente':     { label: 'En attente',      css: 'commande_client-status-pending' },
-    'acceptee':       { label: 'Acceptée',         css: 'commande_client-status-accepted' },
-    'en_preparation': { label: 'En préparation',   css: 'commande_client-status-preparing' },
-    'en_livraison':   { label: 'En livraison',     css: 'commande_client-status-delivering' },
-    'terminee':       { label: 'Terminée',         css: 'commande_client-status-completed' },
-    'annulee':        { label: 'Annulée',          css: 'commande_client-status-cancelled' }
+    'en_attente':     { label: 'En attente',      css: 'compte_client-status-pending' },
+    'acceptee':       { label: 'Acceptée',         css: 'compte_client-status-accepted' },
+    'en_preparation': { label: 'En préparation',   css: 'compte_client-status-preparing' },
+    'en_livraison':   { label: 'En livraison',     css: 'compte_client-status-delivering' },
+    'terminee':       { label: 'Terminée',         css: 'compte_client-status-completed' },
+    'annulee':        { label: 'Annulée',          css: 'compte_client-status-cancelled' }
   };
 
   /* ===============================
@@ -134,10 +134,10 @@ export function initCommandeClientPage() {
     // Crée une card pour chaque commande
     orders.forEach(order => {
       const card = document.createElement('div');
-      card.className = 'commande_client-order-card';
+      card.className = 'compte_client-order-card';
 
       // Récupère le statut et ses propriétés CSS
-      const status = STATUS_MAP[order.status] || { label: order.status, css: 'commande_client-status-pending' };
+      const status = STATUS_MAP[order.status] || { label: order.status, css: 'compte_client-status-pending' };
 
       // Génère le HTML de la timeline de suivi
       const timelineHtml = renderTimeline(order.timeline || []);
@@ -153,38 +153,38 @@ export function initCommandeClientPage() {
 
       // Affichage de la réduction : tiret si pas de réduction, sinon le montant
       const reductionText = order.reduction ? `-${order.reduction}€` : '—';
-      const reductionClass = order.reduction ? 'commande_client-order-info-value-reduction' : '';
+      const reductionClass = order.reduction ? 'compte_client-order-info-value-reduction' : '';
 
       // Construit le HTML complet de la card
       card.innerHTML = `
         <!-- En-tête : nom du menu + badge statut -->
-        <div class="commande_client-order-header">
-          <h3 class="commande_client-order-menu-name">${order.menuName || '—'}</h3>
-          <span class="commande_client-order-status ${status.css}">${status.label}</span>
+        <div class="compte_client-order-header">
+          <h3 class="compte_client-order-menu-name">${order.menuName || '—'}</h3>
+          <span class="compte_client-order-status ${status.css}">${status.label}</span>
         </div>
 
         <!-- Référence commande + date -->
-        <p class="commande_client-order-ref">
+        <p class="compte_client-order-ref">
           ${order.reference || '—'} — ${order.date || ''} à ${order.time || ''}
         </p>
 
         <!-- Ligne d'infos : personnes, livraison, réduction, total -->
-        <div class="commande_client-order-infos">
-          <div class="commande_client-order-info-item">
-            <span class="commande_client-order-info-label">Personnes</span>
-            <span class="commande_client-order-info-value">${order.persons || 0}</span>
+        <div class="compte_client-order-infos">
+          <div class="compte_client-order-info-item">
+            <span class="compte_client-order-info-label">Personnes</span>
+            <span class="compte_client-order-info-value">${order.persons || 0}</span>
           </div>
-          <div class="commande_client-order-info-item">
-            <span class="commande_client-order-info-label">Livraison</span>
-            <span class="commande_client-order-info-value">${order.deliveryFee > 0 ? order.deliveryFee + '€' : 'Gratuite'}</span>
+          <div class="compte_client-order-info-item">
+            <span class="compte_client-order-info-label">Livraison</span>
+            <span class="compte_client-order-info-value">${order.deliveryFee > 0 ? order.deliveryFee + '€' : 'Gratuite'}</span>
           </div>
-          <div class="commande_client-order-info-item">
-            <span class="commande_client-order-info-label">Réduction</span>
-            <span class="commande_client-order-info-value ${reductionClass}">${reductionText}</span>
+          <div class="compte_client-order-info-item">
+            <span class="compte_client-order-info-label">Réduction</span>
+            <span class="compte_client-order-info-value ${reductionClass}">${reductionText}</span>
           </div>
-          <div class="commande_client-order-info-item">
-            <span class="commande_client-order-info-label">Total</span>
-            <span class="commande_client-order-info-value commande_client-order-info-value-total">${order.total || 0}€</span>
+          <div class="compte_client-order-info-item">
+            <span class="compte_client-order-info-label">Total</span>
+            <span class="compte_client-order-info-value compte_client-order-info-value-total">${order.total || 0}€</span>
           </div>
         </div>
 
@@ -222,15 +222,15 @@ export function initCommandeClientPage() {
     // Génère un badge pour chaque étape
     const badgesHtml = timeline.map(step => {
       const stepStatus = STATUS_MAP[step.status] || { label: step.status };
-      return `<span class="commande_client-timeline-badge">${stepStatus.label} — ${step.date || ''}</span>`;
+      return `<span class="compte_client-timeline-badge">${stepStatus.label} — ${step.date || ''}</span>`;
     }).join('');
 
     return `
-      <div class="commande_client-order-timeline-label">
+      <div class="compte_client-order-timeline-label">
         <i class="bi bi-clock-history"></i>
         <span>Suivi (du plus ancien au plus récent)</span>
       </div>
-      <div class="commande_client-order-timeline">
+      <div class="compte_client-order-timeline">
         ${badgesHtml}
       </div>
     `;
@@ -250,7 +250,7 @@ export function initCommandeClientPage() {
     if (order.review) {
       const reviewStatus = order.review.isValidated ? 'Validé' : 'En attente de validation';
       return `
-        <div class="commande_client-order-review">
+        <div class="compte_client-order-review">
           <i class="bi bi-chat-left-dots"></i>
           <span>Avis déposé (${reviewStatus})</span>
         </div>
@@ -275,21 +275,21 @@ export function initCommandeClientPage() {
     // Détermine le statut de restitution
     const isReturned = order.materialReturned || false;
     const statusClass = isReturned
-      ? 'commande_client-material-status-returned'
-      : 'commande_client-material-status-pending';
+      ? 'compte_client-material-status-returned'
+      : 'compte_client-material-status-pending';
     const statusIcon = isReturned ? '✓' : '✗';
     const statusText = isReturned ? 'Restitué' : 'En attente de restitution';
 
     return `
-      <div class="commande_client-material-card">
-        <div class="commande_client-material-title">
+      <div class="compte_client-material-card">
+        <div class="compte_client-material-title">
           <i class="bi bi-box-seam"></i>
           <span>Prêt de matériel</span>
         </div>
-        <p class="commande_client-material-status">
+        <p class="compte_client-material-status">
           Statut restitution : <span class="${statusClass}">${statusIcon} ${statusText}</span>
         </p>
-        <p class="commande_client-material-info">
+        <p class="compte_client-material-info">
           Pour restituer le matériel, contactez-nous par email avec le sujet "Restitution matériel".
         </p>
       </div>
@@ -307,7 +307,7 @@ export function initCommandeClientPage() {
     if (order.status !== 'en_attente') return '';
 
     return `
-      <button type="button" class="btn btn-commande_client-cancel" data-order-id="${order.id}">
+      <button type="button" class="btn btn-compte_client-cancel" data-order-id="${order.id}">
         <i class="bi bi-x-circle"></i> Annuler
       </button>
     `;
@@ -321,7 +321,7 @@ export function initCommandeClientPage() {
 
   function setupCancelButtons() {
     // Sélectionne tous les boutons annuler dans le conteneur
-    const cancelButtons = commandesList.querySelectorAll('.btn-commande_client-cancel');
+    const cancelButtons = commandesList.querySelectorAll('.btn-compte_client-cancel');
 
     cancelButtons.forEach(btn => {
       btn.addEventListener('click', async () => {

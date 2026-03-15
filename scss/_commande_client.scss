@@ -11,7 +11,7 @@
    =============================== */
 
 /* -------- container hero commande client -------- */
-.commande_client-hero {
+.compte_client-hero {
   background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
   border-bottom: 1px solid rgba($terracotta, 0.3);
   padding: 3rem 0;
@@ -22,7 +22,7 @@
   min-height: 200px;
 }
 
-.commande_client-hero .container {
+.compte_client-hero .container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -30,7 +30,7 @@
 }
 
 /* -------- Titre "Mon Espace"  -------- */
-.commande_client-hero-title {
+.compte_client-hero-title {
   font-family: $headings-font-family;
   font-size: 2.5rem;
   font-weight: $font-weight-bold;
@@ -39,14 +39,14 @@
 }
 
 /* -------- Texte "Bienvenue, Nom user  -------- */
-.commande_client-hero-welcome {
+.compte_client-hero-welcome {
   font-size: 1.15rem;
   color: $gray-700;
   margin-bottom: 0;
 }
 
 /* -------- Texte prenom mis en accentuattion  -------- */
-.commande_client-hero-welcome span {
+.compte_client-hero-welcome span {
   color: $terracotta;
   font-weight: $font-weight-semibold;
 }
@@ -55,7 +55,7 @@
    SECTION COMMANDES
    =============================== */
 
-.commande_client-section {
+.compte_client-section {
   background-color: $bg-gradient-start;
   padding: 2rem 0 4rem;
 }
@@ -64,7 +64,7 @@
    ONGLETS (TABS) - Mes commandes / Mon profil
    =============================== */
 
-.commande_client-tabs {
+.compte_client-tabs {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -72,7 +72,7 @@
 }
 
 /* -------- Onglet par défaut (inactif)  -------- */
-.commande_client-tab {
+.compte_client-tab {
   background-color: transparent;
   color: $dark;
   border: 1px solid $gray-400;
@@ -85,14 +85,14 @@
 }
 
 /* -------- Onglet au survol  -------- */
-.commande_client-tab:hover {
+.compte_client-tab:hover {
   border-color: $terracotta;
   color: $terracotta;
   text-decoration: none;
 }
 
 /* -------- Onglet actif sélectionné  -------- */
-.commande_client-tab.active {
+.compte_client-tab.active {
   background-color: $terracotta;
   color: $white-pure;
   border-color: $terracotta;
@@ -110,7 +110,7 @@
    - 7. Bouton annuler (si commande en attente)
    =============================== */
 
-.commande_client-order-card {
+.compte_client-order-card {
   background-color: $white-pure;
   border-radius: 1rem;
   padding: 1.75rem;
@@ -120,7 +120,7 @@
 }
 
 /* -------- En-tête : nom du menu + badge statut -------- */
-.commande_client-order-header {
+.compte_client-order-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -128,7 +128,7 @@
 }
 
 /* -------- Nom du menu -------- */
-.commande_client-order-menu-name {
+.compte_client-order-menu-name {
   font-family: $headings-font-family;
   font-size: 1.15rem;
   font-weight: $font-weight-bold;
@@ -137,7 +137,7 @@
 }
 
 /* -------- Badge statut de la commande -------- */
-.commande_client-order-status {
+.compte_client-order-status {
   padding: 0.25rem 0.85rem;
   border-radius: 2rem;
   font-size: 0.75rem;
@@ -146,56 +146,56 @@
 }
 
 /* -------- Statut : En attente -------- */
-.commande_client-status-pending {
+.compte_client-status-pending {
   background-color: rgba(#fd7e14, 0.1);
   color: #fd7e14;
   border: 1px solid rgba(#fd7e14, 0.3);
 }
 
 /* -------- Statut : Acceptée -------- */
-.commande_client-status-accepted {
+.compte_client-status-accepted {
   background-color: rgba(#0d6efd, 0.1);
   color: #0d6efd;
   border: 1px solid rgba(#0d6efd, 0.3);
 }
 
 /* -------- Statut : En préparation -------- */
-.commande_client-status-preparing {
+.compte_client-status-preparing {
   background-color: rgba(#6f42c1, 0.1);
   color: #6f42c1;
   border: 1px solid rgba(#6f42c1, 0.3);
 }
 
 /* -------- Statut : En livraison -------- */
-.commande_client-status-delivering {
+.compte_client-status-delivering {
   background-color: rgba(#0dcaf0, 0.1);
   color: #0dcaf0;
   border: 1px solid rgba(#0dcaf0, 0.3);
 }
 
 /* -------- Statut : Terminée -------- */
-.commande_client-status-completed {
+.compte_client-status-completed {
   background-color: rgba($sucess-icon, 0.1);
   color: $sucess-icon;
   border: 1px solid rgba($sucess-icon, 0.3);
 }
 
 /* -------- Statut : Annulée  -------- */
-.commande_client-status-cancelled {
+.compte_client-status-cancelled {
   background-color: rgba(#dc3545, 0.1);
   color: #dc3545;
   border: 1px solid rgba(#dc3545, 0.3);
 }
 
 /* -------- Référence commande + date -------- */
-.commande_client-order-ref {
+.compte_client-order-ref {
   font-size: 0.8rem;
   color: $terracotta;
   margin-bottom: 1rem;
 }
 
 /* -------- Ligne d'infos (personnes, livraison, réduction, total) -------- */
-.commande_client-order-infos {
+.compte_client-order-infos {
   display: flex;
   gap: 2rem;
   margin-bottom: 1rem;
@@ -203,32 +203,32 @@
 }
 
 /* -------- Un bloc info  -------- */
-.commande_client-order-info-item {
+.compte_client-order-info-item {
   display: flex;
   flex-direction: column;
 }
 
 /* -------- Label du bloc info  -------- */
-.commande_client-order-info-label {
+.compte_client-order-info-label {
   font-size: 0.8rem;
   color: $gray-600;
   margin-bottom: 0.15rem;
 }
 
 /* -------- Valeur du bloc info -------- */
-.commande_client-order-info-value {
+.compte_client-order-info-value {
   font-size: 0.95rem;
   font-weight: $font-weight-bold;
   color: $dark;
 }
 
 /* -------- Valeur du total -------- */
-.commande_client-order-info-value-total {
+.compte_client-order-info-value-total {
   color: $terracotta;
 }
 
 /* -------- Valeur réduction en vert -------- */
-.commande_client-order-info-value-reduction {
+.compte_client-order-info-value-reduction {
   color: $sucess-icon;
 }
 
@@ -238,7 +238,7 @@
    =============================== */
 
 /* -------- Titre "Suivi (du plus ancien au plus récent)" -------- */
-.commande_client-order-timeline-label {
+.compte_client-order-timeline-label {
   font-size: 0.8rem;
   color: $gray-600;
   margin-bottom: 0.5rem;
@@ -248,12 +248,12 @@
 }
 
 /* -------- icone du Suivi -------- */
-.commande_client-order-timeline-label i {
+.compte_client-order-timeline-label i {
   font-size: 0.8rem;
 }
 
 /* -------- Conteneur des badges de suivi -------- */
-.commande_client-order-timeline {
+.compte_client-order-timeline {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -261,7 +261,7 @@
 }
 
 /* -------- Badge de suivi individuel -------- */
-.commande_client-timeline-badge {
+.compte_client-timeline-badge {
   background-color: rgba($creme, 0.8);
   color: $dark;
   border: 1px solid $gray-400;
@@ -275,7 +275,7 @@
    SECTION AVIS (commande terminée)
    =============================== */
 
-.commande_client-order-review {
+.compte_client-order-review {
   font-size: 0.8rem;
   color: $gray-600;
   display: flex;
@@ -284,7 +284,7 @@
   margin-bottom: 0.5rem;
 }
 
-.commande_client-order-review i {
+.compte_client-order-review i {
   font-size: 0.85rem;
   color: $sucess-icon;
 }
@@ -294,7 +294,7 @@
    Card interne affichée uniquement si la commande inclut du matériel
    =============================== */
 
-.commande_client-material-card {
+.compte_client-material-card {
   background-color: rgba($creme, 0.4);
   border: 1px solid rgba($terracotta, 0.2);
   border-radius: 0.75rem;
@@ -304,7 +304,7 @@
 }
 
 /* -------- Titre "Prêt de matériel" -------- */
-.commande_client-material-title {
+.compte_client-material-title {
   font-size: 0.95rem;
   font-weight: $font-weight-bold;
   color: $dark;
@@ -315,32 +315,32 @@
 }
 
 /* -------- icone du titre pret de matériel -------- */
-.commande_client-material-title i {
+.compte_client-material-title i {
   font-size: 1rem;
   color: $terracotta;
 }
 
 /* -------- Statut restitution -------- */
-.commande_client-material-status {
+.compte_client-material-status {
   font-size: 0.85rem;
   color: $gray-700;
   margin-bottom: 0.25rem;
 }
 
 /* -------- Texte "En attente de restitution" -------- */
-.commande_client-material-status-pending {
+.compte_client-material-status-pending {
   color: #dc3545;
   font-weight: $font-weight-semibold;
 }
 
 /* -------- Texte "Restitué" -------- */
-.commande_client-material-status-returned {
+.compte_client-material-status-returned {
   color: $sucess-icon;
   font-weight: $font-weight-semibold;
 }
 
 /* -------- Texte d'info sous le statut -------- */
-.commande_client-material-info {
+.compte_client-material-info {
   font-size: 0.8rem;
   color: $gray-600;
   margin-bottom: 0;
@@ -351,7 +351,7 @@
    Affiché uniquement si la commande est en attente
    =============================== */
 
-.btn-commande_client-cancel {
+.btn-compte_client-cancel {
   background-color: transparent;
   color: #dc3545;
   border: 1px solid #dc3545;
@@ -366,7 +366,7 @@
   margin-top: 0.75rem;
 }
 
-.btn-commande_client-cancel:hover {
+.btn-compte_client-cancel:hover {
   background-color: #dc3545;
   color: $white-pure;
 }
@@ -376,11 +376,11 @@
    =============================== */
 
 @media (max-width: 1200px) {
-  .commande_client-hero-title {
+  .compte_client-hero-title {
     font-size: 2rem;
   }
 
-  .commande_client-tab {
+  .compte_client-tab {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
@@ -391,36 +391,36 @@
    =============================== */
 
 @media (max-width: 768px) {
-  .commande_client-hero {
+  .compte_client-hero {
     padding: 2rem 0;
   }
 
-  .commande_client-hero-title {
+  .compte_client-hero-title {
     font-size: 1.75rem;
   }
 
-  .commande_client-section {
+  .compte_client-section {
     padding: 1.5rem 0 3rem;
   }
 
-  .commande_client-tabs {
+  .compte_client-tabs {
     gap: 0.25rem;
   }
 
-  .commande_client-tab {
+  .compte_client-tab {
     padding: 0.4rem 0.85rem;
     font-size: 0.8rem;
   }
 
-  .commande_client-order-card {
+  .compte_client-order-card {
     padding: 1.25rem;
   }
 
-  .commande_client-order-infos {
+  .compte_client-order-infos {
     gap: 1rem;
   }
 
-  .commande_client-order-menu-name {
+  .compte_client-order-menu-name {
     font-size: 1rem;
   }
 }
