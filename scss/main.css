@@ -13002,6 +13002,13 @@ textarea.form-control-lg {
   }
 }
 
+#btn-user {
+  white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* -------- Responsive Tablette -------- */
 @media (max-width: 1200px) {
   .navbar-nav {

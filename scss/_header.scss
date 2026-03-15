@@ -252,7 +252,10 @@
 }
 
 #btn-user {
-  cursor: pointer;
+  white-space: nowrap;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* -------- Responsive Tablette -------- */

@@ -261,9 +261,9 @@ export async function getInfosUser() {
         const btnUser = document.getElementById('btn-user');
         if (btnUser && user.utilisateur) {
           const prenom = user.utilisateur.prenom || user.utilisateur.email || 'Mon compte';
-          btnUser.innerHTML = `<i class="bi bi-person"></i> ${prenom}`;
+          btnUser.innerHTML = `<i class="bi bi-person"></i> Mon compte : ${prenom}`;
         }
-        
+
       }
       // Met à jour la navbar selon le rôle
       showAndHideElementsForRole();
