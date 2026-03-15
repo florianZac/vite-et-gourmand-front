@@ -352,7 +352,7 @@ export function initCommandePage() {
         Chaque suivi : { statut: "En attente", date_statut: "10/01/2026 10:00" }
     =============================== */
 
-  function renderTimeline(timeline) {
+  function renderTimeline(suivis) {
     // Si pas de timeline, on n'affiche rien
     if (!suivis || suivis.length === 0) {
       if (DebugConsole) console.log("[renderTimeline] Aucun suivi, section vide");
