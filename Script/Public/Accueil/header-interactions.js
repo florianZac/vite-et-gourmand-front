@@ -204,104 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  
-/* ========================================
-    SECTION 5 : MISE À JOUR DU HEADER SELON LA CONNEXION
-    - 1. Si un token JWT existe dans le localStorage -> l'utilisateur est connecté
-    - 2. Le bouton "Connexion" devient : icône user + prénom -> lien vers /compte
-    - 3. Le bouton "Inscription" devient : "Déconnexion"
-    - 4. Si pas de token -> on laisse les boutons par défaut
-  - btnUser        : icône + prénom -> visible quand CONNECTÉ -> lien vers /commande_client.html
-  - btnSignout     : "Déconnexion"  -> visible quand CONNECTÉ -> supprime le token et redirige vers /
-  - btnConnexion   : "Connexion"    -> visible quand DÉCONNECTÉ  -> lien vers /login
-  - btnInscription : "Inscription"  -> visible quand DÉCONNECTÉ  -> lien vers /inscription
-    ======================================== */
-
-  // Fonction qui met à jour les boutons selon l'état de connexion
-  function updateHeaderAuth() {
-
-    // Récupère le token JWT depuis le localStorage
-    const token = localStorage.getItem('token');
-
-    /* =============================================
-     CAS 1 : UTILISATEUR NON CONNECTÉ (pas de token)
-     ============================================= */
-    if (!token) {
-
-      // Cache les boutons "connecté"
-      if (btnUser) btnUser.style.display = 'none';
-      if (btnSignout) btnSignout.style.display = 'none';
-
-      // Affiche les boutons "déconnecté"
-      if (btnConnexion) {
-        btnConnexion.style.display = 'inline-flex';
-        btnConnexion.href = '/login';
-        btnConnexion.innerHTML = 'Connexion';
-      }
-      if (btnInscription) {
-        btnInscription.style.display = 'inline-flex';
-        btnInscription.href = '/inscription';
-        btnInscription.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Inscription';
-      }
-
-      if (DebugConsole) console.log("Header : utilisateur NON connecté, boutons réinitialisés");
-      return;
-    }
-
-    /* =============================================
-     CAS 2 : UTILISATEUR CONNECTÉ (token présent)
-     ============================================= */
-    try {
-      // Décode le payload du token JWT pour récupérer le prénom
-      const payload = token.split('.')[1];
-      const decoded = JSON.parse(atob(payload));
-
-      // Récupère le prénom depuis le payload du token
-      // Teste plusieurs clés possibles selon la config du JWT
-      const firstName = decoded.firstName || decoded.prenom || decoded.username || 'Mon compte';
-
-      // Cache les boutons "déconnecté"
-      if (btnConnexion) btnConnexion.style.display = 'none';
-      if (btnInscription) btnInscription.style.display = 'none';
-
-      // Affiche le bouton utilisateur avec le prénom
-      if (btnUser) {
-        btnUser.style.display = 'inline-flex';
-        btnUser.innerHTML = `<i class="bi bi-person"></i> ${firstName}`;
-        btnUser.href = '/commande_client.html';
-      }
-
-      // Affiche le bouton déconnexion et ajoute le listener
-      if (btnSignout) {
-        btnSignout.style.display = 'inline-flex';
-
-        // Vérifie si le listener n'a pas déjà été ajouté (évite les doublons)
-        if (!btnSignout.hasAttribute('data-logout-bound')) {
-          btnSignout.setAttribute('data-logout-bound', 'true');
-          btnSignout.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Supprime le token du localStorage
-            localStorage.removeItem('token');
-            // Remet les boutons en mode "non connecté"
-            updateHeaderAuth();
-            // Redirige vers l'accueil
-            window.location.href = '/';
-            if (DebugConsole) console.log("Utilisateur déconnecté via bouton header");
-          });
-        }
-      }
-
-      if (DebugConsole) console.log("Header : utilisateur connecté :", firstName);
-
-    } catch (err) {
-      // Si le token est invalide ou corrompu, on le supprime et on remet l'état par défaut
-      console.error('Token JWT invalide:', err);
-      localStorage.removeItem('token');
-      updateHeaderAuth();
-      if (DebugConsole) console.log("Token supprimé car invalide");
-    }
-  }
-
   // Scroll en haut de la page pour tous les liens HEADER sauf les ancres
   headerLinks.forEach(link => {
     link.addEventListener('click', () => {
@@ -317,8 +219,5 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0);
     if (DebugConsole) console.log("Popstate event -> scroll top");
   });
-
-  // Appelle la fonction au chargement de la page
-  updateHeaderAuth();
 
 });

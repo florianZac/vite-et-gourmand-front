@@ -69,20 +69,20 @@
 
         <!-- Partie droite (Connexion/Inscription ou Nom/Déconnexion) -->
         <div class="navbar-right-section">
-          <!-- Bouton utilisateur -->
-          <a href="/commande_client.html" class="btn btn-connexion" id="btn-user" style="display:none;">
-            <i class="bi bi-person"></i> Nom
+          <!-- Bouton utilisateur (caché par défaut, visible quand connecté) -->
+          <a href="/commande_client.html" class="btn btn-connexion d-none" id="btn-user" data-show="connected">
+            <i class="bi bi-person"></i> Mon compte
           </a>
-          <!-- Bouton déconnexion -->
-          <a href="#" class="btn btn-connexion" id="signout-btn" style="display:none;">
+          <!-- Bouton déconnexion (caché par défaut, visible quand connecté) -->
+          <a href="#" class="btn btn-connexion d-none" id="signout-btn" data-show="connected">
             Déconnexion
           </a>
-          <!-- Bouton connexion-->
-          <a href="/login" class="btn btn-connexion" id="btn-header-connexion">
+          <!-- Bouton connexion (visible par défaut, caché quand connecté) -->
+          <a href="/login" class="btn btn-connexion" id="btn-header-connexion" data-show="disconnected">
             Connexion
           </a>
-          <!-- Bouton inscription -->
-          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription">
+          <!-- Bouton inscription (visible par défaut, caché quand connecté) -->
+          <a href="/inscription" class="btn btn-inscription" id="btn-header-inscription" data-show="disconnected">
             <i class="bi bi-box-arrow-in-right"></i> Inscription
           </a>
         </div>

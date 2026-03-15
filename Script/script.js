@@ -256,7 +256,14 @@ export async function getInfosUser() {
 
       // Si l'utilisateur a un rôle, on le stocke dans le cookie
       if (user && user.utilisateur && user.utilisateur.role) {
-          setCookie(roleCookieName, user.utilisateur.role, 7);
+        setCookie(roleCookieName, user.utilisateur.role, 7);
+        // Affiche le prénom dans le bouton utilisateur du header
+        const btnUser = document.getElementById('btn-user');
+        if (btnUser && user.utilisateur) {
+          const prenom = user.utilisateur.prenom || user.utilisateur.email || 'Mon compte';
+          btnUser.innerHTML = `<i class="bi bi-person"></i> ${prenom}`;
+        }
+        
       }
       // Met à jour la navbar selon le rôle
       showAndHideElementsForRole();
