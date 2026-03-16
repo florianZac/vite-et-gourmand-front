@@ -415,11 +415,25 @@ export function initcompte_client_profilPage() {
       border: 1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'};
     `;
 
-    // Insère la notification avant le formulaire
-    const identity = document.querySelector('.compte_client_profil-identity');
-    if (identity) {
-      identity.parentNode.insertBefore(notification, identity);
+    // Insère la notification avant les onglets (plus visible)
+    const tabs = document.querySelector('.compte_client_profil-tabs');
+    if (tabs) {
+      tabs.parentNode.insertBefore(notification, tabs);
+      if (DebugConsole) console.log("[showNotification] Insérée avant les onglets");
+    } else {
+      // Fallback : insère avant l'identity card
+      const identity = document.querySelector('.compte_client_profil-identity');
+      if (identity) {
+        identity.parentNode.insertBefore(notification, identity);
+        if (DebugConsole) console.log("[showNotification] Insérée avant l'identity");
+      } else {
+        if (DebugConsole) console.log("[showNotification] Aucun point d'insertion trouvé !");
+        return;
+      }
     }
+
+    // Scrolle vers la notification pour que l'utilisateur la voie
+    notification.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     // La notification disparaît après 4 secondes avec un fondu
     setTimeout(() => {
