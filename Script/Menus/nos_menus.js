@@ -1,4 +1,5 @@
 import { API_URL } from '../config.js';
+console.log("=== nos_menus.js chargé ===");
 export function initNosMenuPage() {
 
   /* ===============================
@@ -152,7 +153,7 @@ export function initNosMenuPage() {
         break;
       }
     }
-    
+
     if (DebugConsole && image === '/Assets/Images/placeholder-menu.jpg') {
       console.log(`[getMenuImage] Menu "${menu.titre || 'Sans titre'}" - Aucun plat avec photo, utilisation placeholder`);
     }
