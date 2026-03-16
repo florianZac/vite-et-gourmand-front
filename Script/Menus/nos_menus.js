@@ -21,7 +21,7 @@ export function initNosMenuPage() {
   // URL de base de l'API Symfony
   const apiMenusUrl = `${API_URL}/api/menus/full`;
 
-    if (DebugConsole) {
+  if (DebugConsole) {
     console.log("=== DEBUG CONFIG API NOS MENUS ===");
     console.log("API_URL :", API_URL);
     console.log("apiMenusUrl :", apiMenusUrl);
@@ -89,11 +89,14 @@ export function initNosMenuPage() {
   function getThemeLabel(menu) {
     if (menu.theme) {
       if (menu.theme.titre) {
+        if (DebugConsole) console.log(`[getThemeLabel] Menu "${menu.titre || 'Sans titre'}" - Thème trouvé :`, menu.theme.titre);
         return menu.theme.titre;
       } else {
+        if (DebugConsole) console.warn(`[getThemeLabel] Menu "${menu.titre || 'Sans titre'}" - Thème défini mais titre manquant`);
         return '';
       }
     } else {
+      if (DebugConsole) console.log(`[getThemeLabel] Menu "${menu.titre || 'Sans titre'}" - Aucun thème`);
       return '';
     }
   }
@@ -101,33 +104,35 @@ export function initNosMenuPage() {
   // Retourne le libellé du régime
   function getRegimeLabel(menu) {
     if (!menu.regime) {
+      if (DebugConsole) console.log(`[getRegimeLabel] Menu "${menu.titre || 'Sans titre'}" - Aucun régime`);
       return '';
     }
-
     if (menu.regime.libelle) {
+      if (DebugConsole) console.log(`[getRegimeLabel] Menu "${menu.titre || 'Sans titre'}" - Régime trouvé :`, menu.regime.libelle);
       return menu.regime.libelle;
     }
-
+    if (DebugConsole) console.warn(`[getRegimeLabel] Menu "${menu.titre || 'Sans titre'}" - Régime défini mais libelle manquant`);
     return '';
   }
 
   // Retourne un tableau de noms de plats
   function getPlatNames(menu) {
-  if (menu.plats && Array.isArray(menu.plats)) {
+    if (menu.plats && Array.isArray(menu.plats)) {
+      var result = [];
+      for (var i = 0; i < menu.plats.length; i++) {
+        var plat = menu.plats[i];
 
-    var result = [];
-    for (var i = 0; i < menu.plats.length; i++) {
-      var plat = menu.plats[i];
-
-      if (plat.titre) {
-        result.push(plat.titre);
-      } else {
-        result.push('');
+        if (plat.titre) {
+          if (DebugConsole) console.log(`[getPlatNames] Menu "${menu.titre || 'Sans titre'}" - Plat ${i} :`, plat.titre);
+          result.push(plat.titre);
+        } else {
+          if (DebugConsole) console.warn(`[getPlatNames] Menu "${menu.titre || 'Sans titre'}" - Plat ${i} sans titre`);
+          result.push('');
+        }
       }
-    }
-    return result;
-
+      return result;
     } else {
+      if (DebugConsole) console.log(`[getPlatNames] Menu "${menu.titre || 'Sans titre'}" - Aucun plat ou format invalide`);
       return [];
     }
   }
@@ -135,16 +140,21 @@ export function initNosMenuPage() {
   // Retourne la première photo de plat trouvée
   function getMenuImage(menu) {
     if (!menu.plats || !Array.isArray(menu.plats)) {
+      if (DebugConsole) console.log(`[getMenuImage] Menu "${menu.titre || 'Sans titre'}" - Aucun plat ou format invalide, utilisation placeholder`);
       return '/Assets/Images/placeholder-menu.jpg';
     }
 
     var image = '/Assets/Images/placeholder-menu.jpg';
-
     for (var i = 0; i < menu.plats.length; i++) {
       if (menu.plats[i].photo) {
         image = menu.plats[i].photo;
+        if (DebugConsole) console.log(`[getMenuImage] Menu "${menu.titre || 'Sans titre'}" - Photo trouvée au plat ${i} :`, image);
         break;
       }
+    }
+    
+    if (DebugConsole && image === '/Assets/Images/placeholder-menu.jpg') {
+      console.log(`[getMenuImage] Menu "${menu.titre || 'Sans titre'}" - Aucun plat avec photo, utilisation placeholder`);
     }
     return image;
   }
@@ -181,7 +191,10 @@ export function initNosMenuPage() {
 
       // Parse la réponse JSON
       const data = await response.json();
-
+      if (DebugConsole) {
+        console.log("[DEBUG API]", data);
+        console.log("[DEBUG allMenus]", allMenus);
+      }
       // Stocke tous les menus dans la variable globale
       allMenus = data.menus || [];
 
@@ -202,7 +215,7 @@ export function initNosMenuPage() {
       applyFilters();
 
     } catch (err) {
-      console.error('Erreur réseau chargement menus:', err);
+      console.error("[loadMenus] Erreur réseau :", err);
       if (menuGrid) {
         menuGrid.innerHTML = '<p class="text-center text-muted">Erreur réseau, veuillez réessayer.</p>';
       }
@@ -243,6 +256,7 @@ export function initNosMenuPage() {
 
     // Crée un badge pour chaque thème unique
     themes.forEach(theme => {
+      if (DebugConsole) console.log("[generateThemeBadges] Création badge thème :", theme);
       const btn = document.createElement('button');
       btn.className = 'nos_menu-badge';
       btn.textContent = theme;
@@ -292,6 +306,7 @@ export function initNosMenuPage() {
 
     // Un badge par régime unique
     regimes.forEach(regime => {
+      if (DebugConsole) console.log("[generateRegimeBadges] Création badge régime :", regime);
       const btn = document.createElement('button');
       btn.className = 'nos_menu-badge';
       btn.textContent = regime;
@@ -398,6 +413,7 @@ export function initNosMenuPage() {
         maxPrice,
         minPersons
       });
+      console.log("[applyFilters] allMenus avant filtrage :", allMenus.map(m => m.titre));
     }
     // Filtre le tableau allMenus
     const filtered = allMenus.filter(menu => {
@@ -451,7 +467,8 @@ export function initNosMenuPage() {
       return true;
     });
 
-    if (DebugConsole) console.log("[applyFilters] Résultats :", filtered.length, "menus");
+    if (DebugConsole) console.log("[applyFilters] Menus filtrés :", filtered.map(m => m.titre));
+
 
     // Met à jour le compteur "X menus trouvés"
     if (menuCount) {
@@ -508,8 +525,10 @@ export function initNosMenuPage() {
       // Image du menu : première photo de plat trouvée ou fallback
       const imageUrl = getMenuImage(menu);
 
-      if (DebugConsole) console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${disponible}, Plats: ${getPlatNames(menu).length}`);
-      
+      if (DebugConsole) {
+        if (imageUrl.includes('placeholder')) console.warn(`[renderCards] Menu "${menu.titre}" sans photo, placeholder utilisé`);
+        console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${disponible}, Plats: ${getPlatNames(menu).length}`);
+      }
       // Construit le HTML complet de la card
      card.innerHTML = `
         <!-- Image du menu avec badges thème/régime/dispo -->
