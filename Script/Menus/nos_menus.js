@@ -19,7 +19,7 @@ export function initNosMenuPage() {
      =============================== */
 
   // URL de base de l'API Symfony
-  const apiMenusUrl = `${API_URL}/api/menus`;
+  const apiMenusUrl = `${API_URL}/api/menus/full`;
 
     if (DebugConsole) {
     console.log("=== DEBUG CONFIG API NOS MENUS ===");
