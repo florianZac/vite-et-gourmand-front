@@ -386,7 +386,7 @@ export function initcompte_client_profilPage() {
      - 4. type : 'success' (vert) ou 'error' (rouge)
      =============================== */
 
-   function showNotification(message, type = 'success') {
+    function showNotification(message, type = 'success') {
     if (DebugConsole) console.log(`[showNotification] ${type} : ${message}`);
 
     // Supprime une éventuelle notification déjà affichée
@@ -442,7 +442,7 @@ export function initcompte_client_profilPage() {
       setTimeout(() => notification.remove(), 300);
     }, 4000);
   }
-  
+
   /* ===============================
      LISTENERS : BOUTONS D'ACTION
      =============================== */
