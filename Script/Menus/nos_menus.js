@@ -56,14 +56,14 @@ export function initNosMenuPage() {
 
   if (DebugConsole) {
     console.log("[DOM] Éléments trouvés :", {
-      menuGrid: !!menuGrid,
-      menuCount: !!menuCount,
-      filterSearch: !!filterSearch,
-      filterThemes: !!filterThemes,
-      filterRegimes: !!filterRegimes,
-      filterPrice: !!filterPrice,
-      filterPersons: !!filterPersons,
-      btnReset: !!btnReset,
+      menuGrid: Boolean(menuGrid),
+      menuCount: Boolean(menuCount),
+      filterSearch: Boolean(filterSearch),
+      filterThemes: Boolean(filterThemes),
+      filterRegimes: Boolean(filterRegimes),
+      filterPrice: Boolean(filterPrice),
+      filterPersons: Boolean(filterPersons),
+      btnReset: Boolean(btnReset),
     });
   }
 
@@ -87,27 +87,66 @@ export function initNosMenuPage() {
 
   // Retourne le libellé du thème
   function getThemeLabel(menu) {
-    if (!menu.theme) return '';
-    return menu.theme.titre || '';
+    if (menu.theme) {
+      if (menu.theme.titre) {
+        return menu.theme.titre;
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
   }
 
   // Retourne le libellé du régime
   function getRegimeLabel(menu) {
-    if (!menu.regime) return '';
-    return menu.regime.libelle || '';
+    if (!menu.regime) {
+      return '';
+    }
+
+    if (menu.regime.libelle) {
+      return menu.regime.libelle;
+    }
+
+    return '';
   }
 
   // Retourne un tableau de noms de plats
   function getPlatNames(menu) {
-    if (!menu.plats || !Array.isArray(menu.plats)) return [];
-    return menu.plats.map(p => p.titre || '');
+  if (menu.plats && Array.isArray(menu.plats)) {
+
+    var result = [];
+    for (var i = 0; i < menu.plats.length; i++) {
+      var plat = menu.plats[i];
+
+      if (plat.titre) {
+        result.push(plat.titre);
+      } else {
+        result.push('');
+      }
+    }
+    return result;
+
+    } else {
+      return [];
+    }
   }
 
   // Retourne la première photo de plat trouvée
   function getMenuImage(menu) {
-    if (!menu.plats || !Array.isArray(menu.plats)) return '/Assets/Images/placeholder-menu.jpg';
-    const platAvecPhoto = menu.plats.find(p => p.photo);
-    return platAvecPhoto ? platAvecPhoto.photo : '/Assets/Images/placeholder-menu.jpg';
+    if (!menu.plats || !Array.isArray(menu.plats)) {
+      return '/Assets/Images/placeholder-menu.jpg';
+    }
+
+    var image = '/Assets/Images/placeholder-menu.jpg';
+
+    for (var i = 0; i < menu.plats.length; i++) {
+      if (menu.plats[i].photo) {
+        image = menu.plats[i].photo;
+        break;
+      }
+    }
+    return image;
   }
 
   /* ===============================
@@ -226,8 +265,15 @@ export function initNosMenuPage() {
     if (!filterRegimes) return;
 
     // Extrait tous les libellés de régimes uniques
-    const regimes = [...new Set(allMenus.map(menu => getRegimeLabel(menu)).filter(Boolean))];
-
+    var regimes = [];
+    for (var i = 0; i < allMenus.length; i++) {
+      var label = getRegimeLabel(allMenus[i]);
+      if (label) {
+        if (regimes.indexOf(label) === -1) {
+          regimes.push(label);
+        }
+      }
+    }
     if (DebugConsole) console.log("[generateRegimeBadges] Régimes trouvés :", regimes);
 
     // Vide le conteneur
@@ -284,8 +330,16 @@ export function initNosMenuPage() {
     if (!filterPrice) return;
 
     // Trouve le prix max parmi tous les menus
-    const maxPrice = Math.max(...allMenus.map(menu => menu.prix_par_personne || 0));
-
+    var maxPrice = 0;
+    for (var i = 0; i < allMenus.length; i++) {
+      var prix = allMenus[i].prix_par_personne;
+      if (!prix) {
+        prix = 0;
+      }
+      if (prix > maxPrice) {
+        maxPrice = prix;
+      }
+    }
     if (DebugConsole) console.log("[updatePriceSliderMax] Prix max trouvé :", maxPrice);
 
     // Configure le slider
@@ -309,9 +363,32 @@ export function initNosMenuPage() {
 
   function applyFilters() {
     // Récupère les valeurs actuelles de chaque filtre
-    const searchText = filterSearch?.value?.toLowerCase().trim() || '';
-    const maxPrice = parseFloat(filterPrice?.value) || Infinity;
-    const minPersons = parseInt(filterPersons?.value) || 0;
+    var searchText = '';
+
+    if (filterSearch && filterSearch.value) {
+      searchText = filterSearch.value.toLowerCase();
+      searchText = searchText.trim();
+    }
+
+    var maxPrice = Infinity;
+
+    if (filterPrice && filterPrice.value) {
+      var price = parseFloat(filterPrice.value);
+
+      if (!isNaN(price)) {
+        maxPrice = price;
+      }
+    }
+
+    var minPersons = 0;
+
+    if (filterPersons && filterPersons.value) {
+      var persons = parseInt(filterPersons.value);
+
+      if (!isNaN(persons)) {
+        minPersons = persons;
+      }
+    }
 
     if (DebugConsole) {
       console.log("[applyFilters] Filtres actifs :", {
