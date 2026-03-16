@@ -17434,4 +17434,580 @@ textarea.form-control-lg {
   .compte_client-order-menu-name {
     font-size: 1rem;
   }
+}
+/* ===============================
+   STYLES PAGE NOS MENUS - VITE & GOURMAND
+   Structure :
+   - Hero en haut
+   - En dessous : 2 colonnes
+     - Gauche : filtres restent visibles au scroll
+     - Droite : grille de cards menus scrollable
+   =============================== */
+/* ===============================
+   SECTION HERO
+   =============================== */
+/* -------- section hero -------- */
+.nos_menu-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* -------- En-tête du bloc filtre  -------- */
+.nos_menu-filters-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1.25rem;
+}
+
+/* -------- Texte au dessus du titre (NOS CRÉATIONS)-------- */
+.nos_menu-hero-subtitle {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: hsl(14, 61%, 47%);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+/* -------- Titre principale -------- */
+.nos_menu-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 1rem;
+}
+
+/* -------- Texte descriptif -------- */
+.nos_menu-hero-text {
+  font-size: 1rem;
+  color: #666666;
+  max-width: 550px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ===============================
+   SECTION FILTRE + CARTES MENUS
+   =============================== */
+/* -------- Section Filtres + Cartes Menus  -------- */
+.nos_menu-section {
+  background-color: #F5E6D3;
+  padding: 2rem 4rem 4rem;
+}
+
+/* ===============================
+   COLONNE GAUCHE : FILTRES (sticky)
+   - Reste fixe à gauche quand on scroll les cards à droite
+   - position: sticky garde le bloc visible dans le viewport
+   =============================== */
+.nos_menu-filters {
+  background-color: #FFFFFF;
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* sticky : le bloc reste visible au scroll */
+  position: sticky;
+  top: 96px;
+}
+
+/* -------- En-tête du bloc filtre  -------- */
+.nos_menu-filters-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Playfair Display", serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2A2A2A;
+  margin-bottom: 1.25rem;
+}
+
+/* -------- icone filtre  -------- */
+.nos_menu-filters-header i {
+  font-size: 1.1rem;
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- Label de chaque filtre -------- */
+.nos_menu-filter-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2A2A2A;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* -------- Groupe de filtre (label + input/badges) -------- */
+.nos_menu-filter-group {
+  margin-bottom: 1.25rem;
+}
+
+/* -------- Arriere plan de Input recherche, nb personnes) -------- */
+.nos_menu-filter-input {
+  border: 1px solid #E8E8E8;
+  border-radius: 5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* -------- Sélection de l'Input recherche, nb personnes) -------- */
+.nos_menu-filter-input:focus {
+  border-color: hsl(14, 61%, 47%);
+  box-shadow: 0 0 0 1px rgba(192.9585, 80.8588, 46.7415, 0.2);
+  background-color: #FFFFFF;
+}
+
+/* -------- Hover de l'Input recherche, nb personnes) -------- */
+.nos_menu-filter-input:hover {
+  border-color: hsl(14, 61%, 47%);
+  box-shadow: 0 0 0 1px rgba(192.9585, 80.8588, 46.7415, 0.2);
+  background-color: #FFFFFF;
+}
+
+/* -------- Intérieur du texte de l'Input recherche, nb personnes) -------- */
+.nos_menu-filter-input::-moz-placeholder {
+  color: #999999;
+  font-size: 0.8rem;
+}
+.nos_menu-filter-input::placeholder {
+  color: #999999;
+  font-size: 0.8rem;
+}
+
+/* ===============================
+   BADGES FILTRES (Thème / Régime)
+   - "Tous" est actif par défaut
+   - Au clic, le badge devient actif (fond terracotta)
+   =============================== */
+/* -------- badge filtre Class globale de tous les badges  -------- */
+.nos_menu-filter-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* -------- Badge par défaut (inactif) -------- */
+.nos_menu-badge {
+  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  color: #2A2A2A;
+  border: 1px solid #E8E8E8;
+  border-radius: 5rem;
+  box-shadow: 0 0 0 1px rgba(206.805, 157.998, 73.695, 0.8);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* Reset des styles bouton par défaut -------- */
+  outline: none;
+}
+
+/* -------- Badge actif et hover -------- */
+.nos_menu-badge.active,
+.nos_menu-badge:hover {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF;
+  border-color: hsl(14, 61%, 47%);
+}
+
+/* ===============================
+   SLIDER PRIX 
+   =============================== */
+/* --------  -------- */
+.nos_menu-filter-range {
+  width: 100%;
+  accent-color: #333333;
+}
+
+/* -------- Labels min/max sous le slider -------- */
+.nos_menu-filter-range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #2A2A2A;
+  margin-top: 0.25rem;
+}
+
+/* -------- Valeur slider -------- */
+/* Petit rappel perso # pour un id */
+#filter-price-value {
+  color: hsl(14, 61%, 47%);
+}
+
+/* -------- bouton réinitialiser filtres -------- */
+.nos_menu-filter-reset {
+  width: 100%;
+  background: linear-gradient(90deg, #C1613A, #803050);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+/* -------- bouton réinitialiser filtres au suvole on inverse le gradient -------- */
+.nos_menu-filter-reset:hover {
+  background: linear-gradient(90deg, #803050, #C1613A);
+}
+
+/* -------- compteur de résultats "X menus trouvés" -------- */
+.nos_menu-count {
+  font-size: 1rem;
+  font-weight: 700;
+  color: hsl(14, 61%, 47%);
+  margin-bottom: 1.25rem;
+}
+
+/* ===============================
+   GRILLE DES CARDS MENUS
+   - 3 colonnes sur desktop
+   - 2 colonnes sur tablette
+   - 1 colonne sur mobile
+   =============================== */
+/* -------- Corps de la grille -------- */
+.nos_menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.5rem;
+}
+
+/* -------- carte menu individuelle -------- */
+.nos_menu-card {
+  background-color: #FFFFFF;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 100%;
+  /*
+    width: 100%;        
+    height: 26rem;      
+    min-height: 26rem;  
+    max-height: 26rem; 
+  */
+}
+
+/* -------- carte menu individuelle au survole -------- */
+.nos_menu-card:hover,
+.nos_menu-card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* -------- conteneur Image de la card -------- */
+.nos_menu-card-img {
+  position: relative;
+  overflow: hidden;
+  height: 12rem;
+}
+
+/* --------  Image de la card -------- */
+.nos_menu-card-img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* -------- Agrandisement leger au survole de l'image -------- */
+.nos_menu-card:hover .nos_menu-card-img img {
+  transform: scale(1.05);
+}
+
+/* -------- Badges thème/régime sur l'image -------- */
+.nos_menu-card-badges {
+  position: absolute;
+  top: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  pointer-events: none;
+  gap: 0.35rem;
+}
+
+.left-badges,
+.center-badges,
+.right-badges {
+  display: flex;
+  gap: 0.35rem;
+  pointer-events: all; /* permet le clic */
+}
+
+/* -------- Badge thème en haut à gauche de l'image -------- */
+.nos_menu-card-badge-theme {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* -------- Badge régime en haut à droite de l'image -------- */
+.nos_menu-card-badge-regime {
+  background-color: hsl(38, 58%, 55%);
+  color: #333333;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* -------- Badge Disponibilité du menus centrer -------- */
+.nos_menu-card-badge-dispo {
+  background-color: hsl(79, 30%, 50%);
+  color: #FFFFFF;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* -------- Badge de non Disponibilite du menus centrer -------- */
+.nos_menu-card-badge-nondispo {
+  background-color: hsl(338, 48%, 20%);
+  color: #FFFFFF;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* -------- Contenu de la card -------- */
+.nos_menu-card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
+}
+
+/* -------- Titre du menu -------- */
+.nos_menu-card-title {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #803050, #C1613A);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* -------- Description courte -------- */
+.nos_menu-card-description {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #666666;
+  margin-bottom: 0.75rem;
+  white-space: wrap;
+  overflow: hidden; /* cache le surplus */
+  text-overflow: ellipsis; /* ajoute les … */
+}
+
+/* -------- Tags allergènes/ingrédients sous la description -------- */
+.nos_menu-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+/* -------- tag des menus -------- */
+.nos_menu-card-tag {
+  background-color: rgba(206.805, 157.998, 73.695, 0.8);
+  color: #1F1F1F;
+  border: 1px solid #4A4A4A;
+  border-radius: 5rem;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+/* -------- Pied de card prix + bouton -------- */
+/* --------Corp du pied de page de la card -------- */
+.nos_menu-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid rgba(232, 232, 232, 0.3);
+}
+
+/* -------- Prix du menu -------- */
+.nos_menu-card-price {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: hsl(14, 61%, 47%);
+  text-align: left;
+}
+
+/* -------- Acentuation du prix-------- */
+.nos_menu-card-price span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #999999;
+}
+
+/* -------- Info nombre min de personnes -------- */
+.nos_menu-card-persons {
+  font-size: 0.7rem;
+  color: #999999;
+  margin-top: 0.15rem;
+  text-align: left;
+}
+
+/* -------- icone Info nombre min de personnes -------- */
+.nos_menu-card-persons i {
+  font-size: 0.7rem;
+  margin-right: 0.2rem;
+  color: #333333;
+}
+
+/* -------- Bouton "Voir le détail" -------- */
+.btn-nos_menu-detail {
+  background-color: hsl(14, 61%, 47%);
+  color: hsl(38, 67%, 96%) !important;
+  border-radius: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  min-width: 7.5rem;
+  max-width: 7.5rem;
+  white-space: nowrap;
+  text-align: center;
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+/* -------- Bouton "Voir le détail" au survole -------- */
+.btn-nos_menu-detail:hover {
+  background-color: hsl(14, 61%, 35%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+/* -------- Sépartion entre les tags et le prix -------- */
+.nos_menu-card-divider {
+  width: 100%;
+  height: 1px;
+  background: #999999;
+  margin: 0.75rem 0;
+}
+
+/* ===============================
+   RESPONSIVE TABLETTE
+   =============================== */
+@media (max-width: 1200px) {
+  .nos_menu-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .nos_menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .nos_menu-card {
+    width: 100%;
+    aspect-ratio: 3/4; /* toutes les cards même taille */
+    max-width: none;
+  }
+  .nos_menu-card-body {
+    flex-grow: 1; /* prend tout l'espace disponible entre image et footer */
+  }
+  .nos_menu-count {
+    width: 100%;
+    text-align: center;
+    margin: 1.5rem auto 1rem;
+  }
+  .nos_menu-card-price,
+  .nos_menu-card-persons {
+    text-align: left;
+  }
+  .btn-nos_menu-detail {
+    text-align: center;
+  }
+}
+/* ===============================
+   RESPONSIVE MOBILE
+   =============================== */
+@media (max-width: 768px) {
+  .nos_menu-hero {
+    flex-direction: column;
+    padding: 2rem 1rem;
+  }
+  .nos_menu-hero-title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+  .nos_menu-hero-text {
+    font-size: 0.9rem;
+    max-width: 100%;
+    text-align: center;
+  }
+  .nos_menu-section {
+    padding: 2rem 1rem 3rem;
+  }
+  .nos_menu-filters {
+    position: relative;
+    top: auto;
+    margin-bottom: 1.5rem;
+  }
+  .nos_menu-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .nos_menu-card {
+    width: 100%;
+    aspect-ratio: 3/4;
+    max-width: none;
+  }
+  .nos_menu-card-title {
+    font-size: 1.05rem;
+  }
+  .nos_menu-card-description {
+    font-size: 0.95rem;
+  }
+  .nos_menu-card-badge-theme,
+  .nos_menu-card-badge-regime {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+  .btn-nos_menu-detail {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .nos_menu-count {
+    width: 90%;
+    text-align: center;
+    margin: 1.5rem auto 1rem;
+  }
 }/*# sourceMappingURL=main.css.map */

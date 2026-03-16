@@ -14,16 +14,28 @@
 /* -------- section hero -------- */
 .nos_menu-hero {
   background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  border-bottom: 1px solid rgba($terracotta, 0.3);
+  border-bottom: 1px solid rgba($terracotta, 0.1);
   padding: 3rem 0;
   margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
+  min-height: 200px; 
 }
 
-/* -------- Texte au dessus du titre -------- */
+/* -------- En-tête du bloc filtre  -------- */
+.nos_menu-filters-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: $headings-font-family;
+  font-size: 1.1rem;
+  font-weight: $font-weight-bold;
+  color: $dark;
+  margin-bottom: 1.25rem;
+}
+
+/* -------- Texte au dessus du titre (NOS CRÉATIONS)-------- */
 .nos_menu-hero-subtitle {
   display: block;
   font-size: 0.85rem;
@@ -52,10 +64,14 @@
   line-height: 1.6;
 }
 
+/* ===============================
+   SECTION FILTRE + CARTES MENUS
+   =============================== */
+
 /* -------- Section Filtres + Cartes Menus  -------- */
 .nos_menu-section {
   background-color: $bg-gradient-start;
-  padding: 2rem 0 4rem;
+  padding: 2rem 4rem 4rem;
 }
 
 /* ===============================
@@ -71,7 +87,6 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   /* sticky : le bloc reste visible au scroll */
   position: sticky;
-  /* top = hauteur du header (80px) + un petit espace (16px) */
   top: 96px;
 }
 
@@ -83,14 +98,23 @@
   font-family: $headings-font-family;
   font-size: 1.1rem;
   font-weight: $font-weight-bold;
-  color: $dark;
+  color: $dark-bg-secondary;
   margin-bottom: 1.25rem;
 }
 
 /* -------- icone filtre  -------- */
 .nos_menu-filters-header i {
   font-size: 1.1rem;
-  color: $dark;
+  color: $terracotta;
+}
+
+/* -------- Label de chaque filtre -------- */
+.nos_menu-filter-label {
+  font-size: 0.85rem;
+  font-weight: $font-weight-semibold;
+  color: $dark-bg-secondary;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
 /* -------- Groupe de filtre (label + input/badges) -------- */
@@ -98,31 +122,31 @@
   margin-bottom: 1.25rem;
 }
 
-/* -------- Label de chaque filtre -------- */
-.nos_menu-filter-label {
-  font-size: 0.85rem;
-  font-weight: $font-weight-semibold;
-  color: $dark;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-/* -------- Input texte et number (recherche, nb personnes) -------- */
+/* -------- Arriere plan de Input recherche, nb personnes) -------- */
 .nos_menu-filter-input {
   border: 1px solid $gray-400;
-  border-radius: 2rem;
+  border-radius: 5rem;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  background-color: rgba($creme, 0.5);
+  background-color: rgba($creme, 0.8);
   transition: all 0.3s ease;
 }
 
+/* -------- Sélection de l'Input recherche, nb personnes) -------- */
 .nos_menu-filter-input:focus {
   border-color: $terracotta;
-  box-shadow: 0 0 0 3px rgba($terracotta, 0.2);
+  box-shadow: 0 0 0 1px rgba($terracotta, 0.2);
   background-color: $white-pure;
 }
 
+/* -------- Hover de l'Input recherche, nb personnes) -------- */
+.nos_menu-filter-input:hover {
+  border-color: $terracotta;
+  box-shadow: 0 0 0 1px rgba($terracotta, 0.2);
+  background-color: $white-pure;
+}
+
+/* -------- Intérieur du texte de l'Input recherche, nb personnes) -------- */
 .nos_menu-filter-input::placeholder {
   color: $gray-600;
   font-size: 0.8rem;
@@ -130,87 +154,90 @@
 
 /* ===============================
    BADGES FILTRES (Thème / Régime)
-   - Petits boutons arrondis cliquables
    - "Tous" est actif par défaut
    - Au clic, le badge devient actif (fond terracotta)
    =============================== */
-/* -------- badge filtre  -------- */
+
+/* -------- badge filtre Class globale de tous les badges  -------- */
 .nos_menu-filter-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.6rem;
 }
 
 /* -------- Badge par défaut (inactif) -------- */
 .nos_menu-badge {
   background-color: rgba($creme, 0.8);
-  color: $dark;
+  color: $dark-bg-secondary;
   border: 1px solid $gray-400;
-  border-radius: 2rem;
+  border-radius: 5rem;
+  box-shadow: 0 0 0 1px rgba($ocre, 0.8);
   padding: 0.3rem 0.75rem;
   font-size: 0.75rem;
-  font-weight: $font-weight-semibold;
+  font-weight: $font-weight-normal;
   cursor: pointer;
   transition: all 0.3s ease;
   /* Reset des styles bouton par défaut -------- */
   outline: none;
 }
 
+/* -------- Badge actif et hover -------- */
+.nos_menu-badge.active,
 .nos_menu-badge:hover {
-  border-color: $terracotta;
-  color: $terracotta;
-}
-
-/* -------- Badge actif -------- */
-.nos_menu-badge.active {
   background-color: $terracotta;
   color: $white-pure;
   border-color: $terracotta;
 }
 
 /* ===============================
-   SLIDER PRIX (range input)
+   SLIDER PRIX 
    =============================== */
+
 /* --------  -------- */
 .nos_menu-filter-range {
   width: 100%;
-  accent-color: $terracotta;
-}
+  accent-color: $dark;
+}   
 
 /* -------- Labels min/max sous le slider -------- */
 .nos_menu-filter-range-labels {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
-  color: $gray-600;
+  color: $dark-bg-secondary;
   margin-top: 0.25rem;
 }
 
-/* -------- bouton réinitialiser -------- */
-.nos_menu-filter-reset {
-  width: 100%;
-  background-color: transparent;
-  color: $dark;
-  border: 1px solid $gray-400;
-  border-radius: 2rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.8rem;
-  font-weight: $font-weight-semibold;
-  transition: all 0.3s ease;
-  margin-top: 0.5rem;
+/* -------- Valeur slider -------- */
+/* Petit rappel perso # pour un id */
+#filter-price-value {
+  color: $terracotta;
 }
 
+/* -------- bouton réinitialiser filtres -------- */
+.nos_menu-filter-reset {
+  width: 100%;
+  background: linear-gradient(90deg, $btn-gradient-start, $btn-gradient-end);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.3);  
+}
+
+/* -------- bouton réinitialiser filtres au suvole on inverse le gradient -------- */
 .nos_menu-filter-reset:hover {
-  border-color: $dark;
-  background-color: $dark;
-  color: $white-pure;
+  background: linear-gradient(90deg, $btn-gradient-end ,$btn-gradient-start);
 }
 
 /* -------- compteur de résultats "X menus trouvés" -------- */
 .nos_menu-count {
   font-size: 1rem;
-  font-weight: $font-weight-semibold;
-  color: $dark;
+  font-weight: $font-weight-bold;
+  color: $terracotta;
   margin-bottom: 1.25rem;
 }
 
@@ -221,35 +248,48 @@
    - 1 colonne sur mobile
    =============================== */
 
+/* -------- Corps de la grille -------- */
 .nos_menu-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  //grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: 1.5rem;
 }
 
 /* -------- carte menu individuelle -------- */
 .nos_menu-card {
   background-color: $white-pure;
-  border-radius: 1rem;
+  border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  max-width: 100%;
+  /*
+  width: 100%;        
+  height: 26rem;      
+  min-height: 26rem;  
+  max-height: 26rem; 
+*/
 }
 
-.nos_menu-card:hover {
+/* -------- carte menu individuelle au survole -------- */
+.nos_menu-card:hover,
+.nos_menu-card:focus {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-/* -------- Image de la card -------- */
+/* -------- conteneur Image de la card -------- */
 .nos_menu-card-img {
   position: relative;
   overflow: hidden;
-  height: 180px;
+  height: 12rem;
 }
 
+/* --------  Image de la card -------- */
 .nos_menu-card-img img {
   width: 100%;
   height: 100%;
@@ -257,6 +297,7 @@
   transition: transform 0.3s ease;
 }
 
+/* -------- Agrandisement leger au survole de l'image -------- */
 .nos_menu-card:hover .nos_menu-card-img img {
   transform: scale(1.05);
 }
@@ -264,11 +305,22 @@
 /* -------- Badges thème/régime sur l'image -------- */
 .nos_menu-card-badges {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
+  top: 1rem;
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  pointer-events: none;
   gap: 0.35rem;
+}
+
+
+.left-badges,
+.center-badges,
+.right-badges {
+  display: flex;
+  gap: 0.35rem;
+  pointer-events: all; /* permet le clic */
 }
 
 /* -------- Badge thème en haut à gauche de l'image -------- */
@@ -283,8 +335,28 @@
 
 /* -------- Badge régime en haut à droite de l'image -------- */
 .nos_menu-card-badge-regime {
-  background-color: rgba($white-pure, 0.9);
+  background-color: $ocre;
   color: $dark;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge Disponibilité du menus centrer -------- */
+.nos_menu-card-badge-dispo {
+  background-color: $olive-light;
+  color: $white-pure;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Badge de non Disponibilite du menus centrer -------- */
+.nos_menu-card-badge-nondispo{
+  background-color: $bordeaux-dark;
+  color: $white-pure;
   padding: 0.2rem 0.6rem;
   border-radius: 0.3rem;
   font-size: 0.7rem;
@@ -293,32 +365,37 @@
 
 /* -------- Contenu de la card -------- */
 .nos_menu-card-body {
-  padding: 1.25rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center; 
+  align-items: center;   
+  text-align: center;      
   flex-grow: 1;
 }
 
 /* -------- Titre du menu -------- */
 .nos_menu-card-title {
   font-family: $headings-font-family;
-  font-size: 1rem;
-  font-weight: $font-weight-bold;
-  color: $dark;
-  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, $btn-gradient-end, $btn-gradient-start);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  $font-weight-bold: 0.5rem;
 }
 
 /* -------- Description courte -------- */
 .nos_menu-card-description {
-  font-size: 0.8rem;
-  color: $gray-700;
+  font-size: 0.9rem;
   line-height: 1.5;
+  color: $gray-700;
   margin-bottom: 0.75rem;
-  /* Limite à 3 lignes avec ellipsis -------- */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  white-space: wrap;       
+  overflow: hidden;          /* cache le surplus */
+  text-overflow: ellipsis;   /* ajoute les … */
 }
 
 /* -------- Tags allergènes/ingrédients sous la description -------- */
@@ -331,30 +408,32 @@
 
 /* -------- tag des menus -------- */
 .nos_menu-card-tag {
-  background-color: rgba($creme, 0.8);
-  color: $terracotta;
-  border: 1px solid rgba($terracotta, 0.3);
-  border-radius: 2rem;
+  background-color: rgba($ocre, 0.8);
+  color: $dark-bg;
+  border: 1px solid $gray-800;
+  border-radius: 5rem;
   padding: 0.15rem 0.55rem;
   font-size: 0.65rem;
   font-weight: $font-weight-semibold;
 }
 
 /* -------- Pied de card prix + bouton -------- */
+
+/* --------Corp du pied de page de la card -------- */
 .nos_menu-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding-top: 0.75rem;
   border-top: 1px solid rgba($gray-400, 0.3);
 }
 
 /* -------- Prix du menu -------- */
 .nos_menu-card-price {
-  font-size: 1.1rem;
-  font-weight: $font-weight-bold;
+  font-size: 0.9rem;
+  font-weight: $font-weight-semibold;
   color: $terracotta;
+  text-align: left;
 }
 
 /* -------- Acentuation du prix-------- */
@@ -369,77 +448,118 @@
   font-size: 0.7rem;
   color: $gray-600;
   margin-top: 0.15rem;
+  text-align: left;
 }
 
-/* -------- icone  -------- */
+/* -------- icone Info nombre min de personnes -------- */
 .nos_menu-card-persons i {
   font-size: 0.7rem;
   margin-right: 0.2rem;
+  color: $gray-900;
 }
 
 /* -------- Bouton "Voir le détail" -------- */
 .btn-nos_menu-detail {
   background-color: $terracotta;
-  color: $white-pure !important;
-  border: none;
+  color: $creme !important;
   border-radius: 0.4rem;
   padding: 0.4rem 0.85rem;
   font-size: 0.8rem;
   font-weight: $font-weight-semibold;
   transition: all 0.3s ease;
   text-decoration: none;
+  min-width: 7.5rem;
+  max-width: 7.5rem;
+  white-space: nowrap;
+  text-align: center;
+  display: inline-block;
+  margin-left: 1rem;
 }
 
+/* -------- Bouton "Voir le détail" au survole -------- */
 .btn-nos_menu-detail:hover {
   background-color: $terracotta-dark;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba($terracotta, 0.3);
 }
 
+/* -------- Sépartion entre les tags et le prix -------- */
+.nos_menu-card-divider {
+  width: 100%;
+  height: 1px;
+  background: $gray-600;
+  margin: 0.75rem 0;
+}
+
 /* ===============================
    RESPONSIVE TABLETTE
    =============================== */
-
 @media (max-width: 1200px) {
-  .nos_menu-hero-title {
-    font-size: 2rem;
+  .nos_menu-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .nos_menu-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
+
+  .nos_menu-card {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* toutes les cards même taille */
+    max-width: none;
+  }
+
+  .nos_menu-card-body {
+    flex-grow: 1; /* prend tout l'espace disponible entre image et footer */
+  }
+
+  .nos_menu-count {
+    width: 100%;
+    text-align: center;
+    margin: 1.5rem auto 1rem;
+  }
+
+  .nos_menu-card-price,
+  .nos_menu-card-persons {
+    text-align: left;
+  } 
+
+  .btn-nos_menu-detail {
+    text-align: center;
+  }
+
 }
 
 /* ===============================
    RESPONSIVE MOBILE
    =============================== */
-
-@media (max-width: 991px) {
-  /* Sur mobile, les filtres ne sont plus sticky */
-  /* Ils passent au-dessus des cards */
-  .nos_menu-filters {
-    position: relative;
-    top: auto;
-    margin-bottom: 1.5rem;
-  }
-}
-
 @media (max-width: 768px) {
   .nos_menu-hero {
-    padding: 2rem 0;
+    flex-direction: column;
+    padding: 2rem 1rem;
   }
 
   .nos_menu-hero-title {
     font-size: 1.75rem;
+    text-align: center;
   }
 
   .nos_menu-hero-text {
     font-size: 0.9rem;
+    max-width: 100%;
+    text-align: center;
   }
 
   .nos_menu-section {
-    padding: 1.5rem 0 3rem;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .nos_menu-filters {
+    position: relative;
+    top: auto;
+    margin-bottom: 1.5rem;
   }
 
   .nos_menu-grid {
@@ -447,7 +567,34 @@
     gap: 1rem;
   }
 
-  .nos_menu-card-img {
-    height: 160px;
+  .nos_menu-card {
+    width: 100%;
+    aspect-ratio: 3 / 4; 
+    max-width: none;
+  }
+
+  .nos_menu-card-title {
+    font-size: 1.05rem;
+  }
+
+  .nos_menu-card-description {
+    font-size: 0.95rem;
+  }
+
+  .nos_menu-card-badge-theme,
+  .nos_menu-card-badge-regime {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .btn-nos_menu-detail {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .nos_menu-count {
+    width: 90%;
+    text-align: center;
+    margin: 1.5rem auto 1rem;
   }
 }

@@ -1,6 +1,8 @@
 import { API_URL } from '../config.js';
-function initNosMenuPage() {
+
 console.log("=== nos_menus.js chargé ===");
+export function initNosMenusPage() {
+    console.log("=== INITIALISATION NOS MENUS ===");
   /* ===============================
    SCRIPT PAGE NOS MENUS
    Gère :
@@ -270,6 +272,48 @@ console.log("=== nos_menus.js chargé ===");
   }
 
   /* ===============================
+    FONCTION : GÉNÉRER LES BADGES TAG DYNAMIQUEMENT
+    - Parcourt tous les menus pour extraire les tags uniques
+    =============================== */
+
+  function generateTagBadges(menu) {
+    if (!menu.tags || menu.tags.length === 0) return '';
+
+    let tagsHtml = '';
+    for (let i = 0; i < menu.tags.length; i++) {
+      const tag = menu.tags[i];
+      if (tag && tag.libelle) { // <-- ici on utilise libelle
+        tagsHtml += `<span class="nos_menu-card-tag">${tag.libelle}</span>`;
+      }
+    }
+    if (DebugConsole) console.log("[generateTagBadges] Tags trouvés :", tagsHtml);
+    return tagsHtml;
+  }
+
+  /* ===============================
+    FONCTION : GÉNÉRER LES BADGES DISPONIBLE/INDISPONIBLE DYNAMIQUEMENT
+    - récupère la quantité restante si inférieur à 1 indisponible sinon disponible
+    =============================== */
+  function generateDisponibiliteBadge(menu) {
+    // Vérifie que le menu existe et que quantite_restante est un nombre
+    if (!menu || typeof menu.quantite_restante !== 'number') {
+      return '';
+    }
+    let badgeDispoHtml = '';
+    // Si la quantité restante est suffisante pour le nombre de personnes minimum → disponible
+    if (menu.quantite_restante >= menu.nombre_personne_minimum) {
+      badgeDispoHtml = '<span class="nos_menu-card-badge-dispo">Disponible</span>';
+    } else {
+      badgeDispoHtml = '<span class="nos_menu-card-badge-nondispo">Indisponible</span>';
+    }
+
+    if (DebugConsole) {
+      console.log(`[generateDisponibiliteBadge] Menu "${menu.titre || 'Sans titre'}" - quantite_restante: ${menu.quantite_restante}, nombre_personne_minimum: ${menu.nombre_personne_minimum} => ${badgeDispoHtml}`);
+    }
+    return badgeDispoHtml;
+  }
+
+  /* ===============================
      FONCTION : GÉNÉRER LES BADGES RÉGIME DYNAMIQUEMENT
      - Même logique que pour les thèmes
      - Parcourt tous les menus pour extraire les régimes uniques
@@ -440,7 +484,7 @@ console.log("=== nos_menus.js chargé ===");
         if (!matchSearch) return false;
       }
 
-      // FILTRE 2 : on compare et affiche avec le libellé du Thème 
+      // FILTRE 2 : Compare et affiche avec le libellé du Thème 
       // Si "Tous" est sélectionné, on ne filtre pas sur le thème
       if (selectedTheme !== 'Tous') {
         if (getThemeLabel(menu) !== selectedTheme) return false;
@@ -453,12 +497,12 @@ console.log("=== nos_menus.js chargé ===");
       }
 
       // FILTRE 4 : Prix max / personne
-      // On garde uniquement les menus dont le prix est ≤ au slider
+      // Garde uniquement les menus dont le prix est ≤ au slider
       if (menu.prix_par_personne > maxPrice) return false;
 
       // FILTRE 5 : Nombre minimum de personnes
       // Si le champ est rempli, on garde les menus dont le min de personnes
-      // On garde les menus dont le minimum est est ≤ à la valeur saisie 
+      // Garde les menus dont le minimum est est ≤ à la valeur saisie 
       if (minPersons > 0) {
         if ((menu.nombre_personne_minimum || 0) > minPersons) return false;
       }
@@ -510,34 +554,39 @@ console.log("=== nos_menus.js chargé ===");
       // Récupère les libellés
       const themeLabel = getThemeLabel(menu);
       const regimeLabel = getRegimeLabel(menu);
-
-      // Génère les tags (noms des plats)
-      const tagsHtml = (menu.tags || [])
-        .map(tag => `<span class="nos_menu-card-tag">${tag}</span>`)
-        .join('');
+      let tagsHtml = '';
+      if (menu.tags && Array.isArray(menu.tags)) {
+        tagsHtml = menu.tags
+          .map(tag => `<span class="nos_menu-card-tag">${tag.tag}</span>`)
+          .join('');
+      }
 
       // Badge de disponibilité
-      const disponible = (menu.quantite_restante || 0) > 0;
-      const dispoBadgeHtml = disponible
-        ? ''
-        : '<span class="nos_menu-card-badge-regime" style="background: #e74c3c; color: #fff;">Indisponible</span>';
+      const dispoBadgeHtml = generateDisponibiliteBadge(menu);
 
+      
       // Image du menu : première photo de plat trouvée ou fallback
       const imageUrl = getMenuImage(menu);
 
       if (DebugConsole) {
         if (imageUrl.includes('placeholder')) console.warn(`[renderCards] Menu "${menu.titre}" sans photo, placeholder utilisé`);
-        console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${disponible}, Plats: ${getPlatNames(menu).length}`);
+        console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${dispoBadgeHtml}, Plats: ${getPlatNames(menu).length}`);
       }
       // Construit le HTML complet de la card
-     card.innerHTML = `
+      card.innerHTML = `
         <!-- Image du menu avec badges thème/régime/dispo -->
         <div class="nos_menu-card-img">
           <img src="${imageUrl}" alt="${menu.titre || 'Menu'}">
           <div class="nos_menu-card-badges">
-            ${themeLabel ? `<span class="nos_menu-card-badge-theme">${themeLabel}</span>` : ''}
-            ${regimeLabel ? `<span class="nos_menu-card-badge-regime">${regimeLabel}</span>` : ''}
-            ${dispoBadgeHtml}
+            <div class="left-badges">
+              ${themeLabel ? `<span class="nos_menu-card-badge-theme">${themeLabel}</span>` : ''}
+            </div>
+            <div class="center-badges">
+              ${dispoBadgeHtml}
+            </div>
+            <div class="right-badges">
+              ${regimeLabel ? `<span class="nos_menu-card-badge-regime">${regimeLabel}</span>` : ''}
+            </div>
           </div>
         </div>
 
@@ -546,14 +595,14 @@ console.log("=== nos_menus.js chargé ===");
           <!-- Titre du menu -->
           <h3 class="nos_menu-card-title">${menu.titre || 'Sans titre'}</h3>
 
-          <!-- Description courte (limitée à 3 lignes via CSS) -->
+          <!-- Description courte -->
           <p class="nos_menu-card-description">${menu.description || ''}</p>
 
           <!-- Tags (noms des plats du menu) -->
           <div class="nos_menu-card-tags">
-            ${tagsHtml}
+            ${generateTagBadges(menu)}
           </div>
-
+          <div class="nos_menu-card-divider"></div>
           <!-- Pied de card : prix + nb personnes + bouton détail -->
           <div class="nos_menu-card-footer">
             <div>
