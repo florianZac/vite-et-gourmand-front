@@ -12,13 +12,21 @@ export function initNosMenuPage() {
    6. La réinitialisation des filtres
    =============================== */
 
+  // Variable debug console
+  let DebugConsole = true;
   /* ===============================
      CONFIGURATION API
      =============================== */
 
   // URL de base de l'API Symfony
-  const apiReturnMenus = `${API_URL}/api/menus`;
+  const apiMenusUrl = `${API_URL}/api/menus`;
 
+    if (DebugConsole) {
+    console.log("=== DEBUG CONFIG API NOS MENUS ===");
+    console.log("API_URL :", API_URL);
+    console.log("apiMenusUrl :", apiMenusUrl);
+    console.log("==================================");
+  }
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
@@ -46,12 +54,24 @@ export function initNosMenuPage() {
   // Bouton réinitialiser
   const btnReset = document.getElementById('btn-reset-filters');
 
+  if (DebugConsole) {
+    console.log("[DOM] Éléments trouvés :", {
+      menuGrid: !!menuGrid,
+      menuCount: !!menuCount,
+      filterSearch: !!filterSearch,
+      filterThemes: !!filterThemes,
+      filterRegimes: !!filterRegimes,
+      filterPrice: !!filterPrice,
+      filterPersons: !!filterPersons,
+      btnReset: !!btnReset,
+    });
+  }
+
   /* ===============================
      VARIABLES GLOBALES
      =============================== */
 
   // Stocke TOUS les menus reçus de l'API (non filtrés)
-  // Ce tableau ne change jamais après le chargement initial
   let allMenus = [];
 
   // Stocke le thème actuellement sélectionné ("Tous" par défaut)
@@ -59,6 +79,36 @@ export function initNosMenuPage() {
 
   // Stocke le régime actuellement sélectionné ("Tous" par défaut)
   let selectedRegime = 'Tous';
+
+  /* ===============================
+     FONCTIONS UTILITAIRES
+     - Extraient le libellé texte depuis les objets theme/regime retournés par l'API
+     =============================== */
+
+  // Retourne le libellé du thème
+  function getThemeLabel(menu) {
+    if (!menu.theme) return '';
+    return menu.theme.titre || '';
+  }
+
+  // Retourne le libellé du régime
+  function getRegimeLabel(menu) {
+    if (!menu.regime) return '';
+    return menu.regime.libelle || '';
+  }
+
+  // Retourne un tableau de noms de plats
+  function getPlatNames(menu) {
+    if (!menu.plats || !Array.isArray(menu.plats)) return [];
+    return menu.plats.map(p => p.titre || '');
+  }
+
+  // Retourne la première photo de plat trouvée
+  function getMenuImage(menu) {
+    if (!menu.plats || !Array.isArray(menu.plats)) return '/Assets/Images/placeholder-menu.jpg';
+    const platAvecPhoto = menu.plats.find(p => p.photo);
+    return platAvecPhoto ? platAvecPhoto.photo : '/Assets/Images/placeholder-menu.jpg';
+  }
 
   /* ===============================
      FONCTION : CHARGER LES MENUS DEPUIS L'API (AJAX)
@@ -69,18 +119,24 @@ export function initNosMenuPage() {
      =============================== */
 
   async function loadMenus() {
+    if (DebugConsole) console.log("[loadMenus] Début - Appel GET", apiMenusUrl);
+
     try {
       // Requête GET vers l'API pour récupérer tous les menus
-      const response = await fetch(`${BASE_URL}/menus`, {
+      const response = await fetch(apiMenusUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
-      // Si la réponse n'est pas OK (404, 500, etc.)
+      if (DebugConsole) console.log("[loadMenus] Réponse status :", response.status);
+
       if (!response.ok) {
-        console.error('Erreur chargement menus:', response.status);
+        console.error('[loadMenus] Erreur chargement menus:', response.status);
+        if (menuGrid) {
+          menuGrid.innerHTML = '<p class="text-center text-muted">Erreur lors du chargement des menus.</p>';
+        }
         return;
       }
 
@@ -88,12 +144,13 @@ export function initNosMenuPage() {
       const data = await response.json();
 
       // Stocke tous les menus dans la variable globale
-      // Adapte selon la structure de ta réponse API :
-      // Si l'API retourne directement un tableau → data
-      // Si l'API retourne { "hydra:member": [...] } → data["hydra:member"]
-      allMenus = data['hydra:member'] || data;
+      allMenus = data.menus || [];
 
-      console.log('✓ Menus chargés:', allMenus.length);
+      if (DebugConsole) {
+        console.log("[loadMenus] Données reçues :", data);
+        console.log("[loadMenus] Nombre de menus :", allMenus.length);
+        allMenus.forEach((m, i) => console.log(`[loadMenus] Menu ${i} :`, m.titre, "- Thème:", getThemeLabel(m), "- Régime:", getRegimeLabel(m)));
+      }
 
       // Génère les badges thème et régime depuis les données reçues
       generateThemeBadges();
@@ -107,6 +164,9 @@ export function initNosMenuPage() {
 
     } catch (err) {
       console.error('Erreur réseau chargement menus:', err);
+      if (menuGrid) {
+        menuGrid.innerHTML = '<p class="text-center text-muted">Erreur réseau, veuillez réessayer.</p>';
+      }
     }
   }
 
@@ -122,7 +182,9 @@ export function initNosMenuPage() {
 
     // Extrait tous les thèmes uniques depuis les menus
     // Set() élimine les doublons automatiquement
-    const themes = [...new Set(allMenus.map(menu => menu.theme).filter(Boolean))];
+    const themes = [...new Set(allMenus.map(menu => getThemeLabel(menu)).filter(Boolean))];
+
+    if (DebugConsole) console.log("[generateThemeBadges] Thèmes trouvés :", themes);
 
     // Vide le conteneur avant de régénérer
     filterThemes.innerHTML = '';
@@ -163,8 +225,10 @@ export function initNosMenuPage() {
   function generateRegimeBadges() {
     if (!filterRegimes) return;
 
-    // Extrait tous les régimes uniques
-    const regimes = [...new Set(allMenus.map(menu => menu.regime).filter(Boolean))];
+    // Extrait tous les libellés de régimes uniques
+    const regimes = [...new Set(allMenus.map(menu => getRegimeLabel(menu)).filter(Boolean))];
+
+    if (DebugConsole) console.log("[generateRegimeBadges] Régimes trouvés :", regimes);
 
     // Vide le conteneur
     filterRegimes.innerHTML = '';
@@ -196,8 +260,8 @@ export function initNosMenuPage() {
 
   /* ===============================
      FONCTION : METTRE À JOUR LE BADGE ACTIF
-     - Retire la classe "active" de tous les badges du conteneur
-     - Ajoute la classe "active" uniquement sur le badge cliqué
+     - 1. Retire la classe "active" de tous les badges du conteneur
+     - 2. Ajoute la classe "active" uniquement sur le badge cliqué
      =============================== */
 
   function updateBadgesActive(container, activeBtn) {
@@ -211,16 +275,18 @@ export function initNosMenuPage() {
 
   /* ===============================
      FONCTION : METTRE À JOUR LE SLIDER PRIX MAX
-     - Trouve le prix le plus élevé parmi tous les menus
-     - Configure le max du slider avec cette valeur
-     - Positionne le slider au maximum par défaut
+     - 1. Trouve le prix le plus élevé parmi tous les menus
+     - 2. Configure le max du slider avec cette valeur
+     - 3. Positionne le slider au maximum par défaut
      =============================== */
 
   function updatePriceSliderMax() {
     if (!filterPrice) return;
 
     // Trouve le prix max parmi tous les menus
-    const maxPrice = Math.max(...allMenus.map(menu => menu.price || 0));
+    const maxPrice = Math.max(...allMenus.map(menu => menu.prix_par_personne || 0));
+
+    if (DebugConsole) console.log("[updatePriceSliderMax] Prix max trouvé :", maxPrice);
 
     // Configure le slider
     filterPrice.max = maxPrice;
@@ -236,9 +302,9 @@ export function initNosMenuPage() {
 
   /* ===============================
      FONCTION : APPLIQUER TOUS LES FILTRES
-     - Filtre le tableau allMenus selon TOUS les critères actifs
-     - Chaque filtre réduit progressivement la liste
-     - Met à jour le compteur et réaffiche les cards
+     - 1. Filtre le tableau allMenus selon TOUS les critères actifs
+     - 2. Chaque filtre réduit progressivement la liste
+     - 3. Met à jour le compteur et réaffiche les cards
      =============================== */
 
   function applyFilters() {
@@ -247,53 +313,68 @@ export function initNosMenuPage() {
     const maxPrice = parseFloat(filterPrice?.value) || Infinity;
     const minPersons = parseInt(filterPersons?.value) || 0;
 
+    if (DebugConsole) {
+      console.log("[applyFilters] Filtres actifs :", {
+        searchText,
+        selectedTheme,
+        selectedRegime,
+        maxPrice,
+        minPersons
+      });
+    }
     // Filtre le tableau allMenus
     const filtered = allMenus.filter(menu => {
 
       // FILTRE 1 : Recherche texte
       // Cherche dans le nom, le thème, le régime, et les allergènes/ingrédients
       if (searchText) {
-        const name = (menu.name || '').toLowerCase();
-        const theme = (menu.theme || '').toLowerCase();
-        const regime = (menu.regime || '').toLowerCase();
+        const titre = (menu.titre || '').toLowerCase();
+        const theme = getThemeLabel(menu).toLowerCase();
+        const regime = getRegimeLabel(menu).toLowerCase();
+        const description = (menu.description || '').toLowerCase();
+        const plats = getPlatNames(menu).join(' ').toLowerCase();
         // Les tags peuvent être un tableau de strings (allergènes, ingrédients)
         const tags = (menu.tags || []).join(' ').toLowerCase();
 
         // Si aucun champ ne contient le texte recherché → on exclut ce menu
-        const matchSearch = name.includes(searchText)
+        const matchSearch = titre.includes(searchText)
           || theme.includes(searchText)
           || regime.includes(searchText)
+          || description.includes(searchText)
+          || plats.includes(searchText)
           || tags.includes(searchText);
 
         if (!matchSearch) return false;
       }
 
-      // FILTRE 2 : Thème
+      // FILTRE 2 : on compare et affiche avec le libellé du Thème 
       // Si "Tous" est sélectionné, on ne filtre pas sur le thème
       if (selectedTheme !== 'Tous') {
-        if (menu.theme !== selectedTheme) return false;
+        if (getThemeLabel(menu) !== selectedTheme) return false;
       }
 
-      // FILTRE 3 : Régime
+      // FILTRE 3 :
       // Même logique que le thème
       if (selectedRegime !== 'Tous') {
-        if (menu.regime !== selectedRegime) return false;
+        if (getRegimeLabel(menu) !== selectedRegime) return false;
       }
 
       // FILTRE 4 : Prix max / personne
       // On garde uniquement les menus dont le prix est ≤ au slider
-      if (menu.price > maxPrice) return false;
+      if (menu.prix_par_personne > maxPrice) return false;
 
       // FILTRE 5 : Nombre minimum de personnes
       // Si le champ est rempli, on garde les menus dont le min de personnes
-      // est ≤ à la valeur saisie (pour que le client puisse commander pour ce nombre)
+      // On garde les menus dont le minimum est est ≤ à la valeur saisie 
       if (minPersons > 0) {
-        if ((menu.minPersons || 0) > minPersons) return false;
+        if ((menu.nombre_personne_minimum || 0) > minPersons) return false;
       }
 
-      // Si tous les filtres passent → on garde ce menu
+      // Si tous les filtres passent on garde ce menu
       return true;
     });
+
+    if (DebugConsole) console.log("[applyFilters] Résultats :", filtered.length, "menus");
 
     // Met à jour le compteur "X menus trouvés"
     if (menuCount) {
@@ -306,9 +387,13 @@ export function initNosMenuPage() {
 
   /* ===============================
      FONCTION : AFFICHER LES CARDS DANS LA GRILLE
-     - Vide la grille
-     - Crée une card HTML pour chaque menu du tableau filtré
-     - Injecte les cards dans le DOM
+     - 1. Vide la grille
+     - 2. Crée une card HTML pour chaque menu du tableau filtré
+     - 3. Injecte les cards dans le DOM
+     - 4. Image du premier plat avec badges thème + régime + dispo
+       - 4.1 Titre, description (3 lignes max)
+       - 4.2 Tags (noms des plats : Foie gras, Magret, Truffe...)
+       - 4.3 Prix/pers + nb min personnes + bouton "Voir le détail"
      =============================== */
 
   function renderCards(menus) {
@@ -328,31 +413,47 @@ export function initNosMenuPage() {
       const card = document.createElement('div');
       card.className = 'nos_menu-card';
 
-      // Génère le HTML des tags (allergènes/ingrédients)
+      // Récupère les libellés
+      const themeLabel = getThemeLabel(menu);
+      const regimeLabel = getRegimeLabel(menu);
+
+      // Génère les tags (noms des plats)
       const tagsHtml = (menu.tags || [])
         .map(tag => `<span class="nos_menu-card-tag">${tag}</span>`)
         .join('');
 
+      // Badge de disponibilité
+      const disponible = (menu.quantite_restante || 0) > 0;
+      const dispoBadgeHtml = disponible
+        ? ''
+        : '<span class="nos_menu-card-badge-regime" style="background: #e74c3c; color: #fff;">Indisponible</span>';
+
+      // Image du menu : première photo de plat trouvée ou fallback
+      const imageUrl = getMenuImage(menu);
+
+      if (DebugConsole) console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${disponible}, Plats: ${getPlatNames(menu).length}`);
+      
       // Construit le HTML complet de la card
-      card.innerHTML = `
-        <!-- Image du menu avec badges thème/régime -->
+     card.innerHTML = `
+        <!-- Image du menu avec badges thème/régime/dispo -->
         <div class="nos_menu-card-img">
-          <img src="${menu.image || '/Assets/Images/placeholder-menu.jpg'}" alt="${menu.name || 'Menu'}">
+          <img src="${imageUrl}" alt="${menu.titre || 'Menu'}">
           <div class="nos_menu-card-badges">
-            ${menu.theme ? `<span class="nos_menu-card-badge-theme">${menu.theme}</span>` : ''}
-            ${menu.regime ? `<span class="nos_menu-card-badge-regime">${menu.regime}</span>` : ''}
+            ${themeLabel ? `<span class="nos_menu-card-badge-theme">${themeLabel}</span>` : ''}
+            ${regimeLabel ? `<span class="nos_menu-card-badge-regime">${regimeLabel}</span>` : ''}
+            ${dispoBadgeHtml}
           </div>
         </div>
 
         <!-- Contenu de la card -->
         <div class="nos_menu-card-body">
           <!-- Titre du menu -->
-          <h3 class="nos_menu-card-title">${menu.name || 'Sans titre'}</h3>
+          <h3 class="nos_menu-card-title">${menu.titre || 'Sans titre'}</h3>
 
           <!-- Description courte (limitée à 3 lignes via CSS) -->
           <p class="nos_menu-card-description">${menu.description || ''}</p>
 
-          <!-- Tags (allergènes / ingrédients principaux) -->
+          <!-- Tags (noms des plats du menu) -->
           <div class="nos_menu-card-tags">
             ${tagsHtml}
           </div>
@@ -361,13 +462,13 @@ export function initNosMenuPage() {
           <div class="nos_menu-card-footer">
             <div>
               <div class="nos_menu-card-price">
-                ${menu.price || 0} € <span>/pers.</span>
+                ${menu.prix_par_personne || 0} € <span>/pers.</span>
               </div>
               <div class="nos_menu-card-persons">
-                <i class="bi bi-people"></i> min. ${menu.minPersons || 1} personnes
+                <i class="bi bi-people"></i> min. ${menu.nombre_personne_minimum || 1} personnes
               </div>
             </div>
-            <a href="/menu/${menu.id}" class="btn btn-nos_menu-detail">
+            <a href="/detail_menu?id=${menu.id}" class="btn btn-nos_menu-detail">
               Voir le détail
             </a>
           </div>
@@ -377,18 +478,22 @@ export function initNosMenuPage() {
       // Ajoute la card à la grille
       menuGrid.appendChild(card);
     });
+
+    if (DebugConsole) console.log("[renderCards] Cards injectées :", menus.length);
   }
 
   /* ===============================
      FONCTION : RÉINITIALISER TOUS LES FILTRES
-     - Vide la recherche
-     - Remet "Tous" actif pour thème et régime
-     - Remet le slider prix au max
-     - Vide le nombre de personnes
-     - Relance le filtrage
+     - 1. Vide la recherche
+     - 2. Remet "Tous" actif pour thème et régime
+     - 3. Remet le slider prix au max
+     - 4. Vide le nombre de personnes
+     - 5. Relance le filtrage
      =============================== */
 
   function resetFilters() {
+    if (DebugConsole) console.log("[resetFilters] Réinitialisation de tous les filtres");
+
     // Vide le champ recherche
     if (filterSearch) filterSearch.value = '';
 
@@ -418,13 +523,11 @@ export function initNosMenuPage() {
     // Relance le filtrage (affiche tous les menus)
     applyFilters();
 
-    console.log('✓ Filtres réinitialisés');
   }
 
   /* ===============================
-     LISTENERS : FILTRES EN TEMPS RÉEL
+     LISTENERS : FILTRES EN TEMPS RÉEL AVEC AJAX (tout est instantané=> U_u)
      - Chaque modification d'un filtre relance applyFilters()
-     - Pas besoin de bouton "Rechercher", tout est instantané
      =============================== */
 
   // Recherche texte : filtre à chaque frappe
@@ -457,5 +560,6 @@ export function initNosMenuPage() {
      - Charge les menus depuis l'API au chargement de la page
      =============================== */
 
+  if (DebugConsole) console.log("=== INITIALISATION PAGE NOS MENUS ===");
   loadMenus();
 }

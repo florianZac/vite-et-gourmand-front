@@ -26,11 +26,11 @@ export const allRoutes = [
 
    /* Role CLIENT  (ROLE_CLIENT) */
    new Route("/commander", "Commander", "Pages/Commande/Client/commander.html", ["ROLE_CLIENT"], "/Script/Commande/commander.js", true), 
-   new Route("/compte_client", "Commande", "Pages/Commande/Client/compte_client.html", ["ROLE_CLIENT"], "/Script/Commande/compte_client.js", true), 
+   new Route("/compte_client", "compte client", "Pages/Commande/Client/compte_client.html", ["ROLE_CLIENT"], "/Script/Client/compte_client.js", true), 
    new Route("/mon_compte_profil", "compte_client_profil", "Pages/Commande/Client/compte_client_profil.html", ["ROLE_CLIENT"], "/Script/Client/compte_client_profil.js", true), 
 
    /* Role EMPLOYER (ROLE_EMPLOYE) */
-
+   new Route("/compte_employer", "compte employer", "Pages/Employer/compte_employer.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer.js", true),
    /* Role ADMIN (ROLE_ADMIN)*/
 
 
