@@ -15,7 +15,7 @@ export function initNosMenusPage() {
    =============================== */
 
   // Variable debug console
-  let DebugConsole = true;
+  let DebugConsole = false;
   /* ===============================
      CONFIGURATION API
      =============================== */

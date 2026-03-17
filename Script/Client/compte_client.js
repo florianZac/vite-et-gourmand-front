@@ -1,8 +1,8 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
-
-export function initCommandePage() {
-
+// ATTENTION AU NOM j'arrete pas de me faire avoir deuxieme element du tableau allrouter
+//init+nom+Page
+export function initcompteclientPage() {
   /* ===============================
     SCRIPT PAGE COMMANDES CLIENT
     Gère :
@@ -439,6 +439,7 @@ export function initCommandePage() {
 
       const data = await response.json();
       const orders = data.commandes || [];
+      console.log("orders:", orders, "length:", orders.length); 
 
       if (DebugConsole) {
         console.log("[loadOrders] Données reçues :", data);
