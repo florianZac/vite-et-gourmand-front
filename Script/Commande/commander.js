@@ -1,31 +1,81 @@
 import { API_URL } from '../config.js';
+import { getToken, getRole } from '../script.js';
+
 export function initCommanderPage() {
 
   /* ===============================
-   SCRIPT PAGE COMMANDER (multi-étapes)
-   permet de réunir mes 4 anciennes page en une seule 
-   1. page d'information name lastname etc.. voir figma
-   2. livraison informations
-   3. Choix menu et récapitulatif rapide
-   4. page de validation avec rappel commande 
-   simplifie les choses évite les duplications de code.
-   =============================== */
+    SCRIPT PAGE COMMANDER (multi-étapes)
+    permet de réunir mes 4 anciennes page en une seule 
+    1. page d'information name lastname etc.. voir figma
+    2. livraison informations
+    3. Choix menu et récapitulatif rapide
+    4. page de validation avec rappel commande 
+    simplifie les choses évite les duplications de code.
+    =============================== */
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-     =============================== */
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      =============================== */
 
   // Sélectionne toutes les pastilles du stepper (étapes 1, 2, 3)
   const steps = document.querySelectorAll('.commander-step');
-
   // Sélectionne tous les panels (contenu de chaque étape)
   const panels = document.querySelectorAll('.commander-panel');
-
   // Select du choix de menu (étape 3)
   const menuSelect = document.getElementById('CommandMenu');
-
   // Input nombre de personnes (étape 3)
+  // Input Form
   const personsInput = document.getElementById('CommandPersons');
+  const firstNameInput = document.getElementById('CommandFirstName');
+  const lastNameInput = document.getElementById('CommandLastName');
+  const phoneInput = document.getElementById('CommandPhone');
+  const addressInput = document.getElementById('CommandAddress');
+  const cityInput = document.getElementById('CommandCity');
+  const postalInput = document.getElementById('CommandPostal');
+
+  // Stocker les valeurs originales pour comparer
+  let originalData = {};
+
+  // Vérifier chaque champ avant de l'assigner
+  if (firstNameInput && firstNameInput.value) {
+    originalData.prenom = firstNameInput.value;
+  } else {
+    originalData.prenom = '';
+  }
+
+  if (lastNameInput && lastNameInput.value) {
+    originalData.nom = lastNameInput.value;
+  } else {
+    originalData.nom = '';
+  }
+
+  if (phoneInput && phoneInput.value) {
+    originalData.telephone = phoneInput.value;
+  } else {
+    originalData.telephone = '';
+  }
+
+  if (addressInput && addressInput.value) {
+    originalData.adresse_postale = addressInput.value;
+  } else {
+    originalData.adresse_postale = '';
+  }
+
+  if (cityInput && cityInput.value) {
+    originalData.ville = cityInput.value;
+  } else {
+    originalData.ville = '';
+  }
+
+  if (postalInput && postalInput.value) {
+    originalData.code_postal = postalInput.value;
+  } else {
+    originalData.code_postal = '';
+  }
+
+  /* ===============================
+    INITIALISATION DES VARIABLES
+    =============================== */
 
   // Étape actuelle (1, 2, 3 ou 4)
   let currentStep = 1;
@@ -35,15 +85,55 @@ export function initCommanderPage() {
   let deliveryFee = 0;
 
   // Variable debug console si à true
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API
       =============================== */
+  // URL pour créer la commande 
+  const apiCommander = `${API_URL}/api/commandes`;
 
-  // URL de base de l'API Symfony
-  const apiCommander = `${API_URL}/api/commander`;
+  // URL de récupération des infos de l'utilisateur
+  const apiMeUrl = `${API_URL}/api/me`;
 
+  // URL pour la modification du profil
+  const apiProfilUrl = `${API_URL}/api/client/profil`;
+
+  // URL pour la géolocalisation
+  const apigeocodeUrl = `${API_URL}/geocode/delivery-cost?adresse=`;
+  
+
+  // Récupère le token JWT depuis le cookie (géré par script.js)
+  const token = getToken();
+
+  if (!token) {
+    console.error('Pas de token, impossible de charger les commandes');
+    return;
+  }
+
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+  if (DebugConsole) {
+    console.log("=== DEBUG CONFIG initCommanderPage ===");
+    console.log("API_URL                      :", API_URL);
+    console.log("apiMeUrl                     :", apiMeUrl);
+    console.log("apiCommander                 :", apiCommander);
+    console.log("apiProfilUrl                 :", apiProfilUrl);
+    console.log("Cookies actuels              :", document.cookie);
+    console.log("Token actuel                 :", token);
+    console.log("Rôle actuel                  :", getRole());
+    console.log("originalData.prenom          :", originalData.prenom);
+    console.log("originalData.nom             :", originalData.nom);
+    console.log("originalData.telephone       :", originalData.telephone);
+    console.log("originalData.adresse_postale :", originalData.adresse_postale);
+    console.log("originalData.ville           :", originalData.ville);    
+    console.log("originalData.code_postal     :", originalData.code_postal);   
+    console.log("========================");
+  }
 
   /* ===============================
      FONCTION : AFFICHER UNE ÉTAPE
@@ -52,6 +142,7 @@ export function initCommanderPage() {
      - Met à jour les pastilles du stepper (active / completed)
      - Cache le stepper à l'étape 4 (page de confirmation)
      =============================== */
+  if (DebugConsole) console.log("[showStep] AFFICHER UNE ÉTAPE");
 
   function showStep(stepNumber) {
     // Cache tous les panels
@@ -68,12 +159,12 @@ export function initCommanderPage() {
     } else {
       stepper.classList.remove('d-none');
     }
+    if (DebugConsole) console.log("[showStep] stepper:",stepper);
 
     // Met à jour le stepper :
     // - Les étapes avant l'étape actuelle : classe "completed"
     // - L'étape actuelle : classe "active"
     // - Les étapes après : aucune classe spéciale
-
     steps.forEach(step => {
       const num = parseInt(step.dataset.step);
       step.classList.remove('active', 'completed');
@@ -83,10 +174,16 @@ export function initCommanderPage() {
       } else if (num === stepNumber) {
         step.classList.add('active');
       }
+      if (DebugConsole) {
+      console.log("=== DEBUG showStep ===");
+      console.log("num        :", num);
+      console.log("stepNumber :", stepNumber);
+     }
     });
 
     // Met à jour la variable qui mémorise l'étape en cours
     currentStep = stepNumber;
+    if (DebugConsole) console.log("[showStep] currentStep:",currentStep);
   }
 
   /* ===============================
@@ -97,7 +194,7 @@ export function initCommanderPage() {
      =============================== */
 
   function isStepValid(stepNumber) {
-
+    if (DebugConsole) console.log("[isStepValid] VÉRIFIER LES CHAMPS ");
     // Récupère le formulaire de l'étape
     const form = document.getElementById(`form-step-${stepNumber}`);
 
@@ -110,10 +207,100 @@ export function initCommanderPage() {
 
     // Vérifie que chaque champ a une valeur non vide
     inputs.forEach(input => {
-      if (!input.value || !input.value.trim()) valid = false;
+      if (input.value === undefined || input.value === null || input.value === '') {
+        valid = false;
+      } else if (input.value.trim() === '') {
+        valid = false;
+      }else{
+        valid = true;
+      }
     });
-
+    if (DebugConsole) console.log("[isStepValid] valid:",valid);
     return valid;
+  }
+
+  /* ===============================
+     FONCTION : MET A JOUR LE PROFIL SI CHAMP MODIFIER
+     - 
+     =============================== */
+  async function updateUserIfChanged() {
+    // Stocker les valeurs actuelles
+    let currentData = {};
+
+    // Vérifier chaque champ et assigner la valeur ou une chaîne vide
+    if (firstNameInput && firstNameInput.value) {currentData.prenom = firstNameInput.value;} else {
+      currentData.prenom = '';
+    }
+    if (lastNameInput && lastNameInput.value) {currentData.nom = lastNameInput.value;} else {
+      currentData.nom = '';
+    }
+
+    if (phoneInput && phoneInput.value) {currentData.telephone = phoneInput.value;} else {
+      currentData.telephone = '';
+    }
+
+    if (addressInput && addressInput.value) {currentData.adresse_postale = addressInput.value;} else {
+      currentData.adresse_postale = '';
+    }
+
+    if (cityInput && cityInput.value) {currentData.ville = cityInput.value;} else {
+      currentData.ville = '';
+    }
+
+    if (postalInput && postalInput.value) {currentData.code_postal = postalInput.value;} else {
+      currentData.code_postal = '';
+    }
+
+    // Vérifier si quelque chose a changé
+    let changed = false;
+    if (currentData.prenom !== originalData.prenom) {
+      changed = true;
+    } else if (currentData.nom !== originalData.nom) {
+      changed = true;
+    } else if (currentData.telephone !== originalData.telephone) {
+      changed = true;
+    } else if (currentData.email !== originalData.email) {
+      changed = true;
+    } else if (currentData.adresse_postale !== originalData.adresse_postale) {
+      changed = true;
+    } else if (currentData.ville !== originalData.ville) {
+      changed = true;
+    } else if (currentData.code_postal !== originalData.code_postal) {
+      changed = true;
+    }
+
+    if (!changed) {
+      if (DebugConsole) console.log("[updateUserIfChanged] Pas de modification détectée");
+      return;
+    }else{
+      if (DebugConsole) console.log("[updateUserIfChanged] Données modifiées, envoi PUT...", currentData);
+    }
+
+    try {
+      const response = await fetch(apiProfilUrl, {
+        method: 'PUT',
+        headers: authHeaders,
+        body: JSON.stringify(currentData)
+      });
+      
+      let result = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        result = await response.json();
+      } catch {
+        result = {};
+      }
+
+      if (response.ok) {
+        if (DebugConsole) console.log("[updateUserIfChanged] Profil mis à jour avec succès");
+        // Met à jour les valeurs originales pour la prochaine comparaison
+        originalData = { ...currentData };
+      } else {
+        console.error('[updateUserIfChanged] Erreur mise à jour profil:', result.message);
+      }
+    } catch (err) {
+      console.error('[updateUserIfChanged] Erreur réseau:', err);
+    }
   }
 
   /* ===============================
@@ -129,44 +316,64 @@ export function initCommanderPage() {
      =============================== */
 
   async function calculateDeliveryFee() {
-
+    if (DebugConsole) console.log("[calculateDeliveryFee] CALCUL DES FRAIS DE LIVRAISON");
     // Récupère les valeurs saisies par le client à l'étape 2
-    const address = document.getElementById('CommandAddress')?.value || '';
-    const city = document.getElementById('CommandCity')?.value || '';
-    const postal = document.getElementById('CommandPostal')?.value || '';
+    let address = '';
+    let city = '';
+    let postal = '';
+    // Vérifier chaque champ
+    if (addressInput && addressInput.value) {
+      address = addressInput.value;
+    }
+    if (cityInput && cityInput.value) {
+      city = cityInput.value;
+    }
 
+    if (postalInput && postalInput.value) {
+      postal = postalInput.value;
+    }
     // Construit l'adresse complète au format attendu par Nominatim
     // Exemple : "12 rue des Roses, 33000 Bordeaux, France"
     const fullAddress = `${address}, ${postal} ${city}, France`;
 
     try {
-      // Appel GET vers notre endpoint Symfony /delivery-cost
+      // Appel GET vers endpoint Symfony /delivery-cost
       // Le back va :
-      //   1. Géocoder cette adresse via Nominatim (lat/lon)
+      //   1. Géocoder cette adresse via Nominatim (latitude et longitude)
       //   2. Calculer la distance routière via OSRM
       //   3. Appliquer la règle tarifaire
       //   4. Retourner le JSON avec frais_livraison
       const response = await fetch(
-        `http://127.0.0.1:8000/delivery-cost?adresse=${encodeURIComponent(fullAddress)}`
+        `apigeocodeUrl${encodeURIComponent(fullAddress)}`
       );
 
       // Si la réponse n'est pas OK (400, 404, 500...), on met les frais à 0
       if (!response.ok) {
+        if (DebugConsole) console.log("[calculateDeliveryFee] érreur d'accès à l'api");
         console.error('Erreur API livraison:', response.status);
         deliveryFee = 0;
         return;
       }
+      if (DebugConsole) console.log("[calculateDeliveryFee] Réponse de l'API");
 
       // Parse la réponse JSON de l'API
-      const data = await response.json();
+      let data = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       // Stocke les frais de livraison retournés par l'API
       // data.frais_livraison contient soit 0 (gratuit) soit le montant calculé
       deliveryFee = data.frais_livraison || 0;
 
-      // Logs pour le debug en console
-      console.log(' Distance:', data.distance_km, 'km (' + data.distance_type + ')');
-      console.log(' Frais livraison:', deliveryFee, '€');
+      if (DebugConsole) {
+        console.log('Distance:', data.distance_km, 'km (' + data.distance_type + ')');
+        console.log('Type distance:', data.distance_type);
+        console.log('Frais livraison:', deliveryFee, '€');
+      }
 
     } catch (err) {
       // En cas d'erreur réseau
@@ -175,6 +382,7 @@ export function initCommanderPage() {
       deliveryFee = 0;
     }
   }
+
   /* ===============================
      FONCTION : MISE À JOUR DU STEPPER "LE RÉCAPITULATIF PRIX"
      - 1. Récupère le menu sélectionné et son prix unitaire
@@ -188,23 +396,58 @@ export function initCommanderPage() {
      =============================== */
 
   function updateRecapPrices() {
+
+    if (DebugConsole) console.log("[updateRecapPrices] MISE À JOUR RÉCAPITULATIF PRIX");
+
     // Récupère l'option sélectionnée dans le select menu
-    const selectedOption = menuSelect?.options[menuSelect.selectedIndex];
+    let selectedOption;
+    if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {
+      selectedOption = menuSelect.options[menuSelect.selectedIndex];
+    } else {
+      selectedOption = null;
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] selectedOption:", selectedOption);
 
     // Nom du menu (ex: "Festin de Noël Traditionnel")
-    const menuName = selectedOption?.text || '—';
+    let menuName;
+    if (selectedOption && selectedOption.text) {
+      menuName = selectedOption.text;
+    } else {
+      menuName = '—';
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] menuName:", menuName);
 
     // Prix unitaire stocké dans l'attribut data-price du <option>
-    const unitPrice = parseFloat(selectedOption?.dataset.price) || 0;
+    let unitPrice;
+    if (selectedOption && selectedOption.dataset && selectedOption.dataset.price) {
+      unitPrice = parseFloat(selectedOption.dataset.price);
+      if (isNaN(unitPrice)) {
+        unitPrice = 0;
+      }
+    } else {
+      unitPrice = 0;
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] unitPrice:", unitPrice);
 
     // Nombre de personnes saisi par le client
-    const persons = parseInt(personsInput?.value) || 0;
+    let persons;
+    if (personsInput && personsInput.value) {
+      persons = parseInt(personsInput.value);
+      if (isNaN(persons)) {
+        persons = 0;
+      }
+    } else {
+      persons = 0;
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] persons:", persons);
 
     // Sous-total = prix unitaire × nombre de personnes
     const subtotal = unitPrice * persons;
+    if (DebugConsole) console.log("[updateRecapPrices] subtotal:", subtotal);
 
     // Total TTC = sous-total des menus + frais de livraison
     const total = subtotal + deliveryFee;
+    if (DebugConsole) console.log("[updateRecapPrices] total:", total);
 
     // Récupère les éléments du DOM pour afficher le récapitulatif
     const recapMenuName = document.getElementById('recap-menu-name');
@@ -216,17 +459,46 @@ export function initCommanderPage() {
 
     // Mise à jour de chaque ligne du récapitulatif
     if (recapMenuName) recapMenuName.textContent = menuName;
-    if (recapUnitPrice) recapUnitPrice.textContent = unitPrice ? `${unitPrice}€/pers.` : '—';
+    if (recapUnitPrice) {
+      if (unitPrice && !isNaN(unitPrice)) {
+        recapUnitPrice.textContent = unitPrice + '€/pers.';
+      } else {
+        recapUnitPrice.textContent = '—';
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] recapUnitPrice:", recapUnitPrice);
+
     if (recapPersons) recapPersons.textContent = persons || '—';
-    if (recapSubtotal) recapSubtotal.textContent = subtotal ? `${subtotal.toFixed(2)}€` : '—';
+    if (DebugConsole) console.log("[updateRecapPrices] recapPersons:", recapPersons);
+
+    if (recapSubtotal) {
+      if (subtotal !== undefined && subtotal !== null && !isNaN(subtotal) && subtotal !== 0) {
+        recapSubtotal.textContent = subtotal.toFixed(2) + '€';
+      } else {
+        recapSubtotal.textContent = '—';
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] recapSubtotal:", recapSubtotal);
 
     // Affiche "Gratuite" si 0€, sinon affiche le montant des frais
     if (recapDelivery) {
-      recapDelivery.textContent = deliveryFee > 0 ? `${deliveryFee.toFixed(2)}€` : 'Gratuite';
+      if (deliveryFee !== undefined && deliveryFee !== null && !isNaN(deliveryFee) && deliveryFee > 0) {
+        recapDelivery.textContent = deliveryFee.toFixed(2) + '€';
+      } else {
+        recapDelivery.textContent = 'Gratuite';
+      }
     }
+    if (DebugConsole) console.log("[updateRecapPrices] recapDelivery:", recapDelivery);
 
     // Total TTC = sous-total + livraison
-    if (recapTotal) recapTotal.textContent = total ? `${total.toFixed(2)}€` : '—';
+    if (recapTotal) {
+      if (total !== undefined && total !== null && !isNaN(total) && total !== 0) {
+        recapTotal.textContent = total.toFixed(2) + '€';
+      } else {
+        recapTotal.textContent = '—';
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] recapTotal:", recapTotal);
   }
 
   /* ===============================
@@ -238,8 +510,10 @@ export function initCommanderPage() {
     =============================== */
 
   function generateOrderId() {
+    if (DebugConsole) console.log("[generateOrderId] GÉNÉRER UN NUMÉRO DE COMMANDE:");
     const year = new Date().getFullYear();
     const random = Math.floor(1000 + Math.random() * 9000);
+    if (DebugConsole) console.log("[generateOrderId] nb_cmd:",`CMD-${year}-${random}`);
     return `CMD-${year}-${random}`;
   }
 
@@ -252,26 +526,62 @@ export function initCommanderPage() {
      =============================== */
 
   function showConfirmation() {
-
+    if (DebugConsole) console.log("[showConfirmation] AFFICHE LA PAGE DE CONFIRMATION:");
     // Récupère les infos du menu sélectionné
-    const selectedOption = menuSelect?.options[menuSelect.selectedIndex];
-    const menuName = selectedOption?.text || '—';
-    const persons = personsInput?.value || '—';
+    let selectedOption;
+    if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {
+      selectedOption = menuSelect.options[menuSelect.selectedIndex];
+    } else {
+      selectedOption = null;
+    }
+    if (DebugConsole) console.log("[showConfirmation] selectedOption:", selectedOption);
+
+    let menuName;
+    if (selectedOption && selectedOption.text) {
+      menuName = selectedOption.text;
+    } else {
+      menuName = '—';
+    }
+    if (DebugConsole) console.log("[showConfirmation] menuName:", menuName);
+
+    let persons;
+    if (personsInput && personsInput.value) {
+      persons = personsInput.value;
+    } else {
+      persons = '—';
+    }
+    if (DebugConsole) console.log("[showConfirmation] persons:", persons);
 
     // Récupère la date et l'heure saisies à l'étape 2
-    const date = document.getElementById('CommandDate')?.value || '';
-    const time = document.getElementById('CommandTime')?.value || '';
+    let date = '';
+    let time = '';
 
-    // Récupère l'email saisi à l'étape 1
-    const email = document.getElementById('CommandEmail')?.value || '';
+    const dateInput = document.getElementById('CommandDate');
+    if (dateInput && dateInput.value) {
+      date = dateInput.value;
+    }
+    if (DebugConsole) console.log("[showConfirmation] date:", date);
+
+    const timeInput = document.getElementById('CommandTime');
+    if (timeInput && timeInput.value) {
+      time = timeInput.value;
+    }
+    if (DebugConsole) console.log("[showConfirmation] time:", time);
 
     // Calcule le total final : (prix unitaire × personnes) + frais de livraison
-    const unitPrice = parseFloat(selectedOption?.dataset.price) || 0;
+    let unitPrice = 0;
+    if (selectedOption && selectedOption.dataset && selectedOption.dataset.price) {
+      unitPrice = parseFloat(selectedOption.dataset.price);
+      if (isNaN(unitPrice)) {
+        unitPrice = 0;
+      }
+    }
+    if (DebugConsole) console.log("[showConfirmation] unitPrice:", unitPrice);
+
     const total = (unitPrice * parseInt(persons) + deliveryFee).toFixed(2);
 
     // Récupère les éléments du DOM de la page confirmation
     const confirmOrderId = document.getElementById('confirm-order-id');
-    const confirmEmail = document.getElementById('confirm-email');
     const confirmMenu = document.getElementById('confirm-menu');
     const confirmPersons = document.getElementById('confirm-persons');
     const confirmDate = document.getElementById('confirm-date');
@@ -279,11 +589,20 @@ export function initCommanderPage() {
 
     // Remplit chaque champ de la confirmation
     if (confirmOrderId) confirmOrderId.textContent = generateOrderId();
-    if (confirmEmail) confirmEmail.textContent = email;
     if (confirmMenu) confirmMenu.textContent = menuName;
     if (confirmPersons) confirmPersons.textContent = persons;
     if (confirmDate) confirmDate.textContent = `${date} à ${time}`;
     if (confirmTotal) confirmTotal.textContent = `${total}€`;
+
+    if (DebugConsole) {
+      console.log("=== showConfirmation ===");
+      console.log("confirmOrderId :", confirmOrderId);
+      console.log("confirmMenu    :", confirmMenu);
+      console.log("confirmPersons :", confirmPersons);
+      console.log("confirmDate    :", confirmDate);
+      console.log("confirmTotal   :", confirmTotal);
+      console.log("========================");
+    }
 
     // Affiche l'étape 4 (confirmation)
     showStep(4);
@@ -299,10 +618,12 @@ export function initCommanderPage() {
   if (menuSelect) {
     menuSelect.addEventListener('change', updateRecapPrices);
   }
+  if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
 
   if (personsInput) {
     personsInput.addEventListener('input', updateRecapPrices);
   }
+  if (DebugConsole) console.log("[LISTENERS] personsInput:", personsInput);
 
   /* ===============================
      LISTENERS : BOUTONS SUIVANT
@@ -312,21 +633,25 @@ export function initCommanderPage() {
      =============================== */
 
   // Bouton "Étape suivante" de l'étape 1 (Informations -> Livraison)
-  btnNext1 = document.getElementById('btn-next-1');
+  const btnNext1 = document.getElementById('btn-next-1');
   if (btnNext1) {
-    btnNext1.addEventListener('click', () => {
+    btnNext1.addEventListener('click', async () => {
 
       // Vérifie que tous les champs required de l'étape 1 sont remplis
       if (isStepValid(1)) {
+        // Sauvegarde le profil si modifié avant de passer à l'étape suivante
+        await updateUserIfChanged();
+        // Passe à l'étape 2
         showStep(2);
       }
     });
   }
- 
+  if (DebugConsole) console.log("[LISTENERS] btnNext1:", btnNext1);
+
   // Bouton "Étape suivante" de l'étape 2 (Livraison -> Menu & Récap)
   // CE LISTENER est async car on attend le retour de l'API
   // avant d'afficher l'étape 3 avec les frais de livraison calculés
-  btnNext2 = document.getElementById('btn-next-2');
+  const btnNext2 = document.getElementById('btn-next-2');
   if (btnNext2) {
     btnNext2.addEventListener('click', async () => {
 
@@ -343,6 +668,7 @@ export function initCommanderPage() {
         updateRecapPrices();
       }
     });
+    if (DebugConsole) console.log("[LISTENERS] btnNext2:", btnNext2);
   }
 
   /* ===============================
@@ -350,20 +676,22 @@ export function initCommanderPage() {
      - Permettent de revenir à l'étape précédente
      =============================== */
 
-  // Bouton "Retour" de l'étape 2 → retour à l'étape 1
-  btnPrev2 = document.getElementById('btn-prev-2');
+  // Bouton "Retour" de l'étape 2,  retour à l'étape 1
+  const btnPrev2 = document.getElementById('btn-prev-2');
   if (btnPrev2) {
     btnPrev2.addEventListener('click', () => {
       showStep(1);
     });
+    if (DebugConsole) console.log("[LISTENERS] btnPrev2:", btnPrev2);
   }
 
-  // Bouton "Retour" de l'étape 3 → retour à l'étape 2
-  btnPrev3 = document.getElementById('btn-prev-3');
+  // Bouton "Retour" de l'étape 3,  retour à l'étape 2
+  const btnPrev3 = document.getElementById('btn-prev-3');
   if (btnPrev3) {
     btnPrev3.addEventListener('click', () => {
       showStep(2);
     });
+    if (DebugConsole) console.log("[LISTENERS] btnPrev3:", btnPrev3);
   }
 
   /* ===============================
@@ -373,53 +701,53 @@ export function initCommanderPage() {
      - 3. Pour l'instant : log en console + affiche la confirmation
      =============================== */
 
-  btnSubmit = document.getElementById('btn-submit');
+  const btnSubmit = document.getElementById('btn-submit');
   if (btnSubmit) {
-    btnSubmit.addEventListener('click', () => {
+    btnSubmit.addEventListener('click', async  () => {
       // Collecte toutes les données saisies dans les 3 étapes
       const formData = {
-        firstName: document.getElementById('CommandFirstName')?.value,
-        lastName: document.getElementById('CommandLastName')?.value,
-        phone: document.getElementById('CommandPhone')?.value,
-        email: document.getElementById('CommandEmail')?.value,
-        address: document.getElementById('CommandAddress')?.value,
-        city: document.getElementById('CommandCity')?.value,
-        postalCode: document.getElementById('CommandPostal')?.value,
-        date: document.getElementById('CommandDate')?.value,
-        time: document.getElementById('CommandTime')?.value,
-        menu: menuSelect?.value,
-        persons: personsInput?.value,
-        material: document.getElementById('CommandMaterial')?.checked,
-        // On ajoute aussi les frais de livraison calculés
-        deliveryFee: deliveryFee
+        menu_id: parseInt(menuSelect.value),
+        date_prestation: dateInput.value,
+        heure_livraison: timeInput.value,
+        nombre_personnes: parseInt(personsInput.value),
+        adresse_livraison: addressInput.value,
+        ville_livraison: cityInput.value,
+        pret_materiel: materialCheckbox.checked
       };
 
-      console.log(' Commande confirmée:', formData);
+      if (DebugConsole) console.log("Commande confirmée:", formData);
+      try {
+        const response = await fetch(apiCommander, {
+          method: 'POST',
+          headers: authHeaders,
+          body: JSON.stringify(formData)
+        });
 
-      // Appel de l'API (commenté en attendant que l'endpoint soit prêt) :
-      // try {
-      //   const response = await fetch('${API_URL}/api/orders', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-      //     },
-      //     body: JSON.stringify(formData)
-      //   });
-      //   const data = await response.json();
-      //
-      //   if (response.ok) {
-      //     showConfirmation();
-      //   } else {
-      //     console.error('Erreur commande:', data.message);
-      //   }
-      // } catch (err) {
-      //   console.error('Erreur réseau:', err);
-      // }
+        if (DebugConsole) console.log("[submitCommande] Réponse de l'API");
 
-      // En attendant l'API, on affiche directement la confirmation
-
-      showConfirmation();
+        // Parse la réponse JSON de l'API
+        let data = null;
+        // évite que le script crash si la réponse n'est pas du JSON
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+        if (response.ok) {
+          // La commande a été créée avec succès
+          if (DebugConsole) console.log("[submitCommande] Commande créée :", data);
+        } else {
+          // Erreur côté API
+          console.error('Erreur création commande :', data.message);
+          alert(`Erreur : ${data.message}`);
+        }
+      } catch (err) {
+        // Erreur réseau
+        console.error('Erreur réseau :', err);
+        alert('Erreur réseau, merci de réessayer.');
+      }
+      // Affiche la confirmation à l'utilisateur
+      showConfirmation(data || '');
     });
   }
 
