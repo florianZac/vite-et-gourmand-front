@@ -1,6 +1,6 @@
 import { API_URL } from '../config.js';
-export function initDetailMenuPage() {
-
+import { getToken, getRole } from '../script.js';
+export function initDetailMenusPage() {
 /* ===============================
 	SCRIPT PAGE DÉTAIL MENU
 	Gère :
@@ -26,7 +26,7 @@ export function initDetailMenuPage() {
 			- 1.  L'URL est de la forme /detail_menu?id=3
 			- 2.	On récupère le paramètre "id" depuis le query string
 		 =============================== */
-
+  let DebugConsole = true;
 	// Découpe l'URL 
   const params = new URLSearchParams(window.location.search);
   const menuId = params.get('id');
@@ -36,19 +36,28 @@ export function initDetailMenuPage() {
     console.error('ID de menu invalide:', menuId);
     return;
   }
-
-  if (DebugConsole) console.log("[init] ID du menu récupéré :", menuId);
-
+  
   /* ===============================
      RÉCUPÉRATION DU TOKEN
      =============================== */
 
   const token = getToken();
-  const authHeaders = {
+  const authHeaders = token ? {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json'
+  } : {
+    'Content-Type': 'application/json'
   };
+  const role = getRole();
 
+  if (DebugConsole) {
+    console.log("=== DEBUG INIT Detail Menus ===");
+    console.log("Cookies actuels :", document.cookie);
+    console.log("Token actuel :", token);
+    console.log("Rôle actuel :", role);
+    console.log("[init] ID du menu récupéré :", menuId);
+    console.log("================================");
+  }
   /* ===============================
      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
@@ -83,6 +92,7 @@ export function initDetailMenuPage() {
   const editPhotoTitle = document.getElementById('edit-photo-title');
   const editPhotoPreviewImg = document.getElementById('edit-photo-preview-img');
   const btnSavePhoto = document.getElementById('btn-save-photo');
+  const editPhotoDescription = document.getElementById('edit-photo-description');
 
   // Modale suppression photo
   const deletePhotoPreviewImg = document.getElementById('delete-photo-preview-img');
@@ -162,10 +172,19 @@ export function initDetailMenuPage() {
      =============================== */
 
   function renderBreadcrumb(menu) {
+    // Vérifie si breadcrumbName existe
     if (breadcrumbName) {
-      breadcrumbName.textContent = menu.titre || '—';
-      if (DebugConsole) console.log("[renderBreadcrumb] Titre :", menu.titre);
-    }
+      // Si menu.titre existe, on l'affiche, sinon '—'
+      if (menu && menu.titre) {
+        breadcrumbName.textContent = menu.titre;
+      } else {
+        breadcrumbName.textContent = '—';
+      }
+
+      if (DebugConsole) {
+        console.log("[renderBreadcrumb] chargé :", breadcrumbName.textContent);
+      }
+    } 
   }
 
   /* ===============================
@@ -206,10 +225,32 @@ export function initDetailMenuPage() {
 		 =============================== */
 
   function renderMainInfo(menu) {
-    if (detailTitle) detailTitle.textContent = menu.titre || '—';
-    if (detailDescription) detailDescription.textContent = menu.description || '';
+    // Vérifie que detailTitle existe
+    if (detailTitle) {
+      if (menu && menu.titre) {
+        detailTitle.textContent = menu.titre;
+      } else {
+        detailTitle.textContent = '—';
+      }
+    }
 
-    if (DebugConsole) console.log("[renderMainInfo] Titre:", menu.titre);
+    // Vérifie que detailDescription existe
+    if (detailDescription) {
+      if (menu && menu.description) {
+        detailDescription.textContent = menu.description;
+      } else {
+        detailDescription.textContent = '';
+      }
+    }
+
+    // Debug : affiche le titre si DebugConsole est activé
+    if (DebugConsole) {
+      if (menu && menu.titre) {
+        console.log("[renderMainInfo] Titre:", menu.titre);
+      } else {
+        console.log("[renderMainInfo] Titre indisponible");
+      }
+    }
   }
 
 	/* ===============================
@@ -239,21 +280,36 @@ export function initDetailMenuPage() {
 		=============================== */
 
   function renderPriceCard(menu) {
-    if (detailPrice) detailPrice.textContent = menu.prix_par_personne || 0;
-    if (detailMinPersons) detailMinPersons.textContent = menu.nombre_personne_minimum || 0;
+    // Vérifie que detailPrice existe
+    if (detailPrice) {
+      if (menu && menu.prix_par_personne) {
+        detailPrice.textContent = menu.prix_par_personne;
+      } else {
+        detailPrice.textContent = 0;
+      }
+    }
+
+    // Vérifie que detailMinPersons existe
+    if (detailMinPersons) {
+      if (menu && menu.nombre_personne_minimum) {
+        detailMinPersons.textContent = menu.nombre_personne_minimum;
+      } else {
+        detailMinPersons.textContent = 0;
+      }
+      if (DebugConsole) console.log("[detailMinPersons]:", detailMinPersons.textContent);
+    }
 
     // Texte de réduction dynamique basé sur la règle métier
     // Réduction de 10% si nombre_personnes > nombre_personne_minimum + 5
     if (detailReduction) {
-      const minPersons = menu.nombre_personne_minimum || 0;
+      let minPersons = menu?.nombre_personne_minimum || 0;
       const seuilReduction = minPersons + 5;
+      if (DebugConsole) console.log("[detailReduction] minPersons:",minPersons);
+
       detailReduction.innerHTML = `<i class="bi bi-tag"></i> Réduction de 10% à partir de ${seuilReduction} personnes`;
       detailReduction.style.display = 'block';
-			} else {
-				// Pas de réduction on cache la ligne
-				detailReduction.style.display = 'none';
-			}
-    if (DebugConsole) console.log("[renderPriceCard] Prix:", menu.prix_par_personne, "Min:", menu.nombre_personne_minimum);
+      if (DebugConsole) console.log("[renderPriceCard] Prix:", menu.prix_par_personne, "Min:", menu.nombre_personne_minimum);
+    }
   }
 
 	/* ===============================
@@ -277,7 +333,7 @@ export function initDetailMenuPage() {
         `Acomptes de 30% à la commande.`;
     }
 
-    if (DebugConsole) console.log("[renderConditions] Conditions affichées");
+    if (DebugConsole) console.log("[renderConditions] Conditions affichées",detailConditions.textContent);
   }
 
 	/* ===============================
@@ -294,12 +350,12 @@ export function initDetailMenuPage() {
     // Si pas de plats ou pas de photos, affiche un placeholder
     if (plats.length === 0) {
       if (galleryMainImg) {
-        galleryMainImg.src = '/Assets/Images/placeholder-menu.jpg';
+        galleryMainImg.src = '/Assets/Images/Réveillon_Étoilé.jpg';
         galleryMainImg.alt = menu.titre || 'Menu';
       }
       return;
     }
-
+    
     // Affiche la première photo en grand
     currentPhotoIndex = 0;
     updateMainPhoto();
@@ -321,7 +377,7 @@ export function initDetailMenuPage() {
     const currentPlat = plats[currentPhotoIndex];
 
     // Met à jour la source et le texte alt de l'image principale
-    galleryMainImg.src = currentPlat.photo || '/Assets/Images/placeholder-menu.jpg';
+    galleryMainImg.src = currentPlat.photo || '/Assets/Images/Réveillon_Étoilé.jpg';
     galleryMainImg.alt = currentPlat.titre || `Photo ${currentPhotoIndex + 1}`;
 
     if (DebugConsole) console.log(`[updateMainPhoto] Photo ${currentPhotoIndex} : ${currentPlat.titre} (${currentPlat.categorie})`);
@@ -332,14 +388,13 @@ export function initDetailMenuPage() {
     const actionButtons = document.getElementById('action-image-buttons');
     if (actionButtons) {
       // Vérifie si l'utilisateur a le rôle admin ou employé
-      const role = getRole();
       if (role === 'ROLE_ADMIN' || role === 'ROLE_EMPLOYE') {
         actionButtons.classList.remove('d-none');
       } else {
         actionButtons.classList.add('d-none');
       }
     }
-
+    if (DebugConsole) console.log("[updateMainPhoto] Role",role);
     // Met à jour la miniature active
 		// Retire la classe "active" de toutes les miniatures
 		// puis l'ajoute uniquement sur celle correspondant à currentPhotoIndex
@@ -383,25 +438,27 @@ export function initDetailMenuPage() {
 	/* ===============================
 		 LISTENERS : FLÈCHES DE NAVIGATION GALERIE
 		 =============================== */
-
+  if (DebugConsole) console.log("[initial] IndexPhoto :", currentPhotoIndex);
 	// Flèche précédente
 	if (galleryPrev) {
 		galleryPrev.addEventListener('click', () => {
-			if (photos.length === 0) return;
+			if (plats.length === 0) return;
 			// Si on est à la première photo, on boucle vers la dernière
-			currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+			currentPhotoIndex = (currentPhotoIndex - 1 + plats.length) % plats.length;
 			updateMainPhoto();
 		});
-	}
+    if (DebugConsole) console.log("[galleryPrev] IndexPhoto :", currentPhotoIndex);
+	} 
 
 	// Flèche suivante
 	if (galleryNext) {
 		galleryNext.addEventListener('click', () => {
-			if (photos.length === 0) return;
+			if (plats.length === 0) return;
 			// Si on est à la dernière photo, on boucle vers la première
-			currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+			currentPhotoIndex = (currentPhotoIndex + 1) % plats.length;
 			updateMainPhoto();
 		});
+     if (DebugConsole) console.log("[galleryNext] IndexPhoto :", currentPhotoIndex);
 	}
 
    /* ===============================
@@ -417,13 +474,22 @@ export function initDetailMenuPage() {
     compositionGrid.innerHTML = '';
 
     // Configuration des catégories avec icônes
-    const categories = [
-      { label: 'ENTRÉE', icon: '<i class="bi bi-egg-fried"></i>', key: 'Entrée' },
-      { label: 'PLAT', icon: '<i class="bi bi-cup-hot"></i>', key: 'Plat' },
-      { label: 'DESSERT', icon: '<i class="bi bi-cake2"></i>', key: 'Dessert' }
+    const categoryData = [
+      ['ENTRÉE', 'bi bi-egg-fried', 'Entrée'],
+      ['PLAT', 'bi bi-cup-hot', 'Plat'],
+      ['DESSERT', 'bi bi-cake2', 'Dessert']
     ];
 
+    const categories = categoryData.map(([label, iconClass, key]) => ({
+      label,
+      icon: `<i class="${iconClass}"></i>`,
+      key
+    }));
+    if (DebugConsole) console.log("[renderComposition] categories :", categories);
+
     const menuPlats = menu.plats || [];
+
+    if (DebugConsole) console.log("[renderComposition] menuPlats :", menuPlats);
 
     categories.forEach(cat => {
       // Trouve le plat correspondant à cette catégorie
@@ -433,26 +499,44 @@ export function initDetailMenuPage() {
 
       // Titre et description du plat (ou fallback)
       const platTitre = plat ? plat.titre : '—';
+      let allergens = [];
 
+      if (plat && plat.allergenes) {
+        allergens = plat.allergenes;
+      }
+
+      if (DebugConsole) console.log("[allergenes]", allergens);
+
+      let allergensHtml = '';
+
+      if (allergens.length > 0) {
+        for (let i = 0; i < allergens.length; i++) {
+          allergensHtml += '<span class="detail_menu-dish-allergen-badge">' + allergens[i].libelle + '</span>';
+        }
+      } else {
+        allergensHtml = '<span class="detail_menu-dish-allergen-none">Aucun</span>';
+      }
+      
       // Crée la colonne Bootstrap + la card
       const col = document.createElement('div');
       col.className = 'col-12 col-lg-4 mb-3';
       col.innerHTML = `
         <div class="detail_menu-dish-card">
-          <!-- Type du plat : icône + label -->
           <div class="detail_menu-dish-type">
             <span class="detail_menu-dish-type-icon">${cat.icon}</span>
             <span class="detail_menu-dish-type-label">${cat.label}</span>
           </div>
-
-          <!-- Titre du plat -->
-          <h3 class="detail_menu-dish-name">${platTitre}</h3>
+          <h3 class="detail_menu-dish-name">${platTitre || '—'}</h3>
+          <p class="detail_menu-dish-description">${plat ? plat.description : ''}</p>
+          <div class="detail_menu-dish-allergens-label">
+            <i class="bi bi-shield-exclamation"></i>
+            <span>Allergènes :</span>
+          </div>
+          <div class="detail_menu-dish-allergens">${allergensHtml}</div>
         </div>
       `;
-
       compositionGrid.appendChild(col);
     });
-
     if (DebugConsole) console.log("[renderComposition] Composition affichée");
   }
 
@@ -483,8 +567,6 @@ export function initDetailMenuPage() {
         return;
       }
 
-      const role = getRole();
-      if (DebugConsole) console.log("[setupOrderButton] Rôle détecté :", role);
 
       if (role === 'ROLE_CLIENT') {
         // Client connecté on redirige vers la page commande avec l'ID du menu
@@ -511,112 +593,122 @@ export function initDetailMenuPage() {
 	// Pré-remplit la prévisualisation avec la photo actuellement affichée en grand
 	const editionModal = document.getElementById('EditionPhotoModal');
 	if (editionModal) {
-		editionModal.addEventListener('show.bs.modal', () => {
-			// Affiche la photo actuelle dans la prévisualisation de la modale
-      if (editPhotoPreviewImg && plats[currentPhotoIndex]) {
-        editPhotoPreviewImg.src = plats[currentPhotoIndex].photo || '';
-      }
-			// Réinitialise les champs du formulaire à chaque ouverture
-      if (editPhotoFile) editPhotoFile.value = '';
-      if (editPhotoTitle) editPhotoTitle.value = '';
-    });
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
+      editionModal.addEventListener('show.bs.modal', () => {
+        // Affiche la photo actuelle dans la prévisualisation de la modale
+        if (editPhotoPreviewImg && plats[currentPhotoIndex]) {
+          editPhotoPreviewImg.src = plats[currentPhotoIndex].photo || '';
+        }
+        // Réinitialise les champs du formulaire à chaque ouverture
+        if (editPhotoFile) editPhotoFile.value = '';
+        if (editPhotoTitle) editPhotoTitle.value = '';
+      });
+    }
   }
 
 	// Prévisualisation en temps réel quand l'utilisateur sélectionne un fichier
 	// Utilise FileReader pour lire le fichier image et l'afficher dans l'aperçu
 	if (editPhotoFile) {
-		editPhotoFile.addEventListener('change', () => {
-			// Récupère le fichier sélectionné
-			const file = editPhotoFile.files[0];
-			if (!file) return;
 
-			// Crée un FileReader pour lire le fichier
-			// permet d'afficher l'image dans la modale AVANT l'envoi à l'API
-			const reader = new FileReader();
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
 
-			// Quand la lecture est terminée on met à jour l'aperçu
-      reader.onload = (e) => {
-        if (editPhotoPreviewImg) editPhotoPreviewImg.src = e.target.result;
-      };
-      // Lance la lecture du fichier en Data URL
-      reader.readAsDataURL(file);
-    });
+      editPhotoFile.addEventListener('change', () => {
+        // Récupère le fichier sélectionné
+        const file = editPhotoFile.files[0];
+        if (!file) return;
+
+        // Crée un FileReader pour lire le fichier
+        // permet d'afficher l'image dans la modale AVANT l'envoi à l'API
+        const reader = new FileReader();
+
+        // Quand la lecture est terminée on met à jour l'aperçu
+        reader.onload = (e) => {
+          if (editPhotoPreviewImg) editPhotoPreviewImg.src = e.target.result;
+        };
+        // Lance la lecture du fichier en Data URL
+        reader.readAsDataURL(file);
+      });
+    }
   }
 
 	// Bouton "Sauvegarder" dans la modale édition
 	// Envoie le fichier + titre + description à l'API
 	if (btnSavePhoto) {
-		btnSavePhoto.addEventListener('click', async () => {
-			// Récupère le fichier sélectionné
-			const file = editPhotoFile?.files[0];
 
-			// Récupère le titre
-			const title = editPhotoTitle?.value?.trim() || '';
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
+        
+      btnSavePhoto.addEventListener('click', async () => {
+        // Récupère le fichier sélectionné
+        const file = editPhotoFile?.files[0];
 
-			// Récupère la description
-			const description = editPhotoDescription?.value?.trim() || '';
+        // Récupère le titre
+        const title = editPhotoTitle?.value?.trim() || '';
 
-			// Validation : vérifie qu'un fichier et un titre sont remplis
-			if (!file) {
-				alert('Veuillez sélectionner une image.');
-				return;
-			}
-			if (!title) {
-				alert('Veuillez saisir un titre pour l\'image.');
-				return;
-			}
-			if (!token) return;
+        // Récupère la description
+        const description = editPhotoDescription?.value?.trim() || '';
 
-			// Index de la photo affichée en grand à remplacer
-			const photoIndex = currentPhotoIndex;
-
-			// Crée un FormData pour envoyer le fichier + les métadonnées
-			// FormData gère automatiquement le Content-Type multipart/form-data
-			const formData = new FormData();
-			formData.append('photo', file);              // Le fichier image
-			formData.append('title', title);             // Le titre pour le champ alt
-			formData.append('description', description); // La description
-			formData.append('index', photoIndex);        // L'index de la photo à remplacer
-      
-      if (DebugConsole) console.log(`[btnSavePhoto] Envoi POST photo index ${photoIndex}`);
-
-			try {
-				// Envoie à l'API : POST /api/menus/{menuId}/photos/{photoIndex}
-				  const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` },
-          body: formData
-        });
-
-				if (response.ok) {
-					// L'API retourne la nouvelle URL de la photo
-					const data = await response.json();
-
-          if (DebugConsole) console.log("[btnSavePhoto] Photo modifiée avec succès");
-
-					// Met à jour l'URL de la photo dans le tableau local
-          if (data.photoUrl && plats[photoIndex]) {
-            plats[photoIndex].photo = data.photoUrl;
-          }
-
-					// Rafraîchit l'affichage de la galerie
-					updateMainPhoto();
-					renderThumbnails();
-
-					// Ferme la modale via Bootstrap
-					const modalInstance = bootstrap.Modal.getInstance(editionModal);
-          if (modalInstance) modalInstance.hide();
-
-        } else {
-          const error = await response.json();
-          console.error('[btnSavePhoto] Erreur :', error.message);
-          alert('Erreur lors de la sauvegarde de la photo.');
+        // Validation : vérifie qu'un fichier et un titre sont remplis
+        if (!file) {
+          alert('Veuillez sélectionner une image.');
+          return;
         }
-      } catch (err) {
-        console.error('[btnSavePhoto] Erreur réseau :', err);
-        alert('Erreur réseau, veuillez réessayer.');
-      }
-    });
+        if (!title) {
+          alert('Veuillez saisir un titre pour l\'image.');
+          return;
+        }
+        if (!token) return;
+
+        // Index de la photo affichée en grand à remplacer
+        const photoIndex = currentPhotoIndex;
+
+        // Crée un FormData pour envoyer le fichier + les métadonnées
+        // FormData gère automatiquement le Content-Type multipart/form-data
+        const formData = new FormData();
+        formData.append('photo', file);              // Le fichier image
+        formData.append('title', title);             // Le titre pour le champ alt
+        formData.append('description', description); // La description
+        formData.append('index', photoIndex);        // L'index de la photo à remplacer
+        
+        if (DebugConsole) console.log(`[btnSavePhoto] Envoi POST photo index ${photoIndex}`);
+
+        try {
+          // Envoie à l'API : POST /api/menus/{menuId}/photos/{photoIndex}
+            const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` },
+            body: formData
+          });
+
+          if (response.ok) {
+            // L'API retourne la nouvelle URL de la photo
+            const data = await response.json();
+
+            if (DebugConsole) console.log("[btnSavePhoto] Photo modifiée avec succès");
+
+            // Met à jour l'URL de la photo dans le tableau local
+            if (data.photoUrl && plats[photoIndex]) {
+              plats[photoIndex].photo = data.photoUrl;
+            }
+
+            // Rafraîchit l'affichage de la galerie
+            updateMainPhoto();
+            renderThumbnails();
+
+            // Ferme la modale via Bootstrap
+            const modalInstance = bootstrap.Modal.getInstance(editionModal);
+            if (modalInstance) modalInstance.hide();
+
+          } else {
+            const error = await response.json();
+            console.error('[btnSavePhoto] Erreur :', error.message);
+            alert('Erreur lors de la sauvegarde de la photo.');
+          }
+        } catch (err) {
+          console.error('[btnSavePhoto] Erreur réseau :', err);
+          alert('Erreur réseau, veuillez réessayer.');
+        }
+      });
+    }
   }
 
 	/* ===============================
@@ -633,135 +725,151 @@ export function initDetailMenuPage() {
 	// Remet toujours l'étape 1 visible et l'étape 2 cachée
   const suppressionModal = document.getElementById('SuppresionPhotoModal');
   if (suppressionModal) {
-    suppressionModal.addEventListener('show.bs.modal', () => {
-		// Affiche la photo actuelle dans l'aperçu de suppression
-      if (deletePhotoPreviewImg && plats[currentPhotoIndex]) {
-        deletePhotoPreviewImg.src = plats[currentPhotoIndex].photo || '';
-      }
 
-			// Remet l'étape 1 visible
-			if (deleteStep1) deleteStep1.classList.remove('d-none');
-			// Cache l'étape 2
-			if (deleteStep2) deleteStep2.classList.add('d-none');
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
 
-			// Réinitialise le champ de confirmation
-			if (deleteConfirmInput) deleteConfirmInput.value = '';
-			// Cache le message d'erreur
-			if (deleteConfirmError) deleteConfirmError.classList.add('d-none');
+      suppressionModal.addEventListener('show.bs.modal', () => {
+      // Affiche la photo actuelle dans l'aperçu de suppression
+        if (deletePhotoPreviewImg && plats[currentPhotoIndex]) {
+          deletePhotoPreviewImg.src = plats[currentPhotoIndex].photo || '';
+        }
 
-			// Affiche le bouton "Continuer" et cache le bouton "Supprimer définitivement"
-			if (btnDeleteContinue) btnDeleteContinue.classList.remove('d-none');
-			if (btnDeleteConfirm) {
-				btnDeleteConfirm.classList.add('d-none');
-				btnDeleteConfirm.disabled = true;
-			}
-		});
+        // Remet l'étape 1 visible
+        if (deleteStep1) deleteStep1.classList.remove('d-none');
+        // Cache l'étape 2
+        if (deleteStep2) deleteStep2.classList.add('d-none');
+
+        // Réinitialise le champ de confirmation
+        if (deleteConfirmInput) deleteConfirmInput.value = '';
+        // Cache le message d'erreur
+        if (deleteConfirmError) deleteConfirmError.classList.add('d-none');
+
+        // Affiche le bouton "Continuer" et cache le bouton "Supprimer définitivement"
+        if (btnDeleteContinue) btnDeleteContinue.classList.remove('d-none');
+        if (btnDeleteConfirm) {
+          btnDeleteConfirm.classList.add('d-none');
+          btnDeleteConfirm.disabled = true;
+        }
+      });
+    }
 	}
 
 	// Bouton "Continuer" (étape 1 vers étape 2)
 	// Vérifie qu'il reste plus d'une photo, puis affiche l'étape 2
 	if (btnDeleteContinue) {
-		btnDeleteContinue.addEventListener('click', () => {
-			// Vérifie qu'il reste plus d'une photo
-      if (plats.length <= 1) {
-        alert('Impossible de supprimer la dernière photo du menu.');
-        return;
-      }
 
-			// Cache l'étape 1
-			if (deleteStep1) deleteStep1.classList.add('d-none');
-			// Affiche l'étape 2 pour le champ de confirmation
-			if (deleteStep2) deleteStep2.classList.remove('d-none');
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
 
-			// Cache le bouton "Continuer"
-			btnDeleteContinue.classList.add('d-none');
-			// Affiche le bouton "Supprimer définitivement" qui est désactivé par défaut
-			if (btnDeleteConfirm) {
-				btnDeleteConfirm.classList.remove('d-none');
-				btnDeleteConfirm.disabled = true;
-			}
+      btnDeleteContinue.addEventListener('click', () => {
+        // Vérifie qu'il reste plus d'une photo
+        if (plats.length <= 1) {
+          alert('Impossible de supprimer la dernière photo du menu.');
+          return;
+        }
 
-			// Met le focus sur le champ de saisie pour faciliter la frappe
-			if (deleteConfirmInput) deleteConfirmInput.focus();
-		});
+        // Cache l'étape 1
+        if (deleteStep1) deleteStep1.classList.add('d-none');
+        // Affiche l'étape 2 pour le champ de confirmation
+        if (deleteStep2) deleteStep2.classList.remove('d-none');
+
+        // Cache le bouton "Continuer"
+        btnDeleteContinue.classList.add('d-none');
+        // Affiche le bouton "Supprimer définitivement" qui est désactivé par défaut
+        if (btnDeleteConfirm) {
+          btnDeleteConfirm.classList.remove('d-none');
+          btnDeleteConfirm.disabled = true;
+        }
+
+        // Met le focus sur le champ de saisie pour faciliter la frappe
+        if (deleteConfirmInput) deleteConfirmInput.focus();
+      });
+    }
 	}
 
 	// Champ de saisie "SUPPRIMER" (étape 2)
 	// Active ou désactive le bouton "Supprimer définitivement" en temps réel
 	if (deleteConfirmInput) {
-		deleteConfirmInput.addEventListener('input', () => {
-			// Récupère la valeur saisie et la met en majuscules pour la comparaison
-			const value = deleteConfirmInput.value.trim().toUpperCase();
 
-			// Si la valeur correspond à "SUPPRIMER" on active le bouton
-			if (value === 'SUPPRIMER') {
-				if (btnDeleteConfirm) btnDeleteConfirm.disabled = false;
-				if (deleteConfirmError) deleteConfirmError.classList.add('d-none');
-			} else {
-				// Sinon désactive le bouton
-				if (btnDeleteConfirm) btnDeleteConfirm.disabled = true;
-			}
-		});
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
+
+      deleteConfirmInput.addEventListener('input', () => {
+        // Récupère la valeur saisie et la met en majuscules pour la comparaison
+        const value = deleteConfirmInput.value.trim().toUpperCase();
+
+        // Si la valeur correspond à "SUPPRIMER" on active le bouton
+        if (value === 'SUPPRIMER') {
+          if (btnDeleteConfirm) btnDeleteConfirm.disabled = false;
+          if (deleteConfirmError) deleteConfirmError.classList.add('d-none');
+        } else {
+          // Sinon désactive le bouton
+          if (btnDeleteConfirm) btnDeleteConfirm.disabled = true;
+        }
+      });
+    }
 	}
 
 	// Bouton "Supprimer définitivement" (étape 3)
 	// Envoie le DELETE à l'API puis ferme la modale
 	if (btnDeleteConfirm) {
-		btnDeleteConfirm.addEventListener('click', async () => {
-			// Double vérification : vérifie encore une fois que le texte est correct
-			const value = deleteConfirmInput?.value?.trim().toUpperCase();
-			if (value !== 'SUPPRIMER') {
-				// Affiche le message d'erreur
-				if (deleteConfirmError) deleteConfirmError.classList.remove('d-none');
-				return;
-			}
 
-			// Récupère le token JWT pour l'authentification
-			if (!token) return;
+    if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
 
-			// Index de la photo à supprimer
-			const photoIndex = currentPhotoIndex;
-
-      if (DebugConsole) console.log(`[btnDeleteConfirm] Suppression photo index ${photoIndex}`);
-
-			// Envoie DELETE à l'API : DELETE /api/menus/{menuId}/photos/{photoIndex}
-      try {
-        const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
-          method: 'DELETE',
-          headers: authHeaders
-        });
-
-        if (response.ok) {
-          if (DebugConsole) console.log("[btnDeleteConfirm] Photo supprimée avec succès");
-
-
-					// Retire la photo du tableau local avec splice
-					photos.splice(photoIndex, 1);
-
-					// Si l'index actuel dépasse le nouveau tableau après suppression,
-					// on revient à la dernière photo disponible
-					if (currentPhotoIndex >= photos.length) {
-						currentPhotoIndex = photos.length - 1;
-					}
-
-					// Rafraîchit l'affichage
-					updateMainPhoto();
-					renderThumbnails();
-
-					// Ferme la modale via Bootstrap
-					const modalInstance = bootstrap.Modal.getInstance(suppressionModal);
-					if (modalInstance) modalInstance.hide();
-
-        } else {
-          const error = await response.json();
-          console.error('[btnDeleteConfirm] Erreur :', error.message);
-          alert('Erreur lors de la suppression de la photo.');
+      btnDeleteConfirm.addEventListener('click', async () => {
+        // Double vérification : vérifie encore une fois que le texte est correct
+        const value = deleteConfirmInput?.value?.trim().toUpperCase();
+        if (value !== 'SUPPRIMER') {
+          // Affiche le message d'erreur
+          if (deleteConfirmError) deleteConfirmError.classList.remove('d-none');
+          return;
         }
-      } catch (err) {
-        console.error('[btnDeleteConfirm] Erreur réseau :', err);
-        alert('Erreur réseau, veuillez réessayer.');
-      }
-    });
+
+        // Récupère le token JWT pour l'authentification
+        if (!token) return;
+
+        // Index de la photo à supprimer
+        const photoIndex = currentPhotoIndex;
+
+        if (DebugConsole) console.log(`[btnDeleteConfirm] Suppression photo index ${photoIndex}`);
+
+        // Envoie DELETE à l'API : DELETE /api/menus/{menuId}/photos/{photoIndex}
+        try {
+          const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
+            method: 'DELETE',
+            headers: authHeaders
+          });
+
+          if (response.ok) {
+            if (DebugConsole) console.log("[btnDeleteConfirm] Photo supprimée avec succès");
+
+
+            // Retire la photo du tableau local avec splice
+            plats.splice(photoIndex, 1);
+
+            // Si l'index actuel dépasse le nouveau tableau après suppression,
+            // on revient à la dernière photo disponible
+            if (currentPhotoIndex >= plats.length) {
+              currentPhotoIndex = plats.length - 1;
+            }
+
+            // Rafraîchit l'affichage
+            updateMainPhoto();
+            renderThumbnails();
+
+            // Ferme la modale via Bootstrap
+            const modalInstance = bootstrap.Modal.getInstance(suppressionModal);
+            if (modalInstance) modalInstance.hide();
+
+          } else {
+            const error = await response.json();
+            console.error('[btnDeleteConfirm] Erreur :', error.message);
+            alert('Erreur lors de la suppression de la photo.');
+          }
+        } catch (err) {
+          console.error('[btnDeleteConfirm] Erreur réseau :', err);
+          alert('Erreur réseau, veuillez réessayer.');
+        }
+      });
+    }
   }
 
 	// Bouton "Annuler" de la modale suppression
@@ -775,77 +883,6 @@ export function initDetailMenuPage() {
       if (btnDeleteConfirm) btnDeleteConfirm.classList.add('d-none');
     });
   }
-
-	/* ===============================
-		 FONCTION : COMPOSITION DU MENU
-			- 1.	3 cards : Entrée, Plat, Dessert
-			- 2.	Chaque card a : icône +  titre, description, allergènes
-			- 3.	Si allergènes vide mettre un badge avec le texte "Aucun"
-		 =============================== */
-
-	function renderComposition(menu) {
-		if (!compositionGrid) return;
-
-		compositionGrid.innerHTML = '';
-
-		// Configuration statique des 3 types de plats
-		// Icône Bootstrap + label + la clé correspondante dans l'objet menu
-		const dishes = [
-			{ icon: '<i class="bi bi-egg-fried"></i>', label: 'ENTRÉE', key: 'entree' },
-			{ icon: '<i class="bi bi-cup-hot"></i>', label: 'PLAT', key: 'plat' },
-			{ icon: '<i class="bi bi-cake2"></i>', label: 'DESSERT', key: 'dessert' }
-		];
-
-		dishes.forEach(dish => {
-			// Récupère les données du plat depuis l'objet menu
-			// Adapte les clés selon la structure de ton API
-			const dishData = menu[dish.key] || {};
-
-			// Génère les badges allergènes
-			const allergens = dishData.allergens || [];
-			let allergensHtml = '';
-
-			if (allergens.length === 0) {
-				// Pas d'allergènes on badge vert "Aucun"
-				allergensHtml = '<span class="detail_menu-dish-allergen-none">Aucun</span>';
-			} else {
-				// Un badge par allergène
-				allergensHtml = allergens
-					.map(a => `<span class="detail_menu-dish-allergen-badge">${a}</span>`)
-					.join('');
-			}
-
-			// Crée la colonne Bootstrap + la card
-			const col = document.createElement('div');
-			col.className = 'col-12 col-lg-4 mb-3';
-			col.innerHTML = `
-				<div class="detail_menu-dish-card">
-					<!-- Type du plat : icône + label statique -on
-					<div class="detail_menu-dish-type">
-						<span class="detail_menu-dish-type-icon">${dish.icon}</span>
-						<span class="detail_menu-dish-type-label">${dish.label}</span>
-					</div>
-
-					<!-- Titre du plat -on
-					<h3 class="detail_menu-dish-name">${dishData.name || '—'}</h3>
-
-					<!-- Description du plat -on
-					<p class="detail_menu-dish-description">${dishData.description || ''}</p>
-
-					<!-- Allergènes -on
-					<div class="detail_menu-dish-allergens-label">
-						<i class="bi bi-shield-exclamation"></i>
-						<span>Allergènes :</span>
-					</div>
-					<div class="detail_menu-dish-allergens">
-						${allergensHtml}
-					</div>
-				</div>
-			`;
-
-			compositionGrid.appendChild(col);
-		});
-	}
 
   /* ===============================
      INITIALISATION

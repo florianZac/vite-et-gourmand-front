@@ -2,7 +2,7 @@ import { API_URL } from '../config.js';
 
 console.log("=== nos_menus.js chargé ===");
 export function initNosMenusPage() {
-    console.log("=== INITIALISATION NOS MENUS ===");
+
   /* ===============================
    SCRIPT PAGE NOS MENUS
    Gère :
