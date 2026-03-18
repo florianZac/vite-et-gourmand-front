@@ -18,15 +18,15 @@ export function initDetailMenusPage() {
      CONFIGURATION API
      =============================== */
 
-  // URL de base de l'API Symfony
-    const apiMenusUrl = `${API_URL}/api/menus`;
+  // URL de l'API Symfony pour la récupération des menus
+  const apiMenusUrl = `${API_URL}/api/menus`;
   
 	/* ===============================
 		 RÉCUPÉRATION DE L'ID DU MENU DEPUIS L'URL
 			- 1.  L'URL est de la forme /detail_menu?id=3
 			- 2.	On récupère le paramètre "id" depuis le query string
 		 =============================== */
-  let DebugConsole = true;
+  let DebugConsole = false;
 	// Découpe l'URL 
   const params = new URLSearchParams(window.location.search);
   const menuId = params.get('id');
@@ -137,8 +137,13 @@ export function initDetailMenusPage() {
         return;
       }
 
-			const data = await response.json();
-
+      let data = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
       const menu = data.menu;
       if (!menu) {
         console.error('[loadMenuDetail] Pas de données menu dans la réponse');
@@ -681,8 +686,13 @@ export function initDetailMenusPage() {
 
           if (response.ok) {
             // L'API retourne la nouvelle URL de la photo
-            const data = await response.json();
-
+            let data = null;
+            // évite que le script crash si la réponse n'est pas du JSON
+            try {
+              data = await response.json();
+            } catch {
+              data = {};
+            }
             if (DebugConsole) console.log("[btnSavePhoto] Photo modifiée avec succès");
 
             // Met à jour l'URL de la photo dans le tableau local
@@ -840,7 +850,6 @@ export function initDetailMenusPage() {
 
           if (response.ok) {
             if (DebugConsole) console.log("[btnDeleteConfirm] Photo supprimée avec succès");
-
 
             // Retire la photo du tableau local avec splice
             plats.splice(photoIndex, 1);

@@ -1,7 +1,7 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
 
-export function initCommanderPage() {
+export async function initCommanderPage() {
 
   /* ===============================
     SCRIPT PAGE COMMANDER (multi-étapes)
@@ -13,6 +13,57 @@ export function initCommanderPage() {
     simplifie les choses évite les duplications de code.
     =============================== */
 
+  /* ===============================
+    INITIALISATION DES VARIABLES ET TOKEN 
+    =============================== */
+
+  // Récupère le token JWT depuis le cookie (géré par script.js)
+  const token = getToken();
+
+  if (!token) {
+    console.error('Pas de token, impossible de charger les commandes');
+    return;
+  }
+
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+  // Étape actuelle (1, 2, 3 ou 4)
+  let currentStep = 1;
+
+  // Valeur du nombre jour max entre la date actuel et la date de prestation de la cmd
+  const nb_jourDate = 3;
+
+  // Variable pour stocker les frais de livraison calculés par l'API
+  // Par défaut à 0 (= livraison gratuite)
+  let deliveryFee = 0;
+
+  let deliveryDistanceKm = 0; // variable globale pour stocker la distance
+  // Variable debug console si à true
+  let DebugConsole = true;
+
+  let isModified = false;
+  /* ===============================
+      CONFIGURATION API
+      =============================== */
+  // URL de l'API Symfony pour créer la commande 
+  const apiCommander = `${API_URL}/api/commandes`;
+
+  // URL de l'API Symfony pour la récupération des infos de l'utilisateur
+  const apiMeUrl = `${API_URL}/api/me`;
+
+  // URL de l'API Symfony pour la récupération des menus
+  const apiMenusUrl = `${API_URL}/api/menus`;
+
+  // URL de l'API Symfony pour la modification du profil
+  const apiProfilUrl = `${API_URL}/api/client/profil`;
+
+  // URL de l'API Symfony pour la géolocalisation et le calcul du coup vias la distance
+  const apigeocodeUrl = `${API_URL}/delivery-cost?adresse=`;
+  
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
       =============================== */
@@ -32,91 +83,14 @@ export function initCommanderPage() {
   const addressInput = document.getElementById('CommandAddress');
   const cityInput = document.getElementById('CommandCity');
   const postalInput = document.getElementById('CommandPostal');
+  const dateInput = document.getElementById('CommandDate');
+  const timeInput = document.getElementById('CommandTime');
 
-  // Stocker les valeurs originales pour comparer
+  // checkbox
+  const materialCheckbox = document.getElementById('CommandMaterial');
+  // Stockage des données originales pour comparaison
   let originalData = {};
-
-  // Vérifier chaque champ avant de l'assigner
-  if (firstNameInput && firstNameInput.value) {
-    originalData.prenom = firstNameInput.value;
-  } else {
-    originalData.prenom = '';
-  }
-
-  if (lastNameInput && lastNameInput.value) {
-    originalData.nom = lastNameInput.value;
-  } else {
-    originalData.nom = '';
-  }
-
-  if (phoneInput && phoneInput.value) {
-    originalData.telephone = phoneInput.value;
-  } else {
-    originalData.telephone = '';
-  }
-
-  if (addressInput && addressInput.value) {
-    originalData.adresse_postale = addressInput.value;
-  } else {
-    originalData.adresse_postale = '';
-  }
-
-  if (cityInput && cityInput.value) {
-    originalData.ville = cityInput.value;
-  } else {
-    originalData.ville = '';
-  }
-
-  if (postalInput && postalInput.value) {
-    originalData.code_postal = postalInput.value;
-  } else {
-    originalData.code_postal = '';
-  }
-
-  /* ===============================
-    INITIALISATION DES VARIABLES
-    =============================== */
-
-  // Étape actuelle (1, 2, 3 ou 4)
-  let currentStep = 1;
-
-  // Variable pour stocker les frais de livraison calculés par l'API
-  // Par défaut à 0 (= livraison gratuite)
-  let deliveryFee = 0;
-
-  // Variable debug console si à true
-  let DebugConsole = true;
-
-  /* ===============================
-      CONFIGURATION API
-      =============================== */
-  // URL pour créer la commande 
-  const apiCommander = `${API_URL}/api/commandes`;
-
-  // URL de récupération des infos de l'utilisateur
-  const apiMeUrl = `${API_URL}/api/me`;
-
-  // URL pour la modification du profil
-  const apiProfilUrl = `${API_URL}/api/client/profil`;
-
-  // URL pour la géolocalisation
-  const apigeocodeUrl = `${API_URL}/geocode/delivery-cost?adresse=`;
-  
-
-  // Récupère le token JWT depuis le cookie (géré par script.js)
-  const token = getToken();
-
-  if (!token) {
-    console.error('Pas de token, impossible de charger les commandes');
-    return;
-  }
-
-  // Headers réutilisables pour toutes les requêtes authentifiées
-  const authHeaders = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-
+ 
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG initCommanderPage ===");
     console.log("API_URL                      :", API_URL);
@@ -126,22 +100,227 @@ export function initCommanderPage() {
     console.log("Cookies actuels              :", document.cookie);
     console.log("Token actuel                 :", token);
     console.log("Rôle actuel                  :", getRole());
-    console.log("originalData.prenom          :", originalData.prenom);
-    console.log("originalData.nom             :", originalData.nom);
-    console.log("originalData.telephone       :", originalData.telephone);
-    console.log("originalData.adresse_postale :", originalData.adresse_postale);
-    console.log("originalData.ville           :", originalData.ville);    
-    console.log("originalData.code_postal     :", originalData.code_postal);   
+    console.log("URL complète                 :", window.location.href);
+    console.log("SEARCH                       :", window.location.search);
+    console.log("menu_id récupéré             :", getMenuIdFromUrl());
     console.log("========================");
   }
 
   /* ===============================
-     FONCTION : AFFICHER UNE ÉTAPE
+  FONCTION : TOAST POUR ENVOYER LES MESSAGES AU CLIENTS
+  =============================== */
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    Object.assign(toast.style, {
+      position: 'fixed',
+      bottom: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: 'hsl(38, 58%, 70%);',
+      color: 'hsl(338, 48%, 34%);',
+      padding: '10px 20px',
+      borderRadius: '8px',
+      zIndex: 1000,
+      opacity: 0,
+      transition: 'opacity 0.3s'
+    });
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.style.opacity = 1);
+    setTimeout(() => {
+      toast.style.opacity = 0;
+      setTimeout(() => toast.remove(), 300);
+    }, 2000);
+  }
+
+  /* ===============================
+    FONCTION : CHARGE LES MENUS POUR LE SELECT
+    =============================== */
+  async function loadMenus() {
+    if (DebugConsole) console.log("[loadMenus] Début - Appel GET", apiMenusUrl);
+
+    try {
+      // Requête GET vers l'API pour récupérer tous les menus
+      const response = await fetch(apiMenusUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (DebugConsole) console.log("[loadMenus] Réponse status :", response.status);
+
+      if (!response.ok) {
+        console.error('[loadMenus] Erreur chargement menus:', response.status);
+        return;
+      }
+
+      // Parse la réponse JSON
+      let menus  = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        menus  = await response.json();
+      } catch {
+        menus  = {};
+      }
+
+      if (!menuSelect) return;
+
+      menuSelect.innerHTML = '';
+      const menusArray = menus.menus || []; 
+      menusArray.forEach(menu => {
+        const option = document.createElement('option');
+        option.value = menu.id;
+        option.textContent = menu.titre;      
+        option.dataset.price = menu.prix_par_personne;
+        option.dataset.minPersons = menu.nombre_min_personnes || 1;
+        menuSelect.appendChild(option);
+      });
+
+      if (DebugConsole) {
+        console.log("[loadMenus] Données reçues :", menusArray);
+      }
+
+      autoSelectMenuFromUrl();
+      updateRecapPrices();
+
+    } catch (err) {
+      console.error("[loadMenus] Erreur réseau :", err);
+    }
+  }
+
+  /* ===============================
+    FONCTION : RECUPERATION DU MENU ID PAR L'URL
+    =============================== */
+  function getMenuIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('menu_id'); // renvoie l'ID ou null si absent
+  }
+
+  /* ===============================
+    FONCTION : SELECTION DU SELECT POUR L'ETAPE 3 AVEC L'4'ID MENU
+    =============================== */
+  function autoSelectMenuFromUrl() {
+    if (!menuSelect) return;
+    const menuIdFromUrl = getMenuIdFromUrl();
+    if (!menuIdFromUrl) return;
+
+    const optionExists = Array.from(menuSelect.options).some(
+      opt => opt.value === menuIdFromUrl
+    );
+
+    if (optionExists) {
+      menuSelect.value = menuIdFromUrl;
+      if (DebugConsole) console.log("[autoSelectMenuFromUrl] Menu auto sélectionné :", menuIdFromUrl);
+      updateRecapPrices();
+    }
+  }
+
+    /* ===============================
+      FONCTION : CHARGE LE NB MIN D'UN MENU A L'ETAPE 3
+      =============================== */
+  function prefillPersonsMin(menuOption) {
+    if (!menuOption) return;
+    const minPersons = parseInt(menuOption.dataset.minPersons) || 1;
+    personsInput.value = minPersons;
+    personsInput.min = minPersons;
+
+    let toastShown = false;
+
+    // Surveiller si l'utilisateur descend en dessous
+    personsInput.addEventListener('input', () => {
+      const current = parseInt(personsInput.value) || minPersons;
+
+      if (current < minPersons) {
+        personsInput.value = minPersons;
+        if (!toastShown) {
+          showToast(`Le nombre minimum de personnes pour ce menu est ${minPersons}`);
+          toastShown = true;
+
+          // Reset le flag après 2s pour permettre un toast futur
+          setTimeout(() => {
+            toastShown = false; 
+          }, 2000);
+        }
+      }
+
+      updateRecapPrices();
+    });
+  }
+
+  /* ===============================
+    FONCTION : CHARGEMENT DU PROFIL UTILISATEUR POUR REMPLIR LES PLACEHOLDER DES INPUTS
+    - Met à jour les inputs nom, prènom, ville et code postale ...
+    =============================== */
+  async function loadUserProfile() {
+    if (DebugConsole) console.log("[loadUserProfile] CHARGEMENT DES INPUTS :");
+    try {
+      const response = await fetch(apiProfilUrl, {
+        method: 'GET',
+        headers: authHeaders
+      });
+
+      if (!response.ok) {
+        console.error('Impossible de récupérer le profil :', response.status);
+        if (DebugConsole) console.log("[loadUserProfile] Erreur chagement de l'api");
+        return;
+      }
+
+      let data = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
+      // Vérifie que la structure est correcte
+      if (data && data.utilisateur) {
+        const user = data.utilisateur;
+
+        // Remplit les inputs
+        if (firstNameInput) firstNameInput.value = user.prenom || '';
+        if (lastNameInput) lastNameInput.value = user.nom || '';
+        if (phoneInput) phoneInput.value = user.telephone || '';
+        if (addressInput) addressInput.value = user.adresse_postale || '';
+        if (cityInput) cityInput.value = user.ville || '';
+        if (postalInput) postalInput.value = user.code_postal || '';
+
+        // Mets à jour originalData pour comparaison
+        originalData = {
+          prenom: user.prenom || '',
+          nom: user.nom || '',
+          email: user.email || '',
+          telephone: user.telephone || '',
+          adresse_postale: user.adresse_postale || '',
+          ville: user.ville || '',
+          code_postal: user.code_postal || ''
+        };
+
+        if (DebugConsole) console.log("[loadUserProfile] Profil chargé :", originalData);
+      }
+
+    } catch (err) {
+      console.error('Erreur récupération profil :', err);
+    }
+  }
+
+  // ===============================
+  // CHARGEMENT DU PROFIL AVANT INTERACTION
+  // ===============================
+
+  await loadUserProfile(); // charge les données du client
+  await loadMenus();       // charge les menus de la BDD
+
+  /* ===============================
+     FONCTION : INITIALISATION DE L’ÉTAPE 1 
      - Cache tous les panels
      - Affiche uniquement le panel demandé
      - Met à jour les pastilles du stepper (active / completed)
      - Cache le stepper à l'étape 4 (page de confirmation)
      =============================== */
+
   if (DebugConsole) console.log("[showStep] AFFICHER UNE ÉTAPE");
 
   function showStep(stepNumber) {
@@ -186,6 +365,43 @@ export function initCommanderPage() {
     if (DebugConsole) console.log("[showStep] currentStep:",currentStep);
   }
 
+  // Vérifier chaque champ avant de l'assigner
+  if (firstNameInput && firstNameInput.value) {
+    originalData.prenom = firstNameInput.value;
+  } else {
+    originalData.prenom = '';
+  }
+
+  if (lastNameInput && lastNameInput.value) {
+    originalData.nom = lastNameInput.value;
+  } else {
+    originalData.nom = '';
+  }
+
+  if (phoneInput && phoneInput.value) {
+    originalData.telephone = phoneInput.value;
+  } else {
+    originalData.telephone = '';
+  }
+
+  if (addressInput && addressInput.value) {
+    originalData.adresse_postale = addressInput.value;
+  } else {
+    originalData.adresse_postale = '';
+  }
+
+  if (cityInput && cityInput.value) {
+    originalData.ville = cityInput.value;
+  } else {
+    originalData.ville = '';
+  }
+
+  if (postalInput && postalInput.value) {
+    originalData.code_postal = postalInput.value;
+  } else {
+    originalData.code_postal = '';
+  }
+
   /* ===============================
      FONCTION : VÉRIFIER QUE LES CHAMPS SONT REMPLIS
      - Récupère le formulaire de l'étape donnée..
@@ -207,12 +423,8 @@ export function initCommanderPage() {
 
     // Vérifie que chaque champ a une valeur non vide
     inputs.forEach(input => {
-      if (input.value === undefined || input.value === null || input.value === '') {
-        valid = false;
-      } else if (input.value.trim() === '') {
-        valid = false;
-      }else{
-        valid = true;
+    if (!input.value || input.value.trim() === '') {
+        valid = false; // si un champ vide, on invalide
       }
     });
     if (DebugConsole) console.log("[isStepValid] valid:",valid);
@@ -220,62 +432,51 @@ export function initCommanderPage() {
   }
 
   /* ===============================
+     FONCTION : FONCTION UTILITAIRE POUR LA MISE A JOUR
+     =============================== */
+  function copyCurrentToOriginal(currentData) {
+    originalData.prenom = currentData.prenom;
+    originalData.nom = currentData.nom;
+    originalData.telephone = currentData.telephone;
+    originalData.adresse_postale = currentData.adresse_postale;
+    originalData.ville = currentData.ville;
+    originalData.code_postal = currentData.code_postal;
+  }
+  /* ===============================
      FONCTION : MET A JOUR LE PROFIL SI CHAMP MODIFIER
-     - 
      =============================== */
   async function updateUserIfChanged() {
     // Stocker les valeurs actuelles
-    let currentData = {};
+    if (!firstNameInput || !lastNameInput || !phoneInput || !addressInput || !cityInput || !postalInput) {
+    if (DebugConsole) console.log("[updateUserIfChanged] Inputs manquants, skip");
+    return;
+  }
+    const currentData = {
+      prenom: firstNameInput?.value || '',
+      nom: lastNameInput?.value || '',
+      email: originalData.email || '', // on garde l'email existant
+      telephone: phoneInput?.value || '',
+      adresse_postale: addressInput?.value || '',
+      ville: cityInput?.value || '',
+      code_postal: postalInput?.value || '',
+      pays: 'France' // valeur fixe si non modifiable
+    };
 
-    // Vérifier chaque champ et assigner la valeur ou une chaîne vide
-    if (firstNameInput && firstNameInput.value) {currentData.prenom = firstNameInput.value;} else {
-      currentData.prenom = '';
-    }
-    if (lastNameInput && lastNameInput.value) {currentData.nom = lastNameInput.value;} else {
-      currentData.nom = '';
-    }
-
-    if (phoneInput && phoneInput.value) {currentData.telephone = phoneInput.value;} else {
-      currentData.telephone = '';
-    }
-
-    if (addressInput && addressInput.value) {currentData.adresse_postale = addressInput.value;} else {
-      currentData.adresse_postale = '';
-    }
-
-    if (cityInput && cityInput.value) {currentData.ville = cityInput.value;} else {
-      currentData.ville = '';
-    }
-
-    if (postalInput && postalInput.value) {currentData.code_postal = postalInput.value;} else {
-      currentData.code_postal = '';
-    }
-
-    // Vérifier si quelque chose a changé
+    // Vérifier si un champ a réellement changé
     let changed = false;
-    if (currentData.prenom !== originalData.prenom) {
-      changed = true;
-    } else if (currentData.nom !== originalData.nom) {
-      changed = true;
-    } else if (currentData.telephone !== originalData.telephone) {
-      changed = true;
-    } else if (currentData.email !== originalData.email) {
-      changed = true;
-    } else if (currentData.adresse_postale !== originalData.adresse_postale) {
-      changed = true;
-    } else if (currentData.ville !== originalData.ville) {
-      changed = true;
-    } else if (currentData.code_postal !== originalData.code_postal) {
-      changed = true;
-    }
+    if (currentData.prenom !== originalData.prenom) changed = true;
+    else if (currentData.nom !== originalData.nom) changed = true;
+    else if (currentData.telephone !== originalData.telephone) changed = true;
+    else if (currentData.adresse_postale !== originalData.adresse_postale) changed = true;
+    else if (currentData.ville !== originalData.ville) changed = true;
+    else if (currentData.code_postal !== originalData.code_postal) changed = true;
 
     if (!changed) {
-      if (DebugConsole) console.log("[updateUserIfChanged] Pas de modification détectée");
+      if (DebugConsole) console.log("[updateUserIfChanged] Aucun changement détecté, skip PUT");
       return;
-    }else{
-      if (DebugConsole) console.log("[updateUserIfChanged] Données modifiées, envoi PUT...", currentData);
     }
-
+    if (DebugConsole) console.log("[updateUserIfChanged] Données modifiées, envoi PUT...", currentData);
+  
     try {
       const response = await fetch(apiProfilUrl, {
         method: 'PUT',
@@ -286,17 +487,22 @@ export function initCommanderPage() {
       let result = null;
       // évite que le script crash si la réponse n'est pas du JSON
       try {
-        result = await response.json();
+        result = await response.json().catch(() => ({}));
       } catch {
         result = {};
       }
 
       if (response.ok) {
+
         if (DebugConsole) console.log("[updateUserIfChanged] Profil mis à jour avec succès");
+
         // Met à jour les valeurs originales pour la prochaine comparaison
-        originalData = { ...currentData };
+        copyCurrentToOriginal(currentData);
+        // Reset du flag
+        isModified = false;
       } else {
         console.error('[updateUserIfChanged] Erreur mise à jour profil:', result.message);
+        if (DebugConsole) console.log("[updateUserIfChanged] Erreur mise à jour profil:", result.message);
       }
     } catch (err) {
       console.error('[updateUserIfChanged] Erreur réseau:', err);
@@ -318,24 +524,18 @@ export function initCommanderPage() {
   async function calculateDeliveryFee() {
     if (DebugConsole) console.log("[calculateDeliveryFee] CALCUL DES FRAIS DE LIVRAISON");
     // Récupère les valeurs saisies par le client à l'étape 2
-    let address = '';
-    let city = '';
-    let postal = '';
-    // Vérifier chaque champ
-    if (addressInput && addressInput.value) {
-      address = addressInput.value;
-    }
-    if (cityInput && cityInput.value) {
-      city = cityInput.value;
-    }
-
-    if (postalInput && postalInput.value) {
-      postal = postalInput.value;
-    }
-    // Construit l'adresse complète au format attendu par Nominatim
-    // Exemple : "12 rue des Roses, 33000 Bordeaux, France"
+    const address = addressInput?.value || '';
+    const city = cityInput?.value || '';
+    const postal = postalInput?.value || '';
     const fullAddress = `${address}, ${postal} ${city}, France`;
 
+    // Construit l'adresse complète au format attendu par Nominatim
+    if (DebugConsole){
+      console.log("fullAddress : ",fullAddress);
+      console.log(" address :",`${address}`);
+      console.log(" postal  :",`${postal}`);
+      console.log(" city    :",`${city}`);
+    } 
     try {
       // Appel GET vers endpoint Symfony /delivery-cost
       // Le back va :
@@ -343,15 +543,21 @@ export function initCommanderPage() {
       //   2. Calculer la distance routière via OSRM
       //   3. Appliquer la règle tarifaire
       //   4. Retourner le JSON avec frais_livraison
-      const response = await fetch(
-        `apigeocodeUrl${encodeURIComponent(fullAddress)}`
-      );
 
+      //const response = await fetch(`${apigeocodeUrl}${encodeURIComponent(fullAddress)}`);
+      const encodedAdresse = encodeURIComponent(fullAddress);
+      const url = `${apigeocodeUrl}${encodedAdresse}`;
+      if (DebugConsole) {
+        console.log("fullAddress    : ",fullAddress);
+        console.log("encodedAdresse : ",encodedAdresse);
+        console.log("Url            : ",url);
+      }
+       const response = await fetch(url);
       // Si la réponse n'est pas OK (400, 404, 500...), on met les frais à 0
       if (!response.ok) {
-        if (DebugConsole) console.log("[calculateDeliveryFee] érreur d'accès à l'api");
+        if (DebugConsole) console.error('[calculateDeliveryFee] Erreur API livraison, status:', response.status);
         console.error('Erreur API livraison:', response.status);
-        deliveryFee = 0;
+        deliveryFee = 100; // si sa bug tarif de 100 euros
         return;
       }
       if (DebugConsole) console.log("[calculateDeliveryFee] Réponse de l'API");
@@ -364,22 +570,30 @@ export function initCommanderPage() {
       } catch {
         data = {};
       }
+      if (DebugConsole) console.log("[calculateDeliveryFee] data reçue:", data);
 
       // Stocke les frais de livraison retournés par l'API
       // data.frais_livraison contient soit 0 (gratuit) soit le montant calculé
-      deliveryFee = data.frais_livraison || 0;
+      deliveryFee = (data.frais_livraison !== undefined && !isNaN(data.frais_livraison))
+      ? parseFloat(data.frais_livraison)
+      : 0;
 
+      // Stocke la distance dans la variable globale
+      deliveryDistanceKm = data.distance_km || 0;
       if (DebugConsole) {
-        console.log('Distance:', data.distance_km, 'km (' + data.distance_type + ')');
+        console.log("[calculateDeliveryFee] Distance:", data.distance_km || '—', "km");
+        console.log("[calculateDeliveryFee] Frais livraison:", deliveryFee, "€");
         console.log('Type distance:', data.distance_type);
-        console.log('Frais livraison:', deliveryFee, '€');
       }
+      
+      // Mise à jour du récap après calcul
+      updateRecapPrices();
 
     } catch (err) {
       // En cas d'erreur réseau
       // On met les frais à 0 par sécurité (gratuit par défaut)
       console.error('Erreur réseau calcul livraison:', err);
-      deliveryFee = 0;
+      deliveryFee = 100;
     }
   }
 
@@ -401,6 +615,7 @@ export function initCommanderPage() {
 
     // Récupère l'option sélectionnée dans le select menu
     let selectedOption;
+
     if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {
       selectedOption = menuSelect.options[menuSelect.selectedIndex];
     } else {
@@ -430,15 +645,7 @@ export function initCommanderPage() {
     if (DebugConsole) console.log("[updateRecapPrices] unitPrice:", unitPrice);
 
     // Nombre de personnes saisi par le client
-    let persons;
-    if (personsInput && personsInput.value) {
-      persons = parseInt(personsInput.value);
-      if (isNaN(persons)) {
-        persons = 0;
-      }
-    } else {
-      persons = 0;
-    }
+    let persons = Math.max(1, parseInt(personsInput.value) || 1);
     if (DebugConsole) console.log("[updateRecapPrices] persons:", persons);
 
     // Sous-total = prix unitaire × nombre de personnes
@@ -482,7 +689,7 @@ export function initCommanderPage() {
 
     // Affiche "Gratuite" si 0€, sinon affiche le montant des frais
     if (recapDelivery) {
-      if (deliveryFee !== undefined && deliveryFee !== null && !isNaN(deliveryFee) && deliveryFee > 0) {
+      if (deliveryFee && !isNaN(deliveryFee) && deliveryFee > 0) {
         recapDelivery.textContent = deliveryFee.toFixed(2) + '€';
       } else {
         recapDelivery.textContent = 'Gratuite';
@@ -499,22 +706,7 @@ export function initCommanderPage() {
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapTotal:", recapTotal);
-  }
-
-  /* ===============================
-    FONCTION : GÉNÉRER UN NUMÉRO DE COMMANDE
-    - Crée un identifiant unique au format CMD-ANNÉE-XXXX
-    - XXXX = nombre aléatoire à 4 chiffres
-    - Utilisé uniquement pour l'affichage côté front
-    - En production, l'ID viendra de l'API back
-    =============================== */
-
-  function generateOrderId() {
-    if (DebugConsole) console.log("[generateOrderId] GÉNÉRER UN NUMÉRO DE COMMANDE:");
-    const year = new Date().getFullYear();
-    const random = Math.floor(1000 + Math.random() * 9000);
-    if (DebugConsole) console.log("[generateOrderId] nb_cmd:",`CMD-${year}-${random}`);
-    return `CMD-${year}-${random}`;
+    return total; // récupére le total TTC
   }
 
   /* ===============================
@@ -525,7 +717,7 @@ export function initCommanderPage() {
      - 4. Affiche l'étape 4
      =============================== */
 
-  function showConfirmation() {
+  function showConfirmation(createdOrder) {
     if (DebugConsole) console.log("[showConfirmation] AFFICHE LA PAGE DE CONFIRMATION:");
     // Récupère les infos du menu sélectionné
     let selectedOption;
@@ -556,13 +748,11 @@ export function initCommanderPage() {
     let date = '';
     let time = '';
 
-    const dateInput = document.getElementById('CommandDate');
     if (dateInput && dateInput.value) {
       date = dateInput.value;
     }
     if (DebugConsole) console.log("[showConfirmation] date:", date);
 
-    const timeInput = document.getElementById('CommandTime');
     if (timeInput && timeInput.value) {
       time = timeInput.value;
     }
@@ -588,11 +778,11 @@ export function initCommanderPage() {
     const confirmTotal = document.getElementById('confirm-total');
 
     // Remplit chaque champ de la confirmation
-    if (confirmOrderId) confirmOrderId.textContent = generateOrderId();
+    if (confirmOrderId) confirmOrderId.textContent = createdOrder.nom_commande || '—';
     if (confirmMenu) confirmMenu.textContent = menuName;
     if (confirmPersons) confirmPersons.textContent = persons;
     if (confirmDate) confirmDate.textContent = `${date} à ${time}`;
-    if (confirmTotal) confirmTotal.textContent = `${total}€`;
+    if (confirmTotal) confirmTotal.textContent = `${updateRecapPrices()}€`;
 
     if (DebugConsole) {
       console.log("=== showConfirmation ===");
@@ -607,6 +797,29 @@ export function initCommanderPage() {
     // Affiche l'étape 4 (confirmation)
     showStep(4);
   }
+
+  /* ===============================
+     LISTENERS : INPUT FORM
+     =============================== */
+  // Inputs à surveiller
+  const profileInputs = [
+    firstNameInput,
+    lastNameInput,
+    phoneInput,
+    addressInput,
+    cityInput,
+    postalInput
+  ];
+
+  // Dès qu'un input change, on marque que le profil a été modifié
+  profileInputs.forEach(input => {
+    if (input) {
+      input.addEventListener('input', () => {
+        isModified = true;
+        if (DebugConsole) console.log(`[PROFILE INPUT] ${input.id} modifié, isModified = true`);
+      });
+    }
+  });
 
   /* ===============================
      LISTENERS : MENU & PERSONNES
@@ -628,8 +841,6 @@ export function initCommanderPage() {
   /* ===============================
      LISTENERS : BOUTONS SUIVANT
      - Étape 1 -> 2 : vérifie que les infos personnelles sont remplies
-     - Étape 2 -> 3 : vérifie l'adresse, PUIS calcule les frais de livraison
-       via l'API avant d'afficher le récap
      =============================== */
 
   // Bouton "Étape suivante" de l'étape 1 (Informations -> Livraison)
@@ -648,6 +859,11 @@ export function initCommanderPage() {
   }
   if (DebugConsole) console.log("[LISTENERS] btnNext1:", btnNext1);
 
+  /* ===============================
+     LISTENERS : BOUTONS SUIVANT
+     - Étape 2 -> 3 : vérifie l'adresse, PUIS calcule les frais de livraison
+       via l'API avant d'afficher le récap
+     =============================== */
   // Bouton "Étape suivante" de l'étape 2 (Livraison -> Menu & Récap)
   // CE LISTENER est async car on attend le retour de l'API
   // avant d'afficher l'étape 3 avec les frais de livraison calculés
@@ -657,15 +873,21 @@ export function initCommanderPage() {
 
       // Vérifie que tous les champs required de l'étape 2 sont remplis
       if (isStepValid(2)) {
-        // 1. Appelle l'API /delivery-cost pour calculer les frais
-        //  Cette fonction met à jour la variable deliveryFee
-        await calculateDeliveryFee();
+        
+        // Vérifie si l'un des champs des inputs à changées
+        await updateUserIfChanged();
 
+        // Appelle l'API /delivery-cost pour calculer les frais
         // 2. Une fois les frais calculés, affiche l'étape 3
+        await calculateDeliveryFee();
+        // Pré-remplissage avec la valeur min personnes d'un menu ciblé
+        const selectedOption = menuSelect.options[menuSelect.selectedIndex];
+        prefillPersonsMin(selectedOption);
+
         showStep(3);
 
-        // 3. Met à jour le récapitulatif avec les frais de livraison inclus
-        updateRecapPrices();
+        // Sélection automatique du menu depuis l'URL
+        autoSelectMenuFromUrl(); 
       }
     });
     if (DebugConsole) console.log("[LISTENERS] btnNext2:", btnNext2);
@@ -694,8 +916,8 @@ export function initCommanderPage() {
     if (DebugConsole) console.log("[LISTENERS] btnPrev3:", btnPrev3);
   }
 
-  /* ===============================
-     LISTENER : BOUTON CONFIRMER LA COMMANDE
+    /* ===============================
+       LISTENER : BOUTON CONFIRMER LA COMMANDE
      - 1. Collecte toutes les données du formulaire multi-étapes
      - 2. En production : envoie les données à l'API POST /api/orders
      - 3. Pour l'instant : log en console + affiche la confirmation
@@ -704,15 +926,59 @@ export function initCommanderPage() {
   const btnSubmit = document.getElementById('btn-submit');
   if (btnSubmit) {
     btnSubmit.addEventListener('click', async  () => {
+
+      // Vérifie que toutes les étapes sont valides
+      const step1Valid = isStepValid(1);
+      const step2Valid = isStepValid(2);
+      const step3Valid = isStepValid(3);
+
+      if (!step1Valid || !step2Valid || !step3Valid) {
+        showToast('Veuillez remplir tous les champs obligatoires');
+        return;
+      }
+
+      // Vérification de la date 
+      const selectedDate = new Date(dateInput.value + 'T00:00'); // force 00:00 local
+      const today = new Date();
+      // ignore heures/minutes
+      today.setHours(0,0,0,0); 
+
+      // REGLE METIER: Le client ne peux saisir une date antérieur à la date actuel
+      if (selectedDate < today) {
+        showToast('La date ne peut pas être antérieure à aujourd’hui');
+        return; // empêche la soumission
+      }
+      
+      const minDate = new Date(today);
+      // date minimum autorisée 
+      minDate.setDate(minDate.getDate() + nb_jourDate); 
+
+      // REGLE METIER: La date de prestation doit etre supérieur à 3 jours de la date actuel
+      if (selectedDate < minDate) {
+        showToast('La date de prestation doit etre supérieur à 3 jours de la date actuel ');
+        return; // empêche la soumission
+      }
+
+      // Met à jour le profil si modifié
+      await updateUserIfChanged();
+
+      // Calcule les frais de livraison avant soumission
+      await calculateDeliveryFee();
+
+      // récupère le total TTC
+      const prixTotal = updateRecapPrices(); 
+
       // Collecte toutes les données saisies dans les 3 étapes
       const formData = {
-        menu_id: parseInt(menuSelect.value),
+        menu_id: parseInt(menuSelect.value) || 0,
         date_prestation: dateInput.value,
-        heure_livraison: timeInput.value,
-        nombre_personnes: parseInt(personsInput.value),
+        nombre_personnes: parseInt(personsInput.value) || 1,
         adresse_livraison: addressInput.value,
+        heure_livraison: timeInput.value,
         ville_livraison: cityInput.value,
-        pret_materiel: materialCheckbox.checked
+        deliveryDistanceKm,
+        pret_materiel: materialCheckbox.checked,
+        //prix_total: prixTotal
       };
 
       if (DebugConsole) console.log("Commande confirmée:", formData);
@@ -725,29 +991,27 @@ export function initCommanderPage() {
 
         if (DebugConsole) console.log("[submitCommande] Réponse de l'API");
 
-        // Parse la réponse JSON de l'API
-        let data = null;
-        // évite que le script crash si la réponse n'est pas du JSON
-        try {
-          data = await response.json();
-        } catch {
-          data = {};
-        }
         if (response.ok) {
           // La commande a été créée avec succès
-          if (DebugConsole) console.log("[submitCommande] Commande créée :", data);
+          const createdOrder = await response.json(); // récupère le back
+          showToast('Commande reçue !'); // Affiche 2s
+          setTimeout(() => {
+            showConfirmation(createdOrder);
+          }, 2000);
+
+          if (DebugConsole) console.log("[submitCommande] Commande créée :", createdOrder);
         } else {
           // Erreur côté API
-          console.error('Erreur création commande :', data.message);
-          alert(`Erreur : ${data.message}`);
+          console.error('Erreur création commande :', response.status);
         }
       } catch (err) {
         // Erreur réseau
-        console.error('Erreur réseau :', err);
-        alert('Erreur réseau, merci de réessayer.');
+        console.error('Erreur réseau :', err,data.message);
+
+        showToast('Erreur réseau, merci de réessayer.');
       }
-      // Affiche la confirmation à l'utilisateur
-      showConfirmation(data || '');
+        showToast(createdOrder.message); // Affiche le message du back
+        console.error('Erreur création commande :', response.status, response.message);
     });
   }
 

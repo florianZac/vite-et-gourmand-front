@@ -192,7 +192,14 @@ export function initNosMenusPage() {
       }
 
       // Parse la réponse JSON
-      const data = await response.json();
+      let data = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
       if (DebugConsole) {
         console.log("[DEBUG API]", data);
         console.log("[DEBUG allMenus]", allMenus);
