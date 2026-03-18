@@ -268,7 +268,7 @@ body {
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
   background-color: var(--bs-body-bg);
-  text-size-adjust: 100%; 
+  -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -2115,37 +2115,37 @@ progress {
 
 .table-responsive {
   overflow-x: auto;
-  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     overflow-x: auto;
-    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 @media (max-width: 767.98px) {
   .table-responsive-md {
     overflow-x: auto;
-    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 @media (max-width: 991.98px) {
   .table-responsive-lg {
     overflow-x: auto;
-    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 @media (max-width: 1199.98px) {
   .table-responsive-xl {
     overflow-x: auto;
-    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 @media (max-width: 1399.98px) {
   .table-responsive-xxl {
     overflow-x: auto;
-    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
 }
 .form-label {
@@ -16232,7 +16232,7 @@ textarea.form-control-lg {
 /* -------- Séparateur entre les éléments du fil d’Ariane  -------- */
 .detail_menu-breadcrumb-separator {
   font-size: 0.75rem;
-  color: #999999;
+  color: #666666;
   margin: 0 0.5rem;
 }
 
@@ -16249,7 +16249,6 @@ textarea.form-control-lg {
 /* -------- fond général et espace haut et bas  -------- */
 .detail_menu-main {
   background-color: #F5E6D3;
-  padding: 1.5rem 0 3rem;
 }
 
 /* ===============================
@@ -16387,15 +16386,18 @@ textarea.form-control-lg {
    prix, badges et bouton commander
    =============================== */
 .detail_menu-info {
-  padding-left: 1rem;
+  padding-left: 0.8rem;
+  gap: 0.8rem;
 }
 
 /* -------- Badges (thème + régime + statut) -------- */
 .detail_menu-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 0.8rem;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
 }
 
 /* -------- Badge thème du menu -------- */
@@ -16403,9 +16405,9 @@ textarea.form-control-lg {
   background-color: rgba(192.9585, 80.8588, 46.7415, 0.1);
   color: hsl(14, 61%, 47%);
   border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
-  padding: 0.3rem 0.85rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 2rem;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-weight: 600;
 }
 
@@ -16414,7 +16416,7 @@ textarea.form-control-lg {
   background-color: rgba(102, 102, 102, 0.1);
   color: #666666;
   border: 1px solid rgba(102, 102, 102, 0.2);
-  padding: 0.3rem 0.85rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 2rem;
   font-size: 0.8rem;
   font-weight: 600;
@@ -16425,7 +16427,7 @@ textarea.form-control-lg {
   background-color: rgba(21, 128, 61, 0.1);
   color: #15803D;
   border: 1px solid rgba(21, 128, 61, 0.3);
-  padding: 0.3rem 0.85rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 2rem;
   font-size: 0.8rem;
   font-weight: 600;
@@ -16436,27 +16438,58 @@ textarea.form-control-lg {
   background-color: rgba(220, 53, 69, 0.1);
   color: #dc3545;
   border: 1px solid rgba(220, 53, 69, 0.3);
-  padding: 0.3rem 0.85rem;
+  padding: 0.5rem 0.6rem;
   border-radius: 2rem;
   font-size: 0.8rem;
   font-weight: 600;
 }
 
+/* -------- Badge statut "Restant de  commande-------- */
+.detail_menu-badge-stock {
+  background: linear-gradient(135deg, #C1613A, #803050);
+  color: #FFFFFF;
+  padding: 6px 12px;
+  border-radius: 2rem;
+  border: 1px solid rgba(102, 102, 102, 0.2);
+  font-weight: 600;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.4);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 /* -------- Titre du menu -------- */
 .detail_menu-title {
   font-family: "Playfair Display", serif;
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 700;
-  color: #333333;
-  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #C1613A, #803050);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  margin: 0.75rem 0.7rem 0rem;
 }
 
 /* -------- Description du menu -------- */
 .detail_menu-description {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #666666;
   line-height: 1.7;
-  margin-bottom: 1rem;
+  margin: 0.75rem;
+  display: flex;
+  justify-content: center;
 }
 
 /* -------- Tags ingrédients principaux -------- */
@@ -16465,12 +16498,15 @@ textarea.form-control-lg {
   flex-wrap: wrap;
   gap: 0.4rem;
   margin-bottom: 1.5rem;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .detail_menu-tag {
-  background-color: rgba(51, 51, 51, 0.08);
-  color: #333333;
-  border: 1px solid rgba(51, 51, 51, 0.15);
+  background-color: hsl(79, 31%, 35%);
+  color: #FCF7EE;
+  border: 1px solid rgba(252, 247, 238, 0.15);
   padding: 0.3rem 0.75rem;
   border-radius: 0.4rem;
   font-size: 0.8rem;
@@ -16515,7 +16551,7 @@ textarea.form-control-lg {
 /* -------- Texte complémentaire  -------- */
 .detail_menu-price-per {
   font-size: 1rem;
-  color: #999999;
+  color: #666666;
   margin-left: 0.25rem;
 }
 
@@ -16568,7 +16604,7 @@ textarea.form-control-lg {
 
 /* -------- Style du bouton lorsqu'il est désactivé  -------- */
 .btn-detail_menu-order:disabled {
-  background-color: #999999;
+  background-color: #666666;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
@@ -16583,6 +16619,7 @@ textarea.form-control-lg {
   border-left: 3px solid hsl(14, 61%, 47%);
   border-radius: 0.5rem;
   padding: 1rem 1.25rem;
+  color: hsl(338, 48%, 34%);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -16603,7 +16640,7 @@ textarea.form-control-lg {
 /* -------- Titre de la section -------- */
 .detail_menu-conditions-header strong {
   font-size: 0.95rem;
-  color: #333333;
+  color: hsl(338, 48%, 34%);
 }
 
 /* -------- Texte explicatif des conditions -------- */
@@ -16630,10 +16667,15 @@ textarea.form-control-lg {
 /* -------- Titre de la section "Composition du menu" -------- */
 .detail_menu-composition-title {
   font-family: "Playfair Display", serif;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #333333;
   margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(135deg, #C1613A, #803050);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
 }
 
 /* -------- Card contenant un plat du menu (entrée / plat / dessert) -------- */
@@ -16688,7 +16730,7 @@ textarea.form-control-lg {
 /* -------- Label indiquant la présence d’allergènes -------- */
 .detail_menu-dish-allergens-label {
   font-size: 0.8rem;
-  color: #999999;
+  color: #666666;
   display: flex;
   align-items: center;
   gap: 0.3rem;
@@ -16709,8 +16751,8 @@ textarea.form-control-lg {
 
 /* -------- Badge d’un allergène -------- */
 .detail_menu-dish-allergen-badge {
-  background-color: rgba(51, 51, 51, 0.06);
-  color: #333333;
+  background-color: hsl(38, 58%, 40%);
+  color: #FCF7EE;
   border: 1px solid rgba(51, 51, 51, 0.15);
   padding: 0.2rem 0.6rem;
   border-radius: 2rem;
@@ -16842,7 +16884,7 @@ textarea.form-control-lg {
 /* -------- Texte sous l'aperçu -------- */
 .detail_menu-modal-preview-text {
   font-size: 0.8rem;
-  color: #999999;
+  color: #666666;
   padding: 0.5rem 0;
   margin-bottom: 0;
 }
@@ -16971,6 +17013,32 @@ textarea.form-control-lg {
   .detail_menu-gallery-main-img {
     height: 450px;
   }
+  .detail_menu-badges {
+    flex-wrap: wrap;
+  }
+  .detail_menu-title {
+    font-size: 2rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .detail_menu-description {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .detail_menu-dish-card {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+  }
 }
 /* ===============================
    RESPONSIVE MOBILE
@@ -16980,20 +17048,30 @@ textarea.form-control-lg {
     padding: 0.75rem 0;
     margin-top: 70px;
   }
-  .detail_menu-main {
-    padding: 1rem 0 2rem;
-  }
   .detail_menu-gallery-main-img {
     height: 300px;
   }
   .detail_menu-gallery-thumb {
     height: 65px;
   }
+  .detail_menu-badges {
+    flex-wrap: wrap;
+  }
   .detail_menu-title {
     font-size: 1.5rem;
+    margin-top: 1rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
   }
   .detail_menu-description {
     font-size: 0.9rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 1rem;
   }
   .detail_menu-price-amount {
     font-size: 1.75rem;
@@ -17003,9 +17081,17 @@ textarea.form-control-lg {
   }
   .detail_menu-composition-title {
     font-size: 1.25rem;
+    display: flex;
+    justify-content: center;
   }
   .detail_menu-dish-card {
     padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
   }
   /* Modale : prévisualisation plus petite sur mobile */
   .detail_menu-modal-preview img {
@@ -17764,6 +17850,7 @@ textarea.form-control-lg {
   border-radius: 0.3rem;
   font-size: 0.7rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* -------- Badge régime en haut à droite de l'image -------- */

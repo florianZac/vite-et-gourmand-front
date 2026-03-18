@@ -26,7 +26,9 @@ export function initDetailMenusPage() {
 			- 1.  L'URL est de la forme /detail_menu?id=3
 			- 2.	On récupère le paramètre "id" depuis le query string
 		 =============================== */
-  let DebugConsole = false;
+  let DebugConsole = true;
+
+
 	// Découpe l'URL 
   const params = new URLSearchParams(window.location.search);
   const menuId = params.get('id');
@@ -211,19 +213,33 @@ export function initDetailMenusPage() {
 
     // Badge régime
     if (menu.regime && menu.regime.libelle) {
-      detailBadges.innerHTML += `<span class="detail_menu-badge-regime">🍽 ${menu.regime.libelle}</span>`;
+      detailBadges.innerHTML += `<span class="detail_menu-badge-regime"> ${menu.regime.libelle}</span>`;
     }
 
     // Badge disponibilité
-    const disponible = (menu.quantite_restante || 0) > 0;
+    const disponible = menu.quantite_restante >= menu.nombre_personne_minimum;
     if (disponible) {
       detailBadges.innerHTML += `<span class="detail_menu-badge-available"><i class="bi bi-check"></i> Disponible à la commande</span>`;
     } else {
       detailBadges.innerHTML += `<span class="detail_menu-badge-unavailable"><i class="bi bi-x"></i> Indisponible</span>`;
     }
 
-    if (DebugConsole) console.log("[renderBadges] Thème:", menu.theme?.titre, "Régime:", menu.regime?.libelle, "Dispo:", disponible);
-  }
+    // Badge menus restants affichant le nombre de menus réellement commandables
+    let restant = 0;
+    if (menu.quantite_restante && menu.nombre_personne_minimum) {
+      restant = Math.floor(menu.quantite_restante / menu.nombre_personne_minimum);
+
+      if (restant > 0 && restant <= 10) {
+        detailBadges.innerHTML += `
+          <span class="detail_menu-badge-stock">
+            Plus que ${restant} menu${restant > 1 ? 's' : ''} disponible${restant > 1 ? 's' : ''}
+          </span>
+        `;
+      }
+    }
+
+  if (DebugConsole) console.log("[renderBadges] Thème:", menu.theme?.titre, "Régime:", menu.regime?.libelle, "Dispo:", disponible, "Menus restant:", restant );
+}
 
 	/* ===============================
 			FONCTION : INFOS PRINCIPALES (titre + description)
@@ -556,7 +572,7 @@ export function initDetailMenusPage() {
     if (!btnOrder) return;
 
     // Si le menu est indisponible, on désactive le bouton
-    const disponible = (menu.quantite_restante || 0) > 0;
+    const disponible = menu.quantite_restante >= menu.nombre_personne_minimum;
     if (!disponible) {
       btnOrder.disabled = true;
       btnOrder.innerHTML = '<i class="bi bi-x-circle"></i> Menu indisponible';

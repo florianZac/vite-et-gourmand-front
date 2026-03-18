@@ -42,10 +42,10 @@ export function initNosMenusPage() {
   // Champ de recherche texte
   const filterSearch = document.getElementById('filter-search');
 
-  // Conteneurs des badges dynamiques (thème et régime)
+  // Conteneurs des badges dynamiques (thème et régime et disponible)
   const filterThemes = document.getElementById('filter-themes');
   const filterRegimes = document.getElementById('filter-regimes');
-
+  const filterDisponibilite = document.getElementById('filter-disponibilite');
   // Slider du prix max
   const filterPrice = document.getElementById('filter-price');
   const filterPriceValue = document.getElementById('filter-price-value');
@@ -81,6 +81,9 @@ export function initNosMenusPage() {
 
   // Stocke le régime actuellement sélectionné ("Tous" par défaut)
   let selectedRegime = 'Tous';
+
+  // Stocke le statut disponible indisponible sélectionné ("Tous" par défaut)
+  let selectedDisponibilite = 'Tous';
 
   /* ===============================
      FONCTIONS UTILITAIRES
@@ -213,9 +216,10 @@ export function initNosMenusPage() {
         allMenus.forEach((m, i) => console.log(`[loadMenus] Menu ${i} :`, m.titre, "- Thème:", getThemeLabel(m), "- Régime:", getRegimeLabel(m)));
       }
 
-      // Génère les badges thème et régime depuis les données reçues
+      // Génère les badges thème et régime et disponible  depuis les données reçues
       generateThemeBadges();
       generateRegimeBadges();
+      generateDisponibiliteBadges();
 
       // Met à jour le slider prix max avec le prix le plus élevé
       updatePriceSliderMax();
@@ -238,6 +242,44 @@ export function initNosMenusPage() {
      - "Tous" est actif par défaut
      =============================== */
 
+  function generateDisponibiliteBadges() {
+    
+    // Badge filtre disponible
+    if (!filterDisponibilite) return;
+    
+    if (DebugConsole) console.log("[generateDisponibiliteBadges] Disponibilite trouvés :", themes);
+
+    // Vide le conteneur avant de régénérer
+    filterDisponibilite.innerHTML = '';
+
+    // Crée le badge "Tous" (actif par défaut)
+    const btnAll = document.createElement('button');
+    btnAll.className = 'nos_menu-badge active';
+    btnAll.textContent = 'Tous';
+    btnAll.addEventListener('click', () => {
+      selectedDisponibilite = 'Tous';
+      // Met à jour les badges actifs visuellement
+      updateBadgesActive(filterDisponibilite, btnAll);
+      // Relance le filtrage
+      applyFilters();
+    });
+    filterDisponibilite.appendChild(btnAll);
+
+    // Disponible
+    const btnDisponible = document.createElement('button');
+    btnDisponible.className = 'nos_menu-badge';
+    btnDisponible.textContent = 'Disponible';
+    btnDisponible.addEventListener('click', () => {
+      selectedDisponibilite = 'Disponible';
+      // Met à jour les badges actifs visuellement
+      updateBadgesActive(filterDisponibilite, btnDisponible);
+      // Relance le filtrage
+      applyFilters();
+    });
+    filterDisponibilite.appendChild(btnDisponible);
+  }
+  
+  // Badge filtre thèmes
   function generateThemeBadges() {
     if (!filterThemes) return;
 
@@ -320,6 +362,7 @@ export function initNosMenusPage() {
     return badgeDispoHtml;
   }
 
+  
   /* ===============================
      FONCTION : GÉNÉRER LES BADGES RÉGIME DYNAMIQUEMENT
      - Même logique que pour les thèmes
@@ -514,6 +557,13 @@ export function initNosMenusPage() {
         if ((menu.nombre_personne_minimum || 0) > minPersons) return false;
       }
 
+      // FILTRE 6 : Disponibilité
+      if (selectedDisponibilite === 'Disponible') {
+        if (menu.quantite_restante < menu.nombre_personne_minimum) {
+          return false;
+        }
+      }
+
       // Si tous les filtres passent on garde ce menu
       return true;
     });
@@ -671,6 +721,14 @@ export function initNosMenusPage() {
 
     // Vide le nombre de personnes
     if (filterPersons) filterPersons.value = '';
+
+    // Remet "Tous" actif pour disponible
+    selectedDisponibilite = 'Tous';
+    if (filterDisponibilite) {
+      const firstBadge = filterDisponibilite.querySelector('.nos_menu-badge');
+      if (firstBadge) updateBadgesActive(filterDisponibilite, firstBadge);
+    }
+
 
     // Relance le filtrage (affiche tous les menus)
     applyFilters();

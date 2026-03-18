@@ -11,6 +11,12 @@ export async function initCommanderPage() {
     3. Choix menu et récapitulatif rapide
     4. page de validation avec rappel commande 
     simplifie les choses évite les duplications de code.
+    RAPPEL REGLE METIER BACK :
+    Crée une nouvelle commande avec toutes les règles métier : 
+    délai minimum (3j ouvrables, 14j si >20 pers.), 
+    acompte 30% ou 50% (événement, mariage), 
+    livraison gratuite Bordeaux + 10km ,livraison max 200km, sinon 5€+0.59€/km , 
+    réduction -10% si pers. > min+5, vérification stock.
     =============================== */
 
   /* ===============================
@@ -41,10 +47,16 @@ export async function initCommanderPage() {
   // Par défaut à 0 (= livraison gratuite)
   let deliveryFee = 0;
 
-  let deliveryDistanceKm = 0; // variable globale pour stocker la distance
+  // variable globale pour stocker la distance
+  let deliveryDistanceKm = 0; 
+  
+  // Récupération des horraires du site
+  let horaires = [];
+
   // Variable debug console si à true
   let DebugConsole = true;
 
+  // Variable pour vérifier la modification utilisateurs
   let isModified = false;
   /* ===============================
       CONFIGURATION API
@@ -64,6 +76,9 @@ export async function initCommanderPage() {
   // URL de l'API Symfony pour la géolocalisation et le calcul du coup vias la distance
   const apigeocodeUrl = `${API_URL}/delivery-cost?adresse=`;
   
+  // URL de l'API Symfony pour la récupération des horraires du site
+  const apiHorraireUrl = `${API_URL}/api/horaires`;
+
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
       =============================== */
@@ -118,13 +133,13 @@ export async function initCommanderPage() {
       bottom: '20px',
       left: '50%',
       transform: 'translateX(-50%)',
-      backgroundColor: 'hsl(38, 58%, 70%);',
-      color: 'hsl(338, 48%, 34%);',
+      backgroundColor: 'hsl(38, 58%, 70%)',
+      color: 'hsl(338, 48%, 34%)',
       padding: '10px 20px',
       borderRadius: '8px',
-      zIndex: 1000,
+      zIndex: 9999,
       opacity: 0,
-      transition: 'opacity 0.3s'
+      transition: 'opacity 0.3s',
     });
     document.body.appendChild(toast);
     requestAnimationFrame(() => toast.style.opacity = 1);
@@ -133,6 +148,85 @@ export async function initCommanderPage() {
       setTimeout(() => toast.remove(), 300);
     }, 2000);
   }
+
+  /* ===============================
+  FONCTION : RECUPERATION DES HORRAIRES DU SITE
+  =============================== */
+  async function getHoraires() {
+    try {
+      const response = await fetch(apiHorraireUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) throw new Error('Erreur horaires');
+
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        horaires  = await response.json();
+      } catch {
+      horaires = [];
+      }
+
+      if (DebugConsole) console.log("[getHoraires] Horaires chargés :", horaires);
+
+    } catch (err) {
+      console.error("Erreur récupération horaires :", err);
+      horaires = [];
+    }
+  }
+
+  /* ===============================
+  FONCTION : VALIDATION DES HORRAIRES
+  =============================== */
+  function isHoraireValide(dateValue, timeValue) {
+    if (!dateValue || !timeValue) return false;
+
+      if (!horaires || horaires.length === 0) {
+        showToast("Horaires non disponibles");
+        return false;
+      }
+      const date = new Date(dateValue);
+      const jour = date.toLocaleDateString('fr-FR', { weekday: 'long' });
+
+      // 1er lettre en Majuscule d'après retour APi
+      const jourCapitalized = jour.charAt(0).toUpperCase() + jour.slice(1);
+      const horaireJour = horaires.find(h => h.jour === jourCapitalized);
+
+        if (!horaireJour) {
+        showToast("Jour non disponible");
+        return false;
+      }
+
+      // Gestion du cas fermé
+      if (horaireJour.heureOuverture === "Fermé") {
+        showToast("Nous sommes fermés ce jour-là");
+        return false;
+      }
+
+      const [h, m] = timeValue.split(':').map(Number);
+      const selectedMinutes = h * 60 + m;
+      const [openH, openM] = horaireJour.heureOuverture.split(':').map(Number);
+      const [closeH, closeM] = horaireJour.heureFermeture.split(':').map(Number);
+      const openMinutes = openH * 60 + openM;
+      const closeMinutes = closeH * 60 + closeM;
+
+      if (DebugConsole) console.log("[isHoraireValide] Horaires :",[h, m] ,selectedMinutes,[openH, openM],[closeH, closeM],openMinutes,closeMinutes);
+
+      if (selectedMinutes < openMinutes || selectedMinutes >= closeMinutes) {
+        if (DebugConsole) console.log("[isHoraireValide] Heure invalide",`${horaireJour.heureOuverture} - ${horaireJour.heureFermeture}`);
+        showToast(
+          `Heure invalide (${horaireJour.heureOuverture} - ${horaireJour.heureFermeture})`
+        );
+        return false;
+      }
+      if (DebugConsole) console.log("[isHoraireValide] Heure : ok");
+      return true;
+    }
+
+
 
   /* ===============================
     FONCTION : CHARGE LES MENUS POUR LE SELECT
@@ -175,6 +269,7 @@ export async function initCommanderPage() {
         option.textContent = menu.titre;      
         option.dataset.price = menu.prix_par_personne;
         option.dataset.minPersons = menu.nombre_min_personnes || 1;
+        option.dataset.theme = menu.theme?.titre || 'autre';
         menuSelect.appendChild(option);
       });
 
@@ -217,42 +312,28 @@ export async function initCommanderPage() {
     }
   }
 
-    /* ===============================
-      FONCTION : CHARGE LE NB MIN D'UN MENU A L'ETAPE 3
-      =============================== */
+  /* ===============================
+    FONCTION : CHARGE LE NB MIN D'UN MENU A L'ETAPE 3
+    =============================== */
   function prefillPersonsMin(menuOption) {
     if (!menuOption) return;
-    const minPersons = parseInt(menuOption.dataset.minPersons) || 1;
+    const minPersons = parseInt(menuOption.dataset.minPersons) || 10;
+    const maxPersons = parseInt(menuOption.dataset.maxPersons) || 1000;
+
     personsInput.value = minPersons;
     personsInput.min = minPersons;
+    personsInput.max = maxPersons;
 
-    let toastShown = false;
-
-    // Surveiller si l'utilisateur descend en dessous
-    personsInput.addEventListener('input', () => {
-      const current = parseInt(personsInput.value) || minPersons;
-
-      if (current < minPersons) {
-        personsInput.value = minPersons;
-        if (!toastShown) {
-          showToast(`Le nombre minimum de personnes pour ce menu est ${minPersons}`);
-          toastShown = true;
-
-          // Reset le flag après 2s pour permettre un toast futur
-          setTimeout(() => {
-            toastShown = false; 
-          }, 2000);
-        }
-      }
-
-      updateRecapPrices();
-    });
+    // éviter doublon
+    personsInput.removeEventListener('input', handlePersonsInput);
+    personsInput.addEventListener('input', handlePersonsInput);
   }
 
   /* ===============================
     FONCTION : CHARGEMENT DU PROFIL UTILISATEUR POUR REMPLIR LES PLACEHOLDER DES INPUTS
     - Met à jour les inputs nom, prènom, ville et code postale ...
     =============================== */
+  await getHoraires();
   async function loadUserProfile() {
     if (DebugConsole) console.log("[loadUserProfile] CHARGEMENT DES INPUTS :");
     try {
@@ -549,7 +630,7 @@ export async function initCommanderPage() {
       const url = `${apigeocodeUrl}${encodedAdresse}`;
       if (DebugConsole) {
         console.log("fullAddress    : ",fullAddress);
-        console.log("encodedAdresse : ",encodedAdresse);
+        console.log("encodedAdresse : ",encodedAdresse);deliveryFee = 0;
         console.log("Url            : ",url);
       }
        const response = await fetch(url);
@@ -557,7 +638,8 @@ export async function initCommanderPage() {
       if (!response.ok) {
         if (DebugConsole) console.error('[calculateDeliveryFee] Erreur API livraison, status:', response.status);
         console.error('Erreur API livraison:', response.status);
-        deliveryFee = 100; // si sa bug tarif de 100 euros
+        deliveryFee = 0;
+        showToast("Erreur calcul livraison"); // si sa bug tarif de 100 euros
         return;
       }
       if (DebugConsole) console.log("[calculateDeliveryFee] Réponse de l'API");
@@ -593,7 +675,8 @@ export async function initCommanderPage() {
       // En cas d'erreur réseau
       // On met les frais à 0 par sécurité (gratuit par défaut)
       console.error('Erreur réseau calcul livraison:', err);
-      deliveryFee = 100;
+      deliveryFee = 0;
+      showToast("Erreur calcul livraison");
     }
   }
 
@@ -614,60 +697,99 @@ export async function initCommanderPage() {
     if (DebugConsole) console.log("[updateRecapPrices] MISE À JOUR RÉCAPITULATIF PRIX");
 
     // Récupère l'option sélectionnée dans le select menu
-    let selectedOption;
+    let selectedOption = null;
+    if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {selectedOption = menuSelect.options[menuSelect.selectedIndex];} 
+    
+    if (DebugConsole) console.log("[updateRecapPrices] selectedOption :", selectedOption);
 
-    if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {
-      selectedOption = menuSelect.options[menuSelect.selectedIndex];
-    } else {
-      selectedOption = null;
-    }
-    if (DebugConsole) console.log("[updateRecapPrices] selectedOption:", selectedOption);
 
-    // Nom du menu (ex: "Festin de Noël Traditionnel")
-    let menuName;
-    if (selectedOption && selectedOption.text) {
-      menuName = selectedOption.text;
-    } else {
-      menuName = '—';
-    }
-    if (DebugConsole) console.log("[updateRecapPrices] menuName:", menuName);
+    // Nom du menu
+    let menuName = '—';
+    if (selectedOption && selectedOption.text) {menuName = selectedOption.text;}
+    
+    if (DebugConsole) console.log("[updateRecapPrices] menuName :", menuName);
 
     // Prix unitaire stocké dans l'attribut data-price du <option>
-    let unitPrice;
+    let unitPrice = 0;
     if (selectedOption && selectedOption.dataset && selectedOption.dataset.price) {
       unitPrice = parseFloat(selectedOption.dataset.price);
       if (isNaN(unitPrice)) {
         unitPrice = 0;
       }
-    } else {
-      unitPrice = 0;
     }
-    if (DebugConsole) console.log("[updateRecapPrices] unitPrice:", unitPrice);
+    if (DebugConsole) console.log("[updateRecapPrices] unitPrice :", unitPrice);
 
-    // Nombre de personnes saisi par le client
-    let persons = Math.max(1, parseInt(personsInput.value) || 1);
-    if (DebugConsole) console.log("[updateRecapPrices] persons:", persons);
+    // Nombre minimum de personnes
+    let minPersons = 1;
+    if (selectedOption && selectedOption.dataset && selectedOption.dataset.minPersons) {
+      minPersons = parseInt(selectedOption.dataset.minPersons);
+      if (isNaN(minPersons)) {
+        minPersons = 1;
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] minPersons :", minPersons);
+
+    // Nombre de personnes sélectionné
+    let persons = 1;
+    if (personsInput && personsInput.value) {
+      persons = parseInt(personsInput.value);
+      if (isNaN(persons) || persons < 1) {
+        persons = 1;
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] persons :", persons);
 
     // Sous-total = prix unitaire × nombre de personnes
-    const subtotal = unitPrice * persons;
+    let subtotal = unitPrice * persons;
     if (DebugConsole) console.log("[updateRecapPrices] subtotal:", subtotal);
+
+    // Réduction : -10% si > min + 5
+    let reduction = 0;
+    if (persons > (minPersons + 5)) {reduction = subtotal * 0.10;}
+    if (DebugConsole) console.log("[updateRecapPrices] reduction:", reduction);
+
+    // Total avant livraison
+    let totalBeforeDelivery = subtotal - reduction;
+    if (DebugConsole) console.log("[updateRecapPrices] totalBeforeDelivery:", totalBeforeDelivery);
 
     // Total TTC = sous-total des menus + frais de livraison
     const total = subtotal + deliveryFee;
     if (DebugConsole) console.log("[updateRecapPrices] total:", total);
+
+    // Calcul acompte
+    let typeEvent = selectedOption?.dataset.theme || 'autre';
+
+    // Calcul de l'acompte selon le thème
+    let acompte = 0;
+    // cas ciblé: Mariage, Anniversaire, Noël, Événement, Jour de l'an, Ascension
+    if ((typeEvent.toLowerCase() === "mariage")||
+        (typeEvent.toLowerCase() === "anniversaire")||
+        (typeEvent.toLowerCase() === "noël")||
+        (typeEvent.toLowerCase() === "événement")||
+        (typeEvent.toLowerCase() === "jour de l'an")||
+        (typeEvent.toLowerCase() === "ascension")){
+      acompte = total * 0.5; // 50% cas ciblé
+    } else {
+      acompte = total * 0.3; // 30% pour les autres thèmes
+    }
 
     // Récupère les éléments du DOM pour afficher le récapitulatif
     const recapMenuName = document.getElementById('recap-menu-name');
     const recapUnitPrice = document.getElementById('recap-unit-price');
     const recapPersons = document.getElementById('recap-persons');
     const recapSubtotal = document.getElementById('recap-subtotal');
+    const recapReduction = document.getElementById('recap-reduction');
     const recapDelivery = document.getElementById('recap-delivery');
     const recapTotal = document.getElementById('recap-total');
+    const recapAcompte = document.getElementById('recap-acompte');
+
 
     // Mise à jour de chaque ligne du récapitulatif
-    if (recapMenuName) recapMenuName.textContent = menuName;
+    if (recapMenuName) {recapMenuName.textContent = menuName;}
+    if (DebugConsole) console.log("[updateRecapPrices] recapMenuName:", recapMenuName);
+
     if (recapUnitPrice) {
-      if (unitPrice && !isNaN(unitPrice)) {
+      if (unitPrice > 0) {
         recapUnitPrice.textContent = unitPrice + '€/pers.';
       } else {
         recapUnitPrice.textContent = '—';
@@ -675,11 +797,17 @@ export async function initCommanderPage() {
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapUnitPrice:", recapUnitPrice);
 
-    if (recapPersons) recapPersons.textContent = persons || '—';
+    if (recapPersons) {
+      if (persons > 0) {
+        recapPersons.textContent = persons;
+      } else {
+        recapPersons.textContent = '—';
+      }
+    }
     if (DebugConsole) console.log("[updateRecapPrices] recapPersons:", recapPersons);
 
     if (recapSubtotal) {
-      if (subtotal !== undefined && subtotal !== null && !isNaN(subtotal) && subtotal !== 0) {
+      if (!isNaN(subtotal) && subtotal > 0) {
         recapSubtotal.textContent = subtotal.toFixed(2) + '€';
       } else {
         recapSubtotal.textContent = '—';
@@ -687,7 +815,16 @@ export async function initCommanderPage() {
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapSubtotal:", recapSubtotal);
 
-    // Affiche "Gratuite" si 0€, sinon affiche le montant des frais
+    if (recapReduction) {
+      if (reduction > 0) {
+        recapReduction.textContent = '-' + reduction.toFixed(2) + '€';
+      } else {
+        recapReduction.textContent = '—';
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] recapReduction:", recapReduction);
+
+
     if (recapDelivery) {
       if (deliveryFee && !isNaN(deliveryFee) && deliveryFee > 0) {
         recapDelivery.textContent = deliveryFee.toFixed(2) + '€';
@@ -697,16 +834,26 @@ export async function initCommanderPage() {
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapDelivery:", recapDelivery);
 
-    // Total TTC = sous-total + livraison
+
     if (recapTotal) {
-      if (total !== undefined && total !== null && !isNaN(total) && total !== 0) {
-        recapTotal.textContent = total.toFixed(2) + '€';
+      if (total !== undefined && total !== null && !isNaN(total) && total !== 0 && total > 0) {
+      recapTotal.textContent = total.toFixed(2) + '€';
       } else {
         recapTotal.textContent = '—';
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapTotal:", recapTotal);
-    return total; // récupére le total TTC
+
+    if (recapAcompte) {
+      if (!isNaN(acompte) && acompte > 0) {
+        recapAcompte.textContent = acompte.toFixed(2) + '€';
+      } else {
+        recapAcompte.textContent = '—';
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] total:", total, "acompte:", acompte);
+
+    return total;
   }
 
   /* ===============================
@@ -799,6 +946,28 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
+     FONCTION : LISTENERS INPUT PERSON
+     =============================== */
+  function handlePersonsInput() {
+    const selectedOption = menuSelect.options[menuSelect.selectedIndex];
+    const minPersons = parseInt(selectedOption.dataset.minPersons) || 10;
+    const maxPersons = parseInt(selectedOption.dataset.maxPersons) || 1000;
+
+    if (personsInput.value < minPersons) {
+      personsInput.value = minPersons;
+      showToast(`Minimum ${minPersons} personnes pour ce menu`);
+    }
+
+    if (personsInput.value > maxPersons) {
+      personsInput.value = maxPersons;
+      showToast(`Maximum ${maxPersons} personnes pour ce menu`);
+    }
+
+    updateRecapPrices();
+  }
+
+
+  /* ===============================
      LISTENERS : INPUT FORM
      =============================== */
   // Inputs à surveiller
@@ -832,11 +1001,6 @@ export async function initCommanderPage() {
     menuSelect.addEventListener('change', updateRecapPrices);
   }
   if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
-
-  if (personsInput) {
-    personsInput.addEventListener('input', updateRecapPrices);
-  }
-  if (DebugConsole) console.log("[LISTENERS] personsInput:", personsInput);
 
   /* ===============================
      LISTENERS : BOUTONS SUIVANT
@@ -937,26 +1101,31 @@ export async function initCommanderPage() {
         return;
       }
 
+      if (!isHoraireValide(dateInput.value, timeInput.value)) return;
+      
       // Vérification de la date 
       const selectedDate = new Date(dateInput.value + 'T00:00'); // force 00:00 local
       const today = new Date();
       // ignore heures/minutes
       today.setHours(0,0,0,0); 
 
-      // REGLE METIER: Le client ne peux saisir une date antérieur à la date actuel
-      if (selectedDate < today) {
-        showToast('La date ne peut pas être antérieure à aujourd’hui');
-        return; // empêche la soumission
-      }
-      
+      // REGLE METIER: minimum 3 jours avant la commande pour theme !marriage || !événement
       const minDate = new Date(today);
-      // date minimum autorisée 
-      minDate.setDate(minDate.getDate() + nb_jourDate); 
-
-      // REGLE METIER: La date de prestation doit etre supérieur à 3 jours de la date actuel
+      minDate.setDate(minDate.getDate() + nb_jourDate);
       if (selectedDate < minDate) {
-        showToast('La date de prestation doit etre supérieur à 3 jours de la date actuel ');
-        return; // empêche la soumission
+        showToast('La date de prestation doit être supérieure à 3 jours');
+        return;// empêche la soumission
+      }
+
+      // REGLE METIER : si +20 personnes, minimum 14 jours
+      const persons = parseInt(personsInput.value) || 1;
+      if (persons > 20) {
+        const minDate20 = new Date(today);
+        minDate20.setDate(minDate20.getDate() + 14);
+        if (selectedDate < minDate20) {
+          showToast('Pour plus de 20 personnes, la date doit être supérieure à 14 jours');
+          return; // empêche la soumission
+        }
       }
 
       // Met à jour le profil si modifié
@@ -965,6 +1134,12 @@ export async function initCommanderPage() {
       // Calcule les frais de livraison avant soumission
       await calculateDeliveryFee();
 
+      // REGLE METIER : Vérification distance max 200 km
+      if (deliveryDistanceKm > 200) {
+        showToast('Livraison impossible : distance supérieure à 200 km');
+        return;
+      }
+
       // récupère le total TTC
       const prixTotal = updateRecapPrices(); 
 
@@ -972,11 +1147,11 @@ export async function initCommanderPage() {
       const formData = {
         menu_id: parseInt(menuSelect.value) || 0,
         date_prestation: dateInput.value,
-        nombre_personnes: parseInt(personsInput.value) || 1,
+        nombre_personnes: persons,
         adresse_livraison: addressInput.value,
         heure_livraison: timeInput.value,
         ville_livraison: cityInput.value,
-        deliveryDistanceKm,
+        distance_km: deliveryDistanceKm,
         pret_materiel: materialCheckbox.checked,
         //prix_total: prixTotal
       };
@@ -993,25 +1168,40 @@ export async function initCommanderPage() {
 
         if (response.ok) {
           // La commande a été créée avec succès
-          const createdOrder = await response.json(); // récupère le back
-          showToast('Commande reçue !'); // Affiche 2s
+
+          // récupère le back
+          let createdOrder = {};
+          try {
+            createdOrder = await response.json();
+          } catch {
+            createdOrder = { message: "Erreur serveur" };
+          }
+
+          showToast(createdOrder.message || 'Commande reçue !');
+
           setTimeout(() => {
             showConfirmation(createdOrder);
-          }, 2000);
+          }, 1000);
 
           if (DebugConsole) console.log("[submitCommande] Commande créée :", createdOrder);
         } else {
           // Erreur côté API
-          console.error('Erreur création commande :', response.status);
+          let errorData = {};
+          try {
+            errorData = await response.json();
+          } catch {
+            errorData = { message: "Erreur serveur" };
+          }
+          console.log("TOAST MESSAGE :", errorData.message);
+
+          showToast(errorData.message || "Erreur lors de la commande");
+          return;
         }
       } catch (err) {
         // Erreur réseau
-        console.error('Erreur réseau :', err,data.message);
-
+        console.error('Erreur réseau :', err);
         showToast('Erreur réseau, merci de réessayer.');
       }
-        showToast(createdOrder.message); // Affiche le message du back
-        console.error('Erreur création commande :', response.status, response.message);
     });
   }
 
