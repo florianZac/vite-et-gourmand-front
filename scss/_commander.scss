@@ -74,13 +74,17 @@
 }
 
 /* Titre cartes */
-.commander-card-title{
+.commander-card-title,
+.commander-confirm-title {
   font-family: $headings-font-family;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: $font-weight-bold;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, $btn-gradient-start, $btn-gradient-end);
+  background-clip: text;
+  color: transparent;
 }
 
 
@@ -120,6 +124,7 @@
   margin-bottom: 0.5rem;
   display: block;
 }
+
 
 /* -------- Inputs -------- */
 .commander-input {
@@ -246,8 +251,8 @@
 }
 
 .commander-confirm-text {
-  font-size: 1.25rem;
-  color: $gray-700;
+  font-size: 1rem;
+  color: $gray-brownish;
   line-height: 1.8;
   margin-bottom: 1.5rem;
 }
@@ -262,6 +267,13 @@
   border-radius: 1rem;
   padding: 1.5rem;
   text-align: left;
+}
+
+.commander-recap-price {
+  display: flex;
+  justify-content: space-between;
+  color: $gray-brownish;
+  margin-top: 1rem;
 }
 
 /* -------- Container récapitulatif de commande -------- */
@@ -284,18 +296,21 @@
   color: $gray-900;
   font-weight: $font-weight-bold;
   line-height: 1.2;
+  margin-bottom: 1rem;
 }
 
 /* -------- content Récapitulatif de commande -------- */
-.commander-recap-row .content {
-  font-size: 1.25rem;
-  background: linear-gradient(90deg, $btn-gradient-start, $btn-gradient-end);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.commander-recap-row .content,
+.commander-recap-row .confirm-menu {
+  font-size: 1rem;
+  background: linear-gradient(135deg, $btn-gradient-start, $btn-gradient-end);
+  background-clip: text;
+  color: transparent;
   line-height: 1.2;
   margin-bottom: 1rem;
   margin-left: auto;
   text-align: right;
+  font-weight: $font-weight-bold;
 } 
 
 /* -------- Bouton outline (voir mes commandes) -------- */
@@ -312,6 +327,30 @@
 
 .btn-commander-outline:hover {
   background-color: $terracotta-dark;
+}
+
+/* -------- Toast message pour informer l'utilisateur -------- */
+#toast-message {
+  display: none;
+  background-color: transparent;
+  color: $bordeaux; /* ton bordeaux */
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 0;
+  align-content: center;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* -------- Desktop uniquement -------- */
+@media (min-width: 769px) {
+  #toast-message.desktop {
+    position: absolute;
+    transform: none;
+    bottom: auto;
+  }
 }
 
 /* -------- Responsive Tablette -------- */

@@ -15599,13 +15599,18 @@ textarea.form-control-lg {
 }
 
 /* Titre cartes */
-.commander-card-title {
+.commander-card-title,
+.commander-confirm-title {
   font-family: "Playfair Display", serif;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #C1613A, #803050);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
 }
 
 /* -------- Sous-titre -------- */
@@ -15774,8 +15779,8 @@ textarea.form-control-lg {
 }
 
 .commander-confirm-text {
-  font-size: 1.25rem;
-  color: #666666;
+  font-size: 1rem;
+  color: #696763;
   line-height: 1.8;
   margin-bottom: 1.5rem;
 }
@@ -15790,6 +15795,13 @@ textarea.form-control-lg {
   border-radius: 1rem;
   padding: 1.5rem;
   text-align: left;
+}
+
+.commander-recap-price {
+  display: flex;
+  justify-content: space-between;
+  color: #696763;
+  margin-top: 1rem;
 }
 
 /* -------- Container récapitulatif de commande -------- */
@@ -15812,18 +15824,22 @@ textarea.form-control-lg {
   color: #333333;
   font-weight: 700;
   line-height: 1.2;
+  margin-bottom: 1rem;
 }
 
 /* -------- content Récapitulatif de commande -------- */
-.commander-recap-row .content {
-  font-size: 1.25rem;
-  background: linear-gradient(90deg, #C1613A, #803050);
+.commander-recap-row .content,
+.commander-recap-row .confirm-menu {
+  font-size: 1rem;
+  background: linear-gradient(135deg, #C1613A, #803050);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+          background-clip: text;
+  color: transparent;
   line-height: 1.2;
   margin-bottom: 1rem;
   margin-left: auto;
   text-align: right;
+  font-weight: 700;
 }
 
 /* -------- Bouton outline (voir mes commandes) -------- */
@@ -15842,6 +15858,29 @@ textarea.form-control-lg {
   background-color: hsl(14, 61%, 35%);
 }
 
+/* -------- Toast message pour informer l'utilisateur -------- */
+#toast-message {
+  display: none;
+  background-color: transparent;
+  color: hsl(338, 48%, 34%); /* ton bordeaux */
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 0;
+  align-content: center;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* -------- Desktop uniquement -------- */
+@media (min-width: 769px) {
+  #toast-message.desktop {
+    position: absolute;
+    transform: none;
+    bottom: auto;
+  }
+}
 /* -------- Responsive Tablette -------- */
 @media (max-width: 1200px) {
   .commander-hero-title {

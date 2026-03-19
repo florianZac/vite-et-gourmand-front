@@ -160,30 +160,39 @@
             <h3 class="commander-card-title">Récapitulatif</h3>
             <div class="commander-recap-prices">
               <div class="commander-recap-row">
-                <span class="title" >Menus :</span>
+                <span class="title" >Menus : </span>
                 <span class="content" id="recap-menu-name">—</span>
               </div>
               <div class="commander-recap-row">
-                <span class="title" >Prix unitaire :</span>
+                <span class="title" >Prix unitaire : </span>
                 <span class="content" id="recap-unit-price">—</span>
               </div>
               <div class="commander-recap-row">
-                <span class="title" >Nombre de personne :</span>
+                <span class="title" >Nombre de personne : </span>
                 <span class="content" id="recap-persons">—</span>
               </div>
               <div class="commander-recap-row">
-                <span class="title" >Sous-total :</span>
+                <span class="title" >Sous-total : </span>
                 <span class="content" id="recap-subtotal">—</span>
               </div>
               <div class="commander-recap-row">
-                <span class="title" >Livraison :</span>
+                <span class="title" >Réduction : </span>
+                <span class="content" id="recap-reduction">—</span>
+              </div>
+              <div class="commander-recap-row">
+                <span class="title" >Livraison : </span>
                 <span class="content" id="recap-delivery">Gratuite</span>
+              </div>
+              <div class="commander-recap-row commander-recap-acompte">
+                <span class="title" >Acompte : </span>
+                <span class="content" id="recap-acompte">—</span>
               </div>
               <hr>
               <div class="commander-recap-row commander-recap-total">
-                <span class="title_ttc" >Total TTC :</span>
+                <span class="title_ttc" >Total TTC : </span>
                 <span class="content" id="recap-total">—</span>
               </div>
+
             </div>
           </div>
 
@@ -211,7 +220,7 @@
             <h3 class="commander-confirm-title">Commande confirmée !</h3>
 
             <p class="commander-confirm-text">
-              Votre commande <strong id="confirm-order-id">CMD-2026-0000</strong> a bien été enregistrée.<br>
+              Votre commande <strong id="confirm-order-id">CMD-2026-0000</strong><br> a bien été enregistrée.<br>
               Un email de confirmation vous a été envoyé à <strong id="confirm-email"></strong>.<br>
               Julie et José vous recontacteront très prochainement.
             </p>
@@ -220,34 +229,38 @@
             <div class="commander-confirm-recap">
               <h4 class="commander-card-title">Récapitulatif</h4>
               <div class="commander-recap-prices">
-                <div class="commander-recap-row">
-                  <span>Menus :</span>
-                  <span id="confirm-menu">—</span>
+
+                <div class="commander-recap-row ">
+                  <span>Menus : </span>
+                  <span class="content" id="confirm-menu">—</span>
                 </div>
                 <div class="commander-recap-row">
-                  <span>Nombre de personne :</span>
-                  <span id="confirm-persons">—</span>
+                  <span>Nombre de personne : </span>
+                  <span class="content" id="confirm-persons">—</span>
                 </div>
                 <div class="commander-recap-row">
-                  <span>Date :</span>
-                  <span id="confirm-date">—</span>
+                  <span>Date : </span>
+                  <span class="content" id="confirm-date">—</span>
                 </div>
                 <div class="commander-recap-row commander-recap-total">
-                  <span>Total</span>
-                  <span id="confirm-total">—</span>
+                  <span>Total TTC : </span>
+                  <span class="content" id="confirm-total">—</span>
                 </div>
               </div>
             </div>
 
             <!-- Bouton voir mes commandes -->
             <div class="d-grid mt-4">
-              <a href="/" class="btn btn-commander-outline">
+              <a href="/compte_client" class="btn btn-commander-outline">
                 Voir mes commandes
               </a>
             </div>
           </div>
         </div>
-
+        <!-- toast Message -->
+        <div id="toast" class="toast">
+          Commande enregistrée !
+        </div>
       </div>
     </div>
   </div>

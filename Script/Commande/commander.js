@@ -54,7 +54,7 @@ export async function initCommanderPage() {
   let horaires = [];
 
   // Variable debug console si à true
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   // Variable pour vérifier la modification utilisateurs
   let isModified = false;
@@ -123,30 +123,98 @@ export async function initCommanderPage() {
 
   /* ===============================
   FONCTION : TOAST POUR ENVOYER LES MESSAGES AU CLIENTS
+    Déplace l'affichage en fonction de l'étape  
+  Exemple d'utilisation showToast(1, "Prénom modifié !");
   =============================== */
-  function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    Object.assign(toast.style, {
-      position: 'fixed',
-      bottom: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      backgroundColor: 'hsl(38, 58%, 70%)',
-      color: 'hsl(338, 48%, 34%)',
-      padding: '10px 20px',
-      borderRadius: '8px',
-      zIndex: 9999,
-      opacity: 0,
-      transition: 'opacity 0.3s',
-    });
-    document.body.appendChild(toast);
-    requestAnimationFrame(() => toast.style.opacity = 1);
+  function showToast(step, message) {
+
+    toast.textContent = message || "Action effectuée !";
+
+    // Ajouot d'une class spécifique pour la version desktop
+    toast.classList.remove('desktop');
+
+    // Version mobile rien à calculer
+    if (!isMobile()) {
+      toast.classList.add('desktop');
+
+      let elements = [];
+
+      switch(step) {
+        case 1:
+          elements = [document.getElementById("btn-next-1")];
+          break;
+        case 2:
+          elements = [
+            document.getElementById("btn-prev-2"),
+            document.getElementById("btn-next-2")
+          ];
+          break;
+        case 3:
+          elements = [
+            document.getElementById("btn-prev-3"),
+            document.getElementById("btn-submit")
+          ];
+          break;
+        case 4:
+          elements = [document.querySelector("#step-4")];
+          break;
+      }
+      if (DebugConsole) console.log("[showToast] step",step);
+
+      // Supprime tous les éléments null ou undefined du tableau
+      elements = elements.filter(el => el);
+      if (DebugConsole) console.log("[showToast] Vérification elements",elements);
+      // Si aucun élément valide on arrête la fonction
+      if (elements.length === 0) return;
+
+      // Récupère la position et taille de chaque élément
+      const rects = elements.map(el => el.getBoundingClientRect());
+      if (DebugConsole) console.log("[showToast] position",rects);
+      // Récupère la position la plus à gauche parmi tous les éléments
+      const left = Math.min(...rects.map(r => r.left));
+      if (DebugConsole) console.log("[showToast] Valeur gauche",left);  
+      // Récupère la position la plus à droite parmi tous les éléments
+      const right = Math.max(...rects.map(r => r.right));
+      if (DebugConsole) console.log("[showToast] Valeur droite",right);  
+      // Récupère le point le plus bas
+      const bottom = Math.max(...rects.map(r => r.bottom));
+      if (DebugConsole) console.log("[showToast] Valeur bottom",bottom);
+      // Calcule le centre
+      const centerX = (left + right) / 2;
+      if (DebugConsole) console.log("[showToast] Valeur du centre",centerX);
+      // Positionne le toast centré entre les btn
+      toast.style.left = `${centerX - toast.offsetWidth / 2}px`;
+
+      // Positionne le toast verticalement
+      toast.style.top = `${bottom + window.scrollY + 10}px`;
+
+      // Affiche le toast avec flex
+      toast.style.display = 'flex';
+
+      // animation CSS fade-in
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+      });
+
+      hideToast();
+    }
+  }
+
+  /* ===============================
+  FONCTION : TOAST POUR CACHER LE TOAST
+  =============================== */
+  // cacher le toast après 4 secondes
+  function hideToast() {
     setTimeout(() => {
-      toast.style.opacity = 0;
-      setTimeout(() => toast.remove(), 300);
-    }, 2000);
+      toast.style.display = "none";
+    }, 4000);
+  }
+
+  /* ===============================
+  FONCTION : TOAST RESPONSIVE MOBILE
+  =============================== */
+  function isMobile() {
+    return window.innerWidth <= 768;
   }
 
   /* ===============================
@@ -185,7 +253,7 @@ export async function initCommanderPage() {
     if (!dateValue || !timeValue) return false;
 
       if (!horaires || horaires.length === 0) {
-        showToast("Horaires non disponibles");
+        showToast(1,"Horaires non disponibles");
         return false;
       }
       const date = new Date(dateValue);
@@ -196,13 +264,13 @@ export async function initCommanderPage() {
       const horaireJour = horaires.find(h => h.jour === jourCapitalized);
 
         if (!horaireJour) {
-        showToast("Jour non disponible");
+        showToast(1,"Jour non disponible");
         return false;
       }
 
       // Gestion du cas fermé
       if (horaireJour.heureOuverture === "Fermé") {
-        showToast("Nous sommes fermés ce jour-là");
+        showToast(1,"Nous sommes fermés ce jour-là");
         return false;
       }
 
@@ -217,7 +285,7 @@ export async function initCommanderPage() {
 
       if (selectedMinutes < openMinutes || selectedMinutes >= closeMinutes) {
         if (DebugConsole) console.log("[isHoraireValide] Heure invalide",`${horaireJour.heureOuverture} - ${horaireJour.heureFermeture}`);
-        showToast(
+        showToast(1,
           `Heure invalide (${horaireJour.heureOuverture} - ${horaireJour.heureFermeture})`
         );
         return false;
@@ -225,8 +293,6 @@ export async function initCommanderPage() {
       if (DebugConsole) console.log("[isHoraireValide] Heure : ok");
       return true;
     }
-
-
 
   /* ===============================
     FONCTION : CHARGE LES MENUS POUR LE SELECT
@@ -506,6 +572,7 @@ export async function initCommanderPage() {
     inputs.forEach(input => {
     if (!input.value || input.value.trim() === '') {
         valid = false; // si un champ vide, on invalide
+        showToast(stepNumber,'Les Champs Date et Heure sont requis');
       }
     });
     if (DebugConsole) console.log("[isStepValid] valid:",valid);
@@ -639,7 +706,6 @@ export async function initCommanderPage() {
         if (DebugConsole) console.error('[calculateDeliveryFee] Erreur API livraison, status:', response.status);
         console.error('Erreur API livraison:', response.status);
         deliveryFee = 0;
-        showToast("Erreur calcul livraison"); // si sa bug tarif de 100 euros
         return;
       }
       if (DebugConsole) console.log("[calculateDeliveryFee] Réponse de l'API");
@@ -676,7 +742,6 @@ export async function initCommanderPage() {
       // On met les frais à 0 par sécurité (gratuit par défaut)
       console.error('Erreur réseau calcul livraison:', err);
       deliveryFee = 0;
-      showToast("Erreur calcul livraison");
     }
   }
 
@@ -701,7 +766,6 @@ export async function initCommanderPage() {
     if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {selectedOption = menuSelect.options[menuSelect.selectedIndex];} 
     
     if (DebugConsole) console.log("[updateRecapPrices] selectedOption :", selectedOption);
-
 
     // Nom du menu
     let menuName = '—';
@@ -783,43 +847,42 @@ export async function initCommanderPage() {
     const recapTotal = document.getElementById('recap-total');
     const recapAcompte = document.getElementById('recap-acompte');
 
-
     // Mise à jour de chaque ligne du récapitulatif
-    if (recapMenuName) {recapMenuName.textContent = menuName;}
+    if (recapMenuName) {recapMenuName.textContent = `${menuName}`;}
     if (DebugConsole) console.log("[updateRecapPrices] recapMenuName:", recapMenuName);
 
     if (recapUnitPrice) {
       if (unitPrice > 0) {
-        recapUnitPrice.textContent = unitPrice + '€/pers.';
+        recapUnitPrice.textContent =`${unitPrice} €/pers.`;
       } else {
-        recapUnitPrice.textContent = '—';
+        recapUnitPrice.textContent =`${'0'} €/pers.`;
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapUnitPrice:", recapUnitPrice);
 
     if (recapPersons) {
       if (persons > 0) {
-        recapPersons.textContent = persons;
+        recapPersons.textContent = `${persons}`;
       } else {
-        recapPersons.textContent = '—';
+        recapPersons.textContent = `${'-'}`;
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapPersons:", recapPersons);
 
     if (recapSubtotal) {
       if (!isNaN(subtotal) && subtotal > 0) {
-        recapSubtotal.textContent = subtotal.toFixed(2) + '€';
+        recapSubtotal.textContent = `${subtotal.toFixed(2)} €`;
       } else {
-        recapSubtotal.textContent = '—';
+        recapSubtotal.textContent = `${'0'} €`;
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapSubtotal:", recapSubtotal);
 
     if (recapReduction) {
       if (reduction > 0) {
-        recapReduction.textContent = '-' + reduction.toFixed(2) + '€';
+        recapReduction.textContent = `${reduction.toFixed(2)} €`;
       } else {
-        recapReduction.textContent = '—';
+        recapReduction.textContent = `${'0'} €`;
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapReduction:", recapReduction);
@@ -827,31 +890,31 @@ export async function initCommanderPage() {
 
     if (recapDelivery) {
       if (deliveryFee && !isNaN(deliveryFee) && deliveryFee > 0) {
-        recapDelivery.textContent = deliveryFee.toFixed(2) + '€';
+        recapDelivery.textContent = `${deliveryFee.toFixed(2)} €`;
       } else {
         recapDelivery.textContent = 'Gratuite';
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] recapDelivery:", recapDelivery);
 
-
-    if (recapTotal) {
-      if (total !== undefined && total !== null && !isNaN(total) && total !== 0 && total > 0) {
-      recapTotal.textContent = total.toFixed(2) + '€';
-      } else {
-        recapTotal.textContent = '—';
-      }
-    }
-    if (DebugConsole) console.log("[updateRecapPrices] recapTotal:", recapTotal);
-
     if (recapAcompte) {
       if (!isNaN(acompte) && acompte > 0) {
-        recapAcompte.textContent = acompte.toFixed(2) + '€';
+        recapAcompte.textContent = `${acompte.toFixed(2)} €`;
       } else {
-        recapAcompte.textContent = '—';
+        recapAcompte.textContent = `${'0'} €`;
       }
     }
     if (DebugConsole) console.log("[updateRecapPrices] total:", total, "acompte:", acompte);
+
+
+    if (recapTotal) {
+      if (total !== undefined && total !== null && !isNaN(total) && total !== 0 && total > 0) {
+        recapTotal.textContent = `${total.toFixed(2)} €`;
+      } else {
+        recapTotal.textContent = `${'0'} €`;
+      }
+    }
+    if (DebugConsole) console.log("[updateRecapPrices] recapTotal:", recapTotal);
 
     return total;
   }
@@ -864,8 +927,27 @@ export async function initCommanderPage() {
      - 4. Affiche l'étape 4
      =============================== */
 
-  function showConfirmation(createdOrder) {
+          
+  function showConfirmation(orderTitle,clientEmail) {
     if (DebugConsole) console.log("[showConfirmation] AFFICHE LA PAGE DE CONFIRMATION:");
+
+    // Récupération des éléments DOM
+    const emailElement = document.getElementById('confirm-email');
+    const orderIdElement = document.getElementById('confirm-order-id');
+
+    // Mettre à jour l'email dans la confirmation
+    if (emailElement) {
+      emailElement.textContent = clientEmail || '-';
+      if (DebugConsole) console.log("[showConfirmation] Email :", emailElement.textContent);
+    }
+
+    // Mettre à jour le numéro de commande
+    if (orderIdElement) {
+      const dateStr = new Date().getFullYear();
+      orderIdElement.textContent = `CMD-${orderTitle}-${dateStr}`;
+      if (DebugConsole) console.log("[showConfirmation] orderTitle :", orderIdElement.textContent);
+    }
+
     // Récupère les infos du menu sélectionné
     let selectedOption;
     if (menuSelect && menuSelect.options && menuSelect.selectedIndex >= 0) {
@@ -915,17 +997,14 @@ export async function initCommanderPage() {
     }
     if (DebugConsole) console.log("[showConfirmation] unitPrice:", unitPrice);
 
-    const total = (unitPrice * parseInt(persons) + deliveryFee).toFixed(2);
+    //const total = (unitPrice * parseInt(persons) + deliveryFee).toFixed(2);
 
     // Récupère les éléments du DOM de la page confirmation
-    const confirmOrderId = document.getElementById('confirm-order-id');
     const confirmMenu = document.getElementById('confirm-menu');
     const confirmPersons = document.getElementById('confirm-persons');
     const confirmDate = document.getElementById('confirm-date');
     const confirmTotal = document.getElementById('confirm-total');
 
-    // Remplit chaque champ de la confirmation
-    if (confirmOrderId) confirmOrderId.textContent = createdOrder.nom_commande || '—';
     if (confirmMenu) confirmMenu.textContent = menuName;
     if (confirmPersons) confirmPersons.textContent = persons;
     if (confirmDate) confirmDate.textContent = `${date} à ${time}`;
@@ -933,7 +1012,6 @@ export async function initCommanderPage() {
 
     if (DebugConsole) {
       console.log("=== showConfirmation ===");
-      console.log("confirmOrderId :", confirmOrderId);
       console.log("confirmMenu    :", confirmMenu);
       console.log("confirmPersons :", confirmPersons);
       console.log("confirmDate    :", confirmDate);
@@ -955,17 +1033,16 @@ export async function initCommanderPage() {
 
     if (personsInput.value < minPersons) {
       personsInput.value = minPersons;
-      showToast(`Minimum ${minPersons} personnes pour ce menu`);
+      showToast(3,`Minimum ${minPersons} personnes pour ce menu`);
     }
 
     if (personsInput.value > maxPersons) {
       personsInput.value = maxPersons;
-      showToast(`Maximum ${maxPersons} personnes pour ce menu`);
+      showToast(3,`Maximum ${maxPersons} personnes pour ce menu`);
     }
 
     updateRecapPrices();
   }
-
 
   /* ===============================
      LISTENERS : INPUT FORM
@@ -1011,7 +1088,10 @@ export async function initCommanderPage() {
   const btnNext1 = document.getElementById('btn-next-1');
   if (btnNext1) {
     btnNext1.addEventListener('click', async () => {
-
+      if (DebugConsole){
+        console.log("[toast] déclenché");
+      } 
+      
       // Vérifie que tous les champs required de l'étape 1 sont remplis
       if (isStepValid(1)) {
         // Sauvegarde le profil si modifié avant de passer à l'étape suivante
@@ -1097,7 +1177,7 @@ export async function initCommanderPage() {
       const step3Valid = isStepValid(3);
 
       if (!step1Valid || !step2Valid || !step3Valid) {
-        showToast('Veuillez remplir tous les champs obligatoires');
+        showToast(3,'Veuillez remplir tous les champs obligatoires');
         return;
       }
 
@@ -1113,7 +1193,7 @@ export async function initCommanderPage() {
       const minDate = new Date(today);
       minDate.setDate(minDate.getDate() + nb_jourDate);
       if (selectedDate < minDate) {
-        showToast('La date de prestation doit être supérieure à 3 jours');
+        showToast(3,'La date de prestation doit être supérieure à 3 jours');
         return;// empêche la soumission
       }
 
@@ -1123,7 +1203,7 @@ export async function initCommanderPage() {
         const minDate20 = new Date(today);
         minDate20.setDate(minDate20.getDate() + 14);
         if (selectedDate < minDate20) {
-          showToast('Pour plus de 20 personnes, la date doit être supérieure à 14 jours');
+          showToast(3,'Pour plus de 20 personnes, la date doit être supérieure à 14 jours');
           return; // empêche la soumission
         }
       }
@@ -1136,7 +1216,7 @@ export async function initCommanderPage() {
 
       // REGLE METIER : Vérification distance max 200 km
       if (deliveryDistanceKm > 200) {
-        showToast('Livraison impossible : distance supérieure à 200 km');
+        showToast(3,'Livraison impossible : distance supérieure à 200 km');
         return;
       }
 
@@ -1177,11 +1257,13 @@ export async function initCommanderPage() {
             createdOrder = { message: "Erreur serveur" };
           }
 
-          showToast(createdOrder.message || 'Commande reçue !');
+          const orderTitle = createdOrder.numero_commande ||  '-';
+          const clientEmail = createdOrder.email || createdOrder.utilisateur?.email || '-';
+          //showToast(4,`Votre commande ${orderTitle} a bien été enregistrée. Un email de confirmation vous a été envoyé à ${clientEmail}.`);
 
           setTimeout(() => {
-            showConfirmation(createdOrder);
-          }, 1000);
+            showConfirmation(orderTitle,clientEmail);
+          }, 2000);
 
           if (DebugConsole) console.log("[submitCommande] Commande créée :", createdOrder);
         } else {
@@ -1193,14 +1275,11 @@ export async function initCommanderPage() {
             errorData = { message: "Erreur serveur" };
           }
           console.log("TOAST MESSAGE :", errorData.message);
-
-          showToast(errorData.message || "Erreur lors de la commande");
           return;
         }
       } catch (err) {
         // Erreur réseau
         console.error('Erreur réseau :', err);
-        showToast('Erreur réseau, merci de réessayer.');
       }
     });
   }
