@@ -1,0 +1,175 @@
+<!------ Section Hero compte Admin -------->
+<section class="compte_admin-hero py-5">
+  <div class="container">
+    <h1 class="compte_admin-hero-title">Espace Administrateur</h1>
+    <p class="compte_admin-hero-welcome">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section compte Admin -------->
+<section class="compte_admin-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="row justify-content-center compte_admin">
+
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          <!------ Onglets Statistiques -------->
+          <div class="col-12 col-md-4">
+            <a href="/statistiques" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-graph-up fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Statistiques</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Profil</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Employés -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_employes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-people-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Employés</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Utilisateurs -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-database fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Utilisateurs</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menus -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-fork-knife fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menus</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergènes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergènes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Commandes & Avis -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-calculator-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Commandes & Avis</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Horraire (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_horraire" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-clock-fill fs-4 mb-1 "></i>
+                <h6 class="card-title mb-0">Gestion Horraire</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Horaires de la sociétée</h2>
+
+        <!------ Horaires de la sociétée -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body py-3">
+            <div class="row g-2 align-items-center">
+              <form id="company-hours-form" class="needs-validation" validate>
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle text-center" id="company-hours-table">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="table-left">Jour</th>
+                        <th class="table-center">Heure d’ouverture</th>
+                        <th class="table-right">Heure de fermeture</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id="row-lundi">
+                        <td>Lundi</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-lundi" title="time open Monday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-lundi" title="time close Monday"></td>
+                      </tr>
+                      <tr id="row-mardi">
+                        <td>Mardi</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-mardi" title="time open Tuesday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-mardi" title="time close Tuesday"></td>
+                      </tr>
+                      <tr id="row-mercredi">
+                        <td>Mercredi</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-mercredi" title="time open Wednesday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-mercredi" title="time close Wednesday"></td>
+                      </tr>
+                      <tr id="row-jeudi">
+                        <td>Jeudi</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-jeudi" title="time open Thursday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-jeudi" title="time close Thursday"></td>
+                      </tr>
+                      <tr id="row-vendredi">
+                        <td>Vendredi</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-vendredi" title="time open Friday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-vendredi" title="time close Friday"></td>
+                      </tr>
+                      <tr id="row-samedi">
+                        <td>Samedi</td>
+                        <td><input type="time" value="10:00" class="form-control text-center" id="open-samedi" title="time open Saturday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-samedi" title="time close Saturday"></td>
+                      </tr>
+                      <tr id="row-dimanche">
+                        <td>Dimanche</td>
+                        <td><input type="time" value="09:00" class="form-control text-center" id="open-dimanche" title="time open Sunday"></td>
+                        <td><input type="time" value="18:00" class="form-control text-center" id="close-dimanche" title="time close Sunday"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <p class="text-muted text-center mt-3" id="company-hours-note">
+                  Une valeur de 00:00 signifiera que la société est fermée dans cette plage horaire
+                </p>
+
+                <div class="d-flex justify-content-center mt-4">
+                  <button type="submit" id="sauvegarde_horraire" class="btn btn-primary btn-lg px-4" title="save hour company">
+                    <i class="bi bi-clock-fill me-2"></i> Sauvegarder les données
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

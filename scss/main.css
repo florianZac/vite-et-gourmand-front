@@ -15964,8 +15964,6 @@ textarea.form-control-lg {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
   width: 100%;
 }
 
@@ -17162,7 +17160,7 @@ textarea.form-control-lg {
 .compte_client-hero .container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
@@ -17558,6 +17556,370 @@ textarea.form-control-lg {
   }
   .compte_client-order-menu-name {
     font-size: 1rem;
+  }
+}
+/* ===============================
+   STYLES PAGE COMPTE employer - VITE & GOURMAND
+   Structure :
+   - Hero avec nom de l'utilisateur
+   - Onglets Avis en attente commande et gestion Crud menu
+   - En cours pour le reste à definir
+   =============================== */
+/* ===============================
+   SECTION HERO
+   =============================== */
+/* -------- container hero commande employer -------- */
+.compte_employer-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.compte_employer-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* -------- Titre "Mon Espace"  -------- */
+.compte_employer-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.25rem;
+}
+
+/* -------- Texte "Bienvenue, Nom user  -------- */
+.compte_employer-hero-welcome {
+  font-size: 1.15rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* -------- Texte prenom mis en accentuattion  -------- */
+.compte_employer-hero-welcome span {
+  color: hsl(14, 61%, 47%);
+  font-weight: 600;
+}
+
+/* ===============================
+   SECTION GLOBALE
+   =============================== */
+.compte_employer-section {
+  background-color: #F5E6D3;
+  padding: 2rem 0 4rem;
+}
+
+/* ===============================
+   ONGLETS MENUS
+   =============================== */
+.compte_employer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0.62rem;
+  margin-bottom: 1.3rem;
+}
+
+/* -------- Onglet par défaut (inactif)  -------- */
+.compte_employer a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  background-color: hsl(38, 58%, 70%);
+  color: hsl(14, 61%, 35%);
+  transition: all 0.2s ease;
+}
+
+/* -------- Onglet au survol  -------- */
+.compte_employer a:hover {
+  background-color: hsl(14, 61%, 47%);
+  color: hsl(38, 67%, 96%);
+  transform: translateY(-2px);
+}
+
+/* -------- Onglet actif sélectionné  -------- */
+.compte_employer.active {
+  background-color: hsl(14, 61%, 47%);
+  color: hsl(38, 67%, 96%);
+  transform: scale(0.97);
+}
+
+/* -------- Onglet icone  -------- */
+.compte_employer i {
+  font-size: 1.1rem;
+}
+
+/* ===============================
+  MENUS
+   =============================== */
+/* -------- Conteneur globale  -------- */
+.card {
+  border-radius: 0.62rem;
+  border: none;
+}
+
+/* -------- Conteneur des menus  -------- */
+.card-body {
+  padding: 1.25rem;
+}
+
+/* -------- Recherche -------- */
+.form-control {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+/* -------- Icone de Recherche -------- */
+.input-group-text {
+  background-color: hsl(38, 58%, 70%);
+  color: #FFFFFF;
+  border: none;
+}
+
+/* -------- btn reinitialisation filtre -------- */
+#reset-filters {
+  border-radius: 0.5rem;
+  color: hsl(14, 61%, 35%);
+}
+
+/* -------- btn reinitialisation filtre active et hover -------- */
+#reset-filters:hover,
+#reset-filters:active {
+  background-color: hsl(14, 61%, 47%);
+  color: hsl(38, 67%, 96%);
+}
+
+/* -------- select -------- */
+.form-select {
+  border-radius: 0.5rem;
+  background-color: hsl(38, 58%, 70%);
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid hsl(38, 58%, 55%);
+}
+
+.form-select:focus {
+  border-color: rgba(192.9585, 80.8588, 46.7415, 0.3);
+  box-shadow: 0 0 0 0.2rem hsl(38, 58%, 40%);
+}
+
+@media (max-width: 768px) {
+  .compte_employer-hero-title {
+    text-align: center;
+  }
+  .compte_employer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .compte_employer a {
+    justify-content: center;
+  }
+}
+/* ===============================
+   STYLES PAGE COMPTE Admin - VITE & GOURMAND
+   Structure :
+   - Hero avec nom de l'utilisateur
+   - Onglets Statistiques, menus, Gestion employées, Gestion utilisateurs,Gestion Menus
+     Gestion Allergènes, Gestion thèmes & Règimes Gesttion horraire
+   - En cours pour le reste à definir
+   =============================== */
+/* ===============================
+   SECTION HERO
+   =============================== */
+/* -------- container hero commande admin -------- */
+.compte_admin-hero {
+  background: linear-gradient(135deg, #F5E6D3 0%, #E8D4BE 100%);
+  border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.3);
+  padding: 3rem 0;
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+/* -------- container hero commande admin -------- */
+.compte_admin-hero .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* -------- Titre "Mon Espace"  -------- */
+.compte_admin-hero-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.25rem;
+}
+
+/* -------- Texte "Bienvenue, Nom user  -------- */
+.compte_admin-hero-welcome {
+  font-size: 1.15rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* -------- Texte prenom mis en accentuattion  -------- */
+.compte_admin-hero-welcome span {
+  color: hsl(14, 61%, 47%);
+  font-weight: 600;
+}
+
+/* ===============================
+   SECTION GLOBALE
+   =============================== */
+/* -------- Section globale -------- */
+.compte_admin-section {
+  background-color: #F5E6D3;
+  padding: 2rem 0 4rem;
+}
+
+/* ===============================
+   ONGLETS MENUS
+   =============================== */
+/* -------- Corp de ma structure -------- */
+.compte_admin {
+  margin-bottom: 1.3rem;
+}
+
+/* -------- Onglet par défaut (inactif)  -------- */
+.compte_admin a.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  font-weight: 500;
+  background-color: hsl(38, 58%, 70%);
+  color: hsl(14, 61%, 35%);
+  transition: all 0.2s ease;
+}
+
+/* -------- Onglet au survol  -------- */
+.compte_admin a:hover,
+.compte_admin a:hover i,
+.compte_admin a:hover h6,
+.compte_admin a:hover .h6 {
+  background-color: hsl(14, 61%, 47%);
+  color: #FFFFFF;
+}
+
+/* -------- Onglet actif sélectionné  -------- */
+.compte_admin a.active,
+.compte_admin a.active i,
+.compte_admin a.active h6,
+.compte_admin a.active .h6 {
+  background-color: hsl(14, 61%, 47%);
+  color: #fff;
+  transform: scale(0.97);
+  transition: all 0.2s ease;
+}
+
+/* -------- Icone  -------- */
+.compte_admin a.card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+/* ===============================
+  MENUS (HORRAIRE |...)
+   =============================== */
+/* -------- Conteneur des menus  -------- */
+.card-body {
+  padding: 1.25rem;
+}
+
+/* -------- Recherche -------- */
+.form-control {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+/* -------- Icone de Recherche -------- */
+.input-group-text {
+  background-color: hsl(38, 58%, 70%);
+  color: #FFFFFF;
+  border: none;
+}
+
+/* -------- btn reinitialisation filtre -------- */
+#reset-filters {
+  border-radius: 0.5rem;
+  color: hsl(14, 61%, 35%);
+}
+
+/* -------- btn reinitialisation filtre active et hover -------- */
+#reset-filters:hover,
+#reset-filters:active {
+  background-color: hsl(14, 61%, 47%);
+  color: hsl(38, 67%, 96%);
+}
+
+/* -------- select -------- */
+.form-select {
+  border-radius: 0.5rem;
+  background-color: hsl(38, 58%, 70%);
+  border-radius: 0.5rem;
+  padding: 0.62rem;
+  border: 0.063rem solid hsl(38, 58%, 55%);
+}
+
+.form-select:focus {
+  border-color: rgba(192.9585, 80.8588, 46.7415, 0.3);
+  box-shadow: 0 0 0 0.2rem hsl(38, 58%, 40%);
+}
+
+/* -------- RESPONSIVE -------- */
+@media (max-width: 768px) {
+  .compte_admin-section .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    max-width: 100%;
+  }
+  .compte_admin {
+    --bs-gutter-x: 0;
+  }
+  .compte_admin > [class*=col-] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+  .compte_admin a.card {
+    width: 100%;
+  }
+}
+/* Desktop / Tablette : grille 3 colonnes centrée */
+@media (min-width: 769px) {
+  .compte_admin {
+    --bs-gutter-x: 1rem;
+  }
+  .compte_admin > [class*=col-md-4] {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .compte_admin a.card {
+    width: 100%;
+    max-width: 250px;
   }
 }
 /* ===============================

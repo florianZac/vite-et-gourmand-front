@@ -1,8 +1,9 @@
 /* ===============================
-   STYLES PAGE COMPTE employer - VITE & GOURMAND
+   STYLES PAGE COMPTE Admin - VITE & GOURMAND
    Structure :
    - Hero avec nom de l'utilisateur
-   - Onglets Avis en attente commande et gestion Crud menu
+   - Onglets Statistiques, menus, Gestion employées, Gestion utilisateurs,Gestion Menus
+     Gestion Allergènes, Gestion thèmes & Règimes Gesttion horraire
    - En cours pour le reste à definir
    =============================== */
 
@@ -10,8 +11,8 @@
    SECTION HERO
    =============================== */
 
-/* -------- container hero commande employer -------- */
-.compte_employer-hero {
+/* -------- container hero commande admin -------- */
+.compte_admin-hero {
   background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
   border-bottom: 1px solid rgba($terracotta, 0.3);
   padding: 3rem 0;
@@ -22,7 +23,8 @@
   min-height: 200px;
 }
 
-.compte_employer-hero .container {
+/* -------- container hero commande admin -------- */
+.compte_admin-hero .container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,7 +32,7 @@
 }
 
 /* -------- Titre "Mon Espace"  -------- */
-.compte_employer-hero-title {
+.compte_admin-hero-title {
   font-family: $headings-font-family;
   font-size: 2.5rem;
   font-weight: $font-weight-bold;
@@ -39,14 +41,14 @@
 }
 
 /* -------- Texte "Bienvenue, Nom user  -------- */
-.compte_employer-hero-welcome {
+.compte_admin-hero-welcome {
   font-size: 1.15rem;
   color: $gray-700;
   margin-bottom: 0;
 }
 
 /* -------- Texte prenom mis en accentuattion  -------- */
-.compte_employer-hero-welcome span {
+.compte_admin-hero-welcome span {
   color: $terracotta;
   font-weight: $font-weight-semibold;
 }
@@ -55,7 +57,8 @@
    SECTION GLOBALE
    =============================== */
 
-.compte_employer-section {
+/* -------- Section globale -------- */ 
+.compte_admin-section {
   background-color: $bg-gradient-start;
   padding: 2rem 0 4rem;
 }
@@ -64,20 +67,18 @@
    ONGLETS MENUS
    =============================== */
 
-.compte_employer {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 0.62rem;
+/* -------- Corp de ma structure -------- */
+.compte_admin {
   margin-bottom: 1.3rem;
 }
 
 /* -------- Onglet par défaut (inactif)  -------- */
-.compte_employer a {
+.compte_admin a.card {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-  padding: 0.62rem 1rem;
+  padding: 0.8rem 1rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-weight: $font-weight-medium;
@@ -87,33 +88,32 @@
 }
 
 /* -------- Onglet au survol  -------- */
-.compte_employer a:hover {
+.compte_admin a:hover,
+.compte_admin a:hover i,
+.compte_admin a:hover h6 {
   background-color: $terracotta;
-  color: $creme;
-  transform: translateY(-2px);
+  color: $white-pure;
 }
 
 /* -------- Onglet actif sélectionné  -------- */
-.compte_employer.active {
-  background-color: $terracotta;
-  color: $creme;
+.compte_admin a.active,
+.compte_admin a.active i,
+.compte_admin a.active h6 {
+  background-color: $terracotta; 
+  color: $white; 
   transform: scale(0.97);
+  transition: all 0.2s ease;
 }
 
-/* -------- Onglet icone  -------- */
-.compte_employer i {
-  font-size: 1.1rem;
+/* -------- Icone  -------- */
+.compte_admin a.card i {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
 }
 
 /* ===============================
-  MENUS
+  MENUS (HORRAIRE |...)
    =============================== */
-
-/* -------- Conteneur globale  -------- */
-.card {
-  border-radius: 0.62rem;
-  border: none;
-}
 
 /* -------- Conteneur des menus  -------- */
 .card-body {
@@ -150,9 +150,9 @@
 .form-select {
   border-radius: 0.5rem;
   background-color: $ocre-light;
-  border-radius: 8px;
-  padding: 10px;
-  border: 1px solid $ocre;
+  border-radius: 0.5rem;
+  padding: 0.62rem;
+  border: 0.063rem solid $ocre;
 }
 
 .form-select:focus {
@@ -160,18 +160,45 @@
   box-shadow: 0 0 0 0.2rem $ocre-dark;
 }
 
+/* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
-  .compte_employer-hero-title{
-    text-align: center;
+  .compte_admin-section .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    max-width: 100%;
   }
 
-  .compte_employer {
-    flex-direction: column;
-    align-items: stretch;
+  .compte_admin {
+    --bs-gutter-x: 0;
   }
 
-  .compte_employer a {
-    justify-content: center;
+  .compte_admin > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .compte_admin a.card {
+    width: 100%;
   }
 }
 
+/* Desktop / Tablette : grille 3 colonnes centrée */
+@media (min-width: 769px) {
+  .compte_admin {
+    --bs-gutter-x: 1rem;
+  }
+
+  .compte_admin > [class*="col-md-4"] {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .compte_admin a.card {
+    width: 100%;
+    max-width: 250px; 
+  }
+}

@@ -1,3 +1,4 @@
+import {getRole } from '../../script.js';
 
 /* ===============================
    Ce fichier centralise les intéractions et les effets concernant le header
@@ -12,6 +13,7 @@
 
 // Attend que le DOM soit complètement chargé avant d'exécuter le code afin de garantir que tous les éléments HTML sont disponibles
 document.addEventListener('DOMContentLoaded', () => {
+
   
   // Sélectionne la navbar avec la classe 'custom-navbar' et retourne le premier élément 
   const navbar = document.querySelector('.custom-navbar');
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const burgerIcon = document.querySelector('.burger-icon');
   const closeIcon = document.querySelector('.close-icon');
 
-  // Sélectionne le Bouton utilisateur (visible quand connecté) -> affiche le prénom et redirige vers le compte
+  // Sélectionne le Bouton utilisateur affiche le prénom et redirige vers le compte
   const btnUser = document.getElementById('btn-user');
   // Sélectionne le Bouton connexion (visible quand déconnecté) -> redirige vers /login
   const btnConnexion = document.getElementById('btn-header-connexion');
@@ -44,19 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let isSmoothing = false;
   let DebugConsole = false;
 
-  if (DebugConsole) {
-    console.log("=== DEBUG INIT HEADER ===");
-    console.log("Navbar :", navbar);
-    console.log("Nav links :", navLinks);
-    console.log("Navbar collapse :", navbarCollapse);
-    console.log("Burger icon :", burgerIcon);
-    console.log("Close icon :", closeIcon);
-    console.log("Bouton connexion :", btnConnexion);
-    console.log("Bouton inscription :", btnInscription);
-    console.log("Bouton users :", btnUser);
-    console.log("=========================");
-  }
-
+  // récupère le role de l'utilisateur.
+  const role = getRole();
+  // Met à jour le bouton du compte d'après le role
+  updateUserButtonRole(role);
 
   /* ========================================
      SECTION 0 : GESTION DU X POUR FERMER LE MENU
@@ -210,14 +203,47 @@ document.addEventListener('DOMContentLoaded', () => {
       const href = link.getAttribute('href');
       if (!href.startsWith('#')) { 
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        if (DebugConsole) console.log("Clic lien header -> scroll top", href);
+        if (DebugConsole) console.log("Clic lien header: scroll top", href);
       }
     });
   });
 
   window.addEventListener('popstate', () => {
     window.scrollTo(0, 0);
-    if (DebugConsole) console.log("Popstate event -> scroll top");
+    if (DebugConsole) console.log("Popstate event: scroll top");
   });
+
+  /* ========================================
+     FONCTION : MISE A JOUR DU LIEN DU BOUTON POUR ACCES A SON COMPTE EN FONCTION DU RETOUR TOKEN
+     ======================================== */
+  function updateUserButtonRole(role) {
+    if (!btnUser || !role) return;
+
+    let href = "#"; // valeur par défaut 
+
+    switch (role) {
+      case "ROLE_CLIENT":
+          href = "/compte_client";
+          break;
+      case "ROLE_EMPLOYE":
+          href = "/compte_employer";
+          break;
+      case "ROLE_ADMIN":
+          href = "/statistiques";
+          break;
+      default:
+          href = "#";
+    }
+
+    if (DebugConsole) {
+      console.log("[updateUserButtonRole] role :", role);
+      console.log("[updateUserButtonRole] href :", href);
+    }
+    // Modifie le le lien
+    btnUser.href = href;
+
+    // Affiche le bouton
+    btnUser.classList.remove("d-none");
+  }
 
 });

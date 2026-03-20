@@ -24,7 +24,7 @@ export function initConnexionPage() {
   const apiConnectionUser = `${API_URL}/api/login`;
 
   // Variable debug console si à true
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   // Variable pour éviter le double click lors de la connection
   let isSubmitting = false; 

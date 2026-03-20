@@ -1,0 +1,118 @@
+<!------ Section Hero compte Admin -------->
+<section class="compte_admin-hero py-5">
+  <div class="container">
+    <h1 class="compte_admin-hero-title">Espace Administrateur</h1>
+    <p class="compte_admin-hero-welcome">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section compte Admin -------->
+<section class="compte_admin-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="row justify-content-center compte_admin">
+
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          <!------ Onglets Statistiques (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/statistiques" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-graph-up fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Statistiques</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Profil</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Employés -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_employes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-people-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Employés</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Utilisateurs -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-database fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Utilisateurs</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menus -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-fork-knife fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menus</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergènes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergènes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Commandes & Avis -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-calculator-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Commandes & Avis</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Horraire -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_horraire" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-clock-fill fs-4 mb-1 "></i>
+                <h6 class="card-title mb-0">Gestion Horraire</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+               
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Statistique de la société</h2>
+
+        <!------ Liste des statistiques injectée dynamiquement par le JS -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row g-2 align-items-center">
+              <div id="statistiques-list">
+                <!-- Les cards des statistiques seront injectées ici par le JS -->
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

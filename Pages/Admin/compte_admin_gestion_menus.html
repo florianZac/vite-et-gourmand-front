@@ -1,0 +1,182 @@
+<!------ Section Hero compte Admin -------->
+<section class="compte_admin-hero py-5">
+  <div class="container">
+    <h1 class="compte_admin-hero-title">Espace Administrateur</h1>
+    <p class="compte_admin-hero-welcome">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section compte Admin -------->
+<section class="compte_admin-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="row justify-content-center compte_admin">
+
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          <!------ Onglets Statistiques -------->
+          <div class="col-12 col-md-4">
+            <a href="/statistiques" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-graph-up fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Statistiques</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Profil</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Employés -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_employes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-people-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Employés</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Utilisateurs -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-database fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Utilisateurs</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menus (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-fork-knife fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menus</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergènes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergènes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Commandes & Avis -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-calculator-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Commandes & Avis</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Horraire -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_horraire" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-clock-fill fs-4 mb-1 "></i>
+                <h6 class="card-title mb-0">Gestion Horraire</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Menus</h2>
+
+        <!------ Barre recherche + filtres -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row g-2 align-items-center">
+
+              <!-- Recherche numéro commande -->
+              <div class="col-md-6">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                  </span>
+                  <input 
+                    type="text"
+                    id="search-order"
+                    class="form-control"
+                    placeholder="Rechercher un menus..."
+                  >
+                </div>
+              </div>
+
+              <!-- GESTION DES MENUS à PLACER ICI -->
+
+            </div>
+          </div>
+        </div>
+
+        <!------ Liste des commandes injectée dynamiquement par le JS -------->
+        <div id="commandes-list">
+          <!-- Les cards de commandes seront injectées ici par le JS -->
+        </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="cancelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-x-circle text-danger"></i>
+          Annuler la commande
+        </h5>
+        <button class="btn-close" data-bs-dismiss="modal" title="modal de dialogue"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <textarea
+          id="cancel-reason"
+          class="form-control"
+          maxlength="500"
+          rows="4"
+          placeholder="Expliquez la raison de l'annulation..."
+        ></textarea>
+
+        <div class="text-end mt-2">
+          <small id="cancel-count">0 / 250</small>
+        </div>
+
+        <div class="text-danger small mt-2 d-none" id="cancel-error">
+          Veuillez entrer un motif.
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Fermer
+        </button>
+
+        <button class="btn btn-danger" id="confirm-cancel">
+          Confirmer l'annulation
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

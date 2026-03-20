@@ -101,8 +101,8 @@ export async function initAccueilPage() {
   /* ===============================
     FONCTION: génére les étoiles avec Bootstrap Icons pour le carroussel
     factorisation de fonction 
-    si count -> cas carroussel
-    sinon si -> pour la moyenne
+    si count cas carroussel
+    sinon si pour la moyenne
     =============================== */
 
   function generateStars(count,type)
