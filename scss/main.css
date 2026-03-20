@@ -15862,7 +15862,7 @@ textarea.form-control-lg {
 #toast-message {
   display: none;
   background-color: transparent;
-  color: hsl(338, 48%, 34%); /* ton bordeaux */
+  color: hsl(338, 48%, 34%);
   font-weight: bold;
   font-size: 0.95rem;
   padding: 0;
@@ -17884,6 +17884,17 @@ textarea.form-control-lg {
 .form-select:focus {
   border-color: rgba(192.9585, 80.8588, 46.7415, 0.3);
   box-shadow: 0 0 0 0.2rem hsl(38, 58%, 40%);
+}
+
+/* -------- Toast message pour informer l'utilisateur -------- */
+#toast-message {
+  background-color: hsl(38, 67%, 96%); /* ton choix */
+  color: hsl(338, 48%, 34%);
+  font-weight: bold;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  z-index: 9999;
 }
 
 /* -------- RESPONSIVE -------- */

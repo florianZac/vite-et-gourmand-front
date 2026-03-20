@@ -160,6 +160,16 @@
   box-shadow: 0 0 0 0.2rem $ocre-dark;
 }
 
+/* -------- Toast message pour informer l'utilisateur -------- */
+#toast-message {
+  background-color: $creme; /* ton choix */
+  color: $bordeaux; 
+  font-weight: bold;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+  z-index: 9999;
+}
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
   .compte_admin-section .container {
