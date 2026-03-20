@@ -74,7 +74,13 @@ export function initCompteAdminPage() {
         return;
       }
 
-      const data = await response.json();
+      let data = null;
+      // évite que le script crash si la réponse n'est pas du JSON
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       const heroName = document.getElementById('hero-user-name');
@@ -94,6 +100,35 @@ export function initCompteAdminPage() {
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
     =============================== */
+
+  // span qui contiendra le prénom de l'administrateur
+  const heroUserName = document.getElementById('hero-user-name'); 
+
+  // ----- Barre de recherche et filtres -----
+  const searchInput = document.getElementById('search-order'); 
+  // input texte pour rechercher un menu/commande
+  const filterStatus = document.getElementById('filter-status'); 
+  // select pour filtrer par statut
+  const resetFiltersBtn = document.getElementById('reset-filters'); 
+  // bouton pour réinitialiser les filtres
+
+  // ----- Liste des commandes/employés -----
+  const commandesList = document.getElementById('commandes-list'); 
+  // div qui contiendra les cards injectées dynamiquement
+
+  // ----- Modal d'annulation -----
+  const cancelModal = document.getElementById('cancelModal'); 
+  // modal bootstrap pour annuler une commande
+  const cancelReasonInput = document.getElementById('cancel-reason'); 
+  // textarea pour saisir le motif d'annulation
+  const cancelCount = document.getElementById('cancel-count'); 
+  // compteur de caractères saisis dans le textarea
+  const cancelError = document.getElementById('cancel-error'); 
+  // message d'erreur si aucun motif n'est renseigné
+  const confirmCancelBtn = document.getElementById('confirm-cancel'); 
+  // bouton pour confirmer l'annulation
+
+  loadUserName();
 
 
 }
