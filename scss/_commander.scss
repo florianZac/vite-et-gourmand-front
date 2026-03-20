@@ -331,17 +331,26 @@
 
 /* -------- Toast message pour informer l'utilisateur -------- */
 #toast-message {
-  display: none;
   background-color: transparent;
-  color: $bordeaux;
   font-weight: bold;
   font-size: 0.95rem;
-  padding: 0;
-  align-content: center;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+
+  &.show {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  &.toast-success {
+    color: $success-message;
+  }
+
+  &.toast-error {
+    color: $error-message;
+  }
 }
 
 /* -------- Desktop uniquement -------- */

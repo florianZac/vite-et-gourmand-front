@@ -129,7 +129,7 @@ export function initCompteAdminGestionHorrairePage() {
   loadUserName();
 
   /* ===============================
-    FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN NON FONCTIONNEL A DEBUG
+    FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
     =============================== */
   const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 3000 }); // delay = 3 secondes
 
@@ -137,6 +137,22 @@ export function initCompteAdminGestionHorrairePage() {
     const body = toastEl.querySelector('.toast-body');
     body.textContent = message || "Action effectuée !";
 
+    toastBootstrap.show();
+  }
+
+  /* ===============================
+    FONCTION : TOAST BOOTSTRAP changement de classe en cas d'érreur
+    Utilisation : 
+      Erreur -> showToast("Aucune modification détectée.", "error"); 
+      Pas d'érreur  ->showToast("Horaires mis à jour !");
+    =============================== */
+  function showToast(message, type = 'success') {
+    const body = toastEl.querySelector('.toast-body');
+    body.textContent = message || "Action effectuée !";
+
+    // Retire les classes précédentes et applique la bonne
+    toastEl.classList.remove('toast-success', 'toast-error');
+    toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
   }
 
@@ -305,7 +321,7 @@ export function initCompteAdminGestionHorrairePage() {
     const horairesModifies = getChangedHoraires();
 
     if (horairesModifies.length === 0) {
-      showToast("Aucune modification détectée.");
+      showToast("Aucune modification détectée.", "error");
       return;
     }
 

@@ -160,15 +160,28 @@
   box-shadow: 0 0 0 0.2rem $ocre-dark;
 }
 
-/* -------- Toast message pour informer l'utilisateur -------- */
+/* -------- Toast message pour informer l'admin -------- */
 #toast-message {
-  background-color: $creme; /* ton choix */
-  color: $bordeaux; 
+  background-color: transparent;
   font-weight: bold;
   font-size: 0.95rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
-  z-index: 9999;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+
+  &.show {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  &.toast-success {
+    color: $success-message;
+  }
+
+  &.toast-error {
+    color: $error-message;
+  }
 }
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {

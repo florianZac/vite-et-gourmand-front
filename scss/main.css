@@ -15860,17 +15860,23 @@ textarea.form-control-lg {
 
 /* -------- Toast message pour informer l'utilisateur -------- */
 #toast-message {
-  display: none;
   background-color: transparent;
-  color: hsl(338, 48%, 34%);
   font-weight: bold;
   font-size: 0.95rem;
-  padding: 0;
-  align-content: center;
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+}
+#toast-message.show {
+  display: block !important;
+  opacity: 1 !important;
+}
+#toast-message.toast-success {
+  color: #22c55e;
+}
+#toast-message.toast-error {
+  color: #dc3545;
 }
 
 /* -------- Desktop uniquement -------- */
@@ -17886,15 +17892,25 @@ textarea.form-control-lg {
   box-shadow: 0 0 0 0.2rem hsl(38, 58%, 40%);
 }
 
-/* -------- Toast message pour informer l'utilisateur -------- */
+/* -------- Toast message pour informer l'admin -------- */
 #toast-message {
-  background-color: hsl(38, 67%, 96%); /* ton choix */
-  color: hsl(338, 48%, 34%);
+  background-color: transparent;
   font-weight: bold;
   font-size: 0.95rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-  z-index: 9999;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+}
+#toast-message.show {
+  display: block !important;
+  opacity: 1 !important;
+}
+#toast-message.toast-success {
+  color: #22c55e;
+}
+#toast-message.toast-error {
+  color: #dc3545;
 }
 
 /* -------- RESPONSIVE -------- */
