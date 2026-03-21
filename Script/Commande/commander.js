@@ -56,8 +56,6 @@ export async function initCommanderPage() {
   // Variable debug console si à true
   let DebugConsole = false;
 
-  // Variable pour vérifier la modification utilisateurs
-  let isModified = false;
   /* ===============================
       CONFIGURATION API
       =============================== */
@@ -101,6 +99,10 @@ export async function initCommanderPage() {
   const dateInput = document.getElementById('CommandDate');
   const timeInput = document.getElementById('CommandTime');
 
+  // Toast Bootstrap
+  const toastEl = document.getElementById('toast-message');
+  const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 4000 });
+
   // checkbox
   const materialCheckbox = document.getElementById('CommandMaterial');
   // Stockage des données originales pour comparaison
@@ -122,99 +124,22 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-  FONCTION : TOAST POUR ENVOYER LES MESSAGES AU CLIENTS
-    Déplace l'affichage en fonction de l'étape  
-  Exemple d'utilisation showToast(1, "Prénom modifié !");
+  FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES AU CLIENTS
+    Déplace l'affichage en fonction de l'étape sous les btns
+    gere la version Erreur / et Success
+  Exemple d'utilisation :
+    showToast("Erreur Prénom ",'error');
+    showToast("Prénom modifié ",'success');
   =============================== */
-  function showToast(step, message) {
 
-    toast.textContent = message || "Action effectuée !";
+  function showToast(message, type = 'error') {
+    const body = toastEl.querySelector('.toast-body');
+    body.textContent = message || "Action effectuée !";
 
-    // Ajouot d'une class spécifique pour la version desktop
-    toast.classList.remove('desktop');
+    toastEl.classList.remove('toast-success', 'toast-error');
+    toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
 
-    // Version mobile rien à calculer
-    if (!isMobile()) {
-      toast.classList.add('desktop');
-
-      let elements = [];
-
-      switch(step) {
-        case 1:
-          elements = [document.getElementById("btn-next-1")];
-          break;
-        case 2:
-          elements = [
-            document.getElementById("btn-prev-2"),
-            document.getElementById("btn-next-2")
-          ];
-          break;
-        case 3:
-          elements = [
-            document.getElementById("btn-prev-3"),
-            document.getElementById("btn-submit")
-          ];
-          break;
-        case 4:
-          elements = [document.querySelector("#step-4")];
-          break;
-      }
-      if (DebugConsole) console.log("[showToast] step",step);
-
-      // Supprime tous les éléments null ou undefined du tableau
-      elements = elements.filter(el => el);
-      if (DebugConsole) console.log("[showToast] Vérification elements",elements);
-      // Si aucun élément valide on arrête la fonction
-      if (elements.length === 0) return;
-
-      // Récupère la position et taille de chaque élément
-      const rects = elements.map(el => el.getBoundingClientRect());
-      if (DebugConsole) console.log("[showToast] position",rects);
-      // Récupère la position la plus à gauche parmi tous les éléments
-      const left = Math.min(...rects.map(r => r.left));
-      if (DebugConsole) console.log("[showToast] Valeur gauche",left);  
-      // Récupère la position la plus à droite parmi tous les éléments
-      const right = Math.max(...rects.map(r => r.right));
-      if (DebugConsole) console.log("[showToast] Valeur droite",right);  
-      // Récupère le point le plus bas
-      const bottom = Math.max(...rects.map(r => r.bottom));
-      if (DebugConsole) console.log("[showToast] Valeur bottom",bottom);
-      // Calcule le centre
-      const centerX = (left + right) / 2;
-      if (DebugConsole) console.log("[showToast] Valeur du centre",centerX);
-      // Positionne le toast centré entre les btn
-      toast.style.left = `${centerX - toast.offsetWidth / 2}px`;
-
-      // Positionne le toast verticalement
-      toast.style.top = `${bottom + window.scrollY + 10}px`;
-
-      // Affiche le toast avec flex
-      toast.style.display = 'flex';
-
-      // animation CSS fade-in
-      requestAnimationFrame(() => {
-        toast.style.opacity = '1';
-      });
-
-      hideToast();
-    }
-  }
-
-  /* ===============================
-  FONCTION : TOAST POUR CACHER LE TOAST
-  =============================== */
-  // cacher le toast après 4 secondes
-  function hideToast() {
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, 4000);
-  }
-
-  /* ===============================
-  FONCTION : TOAST RESPONSIVE MOBILE
-  =============================== */
-  function isMobile() {
-    return window.innerWidth <= 768;
+    toastBootstrap.show();
   }
 
   /* ===============================
@@ -242,9 +167,11 @@ export async function initCommanderPage() {
 
     } catch (err) {
       console.error("Erreur récupération horaires :", err);
+      showToast("Erreur API getHoraires ",'error');
       horaires = [];
     }
   }
+
 
   /* ===============================
   FONCTION : VALIDATION DES HORRAIRES
@@ -253,7 +180,7 @@ export async function initCommanderPage() {
     if (!dateValue || !timeValue) return false;
 
       if (!horaires || horaires.length === 0) {
-        showToast(1,"Horaires non disponibles");
+        showToast("Horaires non disponibles",'error');
         return false;
       }
       const date = new Date(dateValue);
@@ -264,13 +191,13 @@ export async function initCommanderPage() {
       const horaireJour = horaires.find(h => h.jour === jourCapitalized);
 
         if (!horaireJour) {
-        showToast(1,"Jour non disponible");
+        showToast("Jour non disponible",'error');
         return false;
       }
 
       // Gestion du cas fermé
       if (horaireJour.heureOuverture === "Fermé") {
-        showToast(1,"Nous sommes fermés ce jour-là");
+        showToast("Nous sommes fermés ce jour-là",'error');
         return false;
       }
 
@@ -285,8 +212,8 @@ export async function initCommanderPage() {
 
       if (selectedMinutes < openMinutes || selectedMinutes >= closeMinutes) {
         if (DebugConsole) console.log("[isHoraireValide] Heure invalide",`${horaireJour.heureOuverture} - ${horaireJour.heureFermeture}`);
-        showToast(1,
-          `Heure invalide (${horaireJour.heureOuverture} - ${horaireJour.heureFermeture})`
+        showToast(
+          `Heure invalide (${horaireJour.heureOuverture} - ${horaireJour.heureFermeture})`,'success'
         );
         return false;
       }
@@ -342,7 +269,6 @@ export async function initCommanderPage() {
       if (DebugConsole) {
         console.log("[loadMenus] Données reçues :", menusArray);
       }
-
       autoSelectMenuFromUrl();
       updateRecapPrices();
 
@@ -572,7 +498,7 @@ export async function initCommanderPage() {
     inputs.forEach(input => {
     if (!input.value || input.value.trim() === '') {
         valid = false; // si un champ vide, on invalide
-        showToast(stepNumber,'Les Champs Date et Heure sont requis');
+        showToast('Les Champs Date et Heure sont requis','error');
       }
     });
     if (DebugConsole) console.log("[isStepValid] valid:",valid);
@@ -1033,12 +959,12 @@ export async function initCommanderPage() {
 
     if (personsInput.value < minPersons) {
       personsInput.value = minPersons;
-      showToast(3,`Minimum ${minPersons} personnes pour ce menu`);
+      showToast(`Minimum ${minPersons} personnes pour ce menu`,'error');
     }
 
     if (personsInput.value > maxPersons) {
       personsInput.value = maxPersons;
-      showToast(3,`Maximum ${maxPersons} personnes pour ce menu`);
+      showToast(`Maximum ${maxPersons} personnes pour ce menu`,'error');
     }
 
     updateRecapPrices();
@@ -1177,7 +1103,7 @@ export async function initCommanderPage() {
       const step3Valid = isStepValid(3);
 
       if (!step1Valid || !step2Valid || !step3Valid) {
-        showToast(3,'Veuillez remplir tous les champs obligatoires');
+        showToast('Veuillez remplir tous les champs obligatoires','success');
         return;
       }
 
@@ -1193,7 +1119,7 @@ export async function initCommanderPage() {
       const minDate = new Date(today);
       minDate.setDate(minDate.getDate() + nb_jourDate);
       if (selectedDate < minDate) {
-        showToast(3,'La date de prestation doit être supérieure à 3 jours');
+        showToast('La date de prestation doit être supérieure à 3 jours','success');
         return;// empêche la soumission
       }
 
@@ -1203,7 +1129,7 @@ export async function initCommanderPage() {
         const minDate20 = new Date(today);
         minDate20.setDate(minDate20.getDate() + 14);
         if (selectedDate < minDate20) {
-          showToast(3,'Pour plus de 20 personnes, la date doit être supérieure à 14 jours');
+          showToast('Pour plus de 20 personnes, la date doit être supérieure à 14 jours','success');
           return; // empêche la soumission
         }
       }
@@ -1216,7 +1142,7 @@ export async function initCommanderPage() {
 
       // REGLE METIER : Vérification distance max 200 km
       if (deliveryDistanceKm > 200) {
-        showToast(3,'Livraison impossible : distance supérieure à 200 km');
+        showToast('Livraison impossible : distance supérieure à 200 km','success');
         return;
       }
 
@@ -1259,7 +1185,6 @@ export async function initCommanderPage() {
 
           const orderTitle = createdOrder.numero_commande ||  '-';
           const clientEmail = createdOrder.email || createdOrder.utilisateur?.email || '-';
-          //showToast(4,`Votre commande ${orderTitle} a bien été enregistrée. Un email de confirmation vous a été envoyé à ${clientEmail}.`);
 
           setTimeout(() => {
             showConfirmation(orderTitle,clientEmail);

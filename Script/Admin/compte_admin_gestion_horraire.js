@@ -8,7 +8,7 @@ export function initCompteAdminGestionHorrairePage() {
      =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   // Variable de stockage des données récuperer de api/me
   let originalHoraires = {};
