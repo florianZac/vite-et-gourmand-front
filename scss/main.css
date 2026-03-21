@@ -17918,10 +17918,12 @@ textarea.form-control-lg {
 }
 
 /* ===============================
-  MENUS ALLERGENE
+  BOUTON ET INPUT ALLERGENE, THEME ET REGIME
    =============================== */
 /* -------- Input ajouter un allergène -------- */
-#new-allergene {
+#new-allergene,
+#new-theme,
+#new-regime {
   max-width: 300px;
   border-radius: 2rem;
 }
