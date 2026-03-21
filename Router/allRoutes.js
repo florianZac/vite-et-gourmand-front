@@ -41,6 +41,7 @@ export const allRoutes = [
    new Route("/gestion_allergene", "Compte Admin Gestion Allergene", "Pages/Admin/compte_admin_gestion_allergene.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_allergene.js", true),
    new Route("/gestion_menus", "Compte Admin Gestion Menus", "Pages/Admin/compte_admin_gestion_menus.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_menus.js", true),
    new Route("/gestion_horraire", "Compte Admin Gestion Horraire", "Pages/Admin/compte_admin_gestion_horraire.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_horraire.js", true),
+   new Route("/gestion_plat", "Compte Admin Gestion plat", "Pages/Admin/compte_admin_gestion_plat.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_plat.js", true),
 ];
 
 /* =====================================================

@@ -186,7 +186,7 @@
 }
 
 /* ===============================
-  BOUTON ET INPUT ALLERGENE, THEME ET REGIME
+    BOUTON ET INPUT ALLERGENE, THEME ET REGIME
    =============================== */
 
 /* -------- Input ajouter un allergène -------- */
@@ -198,7 +198,17 @@
   border-radius: 2rem;
 }
 
-
+/* ===============================
+    IMAGE PLAT
+   =============================== */
+#plat-photo-preview{
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border-radius:0.5rem;
+  display:none;
+  border:1px solid #e8ddd0;
+}
 
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {

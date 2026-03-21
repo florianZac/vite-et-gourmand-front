@@ -61,6 +61,15 @@
               </div>
             </a>
           </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
+              </div>
+            </a>
+          </div>
           <!------ Onglets Gestion Allergènes -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
@@ -100,83 +109,122 @@
         </div>
 
         <!------ Titre de la Navigation  -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Menus</h2>
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion des Menus</h2>
 
-        <!------ Barre recherche + filtres -------->
+        <!------ Barre recherche + bouton nouveau -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <div class="row g-2 align-items-center">
-
-              <!-- Recherche numéro commande -->
-              <div class="col-md-6">
+              <div class="col-md-8">
                 <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-search"></i>
-                  </span>
-                  <input 
-                    type="text"
-                    id="search-order"
-                    class="form-control"
-                    placeholder="Rechercher un menus..."
-                  >
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input type="text" id="search-menu" class="form-control" placeholder="Rechercher un menu...">
                 </div>
               </div>
-
-              <!-- GESTION DES MENUS à PLACER ICI -->
-
+              <div class="col-md-4 text-end">
+                <button class="btn btn-primary" id="btn-new-menu">
+                  <i class="bi bi-plus me-1"></i> Nouveau menu
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        <!------ Liste des commandes injectée dynamiquement par le JS -------->
-        <div id="commandes-list">
-          <!-- Les cards de commandes seront injectées ici par le JS -->
+        <!------ Formulaire création/modification -------->
+        <div class="card mb-4 shadow-sm d-none" id="menu-form-card">
+          <div class="card-body">
+            <h3 class="fw-bold mb-3" id="menu-form-title">Créer un menu</h3>
+
+            <!-- Titre + Thème + Régime -->
+            <div class="row mb-3">
+              <div class="col-md-5">
+                <label class="form-label">Titre <span class="text-danger">*</span></label>
+                <input type="text" id="menu-titre" class="form-control" placeholder="Nom du menu...">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Thème <span class="text-danger">*</span></label>
+                <select id="menu-theme" class="form-select" title="Sélection menus"></select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Régime <span class="text-danger">*</span></label>
+                <select id="menu-regime" class="form-select" title="Sélection régime"></select>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label">Description <span class="text-danger">*</span></label>
+              <textarea id="menu-description" class="form-control" rows="3" placeholder="Description du menu..."></textarea>
+            </div>
+
+            <!-- Min personnes + Prix + Quantité -->
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Min. personnes <span class="text-danger">*</span></label>
+                <input type="number" id="menu-min-personnes" class="form-control " title="Nombre min de personne" min="1" value="1">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Prix / personne (€) <span class="text-danger">*</span></label>
+                <input type="number" id="menu-prix" class="form-control" title="Prix / personne du menu" min="0" step="0.01" value="0">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Quantité restante <span class="text-danger">*</span></label>
+                <input type="number" id="menu-quantite" class="form-control" title="Quantitée restante du menu" min="1" value="50">
+              </div>
+            </div>
+
+            <!-- Conditions -->
+            <div class="mb-3">
+              <label class="form-label">Conditions</label>
+              <input type="text" id="menu-conditions" class="form-control" placeholder="Conditions (optionnel)...">
+            </div>
+
+            <!-- Plats (max 3) -->
+            <h4 class="fw-bold mt-4 mb-3">Plats</h4>
+            <div id="plats-select-container"></div>
+            <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="btn-add-plat-select">
+              <i class="bi bi-plus"></i> Ajouter un plat
+            </button>
+
+            <!-- Boutons -->
+            <div class="d-flex gap-3 mt-4">
+              <button class="btn btn-primary" id="btn-save-menu">
+                <i class="bi bi-save me-1"></i> Créer le menu
+              </button>
+              <button class="btn btn-outline-secondary" id="btn-cancel-menu">Annuler</button>
+            </div>
+          </div>
         </div>
+
+        <!------ Liste des menus -------->
+        <div id="menus-list"></div>
+
+        <!------ Toast -------->
+        <div class="d-flex justify-content-center mt-3">
+          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="modal fade" id="cancelModal" tabindex="-1">
+<!-- Modal Suppression Menu -->
+<div class="modal fade" id="deleteMenuModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">
-          <i class="bi bi-x-circle text-danger"></i>
-          Annuler la commande
-        </h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="modal de dialogue"></button>
+        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer le menu</h5>
+        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
-
       <div class="modal-body">
-
-        <textarea
-          id="cancel-reason"
-          class="form-control"
-          maxlength="500"
-          rows="4"
-          placeholder="Expliquez la raison de l'annulation..."
-        ></textarea>
-
-        <div class="text-end mt-2">
-          <small id="cancel-count">0 / 250</small>
-        </div>
-
-        <div class="text-danger small mt-2 d-none" id="cancel-error">
-          Veuillez entrer un motif.
-        </div>
-
+        <p>Voulez-vous vraiment supprimer <strong id="delete-menu-name"></strong> ?</p>
       </div>
-
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          Fermer
-        </button>
-
-        <button class="btn btn-danger" id="confirm-cancel">
-          Confirmer l'annulation
-        </button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button class="btn btn-danger" id="confirm-delete-menu">Confirmer</button>
       </div>
-
     </div>
   </div>
 </div>

@@ -16,6 +16,7 @@
 
         <!------ Onglets Navigation -------->
         <div class="row justify-content-center compte_admin">
+          
           <!------ Onglets Statistiques -------->
           <div class="col-12 col-md-4">
             <a href="/statistiques" class="card text-center text-decoration-none h-100">
@@ -58,6 +59,15 @@
               <div class="card-body py-3">
                 <i class="bi bi-fork-knife fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Gestion Menus</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
               </div>
             </a>
           </div>
@@ -107,99 +117,74 @@
           <div class="card-body">
 
             <div class="row g-2 align-items-center">
-
-              <!-- Recherche numéro commande -->
-              <div class="col-md-6">
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-search"></i>
-                  </span>
-                  <input 
-                    type="text"
-                    id="search-order"
-                    class="form-control"
-                    placeholder="Rechercher un menus..."
-                  >
+              <!------ Carte compte client_profil (avatar + nom + email) -------->
+              <div class="compte_admin_profil-identity">
+                <!-- Avatar utilisateur -->
+                <div class="compte_admin_profil-avatar">
+                  <i class="bi bi-person-fill"></i>
                 </div>
+                <!-- Nom et email affichés sous l'avatar -->
+                <h2 class="compte_admin_profil-name" id="compte_admin_profil-display-name">Marie Dupont</h2>
+                <p class="compte_admin_profil-email" id="compte_admin_profil-display-email">marie.dupont@email.com</p>
               </div>
 
-              <!-- Filtre statut -->
-              <div class="col-md-4">
-                <select id="filter-status" class="form-select" title="filtre de statut">
-                  <option value="">Tous les statuts</option>
-                  <option value="En attente">En attente</option>
-                  <option value="Acceptée">Acceptée</option>
-                  <option value="En préparation">En préparation</option>
-                  <option value="En livraison">En livraison</option>
-                  <option value="Livré">Livré</option>
-                  <option value="En attente de retour matériel">En attente retour matériel</option>
-                  <option value="Terminée">Terminée</option>
-                  <option value="Annulée">Annulée</option>
-                </select>
-              </div>
+              <!------ Formulaire Informations Personnelles -------->
+              <div class="compte_admin_profil-card">
+                <form class="compte_admin_profil-form" id="form-compte_admin_profil">
+                  <!-- Prénom et Nom -->
+                  <div class="row mb-4">
+                    <div class="col-6">
+                      <label for="compte_admin_profilFirstName" class="form-label">Prénom</label>
+                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilFirstName" placeholder="Marie">
+                    </div>
+                    <div class="col-6">
+                      <label for="compte_admin_profilLastName" class="form-label">Nom</label>
+                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilLastName" placeholder="Dupont">
+                    </div>
+                  </div>
 
-              <!-- Reset -->
-              <div class="col-md-2 d-grid">
-                <button id="reset-filters" class="btn btn-outline-secondary">
-                  Reset
-                </button>
-              </div>
+                  <!-- Téléphone -->
+                  <div class="mb-4">
+                    <label for="compte_admin_profilPhone" class="form-label">Téléphone</label>
+                    <input type="tel" class="form-control compte_admin_profil-input" id="compte_admin_profilPhone" placeholder="06 12 34 56 78">
+                  </div>
 
+                  <!-- Email -->
+                  <div class="mb-4">
+                    <label for="compte_admin_profilEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control compte_admin_profil-input" id="compte_admin_profilEmail" placeholder="marie.dupont@email.com">
+                  </div>
+
+                  <!-- Adresse -->
+                  <div class="mb-4">
+                    <label for="compte_admin_profilAddress" class="form-label">Adresse</label>
+                    <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilAddress" placeholder="12 rue des Roses">
+                  </div>
+
+                  <!-- Ville et Code Postal -->
+                  <div class="row mb-4">
+                    <div class="col-6">
+                      <label for="compte_admin_profilCity" class="form-label">Ville</label>
+                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilCity" placeholder="Bordeaux">
+                    </div>
+                    <div class="col-6">
+                      <label for="compte_admin_profilPostal" class="form-label">Code Postal</label>
+                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilPostal" placeholder="33000">
+                    </div>
+                  </div>
+
+                  <!-- Bouton sauvegarder -->
+                  <div class="d-grid mb-3">
+                    <button type="button" class="btn btn-compte_admin_profil-save" id="btn-save-compte_admin_profil">
+                      Sauvegarder les modifications
+                    </button>
+                  </div>
+                </form>  
+              </div>
             </div>
-
           </div>
-        </div>
-
-        <!------ Liste des commandes injectée dynamiquement par le JS -------->
-        <div id="commandes-list">
-          <!-- Les cards de commandes seront injectées ici par le JS -->
         </div>
       </div>
     </div>
   </div>
 </section>
-
-<div class="modal fade" id="cancelModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">
-          <i class="bi bi-x-circle text-danger"></i>
-          Annuler la commande
-        </h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="modal de dialogue"></button>
-      </div>
-
-      <div class="modal-body">
-
-        <textarea
-          id="cancel-reason"
-          class="form-control"
-          maxlength="500"
-          rows="4"
-          placeholder="Expliquez la raison de l'annulation..."
-        ></textarea>
-
-        <div class="text-end mt-2">
-          <small id="cancel-count">0 / 250</small>
-        </div>
-
-        <div class="text-danger small mt-2 d-none" id="cancel-error">
-          Veuillez entrer un motif.
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          Fermer
-        </button>
-
-        <button class="btn btn-danger" id="confirm-cancel">
-          Confirmer l'annulation
-        </button>
-      </div>
-
-    </div>
-  </div>
-</div>

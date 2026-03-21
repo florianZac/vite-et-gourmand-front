@@ -10,7 +10,7 @@ $terracotta: hsl(14, 61%, 47%);
 $ocre: hsl(38, 58%, 55%);
 $bordeaux: hsl(338, 48%, 34%);
 $olive: hsl(79, 31%, 35%);
-$creme: hsl(38, 67%, 96%);
+$creme: hsl(39, 70%, 96%);
 
 /* ===============================
    PALETTE ÉTENDUE - COULEURS SECONDAIRES
@@ -137,7 +137,6 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 /* ===============================
    VARIABLES CSS pour du inline
-    ( jaime pas sa à part pour certain cas obligatoire je n'utilise pas le inline )  
    =============================== */
 
 :root {

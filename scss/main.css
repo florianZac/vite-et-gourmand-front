@@ -89,7 +89,7 @@
   --bs-info: #0dcaf0;
   --bs-warning: #ffc107;
   --bs-danger: hsl(338, 48%, 34%);
-  --bs-light: hsl(38, 67%, 96%);
+  --bs-light: hsl(39, 70%, 96%);
   --bs-dark: #333333;
   --bs-terracotta: hsl(14, 61%, 47%);
   --bs-ocre: hsl(38, 58%, 55%);
@@ -2087,13 +2087,13 @@ progress {
 
 .table-light {
   --bs-table-color: #000;
-  --bs-table-bg: hsl(38, 67%, 96%);
-  --bs-table-border-color: rgb(201.3072, 197.29792, 190.3728);
-  --bs-table-striped-bg: rgb(239.0523, 234.29128, 226.0677);
+  --bs-table-bg: hsl(39, 70%, 96%);
+  --bs-table-border-color: rgb(201.552, 197.5536, 190.128);
+  --bs-table-striped-bg: rgb(239.343, 234.5949, 225.777);
   --bs-table-striped-color: #000;
-  --bs-table-active-bg: rgb(226.4706, 221.96016, 214.1694);
+  --bs-table-active-bg: rgb(226.746, 222.2478, 213.894);
   --bs-table-active-color: #000;
-  --bs-table-hover-bg: rgb(232.76145, 228.12572, 220.11855);
+  --bs-table-hover-bg: rgb(233.0445, 228.42135, 219.8355);
   --bs-table-hover-color: #000;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
@@ -3181,19 +3181,19 @@ textarea.form-control-lg {
 
 .btn-light {
   --bs-btn-color: #000;
-  --bs-btn-bg: hsl(38, 67%, 96%);
-  --bs-btn-border-color: hsl(38, 67%, 96%);
+  --bs-btn-bg: hsl(39, 70%, 96%);
+  --bs-btn-border-color: hsl(39, 70%, 96%);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: rgb(213.8889, 209.62904, 202.2711);
-  --bs-btn-hover-border-color: rgb(201.3072, 197.29792, 190.3728);
+  --bs-btn-hover-bg: rgb(214.149, 209.9007, 202.011);
+  --bs-btn-hover-border-color: rgb(201.552, 197.5536, 190.128);
   --bs-btn-focus-shadow-rgb: 214, 210, 202;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: rgb(201.3072, 197.29792, 190.3728);
-  --bs-btn-active-border-color: rgb(188.7255, 184.9668, 178.4745);
+  --bs-btn-active-bg: rgb(201.552, 197.5536, 190.128);
+  --bs-btn-active-border-color: rgb(188.955, 185.2065, 178.245);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: #000;
-  --bs-btn-disabled-bg: hsl(38, 67%, 96%);
-  --bs-btn-disabled-border-color: hsl(38, 67%, 96%);
+  --bs-btn-disabled-bg: hsl(39, 70%, 96%);
+  --bs-btn-disabled-border-color: hsl(39, 70%, 96%);
 }
 
 .btn-dark {
@@ -3418,19 +3418,19 @@ textarea.form-control-lg {
 }
 
 .btn-outline-light {
-  --bs-btn-color: hsl(38, 67%, 96%);
-  --bs-btn-border-color: hsl(38, 67%, 96%);
+  --bs-btn-color: hsl(39, 70%, 96%);
+  --bs-btn-border-color: hsl(39, 70%, 96%);
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: hsl(38, 67%, 96%);
-  --bs-btn-hover-border-color: hsl(38, 67%, 96%);
+  --bs-btn-hover-bg: hsl(39, 70%, 96%);
+  --bs-btn-hover-border-color: hsl(39, 70%, 96%);
   --bs-btn-focus-shadow-rgb: 252, 247, 238;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: hsl(38, 67%, 96%);
-  --bs-btn-active-border-color: hsl(38, 67%, 96%);
+  --bs-btn-active-bg: hsl(39, 70%, 96%);
+  --bs-btn-active-border-color: hsl(39, 70%, 96%);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: hsl(38, 67%, 96%);
+  --bs-btn-disabled-color: hsl(39, 70%, 96%);
   --bs-btn-disabled-bg: transparent;
-  --bs-btn-disabled-border-color: hsl(38, 67%, 96%);
+  --bs-btn-disabled-border-color: hsl(39, 70%, 96%);
   --bs-gradient: none;
 }
 
@@ -7325,8 +7325,8 @@ textarea.form-control-lg {
   text-decoration-color: RGBA(var(--bs-light-rgb), var(--bs-link-underline-opacity, 1)) !important;
 }
 .link-light:hover, .link-light:focus {
-  color: RGBA(252, 248, 241, var(--bs-link-opacity, 1)) !important;
-  text-decoration-color: RGBA(252, 248, 241, var(--bs-link-underline-opacity, 1)) !important;
+  color: RGBA(253, 249, 241, var(--bs-link-opacity, 1)) !important;
+  text-decoration-color: RGBA(253, 249, 241, var(--bs-link-underline-opacity, 1)) !important;
 }
 
 .link-dark {
@@ -12600,7 +12600,6 @@ textarea.form-control-lg {
 }
 /* ===============================
    VARIABLES CSS pour du inline
-    ( jaime pas sa à part pour certain cas obligatoire je n'utilise pas le inline )  
    =============================== */
 :root {
   --terracotta: hsl(14, 61%, 47%);
@@ -12796,7 +12795,7 @@ textarea.form-control-lg {
   right: 0;
   width: 100%;
   z-index: 1030;
-  background-color: hsl(38, 67%, 96%);
+  background-color: hsl(39, 70%, 96%);
   border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
   padding: 0.75rem 0;
   box-shadow: var(--shadow-subtle);
@@ -12956,7 +12955,7 @@ textarea.form-control-lg {
     top: 100%;
     left: 0;
     right: 0;
-    background-color: hsl(38, 67%, 96%);
+    background-color: hsl(39, 70%, 96%);
     border-bottom: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.1);
     padding: 1.5rem;
     box-shadow: var(--shadow-hover);
@@ -13037,7 +13036,7 @@ textarea.form-control-lg {
 }
 /* -------- Scrolling effet header -------- */
 .custom-navbar.scrolled {
-  background-color: rgba(251.634, 246.6224, 237.966, 0.98);
+  background-color: rgba(251.94, 246.942, 237.66, 0.98);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -13494,7 +13493,7 @@ textarea.form-control-lg {
   position: absolute;
   bottom: -1.5rem;
   left: -1.5rem;
-  background: hsl(38, 67%, 96%);
+  background: hsl(39, 70%, 96%);
   backdrop-filter: blur(10px);
   border-radius: 1rem;
   padding: 1rem;
@@ -13783,7 +13782,7 @@ textarea.form-control-lg {
    =============================== */
 /* -------- Conteneur de la section -------- */
 #section-5 {
-  background: hsl(38, 67%, 96%);
+  background: hsl(39, 70%, 96%);
   min-height: 60vh;
   display: flex;
   align-items: center;
@@ -14281,7 +14280,7 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -14616,7 +14615,7 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -14934,7 +14933,7 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -15228,7 +15227,7 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   font-size: 0.95rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -15433,7 +15432,7 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: hsl(38, 67%, 96%);
+  background-color: hsl(39, 70%, 96%);
   padding: 6rem 2rem 3rem;
 }
 
@@ -15660,7 +15659,7 @@ textarea.form-control-lg {
   border-radius: 2rem;
   padding: 0.65rem 1.25rem;
   font-size: 0.9rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -15794,7 +15793,7 @@ textarea.form-control-lg {
 }
 
 .commander-confirm-recap {
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   border: 1px solid rgba(206.805, 157.998, 73.695, 0.3);
   border-radius: 1rem;
   padding: 1.5rem;
@@ -16092,7 +16091,7 @@ textarea.form-control-lg {
   border-radius: 2rem;
   padding: 0.65rem 1.25rem;
   font-size: 0.9rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   transition: all 0.3s ease;
 }
 
@@ -16917,7 +16916,7 @@ textarea.form-control-lg {
   border-radius: 0.75rem;
   overflow: hidden;
   margin-bottom: 1rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.5);
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
   text-align: center;
 }
 
@@ -17403,7 +17402,7 @@ textarea.form-control-lg {
 
 /* -------- Badge de suivi individuel -------- */
 .compte_client-timeline-badge {
-  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  background-color: rgba(251.94, 246.942, 237.66, 0.8);
   color: #333333;
   border: 1px solid #E8E8E8;
   padding: 0.25rem 0.65rem;
@@ -17451,7 +17450,7 @@ textarea.form-control-lg {
    Card interne affichée uniquement si la commande inclut du matériel
    =============================== */
 .compte_client-material-card {
-  background-color: rgba(251.634, 246.6224, 237.966, 0.4);
+  background-color: rgba(251.94, 246.942, 237.66, 0.4);
   border: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.2);
   border-radius: 0.75rem;
   padding: 1rem 1.25rem;
@@ -17655,14 +17654,14 @@ textarea.form-control-lg {
 /* -------- Onglet au survol  -------- */
 .compte_employer a:hover {
   background-color: hsl(14, 61%, 47%);
-  color: hsl(38, 67%, 96%);
+  color: hsl(39, 70%, 96%);
   transform: translateY(-2px);
 }
 
 /* -------- Onglet actif sélectionné  -------- */
 .compte_employer.active {
   background-color: hsl(14, 61%, 47%);
-  color: hsl(38, 67%, 96%);
+  color: hsl(39, 70%, 96%);
   transform: scale(0.97);
 }
 
@@ -17708,7 +17707,7 @@ textarea.form-control-lg {
 #reset-filters:hover,
 #reset-filters:active {
   background-color: hsl(14, 61%, 47%);
-  color: hsl(38, 67%, 96%);
+  color: hsl(39, 70%, 96%);
 }
 
 /* -------- select -------- */
@@ -17879,7 +17878,7 @@ textarea.form-control-lg {
 #reset-filters:hover,
 #reset-filters:active {
   background-color: hsl(14, 61%, 47%);
-  color: hsl(38, 67%, 96%);
+  color: hsl(39, 70%, 96%);
 }
 
 /* -------- select -------- */
@@ -17918,7 +17917,7 @@ textarea.form-control-lg {
 }
 
 /* ===============================
-  BOUTON ET INPUT ALLERGENE, THEME ET REGIME
+    BOUTON ET INPUT ALLERGENE, THEME ET REGIME
    =============================== */
 /* -------- Input ajouter un allergène -------- */
 #new-allergene,
@@ -17926,6 +17925,19 @@ textarea.form-control-lg {
 #new-regime {
   max-width: 300px;
   border-radius: 2rem;
+}
+
+/* ===============================
+    IMAGE PLAT
+   =============================== */
+#plat-photo-preview {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.5rem;
+  display: none;
+  border: 1px solid #e8ddd0;
 }
 
 /* -------- RESPONSIVE -------- */
@@ -18090,7 +18102,7 @@ textarea.form-control-lg {
   border-radius: 5rem;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  background-color: rgba(251.94, 246.942, 237.66, 0.8);
   transition: all 0.3s ease;
 }
 
@@ -18132,7 +18144,7 @@ textarea.form-control-lg {
 
 /* -------- Badge par défaut (inactif) -------- */
 .nos_menu-badge {
-  background-color: rgba(251.634, 246.6224, 237.966, 0.8);
+  background-color: rgba(251.94, 246.942, 237.66, 0.8);
   color: #2A2A2A;
   border: 1px solid #E8E8E8;
   border-radius: 5rem;
@@ -18423,7 +18435,7 @@ textarea.form-control-lg {
 /* -------- Bouton "Voir le détail" -------- */
 .btn-nos_menu-detail {
   background-color: hsl(14, 61%, 47%);
-  color: hsl(38, 67%, 96%) !important;
+  color: hsl(39, 70%, 96%) !important;
   border-radius: 0.4rem;
   padding: 0.4rem 0.85rem;
   font-size: 0.8rem;

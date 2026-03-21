@@ -16,8 +16,7 @@
 
         <!------ Onglets Navigation -------->
         <div class="row justify-content-center compte_admin">
-          
-          <!------ Onglets Statistiques  -------->
+          <!------ Onglets Statistiques -------->
           <div class="col-12 col-md-4">
             <a href="/statistiques" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
@@ -62,18 +61,18 @@
               </div>
             </a>
           </div>
-          <!------ Onglets Gestion Plat -------->
+          <!------ Onglets Gestion Plat (ACTIVE) -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
+            <a href="/gestion_plat" class="card text-center text-decoration-none h-100 active">
               <div class="card-body py-3">
                 <i class="bi bi-egg-fried fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Gestion Plat</h6>
               </div>
             </a>
           </div>
-          <!------ Onglets Gestion Allergènes (ACTIVE) -------->
+          <!------ Onglets Gestion Allergènes -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100 active">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-virus fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Gestion Allergènes</h6>
@@ -108,37 +107,91 @@
             </a>
           </div>
         </div>
+               
 
-        <!------ Titre de la Navigation  -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène</h2>
+        <!------ Titre -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion des Plats</h2>
 
-        <!------ Barre recherche + filtres -------->
+        <!------ Recherche + bouton nouveau -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <div class="row g-2 align-items-center">
-
-              <!-- Liste des allergènes -->
-                <div class="col-12" id="allergenes-list">
-                  <!-- Injecté dynamiquement par le JS -->
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input type="text" id="search-plat" class="form-control" placeholder="Rechercher un plat...">
                 </div>
-
-              <!-- Champ ajout d'un nouveau allergène-->
-              <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
-                <input type="text" id="new-allergene" class="form-control" placeholder="Nouveau Alergène...">
-                <button class="btn btn-primary" id="btn-add-allergene" title="Ajouter un allergène">
-                  <i class="bi bi-plus me-1"></i> Ajouter
+              </div>
+              <div class="col-md-4 text-end">
+                <button class="btn btn-primary" id="btn-new-plat">
+                  <i class="bi bi-plus me-1"></i> Nouveau plat
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <!-- Toast -->
-              <div class="col-12 d-flex justify-content-center mt-3">
-                <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                  <div class="toast-body"></div>
-                </div>
+        <!------ Formulaire création/modification (caché) -------->
+        <div class="card mb-4 shadow-sm d-none" id="plat-form-card">
+          <div class="card-body">
+            <h3 class="fw-bold mb-3" id="plat-form-title">Créer un plat</h3>
+
+            <!-- Titre + Catégorie -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Titre du plat <span class="text-danger">*</span></label>
+                <input type="text" id="plat-titre" class="form-control" placeholder="Bœuf bourguignon...">
               </div>
-
+              <div class="col-md-6">
+                <label class="form-label">Catégorie <span class="text-danger">*</span></label>
+                <select id="plat-categorie" class="form-select" title="Type de plat">
+                  <option value="Entrée">Entrée</option>
+                  <option value="Plat">Plat</option>
+                  <option value="Dessert">Dessert</option>
+                </select>
+              </div>
             </div>
 
+            <!-- Description -->
+            <div class="mb-3">
+              <label class="form-label">Description</label>
+              <textarea id="plat-description" class="form-control" rows="2" placeholder="Description du plat..."></textarea>
+            </div>
+
+            <!-- Photo URL -->
+            <div class="mb-3">
+              <label class="form-label">URL de la photo <span class="text-danger">*</span></label>
+              <div class="d-flex gap-2 align-items-start">
+                <input type="text" id="plat-photo" class="form-control" placeholder="https://exemple.com/photo.jpg">
+                <img id="plat-photo-preview" src="" alt="Aperçu">
+              </div>
+            </div>
+
+            <!-- Allergènes (checkboxes) -->
+            <div class="mb-3">
+              <label class="form-label">Allergènes</label>
+              <div id="plat-allergenes-checkboxes" class="d-flex flex-wrap gap-2">
+                <!-- Rempli dynamiquement -->
+              </div>
+            </div>
+
+            <!-- Boutons -->
+            <div class="d-flex gap-3 mt-4">
+              <button class="btn btn-primary" id="btn-save-plat">
+                <i class="bi bi-save me-1"></i> Créer le plat
+              </button>
+              <button class="btn btn-outline-secondary" id="btn-cancel-plat">Annuler</button>
+            </div>
+          </div>
+        </div>
+
+        <!------ Liste des plats -------->
+        <div id="plats-list"></div>
+
+        <!------ Toast -------->
+        <div class="d-flex justify-content-center mt-3">
+          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
           </div>
         </div>
       </div>
@@ -146,39 +199,20 @@
   </div>
 </section>
 
-<!-- Modal Suppression -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
+<!-- Modal Suppression Plat -->
+<div class="modal fade" id="deletePlatModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer l'allergène</h5>
+        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer le plat</h5>
         <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p>Voulez-vous vraiment supprimer <strong id="delete-allergene-name"></strong> ?</p>
+        <p>Voulez-vous vraiment supprimer <strong id="delete-plat-name"></strong> ?</p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button class="btn btn-danger" id="confirm-delete">Confirmer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Modification -->
-<div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier l'allergène</h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="edit-allergene-libelle" class="form-control" placeholder="Nouveau libellé...">
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button class="btn btn-primary" id="confirm-edit">Sauvegarder</button>
+        <button class="btn btn-danger" id="confirm-delete-plat">Confirmer</button>
       </div>
     </div>
   </div>
