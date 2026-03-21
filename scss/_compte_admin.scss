@@ -112,7 +112,7 @@
 }
 
 /* ===============================
-  MENUS (HORRAIRE |...)
+  MENUS HORRAIRE
    =============================== */
 
 /* -------- Conteneur des menus  -------- */
@@ -124,6 +124,7 @@
 .form-control{
   border-top-right-radius: 0.5rem;   
   border-bottom-right-radius: 0.5rem;
+
 }
 
 /* -------- Icone de Recherche -------- */
@@ -183,6 +184,20 @@
     color: $error-message;
   }
 }
+
+/* ===============================
+  MENUS ALLERGENE
+   =============================== */
+
+/* -------- Input ajouter un allergène -------- */
+#new-allergene {
+  max-width: 300px; 
+  border-radius: 2rem;
+}
+
+
+
+
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
   .compte_admin-section .container {
@@ -207,6 +222,7 @@
     width: 100%;
   }
 }
+
 
 /* Desktop / Tablette : grille 3 colonnes centrée */
 @media (min-width: 769px) {

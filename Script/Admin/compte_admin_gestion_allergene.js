@@ -8,7 +8,7 @@ export function initCompteAdminGestionAllergenePage() {
     =============================== */
   
   // Active/désactive les logs dans la console (debug)
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
      CONFIGURATION API
@@ -159,7 +159,7 @@ export function initCompteAdminGestionAllergenePage() {
 
     allergenesList.innerHTML = '';
 
-    // Parcours des allergènes de la ddb pour les afficher dynamiquement
+    // Récupère les allergènes présent en ddb pour les afficher dynamiquement
     allergenes.forEach(allergene => {
 
       // Création du conteneur
@@ -208,7 +208,7 @@ export function initCompteAdminGestionAllergenePage() {
       });
     });
 
-    if (DebugConsole) console.log("[renderAllergenes] Rendu de", allergenes.length, "allergènes");
+    if (DebugConsole) console.log("[renderAllergenes]  Taille : ", allergenes.length);
   }
 
   /* ===============================

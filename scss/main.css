@@ -15318,6 +15318,10 @@ textarea.form-control-lg {
   margin-top: 1rem;
 }
 
+.honey {
+  display: none;
+}
+
 /* -------- Responsive Tablette -------- */
 @media (max-width: 1200px) {
   .contact-hero {
@@ -17845,7 +17849,7 @@ textarea.form-control-lg {
 }
 
 /* ===============================
-  MENUS (HORRAIRE |...)
+  MENUS HORRAIRE
    =============================== */
 /* -------- Conteneur des menus  -------- */
 .card-body {
@@ -17911,6 +17915,15 @@ textarea.form-control-lg {
 }
 #toast-message.toast-error {
   color: #dc3545;
+}
+
+/* ===============================
+  MENUS ALLERGENE
+   =============================== */
+/* -------- Input ajouter un allergène -------- */
+#new-allergene {
+  max-width: 300px;
+  border-radius: 2rem;
 }
 
 /* -------- RESPONSIVE -------- */
