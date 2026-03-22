@@ -1,7 +1,7 @@
 import { API_URL } from '../config.js';
 import { getToken} from '../script.js';
 
-export function initCompteAdminGestionMenusPage() {
+export function initCompteAdminGestionplatPage() {
 
   /* ===============================
     SCRIPT PAGE ADMIN GESTION MENUS
@@ -20,6 +20,9 @@ export function initCompteAdminGestionMenusPage() {
   // EndPoint de l'API de récupération des plats
   const apiGetPlats = `${API_URL}/api/plats`;
 
+  // EndPoint de l'API qui appel l'api cloudinary pour l'upload des photos
+  const apiUploadImage = `${API_URL}/api/employe/upload/image`;
+
   // EndPoint de l'API pour la gestion crud des plats
   const apiEmployePlats = `${API_URL}/api/employe/plats`;
 
@@ -33,6 +36,7 @@ export function initCompteAdminGestionMenusPage() {
     console.log("apiGetPlats      :", apiGetPlats);
     console.log("apiEmployePlats  :", apiEmployePlats);
     console.log("apiGetAllergenes :", apiGetAllergenes);
+    console.log("apiUploadImage   :", apiUploadImage);
     console.log("========================");
   }
 
@@ -87,10 +91,16 @@ export function initCompteAdminGestionMenusPage() {
   const selectCategorie = document.getElementById('plat-categorie');
   // Champ texte pour la description
   const inputDescription = document.getElementById('plat-description');
-  // Input file pour choisir une image
-  const inputPhoto = document.getElementById('plat-photo');
+// Input file pour choisir une image
+  const inputPhotoFile = document.getElementById('plat-photo-file');
+  // Input hidden qui stocke l'URL Cloudinary retournée par le back
+  const inputPhotoUrl = document.getElementById('plat-photo-url');
   // Image pour afficher un aperçu de la photo
   const photoPreview = document.getElementById('plat-photo-preview');
+  // Progress bar upload
+  const uploadProgress = document.getElementById('upload-progress');
+  const uploadBar = document.getElementById('upload-bar');
+  const uploadStatus = document.getElementById('upload-status');
   // Conteneur des cases à cocher des allergènes
   const allergenesContainer = document.getElementById('plat-allergenes-checkboxes');
   // Élément HTML de la modale
@@ -169,6 +179,46 @@ export function initCompteAdminGestionMenusPage() {
   loadUserName();
 
   /* ===============================
+    FONCTION : UPLOAD IMAGE VIA LE BACK SYMFONY VIA CLOUDINARY
+    =============================== */
+  async function uploadImage(file) {
+    if (DebugConsole) console.log("[uploadImage] Début - Appel", apiUploadImage);
+    // Validation taille
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('Fichier trop volumineux (max 5 Mo)');
+    }
+
+    // Validation type
+    const typesValides = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!typesValides.includes(file.type)) {
+      throw new Error('Format invalide (JPG, PNG, WebP)');
+    }
+
+    // Envoi en multipart/form-data
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch(apiUploadImage, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    let data = {};
+    try { data = await response.json(); } catch { data = {}; }
+
+    if (DebugConsole) console.log("[uploadImage]", data);
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Erreur upload');
+    }
+    if (DebugConsole) console.log("[uploadImage] url", data.url);
+    return data.url;
+  }
+
+  /* ===============================
       FONCTION : CHARGEMENT DES ALLERGÈNES POUR LE CHOIX AVEC CHECKBOXES
      =============================== */
   async function loadAllergenes() {
@@ -194,6 +244,62 @@ export function initCompteAdminGestionMenusPage() {
     } catch (err) {
       console.error('[loadAllergenes] Erreur :', err);
     }
+  }
+
+  /* ===============================
+     LISTENER SÉLECTION FICHIER APERCU ET UPLOAD
+     =============================== */
+  if (inputPhotoFile) {
+    inputPhotoFile.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (DebugConsole) console.log("[inputPhotoFile] :", file);
+      // Aperçu immédiat local avant l'upload
+      const reader = new FileReader();
+      if (DebugConsole) console.log("[inputPhotoFile] reader:", reader);
+      reader.onload = (ev) => {
+        photoPreview.src = ev.target.result;
+        photoPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+
+      if (DebugConsole) console.log("[inputPhotoFile] reader:", reader.readAsDataURL(file));
+      // Affiche la progress bar
+      if (uploadProgress) uploadProgress.classList.remove('d-none');
+      if (uploadBar) uploadBar.style.width = '0%';
+      if (uploadStatus) uploadStatus.textContent = 'Upload en cours...';
+
+      // Upload via le back Symfony vers le service Cloudinary
+      try {
+        showToast("Upload en cours...");
+        const url = await uploadImage(file);
+
+        // Stocke l'URL retournée dans l'input
+        inputPhotoUrl.value = url;
+        // Met à jour l'aperçu avec l'URL finale Cloudinary a envoyée
+        photoPreview.src = url;
+
+        if (uploadBar) uploadBar.style.width = '100%';
+        if (uploadStatus) uploadStatus.textContent = 'Upload terminé !';
+
+        showToast("Photo uploadée !");
+        if (DebugConsole) console.log("[uploadImage] URL :", url);
+
+        // Cache la progress bar après 3s
+        setTimeout(() => {
+          if (uploadProgress) uploadProgress.classList.add('d-none');
+        }, 3000);
+
+      } catch (err) {
+        console.error('[uploadImage] Erreur :', err);
+        showToast(err.message || "Erreur upload.", "error");
+        inputPhotoFile.value = '';
+        inputPhotoUrl.value = '';
+        photoPreview.style.display = 'none';
+        if (uploadProgress) uploadProgress.classList.add('d-none');
+      }
+      if (DebugConsole) console.log("[inputPhotoFile] fichier uplader ");
+    });
   }
 
   /* ===============================
@@ -237,22 +343,6 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-     APERÇU PHOTO
-     =============================== */
-  if (inputPhoto) {
-    inputPhoto.addEventListener('input', () => {
-      const url = inputPhoto.value.trim();
-      if (url) {
-        photoPreview.src = url;
-        photoPreview.style.display = 'block';
-        photoPreview.onerror = () => { photoPreview.style.display = 'none'; };
-      } else {
-        photoPreview.style.display = 'none';
-      }
-    });
-  }
-
-  /* ===============================
       FONCTION : CHARGER LES PLATS PRESENT EN DDB
      =============================== */
   async function loadPlats() {
@@ -268,8 +358,8 @@ export function initCompteAdminGestionMenusPage() {
         headers: authHeaders
       });
       if (DebugConsole) console.log("[loadPlat] Réponse status platsRes:", platsRes.status);
-      if (!regimesRes.ok) {
-        if (DebugConsole) console.log("[loadPlat] érreur Réponse, platsRes:");
+      if (!platsRes.ok) {
+        if (DebugConsole) console.log("[loadPlat] érreur Réponse:", platsRes);
         console.error('[loadPlat] Erreur platsRes:', err);
         return;
       }
@@ -314,30 +404,38 @@ export function initCompteAdminGestionMenusPage() {
 
     // Vérifie que la liste existe
     if (!platsList) {
+      if (DebugConsole) console.log("[renderPlats] platsList introuvable");
       return;
     }
 
-    // Vide la liste
+    // Reset affichage
     platsList.innerHTML = '';
 
     // Vérifie s'il y a des plats
     if (plats.length === 0) {
+      if (DebugConsole) console.log("[renderPlats] aucun plat à afficher");
       // Message si aucun résultat
       platsList.innerHTML = '<p class="text-center text-muted">Aucun plat trouvé.</p>';
       return;
     }
 
-    // Parcours les plats
+    // Boucle sur les plats
     plats.forEach(function(plat) {
-
-      let allergLabels = '—';
-
-      if (plat.allergenes) {
-        allergLabels = plat.allergenes.map(function(a) {
-          return a.libelle;
-        }).join(', ');
+      if (DebugConsole) {
+        console.log("[renderPlats] plat :", {
+          id: plat.id,
+          titre: plat.titre,
+          categorie: plat.categorie
+        });
       }
 
+      // Gestion des allergènes
+      let allergLabels = '';
+      if (plat.allergenes && plat.allergenes.length) {
+        allergLabels = plat.allergenes.map(a => a.libelle).join(', ');
+      }
+
+      // Création de la ligne 
       const row = document.createElement('div');
       row.className = 'd-flex justify-content-between align-items-center p-3 mb-2 rounded';
 
@@ -364,7 +462,7 @@ export function initCompteAdminGestionMenusPage() {
           ${imageHtml}
           <div>
             <strong>${plat.titre || 'Sans titre'}</strong>
-            <span class="badge bg-secondary ms-2">${plat.categorie || '—'}</span><br>
+            <span class="badge bg-secondary ms-2">${plat.categorie || ' '}</span><br>
             <small class="text-muted">Allergènes : ${allergLabels}</small>
           </div>
         </div>
@@ -393,6 +491,7 @@ export function initCompteAdminGestionMenusPage() {
     document.querySelectorAll('.btn-delete-plat').forEach(function(btn) {
 
       btn.addEventListener('click', function() {
+        if (DebugConsole) console.log("[delete] clic sur :", btn.dataset.id, btn.dataset.titre);
         // Récupère l'id du plat
         currentDeleteId = btn.dataset.id;
         // Affiche le nom du plat dans la modale
@@ -407,129 +506,12 @@ export function initCompteAdminGestionMenusPage() {
       ---------------------------------------*/
     document.querySelectorAll('.btn-edit-plat').forEach(function(btn) {
       btn.addEventListener('click', function() {
+        if (DebugConsole) console.log("[edit] clic sur :", btn.dataset.id);
         // Appelle la fonction d'édition avec l'id du plat
         openEditForm(parseInt(btn.dataset.id));
       });
     });
-  }
-
-  /* ===============================
-      FONCTION : AFFICHER LES PLATS DANS LE DOM
-     =============================== */
-  function renderPlats(plats) {
-
-    if (!platsList) {
-      if (DebugConsole) console.log("[renderPlats] platsList introuvable");
-      return;
-    }
-
-    // Reset affichage
-    platsList.innerHTML = '';
-    if (DebugConsole) {
-      console.log("[renderPlats] nombre de plats reçus :", plats.length);
-    }
-
-    if (plats.length === 0) {
-      if (DebugConsole) console.log("[renderPlats] aucun plat à afficher");
-      platsList.innerHTML = '<p class="text-center text-muted">Aucun plat trouvé.</p>';
-      return;
-    }
-
-    
-    // Boucle sur les plats
-    plats.forEach(plat => {
-      if (DebugConsole) {
-        console.log("[renderPlats] plat :", {
-          id: plat.id,
-          titre: plat.titre,
-          categorie: plat.categorie
-        });
-      }
-
-      // Gestion des allergènes
-      let allergLabels = '';
-
-      if (plat.allergenes && plat.allergenes.length) {
-        allergLabels = plat.allergenes.map(a => a.libelle).join(', ');
-      }
-
-      // Création ligne
-      const row = document.createElement('div');
-      row.className = 'd-flex justify-content-between align-items-center p-3 mb-2 rounded';
-      row.style.backgroundColor = '#fdf8f0';
-      row.style.border = '1px solid #e8ddd0';
-
-      // Gestion image
-      let imageHtml = '';
-
-      if (plat.photo) {
-        imageHtml = `<img src="${plat.photo}" alt="${plat.titre}" 
-          style="width:60px;height:60px;object-fit:cover;border-radius:0.5rem;">`;
-      } else {
-        imageHtml = `<div style="width:60px;height:60px;background:#e8ddd0;border-radius:0.5rem;display:flex;align-items:center;justify-content:center;">
-          <i class="bi bi-image text-muted"></i>
-        </div>`;
-      }
-
-      // HTML
-      row.innerHTML = `
-        <div class="d-flex align-items-center gap-3">
-          ${imageHtml}
-          <div>
-            <strong>${plat.titre || 'Sans titre'}</strong>
-            <span class="badge bg-secondary ms-2">${plat.categorie || '—'}</span><br>
-            <small class="text-muted">Allergènes : ${allergLabels}</small>
-          </div>
-        </div>
-
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-secondary btn-sm btn-edit-plat" data-id="${plat.id}" title="Modifier">
-            <i class="bi bi-pencil-fill me-1"></i> Modifier
-          </button>
-
-          <button class="btn btn-danger btn-sm btn-delete-plat" data-id="${plat.id}" data-titre="${plat.titre}" title="Supprimer">
-            <i class="bi bi-trash-fill"></i>
-          </button>
-        </div>
-      `;
-
-      platsList.appendChild(row);
-
-    });
-    
-    /* ---------------------------------------
-      * EVENT : suppression 
-       ---------------------------------------*/
-    document.querySelectorAll('.btn-delete-plat').forEach(btn => {
-
-      btn.addEventListener('click', () => {
-        if (DebugConsole) {
-          console.log("[delete] clic sur :", btn.dataset.id, btn.dataset.titre);
-        }
-        currentDeleteId = btn.dataset.id;
-        deletePlatName.textContent = btn.dataset.titre;
-        deleteModal.show();
-      });
-    });
-
-    /* ---------------------------------------
-      * EVENT : modification 
-       ---------------------------------------*/
-    document.querySelectorAll('.btn-edit-plat').forEach(btn => {
-
-      btn.addEventListener('click', () => {
-
-        if (DebugConsole) {
-          console.log("[edit] clic sur :", btn.dataset.id);
-        }
-
-        openEditForm(parseInt(btn.dataset.id));
-      });
-    });
-
-    if (DebugConsole) {
-      console.log("[renderPlats] affichage terminé");
-    }
+    if (DebugConsole) console.log("[renderPlats] affichage terminé");
   }
 
   /* ===============================
@@ -543,7 +525,10 @@ export function initCompteAdminGestionMenusPage() {
     inputTitre.value = '';
     selectCategorie.value = 'Entrée';
     inputDescription.value = '';
-    inputPhoto.value = '';
+
+    // Reset photo
+    inputPhotoFile.value = '';
+    inputPhotoUrl.value = '';
     photoPreview.style.display = 'none';
 
     renderAllergenesCheckboxes([]);
@@ -584,26 +569,25 @@ export function initCompteAdminGestionMenusPage() {
     inputTitre.value = plat.titre || '';
     selectCategorie.value = plat.categorie || 'Entrée';
     inputDescription.value = plat.description || '';
-    inputPhoto.value = plat.photo || '';
+
+    // Stocke l'URL existante dans le hidden input
+    inputPhotoUrl.value = plat.photo || '';
+    // Reset le file input
+    inputPhotoFile.value = '';
 
 
     // Gestion de l'aperçu de l'image
-    // =========================
     if (plat.photo) {
-
       // Si une image existe
       photoPreview.src = plat.photo;
       photoPreview.style.display = 'block';
-
     } else {
-
       // Sinon on cache l'image
       photoPreview.style.display = 'none';
     }
 
     // Gestion des allergènes
     let selectedIds = [];
-
     if (plat.allergenes) {
       selectedIds = plat.allergenes.map(function(a) {
         return a.id;
@@ -624,21 +608,22 @@ export function initCompteAdminGestionMenusPage() {
       behavior: 'smooth'
     });
 
-    if (DebugConsole) {
-      console.log("[openEditForm] formulaire prêt");
-    }
+    if (DebugConsole) { console.log("[openEditForm] formulaire prêt");}
   }
   
   /* ===============================
-      FONCTION : MODIFICATION FORMULAIRE 
+      SAUVEGARDER : CRÉER OU MODIFIER UN PLAT
      =============================== */
   btnSavePlat.addEventListener('click', async () => {
 
     const titre_plat = inputTitre.value.trim();
     const categorie = selectCategorie.value;
     const description_plat = inputDescription.value.trim();
-    const photo = inputPhoto.value.trim();
 
+    // Récupère l'URL depuis le hidden input (uploadée ou existante en edit)
+    const photo = inputPhotoUrl.value.trim();
+
+    if (DebugConsole) { console.log("[btnSavePlat] photo:",photo );}
     // Récupérer les allergènes cochés
     const allergenes = [];
     document.querySelectorAll('.allergene-check:checked').forEach(cb => {
@@ -647,8 +632,10 @@ export function initCompteAdminGestionMenusPage() {
 
     // Validations
     if (!titre_plat) { showToast("Le titre est obligatoire.", "error"); return; }
-    if (!photo) { showToast("L'URL de la photo est obligatoire.", "error"); return; }
+    if (!photo) { showToast("Veuillez uploader une photo.", "error"); return; }
     if (!categorie) { showToast("La catégorie est obligatoire.", "error"); return; }
+
+    if (DebugConsole) { console.log("[btnSavePlat] :",titre_plat,photo,categorie,allergenes );}
 
     const body = { titre_plat, categorie, photo, allergenes };
     if (description_plat) body.description_plat = description_plat;
@@ -657,7 +644,7 @@ export function initCompteAdminGestionMenusPage() {
     const url = isEdit ? `${apiEmployePlats}/${currentEditId}` : apiEmployePlats;
     const method = isEdit ? 'PUT' : 'POST';
 
-    if (DebugConsole) console.log(`[savePlat] ${method}`, url, body);
+    if (DebugConsole) console.log(`[btnSavePlat] ${method}`, url, body);
 
     try {
       const response = await fetch(url, {
@@ -683,7 +670,7 @@ export function initCompteAdminGestionMenusPage() {
     }
   });
 
-  /* ---------------------------------------
+   /* ---------------------------------------
     * EVENT : SUPPRESSION MODALE
      ---------------------------------------*/
   confirmDeleteBtn.addEventListener('click', async () => {
@@ -712,7 +699,6 @@ export function initCompteAdminGestionMenusPage() {
     currentDeleteId = null;
   });
 
-
   /* ===============================
       RECHERCHE PAR TITRE PAR CATEGORIE OU PAR ALLERGENES
      =============================== */
@@ -721,10 +707,14 @@ export function initCompteAdminGestionMenusPage() {
       const search = searchInput.value.toLowerCase().trim();
       if (!search) { renderPlats(allPlats); return; }
 
+      if (DebugConsole) console.log("[searchInput] ", search);
+
       const filtered = allPlats.filter(plat => {
         const titre = (plat.titre || '').toLowerCase();
         const categorie = (plat.categorie || '').toLowerCase();
         const allergenes = plat.allergenes ? plat.allergenes.map(a => a.libelle).join(' ').toLowerCase() : '';
+
+        if (DebugConsole) console.log("[searchInput] ", titre,categorie,allergenes);
         return titre.includes(search) || categorie.includes(search) || allergenes.includes(search);
       });
       renderPlats(filtered);

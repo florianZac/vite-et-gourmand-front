@@ -295,7 +295,7 @@
 }
 
 /* ===============================
-   BOUTON SAUVEGARDER
+   BOUTON SAUVEGARDER PROFIL
    =============================== */
 
 .btn-compte_admin_profil-save {
@@ -315,6 +315,28 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba($terracotta, 0.3);
 }
+
+/* ===============================
+   PLAT
+   =============================== */
+.plat-photo-preview-container img{
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border-radius:0.5rem;
+  display:none;
+  border:1px solid #e8ddd0;
+}
+
+.progress{
+  height:6px;
+}
+
+.progress-bar{
+  width:0%;
+}
+
+
 
 
 

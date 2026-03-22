@@ -18024,7 +18024,7 @@ textarea.form-control-lg {
 }
 
 /* ===============================
-   BOUTON SAUVEGARDER
+   BOUTON SAUVEGARDER PROFIL
    =============================== */
 .btn-compte_admin_profil-save {
   background: linear-gradient(90deg, #C1613A, #803050);
@@ -18042,6 +18042,27 @@ textarea.form-control-lg {
   background: linear-gradient(90deg, #803050, #C1613A);
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+/* ===============================
+   PLAT
+   =============================== */
+.plat-photo-preview-container img {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.5rem;
+  display: none;
+  border: 1px solid #e8ddd0;
+}
+
+.progress {
+  height: 6px;
+}
+
+.progress-bar {
+  width: 0%;
 }
 
 /* -------- RESPONSIVE -------- */

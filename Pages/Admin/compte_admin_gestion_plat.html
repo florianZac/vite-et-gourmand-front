@@ -158,12 +158,24 @@
               <textarea id="plat-description" class="form-control" rows="2" placeholder="Description du plat..."></textarea>
             </div>
 
-            <!-- Photo URL -->
+            <!-- Photo upload -->
             <div class="mb-3">
-              <label class="form-label">URL de la photo <span class="text-danger">*</span></label>
-              <div class="d-flex gap-2 align-items-start">
-                <input type="text" id="plat-photo" class="form-control" placeholder="https://exemple.com/photo.jpg">
-                <img id="plat-photo-preview" src="" alt="Aperçu">
+              <label class="form-label">Photo du plat <span class="text-danger">*</span></label>
+              <div class="d-flex gap-3 align-items-start">
+                <div class="flex-grow-1">
+                  <input type="file" id="plat-photo-file" class="form-control" title="Input photo" accept="image/jpeg,image/png,image/webp">
+                  <input type="hidden" id="plat-photo-url">
+                  <small class="text-muted">Formats : JPG, PNG, WebP — Max 5 Mo</small>
+                </div>
+                <div id="plat-photo-preview-container">
+                  <img id="plat-photo-preview" src="" alt="Aperçu" >
+                </div>
+              </div>
+              <div id="upload-progress" class="mt-2 d-none">
+                <div class="progress">
+                  <div class="progress-bar" id="upload-bar"></div>
+                </div>
+                <small class="text-muted" id="upload-status">Upload en cours...</small>
               </div>
             </div>
 
