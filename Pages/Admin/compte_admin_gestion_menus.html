@@ -112,8 +112,17 @@
                   <input type="text" id="search-menu" class="form-control" placeholder="Rechercher un menu...">
                 </div>
               </div>
+               <!-- Filtre Stock -->
+              <div class="col-md-4">
+                <select id="filter-status" class="form-select" title="filtre stock disponible">
+                  <option value="">Tous</option>
+                  <option value="En stock">En stock</option>
+                  <option value="Rupture">Rupture</option>
+                </select>
+              </div>
+               <!-- Bouton nouveau menus -->
               <div class="col-md-4 text-end">
-                <button class="btn btn-primary" id="btn-new-menu">
+                <button type="submit"  class="btn btn-primary" id="btn-new-menu" title="Nouveau menu">
                   <i class="bi bi-plus me-1"></i> Nouveau menu
                 </button>
               </div>

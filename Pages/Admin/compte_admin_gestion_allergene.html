@@ -116,7 +116,7 @@
               <!-- Champ ajout d'un nouveau allergène-->
               <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
                 <input type="text" id="new-allergene" class="form-control" placeholder="Nouveau Alergène...">
-                <button class="btn btn-primary" id="btn-add-allergene" title="Ajouter un allergène">
+                <button type="button" class="btn btn-primary" id="btn-add-allergene" title="Ajouter un allergène">
                   <i class="bi bi-plus me-1"></i> Ajouter
                 </button>
               </div>
@@ -143,14 +143,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer l'allergène</h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
         <p>Voulez-vous vraiment supprimer <strong id="delete-allergene-name"></strong> ?</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button class="btn btn-danger" id="confirm-delete">Confirmer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete">Confirmer</button>
       </div>
     </div>
   </div>
@@ -162,14 +162,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier l'allergène</h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
         <input type="text" id="edit-allergene-libelle" class="form-control" placeholder="Nouveau libellé...">
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button class="btn btn-primary" id="confirm-edit">Sauvegarder</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirm-edit">Sauvegarder</button>
       </div>
     </div>
   </div>
