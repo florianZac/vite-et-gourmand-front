@@ -1,16 +1,15 @@
 import {getRole } from '../../script.js';
 
 /* ===============================
-   Ce fichier centralise les intéractions et les effets concernant le header
-   RÉSUMÉ DU FONCTIONNEMENT
+    Ce fichier centralise les intéractions et les effets concernant le header
+    RÉSUMÉ DU FONCTIONNEMENT
+      0. GESTION DE L'OUVERTURE / FERMETURE DU MENU BURGER
+      1. EFFET DE SCROLL SUR LE HEADER
+      2. FERMER LE MENU MOBILE AU CLIC
+      3. FERMER LE MENU EN CLIQUANT DEHORS
+      4. SMOOTH SCROLL AVEC JAVASCRIPT
+      5. GESTION CONNEXION / DÉCONNEXION / BOUTON UTILISATEUR
    =============================== */
-  // 0. GESTION DE L'OUVERTURE / FERMETURE DU MENU BURGER
-  // 1. EFFET DE SCROLL SUR LE HEADER
-  // 2. FERMER LE MENU MOBILE AU CLIC
-  // 3. FERMER LE MENU EN CLIQUANT DEHORS
-  // 4. SMOOTH SCROLL AVEC JAVASCRIPT
-  // 5. GESTION CONNEXION / DÉCONNEXION / BOUTON UTILISATEUR
-
 // Attend que le DOM soit complètement chargé avant d'exécuter le code afin de garantir que tous les éléments HTML sont disponibles
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateUserButtonRole(role);
 
   /* ========================================
-     SECTION 0 : GESTION DU X POUR FERMER LE MENU
+      SECTION 0 : GESTION DU X POUR FERMER LE MENU
      ======================================== */
 
   // Affiche le X et cache le hamburger quand le menu s'ouvre
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 1 : EFFET DE SCROLL SUR LE HEADER
+      SECTION 1 : EFFET DE SCROLL SUR LE HEADER
      ======================================== */
   
   // Écoute l'événement 'scroll' sur la fenêtre
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 2 : FERMER LE MENU MOBILE AU CLIC
+      SECTION 2 : FERMER LE MENU MOBILE AU CLIC
      ======================================== */
 
   // Boucle sur CHAQUE lien de navigation
@@ -134,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 3 : FERMER LE MENU EN CLIQUANT DEHORS
+      SECTION 3 : FERMER LE MENU EN CLIQUANT DEHORS
      ======================================== */
 
   // Écoute TOUS les clics sur la page
@@ -156,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     SECTION 4 : SMOOTH SCROLL AVEC JAVASCRIPT
+      SECTION 4 : SMOOTH SCROLL AVEC JAVASCRIPT
      ======================================== */
   // Trouve TOUS les liens qui pointent vers des ancres (#)
   document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -214,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ========================================
-     FONCTION : MISE A JOUR DU LIEN DU BOUTON POUR ACCES A SON COMPTE EN FONCTION DU RETOUR TOKEN
+      FONCTION : MISE A JOUR DU LIEN DU BOUTON POUR ACCES A SON COMPTE EN FONCTION DU RETOUR TOKEN
      ======================================== */
   function updateUserButtonRole(role) {
     if (!btnUser || !role) return;

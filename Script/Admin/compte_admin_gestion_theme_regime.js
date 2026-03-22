@@ -128,9 +128,9 @@ export function initCompteAdminGestionThemeRegimePage() {
 
  /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1.  Appelle GET /api/me
-      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
     =============================== */
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);

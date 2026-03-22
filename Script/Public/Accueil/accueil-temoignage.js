@@ -1,24 +1,23 @@
 import { API_URL } from '../../config.js';
 /* ===============================
-   CAROUSEL DE TÉMOIGNAGES
-   Gère la navigation entre 5 avis clients différents
-   Utilise Bootstrap Icons pour les étoiles
+    CAROUSEL DE TÉMOIGNAGES
+      Gère la navigation entre 5 avis clients différents
+      Utilise Bootstrap Icons pour les étoiles
    =============================== */
 
 export async function initAccueilPage() {
 
   /* ===============================
-     DONNÉES: Les 5 témoignages
-     A voir si on garde ou supprime ces données 
-     elle peuvent etre chargé si l'api viens à bugué
-    =============================== */
-  /* Chaque témoignage contient:
-     - id: identifiant unique
-     - stars: note de 1 à 5 (nombre d'étoiles remplies)
-     - text: le texte du témoignage (entre guillemets)
-     - author: nom de l'auteur
-     - date: date du témoignage (format YYYY-MM-DD)
-  */
+      DONNÉES: Les 5 témoignages
+        A voir si on garde ou supprime ces données 
+        elle peuvent etre chargé si l'api viens à bugué
+        Chaque témoignage contient:
+        - id: identifiant unique
+        - stars: note de 1 à 5 (nombre d'étoiles remplies)
+        - text: le texte du témoignage (entre guillemets)
+        - author: nom de l'auteur
+        - date: date du témoignage (format YYYY-MM-DD)
+     =============================== */
   const testimonials1 = [
     {
       id: 1,
@@ -58,10 +57,8 @@ export async function initAccueilPage() {
   ];
 
   /* ===============================
-    SÉLECTEURS DOM
-    =============================== */
-
-  // Récupèration des éléments HTML
+      SÉLECTEURS DOM
+     =============================== */
   
   // Le conteneur principal du carousel (la carte de témoignage)
   const carouselContainer = document.querySelector('.temoignages-carousel');
@@ -74,8 +71,8 @@ export async function initAccueilPage() {
   const dots = document.querySelectorAll('.temoignages-dot');
 
   /* ===============================
-    CONFIGURATION API
-    =============================== */
+      CONFIGURATION API
+     =============================== */
 
   // URL de récupération des avis validés de l'API Symfony
   const apiAvisclient = `${API_URL}/api/avis`;
@@ -92,18 +89,18 @@ export async function initAccueilPage() {
   if (DebugConsole) console.log("Script accueil-temoignage chargé !");
 
   /* ===============================
-    VARIABLES DE CONTRÔLE
-    =============================== */
+      VARIABLES DE CONTRÔLE
+     =============================== */
 
   let currentIndex = 0;   // currentIndex = index de quel témoignage on affiche actuellement (0 à 5)
   let testimonials = [];  // Liste des témoignages récupérés depuis l'API
 
   /* ===============================
-    FONCTION: génére les étoiles avec Bootstrap Icons pour le carroussel
-    factorisation de fonction 
-    si count cas carroussel
-    sinon si pour la moyenne
-    =============================== */
+      FONCTION: génére les étoiles avec Bootstrap Icons pour le carroussel
+        factorisation de fonction 
+        si count cas carroussel
+        sinon si pour la moyenne
+     =============================== */
 
   function generateStars(count,type)
   {
@@ -127,8 +124,8 @@ export async function initAccueilPage() {
   }
 
   /* ===============================
-    FONCTION: Mise à jour de l'affichage Carousel
-    =============================== */
+      FONCTION: Mise à jour de l'affichage Carousel
+     =============================== */
 
   function MiseAjourCarousel() {
 
@@ -176,8 +173,8 @@ export async function initAccueilPage() {
   }
 
   /* ===============================
-    FONCTION: Mise à jour de l'affichage de la moyenne Globale
-    =============================== */
+      FONCTION: Mise à jour de l'affichage de la moyenne Globale
+     =============================== */
 
   function MiseAjourMoyenneGlobale(avis) {
 
@@ -193,8 +190,8 @@ export async function initAccueilPage() {
   }
 
   /* ===============================
-    FONCTION: Aller au témoignage suivant
-    =============================== */
+      FONCTION: Aller au témoignage suivant
+     =============================== */
   
   function nextTestimonial() {
     currentIndex = (currentIndex + 1) % testimonials.length;
@@ -202,8 +199,8 @@ export async function initAccueilPage() {
   }
 
   /* ========================================
-    FONCTION: Aller au témoignage précédent
-    ======================================== */
+      FONCTION: Aller au témoignage précédent
+     ======================================== */
   
   function prevTestimonial() {
     currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
@@ -211,8 +208,8 @@ export async function initAccueilPage() {
   }
 
   /* ========================================
-    FONCTION: Aller à un témoignage spécifique
-    ======================================== */
+      FONCTION: Aller à un témoignage spécifique
+     ======================================== */
   
   function goToTestimonial(index) {
     currentIndex = index;
@@ -220,8 +217,8 @@ export async function initAccueilPage() {
   }
 
   /* ========================================
-    FONCTION: formatage d'un date en version FR JOUR/MOIS/ANNEE
-    ======================================== */
+      FONCTION: formatage d'un date en version FR JOUR/MOIS/ANNEE
+     ======================================== */
 
   function formatDateFR(dateString) {
     const date = new Date(dateString);
@@ -233,9 +230,8 @@ export async function initAccueilPage() {
   }
 
   /* ========================================
-    FONCTION: Fonction pour faire la moyenne des avis sur la page d'acceuil
-    ======================================== */
-
+      FONCTION: Fonction pour faire la moyenne des avis sur la page d'acceuil
+     ======================================== */
   function calculmoyenneAvis(avis) {
     
     // On Vérifie si le tableau est vide pour le cas de la division par zéro
@@ -260,23 +256,23 @@ export async function initAccueilPage() {
   }
 
   /* ========================================
-    EVENT LISTENERS: Boutons de navigation
-    ======================================== */
+      EVENT LISTENERS: Boutons de navigation
+     ======================================== */
   
   nextBtn.addEventListener('click', nextTestimonial);
   prevBtn.addEventListener('click', prevTestimonial);
 
   /* ========================================
-    EVENT LISTENERS: Points de pagination
-    ======================================== */
+      EVENT LISTENERS: Points de pagination
+     ======================================== */
   
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => goToTestimonial(index));
   });
 
   /* ========================================
-    EVENT LISTENERS: Navigation au clavier
-    ======================================== */
+      EVENT LISTENERS: Navigation au clavier
+     ======================================== */
   
   document.addEventListener('keydown', (e) => {
     if (document.activeElement === document.body) {
@@ -286,8 +282,8 @@ export async function initAccueilPage() {
   });
 
   /* ========================================
-    RÉCUPÉRATION DES DONNÉES VIA L'API
-    ======================================== */
+      RÉCUPÉRATION DES DONNÉES VIA L'API
+     ======================================== */
   try {
     const response = await fetch(apiAvisclient);
     if (!response.ok) throw new Error(`Impossible de récupérer les avis (status ${response.status})`);
@@ -325,9 +321,9 @@ export async function initAccueilPage() {
     if (DebugConsole){
       console.log('Utilisation des avis statiques :', testimonials);
     }
-     /* ========================================
-    INITIALISATION ET MISE A JOUR
-    ======================================== */
+    /* ========================================
+        INITIALISATION ET MISE A JOUR
+       ======================================== */
     MiseAjourCarousel();
   }
   

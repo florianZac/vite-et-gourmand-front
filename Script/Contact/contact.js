@@ -3,11 +3,11 @@ import { API_URL } from '../config.js';
 export function initContactPage() {
 
   /* ===============================
-   SCRIPT PAGE CONTACT
-   =============================== */
+      SCRIPT PAGE CONTACT
+     =============================== */
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   const SujetInput = document.getElementById('SujetInput');
@@ -19,7 +19,7 @@ export function initContactPage() {
   const honeypot = document.getElementById('site_web');
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de base de l'API Symfony
@@ -32,7 +32,7 @@ export function initContactPage() {
   let isSubmitting = false; 
 
   /* ===============================
-     CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
+      CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
      =============================== */
 
   let errorMessage = document.querySelector('.contact-error-message');
@@ -50,7 +50,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     FONCTIONS POUR AFFICHER/MASQUER LES MESSAGES
+      FONCTIONS POUR AFFICHER/MASQUER LES MESSAGES
      =============================== */
 
   function showError(message) {
@@ -73,7 +73,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - EMAIL
+      FONCTIONS DE VALIDATION - EMAIL
      =============================== */
 
   function validateEmail(email) {
@@ -83,7 +83,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     COMPTEUR DE CARACTÈRES - TEXTAREA
+      COMPTEUR DE CARACTÈRES - TEXTAREA
      =============================== */
 
   if (MessageInput && charCount) {
@@ -94,8 +94,8 @@ export function initContactPage() {
   }
 
   /* ===============================
-    FACTORISATION DE LA VALIDATION
-    =============================== */
+      FACTORISATION DE LA VALIDATION
+     =============================== */
   
   function updateFieldState(input, isValid) {
     if (input.value.trim() === '') {
@@ -110,7 +110,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS
+      LISTENERS SUR LES INPUTS
      =============================== */
 
      
@@ -154,7 +154,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     FONCTION POUR VÉRIFIER L'ÉTAT DU FORMULAIRE
+      FONCTION POUR VÉRIFIER L'ÉTAT DU FORMULAIRE
      =============================== */
 
   function checkFormValidity() {
@@ -176,7 +176,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     GESTION DE LA SOUMISSION DU FORMULAIRE
+      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
 
   if (contactForm) {
@@ -280,7 +280,7 @@ export function initContactPage() {
   }
 
   /* ===============================
-     INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
+      INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
      =============================== */
 
   if (submitButton) {

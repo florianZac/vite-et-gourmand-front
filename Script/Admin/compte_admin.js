@@ -4,14 +4,14 @@ import { getToken, getRole } from '../script.js';
 export function initCompteAdminPage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN STATISTIQUE
-    =============================== */
+      SCRIPT PAGE ADMIN STATISTIQUE
+     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = false;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de récupération des infos de l'utilisateur
@@ -26,7 +26,7 @@ export function initCompteAdminPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -52,11 +52,11 @@ export function initCompteAdminPage() {
   };
 
   /* ===============================
-    FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-     - 1.  Appelle GET /api/me
-     - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-     - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
-      =============================== */
+      FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+     =============================== */
 
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -99,7 +99,7 @@ export function initCompteAdminPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 

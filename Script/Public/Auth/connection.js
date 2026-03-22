@@ -3,11 +3,11 @@ import { setToken, setCookie, showAndHideElementsForRole } from '../../script.js
 export function initConnexionPage() {
 
   /* ===============================
-   SCRIPT PAGE CONNEXION
-   =============================== */
+      SCRIPT PAGE CONNEXION
+     =============================== */
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
   
   const passwordInput = document.getElementById('PasswordInput');
@@ -17,7 +17,7 @@ export function initConnexionPage() {
   const submitButton = document.querySelector('.btn-login');
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de base de l'API Symfony
@@ -30,7 +30,7 @@ export function initConnexionPage() {
   let isSubmitting = false; 
 
   /* ===============================
-     CRÉATION DU MESSAGE D'ERREUR
+      CRÉATION DU MESSAGE D'ERREUR
      =============================== */
 
   // Crée l'élément d'erreur sous le bouton de connexion
@@ -43,7 +43,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     FONCTION POUR AFFICHER/MASQUER L'ERREUR
+      FONCTION POUR AFFICHER/MASQUER L'ERREUR
      =============================== */
 
   function showError(message) {
@@ -57,7 +57,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - EMAIL
+      FONCTIONS DE VALIDATION - EMAIL
      =============================== */
 
   /**
@@ -73,7 +73,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - MOT DE PASSE
+      FONCTIONS DE VALIDATION - MOT DE PASSE
      =============================== */
 
   /**
@@ -95,8 +95,8 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-    FACTORISATION DE LA VALIDATION
-    =============================== */
+      FACTORISATION DE LA VALIDATION
+     =============================== */
   function updateFieldState(input, isValid) {
     if (input.value.trim() === '') {
       input.classList.remove('is-valid', 'is-invalid');
@@ -110,7 +110,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
+      FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
   
   function checkFormValidity() {
@@ -129,7 +129,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS
+      LISTENERS SUR LES INPUTS
      =============================== */
 
   if (passwordInput) {
@@ -149,7 +149,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     TOGGLE AFFICHER/MASQUER MOT DE PASSE
+      TOGGLE AFFICHER/MASQUER MOT DE PASSE
      =============================== */
   
   if (passwordInput && toggleButton) {
@@ -167,7 +167,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     GESTION DE LA SOUMISSION DU FORMULAIRE
+      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
   // Le bouton est type="button", on écoute le click
   
@@ -259,7 +259,7 @@ export function initConnexionPage() {
   }
 
   /* ===============================
-     INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
+      INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
      =============================== */
   
   if (submitButton) {

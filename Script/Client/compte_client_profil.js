@@ -65,7 +65,7 @@ export function initcompte_client_profilPage() {
   };
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   // Champs du formulaire profil
@@ -104,11 +104,11 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-    AFFICHAGE DU PRÉNOM DANS LE HERO
-    - 1.  Appelle GET /api/me
-    - 2.  Récupère le prénom depuis { utilisateur: { prenom, ... } }
-    - 3.  Remplit le span #hero-user-name
-    =============================== */
+      AFFICHAGE DU PRÉNOM DANS LE HERO
+        - 1.  Appelle GET /api/me
+        - 2.  Récupère le prénom depuis { utilisateur: { prenom, ... } }
+        - 3.  Remplit le span #hero-user-name
+     =============================== */
 
 
   async function loadHeroName() {
@@ -139,11 +139,11 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     FONCTION : CHARGER LES DONNÉES UTILISATEUR
-     - 1. Appelle GET /api/me qui retourne le compte client profil connecté
-     - 2. Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
-     - 3. Remplit tous les champs du formulaire avec les données reçues
-     - 4. Met à jour le nom et l'email affichés sous l'avatar
+      FONCTION : CHARGER LES DONNÉES UTILISATEUR
+        - 1. Appelle GET /api/me qui retourne le compte client profil connecté
+        - 2. Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
+        - 3. Remplit tous les champs du formulaire avec les données reçues
+        - 4. Met à jour le nom et l'email affichés sous l'avatar
      =============================== */
 
   async function loadUserProfil() {
@@ -192,10 +192,10 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     FONCTION : METTRE À JOUR L'AFFICHAGE DE L'IDENTITÉ
-     - 1. Récupère le prénom et le nom depuis les inputs du formulaire
-     - 2. Met à jour le texte affiché sous l'avatar (nom complet + email)
-     - 3. Appelée après le chargement initial et après chaque sauvegarde
+      FONCTION : METTRE À JOUR L'AFFICHAGE DE L'IDENTITÉ
+        - 1. Récupère le prénom et le nom depuis les inputs du formulaire
+        - 2. Met à jour le texte affiché sous l'avatar (nom complet + email)
+        - 3. Appelée après le chargement initial et après chaque sauvegarde
      =============================== */
 
   function updateDisplayIdentity() {
@@ -232,11 +232,11 @@ export function initcompte_client_profilPage() {
 
 
   /* ===============================
-     FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte client profil
-     - 1. Collecte toutes les valeurs du formulaire
-     - 2. Envoie une requête PUT /api/client/profil avec les nouvelles données
-     - 3. Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
-     - 4. Met à jour l'affichage sous l'avatar après la sauvegarde
+      FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte client profil
+        - 1. Collecte toutes les valeurs du formulaire
+        - 2. Envoie une requête PUT /api/client/profil avec les nouvelles données
+        - 3. Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
+        - 4. Met à jour l'affichage sous l'avatar après la sauvegarde
      =============================== */
 
   async function saveProfil() {
@@ -287,10 +287,10 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     FONCTION : DEMANDER LA DÉSACTIVATION DU COMPTE
-     - 1. Envoie une requête POST /api/client/compte/desactivation
-     - 2. Le back change le statut en "en_attente_desactivation" et envoie un mail à l'admin
-     - 3. L'utilisateur reste connecté après la demande
+      FONCTION : DEMANDER LA DÉSACTIVATION DU COMPTE
+        - 1. Envoie une requête POST /api/client/compte/desactivation
+        - 2. Le back change le statut en "en_attente_desactivation" et envoie un mail à l'admin
+        - 3. L'utilisateur reste connecté après la demande
      =============================== */
 
   async function requestDeactivation() {
@@ -335,7 +335,7 @@ export function initcompte_client_profilPage() {
   }
   
   /* ===============================
-     FONCTION : SUPPRIMER LE COMPTE
+      FONCTION : SUPPRIMER LE COMPTE
      =============================== */
   async function deleteAccount() {
     const confirmed = confirm(
@@ -379,11 +379,11 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     FONCTION : AFFICHER UNE NOTIFICATION
-     - 1. Crée dynamiquement un élément de notification
-     - 2. L'ajoute en haut de la section profil
-     - 3. La notification disparaît automatiquement après 4 secondes
-     - 4. type : 'success' (vert) ou 'error' (rouge)
+      FONCTION : AFFICHER UNE NOTIFICATION
+        - 1. Crée dynamiquement un élément de notification
+        - 2. L'ajoute en haut de la section profil
+        - 3. La notification disparaît automatiquement après 4 secondes
+        - 4. type : 'success' (vert) ou 'error' (rouge)
      =============================== */
 
     function showNotification(message, type = 'success') {
@@ -444,7 +444,7 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     LISTENERS : BOUTONS D'ACTION
+      LISTENERS : BOUTONS D'ACTION
      =============================== */
 
   // Bouton "Sauvegarder les modifications"
@@ -492,9 +492,9 @@ export function initcompte_client_profilPage() {
   }
 
   /* ===============================
-     INITIALISATION
-     - 1. Charge le prénom dans le hero
-     - 2. Charge les données du profil depuis l'API pour pré-remplir le formulaire
+      INITIALISATION
+        - 1. Charge le prénom dans le hero
+        - 2. Charge les données du profil depuis l'API pour pré-remplir le formulaire
      =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE PROFIL ===");

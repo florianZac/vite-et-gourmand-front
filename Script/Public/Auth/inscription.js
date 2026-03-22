@@ -2,8 +2,8 @@ import { API_URL } from '../../config.js';
 export function initInscriptionPage() {
 
   /* ===============================
-   SCRIPT PAGE INSCRIPTION
-   =============================== */
+      SCRIPT PAGE INSCRIPTION
+     =============================== */
 
   //Variable debug console si à true
   let DebugConsole = false;
@@ -12,14 +12,14 @@ export function initInscriptionPage() {
   let isSubmitting = false; 
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de base de l'API Symfony
   const apiInscriptionUser = `${API_URL}/api/register`;
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
   const passwordInput = document.getElementById('PasswordInput');
   const toggleButton = document.getElementById('togglePassword');
@@ -50,7 +50,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - TÉLÉPHONE
+      FONCTIONS DE VALIDATION - TÉLÉPHONE
      =============================== */
   /**
    * Vérifie si le téléphone est valide
@@ -73,7 +73,7 @@ export function initInscriptionPage() {
 
   }
   /* ===============================
-     FONCTIONS DE VALIDATION - EMAIL
+      FONCTIONS DE VALIDATION - EMAIL
      =============================== */
   
   /**
@@ -94,7 +94,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - CODE POSTAL
+      FONCTIONS DE VALIDATION - CODE POSTAL
      =============================== */
   
   /**
@@ -110,7 +110,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - MOT DE PASSE
+      FONCTIONS DE VALIDATION - MOT DE PASSE
      =============================== */
   /**
    * Vérifie si le mot de passe est valide
@@ -139,8 +139,8 @@ export function initInscriptionPage() {
   }
   
   /* ===============================
-    FACTORISATION DE LA VALIDATION
-    =============================== */
+      FACTORISATION DE LA VALIDATION
+     =============================== */
   function updateFieldState(input, isValid) {
     if (input.value.trim() === '') {
       input.classList.remove('is-valid', 'is-invalid');
@@ -155,7 +155,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTION POUR RETOURNER L'ICÔNE BOOTSTRAP
+      FONCTION POUR RETOURNER L'ICÔNE BOOTSTRAP
      =============================== */
   
   function getValidationIcon(isValid) {
@@ -167,7 +167,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTION POUR CHANGER LA COULEUR DU MESSAGE
+      FONCTION POUR CHANGER LA COULEUR DU MESSAGE
      =============================== */
   
   function updateMessageColor(messageElement, isValid) {
@@ -179,7 +179,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     FONCTION D'AFFICHAGE DES VALIDATIONS
+      FONCTION D'AFFICHAGE DES VALIDATIONS
      =============================== */
   
   /**
@@ -208,7 +208,7 @@ export function initInscriptionPage() {
 
 
   /* ===============================
-     FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
+      FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
   function checkFormValidity() {
     // Récupère les valeurs
@@ -249,7 +249,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - PRÉNOM & NOM
+      LISTENERS SUR LES INPUTS - PRÉNOM & NOM
      =============================== */
 
   if (prenom) {
@@ -271,7 +271,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - TÉLÉPHONE
+      LISTENERS SUR LES INPUTS - TÉLÉPHONE
      =============================== */
   
   if (phoneInput) {
@@ -290,7 +290,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - EMAIL
+      LISTENERS SUR LES INPUTS - EMAIL
      =============================== */
   if (emailInput) {
     emailInput.addEventListener('input', (e) => {
@@ -307,7 +307,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - CODE POSTAL
+      LISTENERS SUR LES INPUTS - CODE POSTAL
      =============================== */
   if (postalInput) {
     postalInput.addEventListener('input', (e) => {
@@ -324,8 +324,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - ADRESSE & VILLE
-     (AJOUTÉ - manquait pour déclencher checkFormValidity)
+      LISTENERS SUR LES INPUTS - ADRESSE & VILLE
      =============================== */
   if (addressInput) {
     addressInput.addEventListener('input', () => {
@@ -346,7 +345,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     LISTENERS SUR LES INPUTS - MOT DE PASSE
+      LISTENERS SUR LES INPUTS - MOT DE PASSE
      =============================== */
   
   if (passwordInput) {
@@ -386,7 +385,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     TOGGLE AFFICHER/MASQUER MOT DE PASSE
+      TOGGLE AFFICHER/MASQUER MOT DE PASSE
      =============================== */
   
   if (passwordInput && toggleButton) {
@@ -405,7 +404,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     GESTION DE LA SOUMISSION DU FORMULAIRE
+      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
   
   if (inscriptionForm) {
@@ -490,7 +489,7 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
-     INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
+      INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
      =============================== */
   if (submitButton) {
     submitButton.disabled = true;

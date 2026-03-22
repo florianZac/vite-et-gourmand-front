@@ -20,8 +20,8 @@ export async function initCommanderPage() {
     =============================== */
 
   /* ===============================
-    INITIALISATION DES VARIABLES ET TOKEN 
-    =============================== */
+      INITIALISATION DES VARIABLES ET TOKEN 
+     =============================== */
 
   // Récupère le token JWT depuis le cookie (géré par script.js)
   const token = getToken();
@@ -79,7 +79,7 @@ export async function initCommanderPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-      =============================== */
+     =============================== */
 
   // Sélectionne toutes les pastilles du stepper (étapes 1, 2, 3)
   const steps = document.querySelectorAll('.commander-step');
@@ -124,13 +124,13 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-  FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES AU CLIENTS
-    Déplace l'affichage en fonction de l'étape sous les btns
-    gere la version Erreur / et Success
-  Exemple d'utilisation :
-    showToast("Erreur Prénom ",'error');
-    showToast("Prénom modifié ",'success');
-  =============================== */
+      FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES AU CLIENTS
+        Déplace l'affichage en fonction de l'étape sous les btns
+        gere la version Erreur / et Success
+      Exemple d'utilisation :
+        showToast("Erreur Prénom ",'error');
+        showToast("Prénom modifié ",'success');
+     =============================== */
 
   function showToast(message, type = 'error') {
     const body = toastEl.querySelector('.toast-body');
@@ -143,8 +143,8 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-  FONCTION : RECUPERATION DES HORRAIRES DU SITE
-  =============================== */
+      FONCTION : RECUPERATION DES HORRAIRES DU SITE
+     =============================== */
   async function getHoraires() {
     try {
       const response = await fetch(apiHorraireUrl, {
@@ -174,8 +174,8 @@ export async function initCommanderPage() {
 
 
   /* ===============================
-  FONCTION : VALIDATION DES HORRAIRES
-  =============================== */
+      FONCTION : VALIDATION DES HORRAIRES
+     =============================== */
   function isHoraireValide(dateValue, timeValue) {
     if (!dateValue || !timeValue) return false;
 
@@ -222,8 +222,8 @@ export async function initCommanderPage() {
     }
 
   /* ===============================
-    FONCTION : CHARGE LES MENUS POUR LE SELECT
-    =============================== */
+      FONCTION : CHARGE LES MENUS POUR LE SELECT
+     =============================== */
   async function loadMenus() {
     if (DebugConsole) console.log("[loadMenus] Début - Appel GET", apiMenusUrl);
 
@@ -278,16 +278,16 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-    FONCTION : RECUPERATION DU MENU ID PAR L'URL
-    =============================== */
+      FONCTION : RECUPERATION DU MENU ID PAR L'URL
+     =============================== */
   function getMenuIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
     return params.get('menu_id'); // renvoie l'ID ou null si absent
   }
 
   /* ===============================
-    FONCTION : SELECTION DU SELECT POUR L'ETAPE 3 AVEC L'4'ID MENU
-    =============================== */
+      FONCTION : SELECTION DU SELECT POUR L'ETAPE 3 AVEC L'4'ID MENU
+     =============================== */
   function autoSelectMenuFromUrl() {
     if (!menuSelect) return;
     const menuIdFromUrl = getMenuIdFromUrl();
@@ -305,8 +305,8 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-    FONCTION : CHARGE LE NB MIN D'UN MENU A L'ETAPE 3
-    =============================== */
+      FONCTION : CHARGE LE NB MIN D'UN MENU A L'ETAPE 3
+     =============================== */
   function prefillPersonsMin(menuOption) {
     if (!menuOption) return;
     const minPersons = parseInt(menuOption.dataset.minPersons) || 10;
@@ -322,9 +322,9 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-    FONCTION : CHARGEMENT DU PROFIL UTILISATEUR POUR REMPLIR LES PLACEHOLDER DES INPUTS
-    - Met à jour les inputs nom, prènom, ville et code postale ...
-    =============================== */
+      FONCTION : CHARGEMENT DU PROFIL UTILISATEUR POUR REMPLIR LES PLACEHOLDER DES INPUTS
+      - Met à jour les inputs nom, prènom, ville et code postale ...
+     =============================== */
   await getHoraires();
   async function loadUserProfile() {
     if (DebugConsole) console.log("[loadUserProfile] CHARGEMENT DES INPUTS :");
@@ -379,19 +379,19 @@ export async function initCommanderPage() {
     }
   }
 
-  // ===============================
-  // CHARGEMENT DU PROFIL AVANT INTERACTION
-  // ===============================
+  /* ===============================
+      CHARGEMENT DU PROFIL AVANT INTERACTION
+     ===============================*/
 
   await loadUserProfile(); // charge les données du client
   await loadMenus();       // charge les menus de la BDD
 
   /* ===============================
-     FONCTION : INITIALISATION DE L’ÉTAPE 1 
-     - Cache tous les panels
-     - Affiche uniquement le panel demandé
-     - Met à jour les pastilles du stepper (active / completed)
-     - Cache le stepper à l'étape 4 (page de confirmation)
+      FONCTION : INITIALISATION DE L’ÉTAPE 1 
+        - Cache tous les panels
+        - Affiche uniquement le panel demandé
+        - Met à jour les pastilles du stepper (active / completed)
+        - Cache le stepper à l'étape 4 (page de confirmation)
      =============================== */
 
   if (DebugConsole) console.log("[showStep] AFFICHER UNE ÉTAPE");
@@ -476,10 +476,10 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : VÉRIFIER QUE LES CHAMPS SONT REMPLIS
-     - Récupère le formulaire de l'étape donnée..
-     - Vérifie que tous les champs "required" ont une valeur non vide.
-     - Retourne true si tout est valide, false sinon.
+      FONCTION : VÉRIFIER QUE LES CHAMPS SONT REMPLIS
+        - Récupère le formulaire de l'étape donnée..
+        - Vérifie que tous les champs "required" ont une valeur non vide.
+        - Retourne true si tout est valide, false sinon.
      =============================== */
 
   function isStepValid(stepNumber) {
@@ -506,7 +506,7 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : FONCTION UTILITAIRE POUR LA MISE A JOUR
+      FONCTION : FONCTION UTILITAIRE POUR LA MISE A JOUR
      =============================== */
   function copyCurrentToOriginal(currentData) {
     originalData.prenom = currentData.prenom;
@@ -517,7 +517,7 @@ export async function initCommanderPage() {
     originalData.code_postal = currentData.code_postal;
   }
   /* ===============================
-     FONCTION : MET A JOUR LE PROFIL SI CHAMP MODIFIER
+      FONCTION : MET A JOUR LE PROFIL SI CHAMP MODIFIER
      =============================== */
   async function updateUserIfChanged() {
     // Stocker les valeurs actuelles
@@ -584,15 +584,15 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : CALCULER LES FRAIS DE LIVRAISON VIA L'API BACK
-     - Construit l'adresse complète à partir des champs de l'étape 2
-     - Appelle l'endpoint /delivery-cost de notre API Symfony
-     - Rappel de L'API :
-      géocodage Nominatim -> distance OSRM -> calcul tarif
-     - Stocke le résultat dans la variable deliveryFee
-     - Règle tarifaire :
-         • ≤ 50 km du restaurant ->  livraison gratuite (0€)
-         • > 50 km ->  5€ + 0.59€ par km
+      FONCTION : CALCULER LES FRAIS DE LIVRAISON VIA L'API BACK
+        - Construit l'adresse complète à partir des champs de l'étape 2
+        - Appelle l'endpoint /delivery-cost de notre API Symfony
+        - Rappel de L'API :
+          géocodage Nominatim -> distance OSRM -> calcul tarif
+        - Stocke le résultat dans la variable deliveryFee
+        - Règle tarifaire :
+            • ≤ 50 km du restaurant ->  livraison gratuite (0€)
+            • > 50 km ->  5€ + 0.59€ par km
      =============================== */
 
   async function calculateDeliveryFee() {
@@ -672,17 +672,12 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : MISE À JOUR DU STEPPER "LE RÉCAPITULATIF PRIX"
-     - 1. Récupère le menu sélectionné et son prix unitaire
-     - 2. Calcule le sous-total (prix unitaire × nombre de personnes)
-     - 3. Ajoute les frais de livraison (calculés par calculateDeliveryFee)
-     - 4. Met à jour tous les éléments du récapitulatif dans le DOM
+      FONCTION : MISE À JOUR DU STEPPER "LE RÉCAPITULATIF PRIX"
+        - 1. Récupère le menu sélectionné et son prix unitaire
+        - 2. Calcule le sous-total (prix unitaire × nombre de personnes)
+        - 3. Ajoute les frais de livraison (calculés par calculateDeliveryFee)
+        - 4. Met à jour tous les éléments du récapitulatif dans le DOM
      =============================== */
-
-  /* ===============================
-     FONCTION : METTRE À JOUR LE RÉCAPITULATIF PRIX
-     =============================== */
-
   function updateRecapPrices() {
 
     if (DebugConsole) console.log("[updateRecapPrices] MISE À JOUR RÉCAPITULATIF PRIX");
@@ -846,14 +841,12 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : AFFICHE LA PAGE DE CONFIRMATION (ÉTAPE 4)
-     - 1. Récupère toutes les infos saisies dans les étapes précédentes
-     - 2. Calcule le total final (menus + livraison)
-     - 3. Remplit les champs de la page de confirmation
-     - 4. Affiche l'étape 4
-     =============================== */
-
-          
+      FONCTION : AFFICHE LA PAGE DE CONFIRMATION (ÉTAPE 4)
+        - 1. Récupère toutes les infos saisies dans les étapes précédentes
+        - 2. Calcule le total final (menus + livraison)
+        - 3. Remplit les champs de la page de confirmation
+        - 4. Affiche l'étape 4
+     =============================== */ 
   function showConfirmation(orderTitle,clientEmail) {
     if (DebugConsole) console.log("[showConfirmation] AFFICHE LA PAGE DE CONFIRMATION:");
 
@@ -950,7 +943,7 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     FONCTION : LISTENERS INPUT PERSON
+      FONCTION : LISTENERS INPUT PERSON
      =============================== */
   function handlePersonsInput() {
     const selectedOption = menuSelect.options[menuSelect.selectedIndex];
@@ -971,7 +964,7 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     LISTENERS : INPUT FORM
+      LISTENERS : INPUT FORM
      =============================== */
   // Inputs à surveiller
   const profileInputs = [
@@ -994,10 +987,10 @@ export async function initCommanderPage() {
   });
 
   /* ===============================
-     LISTENERS : MENU & PERSONNES
-     - 1. Mise à jour du récap en temps réel
-     - 2. Dès que le client change le menu ou le nombre de personnes,
-       le récapitulatif se recalcule automatiquement
+      LISTENERS : MENU & PERSONNES
+        - 1. Mise à jour du récap en temps réel
+        - 2. Dès que le client change le menu ou le nombre de personnes,
+          le récapitulatif se recalcule automatiquement
      =============================== */
 
   if (menuSelect) {
@@ -1006,8 +999,8 @@ export async function initCommanderPage() {
   if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
 
   /* ===============================
-     LISTENERS : BOUTONS SUIVANT
-     - Étape 1 -> 2 : vérifie que les infos personnelles sont remplies
+      LISTENERS : BOUTONS SUIVANT
+        - Étape 1 -> 2 : vérifie que les infos personnelles sont remplies
      =============================== */
 
   // Bouton "Étape suivante" de l'étape 1 (Informations -> Livraison)
@@ -1030,9 +1023,9 @@ export async function initCommanderPage() {
   if (DebugConsole) console.log("[LISTENERS] btnNext1:", btnNext1);
 
   /* ===============================
-     LISTENERS : BOUTONS SUIVANT
-     - Étape 2 -> 3 : vérifie l'adresse, PUIS calcule les frais de livraison
-       via l'API avant d'afficher le récap
+      LISTENERS : BOUTONS SUIVANT
+        - Étape 2 -> 3 : vérifie l'adresse, PUIS calcule les frais de livraison
+          via l'API avant d'afficher le récap
      =============================== */
   // Bouton "Étape suivante" de l'étape 2 (Livraison -> Menu & Récap)
   // CE LISTENER est async car on attend le retour de l'API
@@ -1064,8 +1057,8 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     LISTENERS : BOUTONS RETOUR
-     - Permettent de revenir à l'étape précédente
+      LISTENERS : BOUTONS RETOUR
+        - Permettent de revenir à l'étape précédente
      =============================== */
 
   // Bouton "Retour" de l'étape 2,  retour à l'étape 1
@@ -1087,10 +1080,10 @@ export async function initCommanderPage() {
   }
 
     /* ===============================
-       LISTENER : BOUTON CONFIRMER LA COMMANDE
-     - 1. Collecte toutes les données du formulaire multi-étapes
-     - 2. En production : envoie les données à l'API POST /api/orders
-     - 3. Pour l'instant : log en console + affiche la confirmation
+        LISTENER : BOUTON CONFIRMER LA COMMANDE
+          - 1. Collecte toutes les données du formulaire multi-étapes
+          - 2. En production : envoie les données à l'API POST /api/orders
+          - 3. Pour l'instant : log en console + affiche la confirmation
      =============================== */
 
   const btnSubmit = document.getElementById('btn-submit');
@@ -1210,8 +1203,8 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
-     INITIALISATION : AFFICHER L'ÉTAPE 1
-     - Au chargement de la page, on affiche toujours l'étape 1
+      INITIALISATION : AFFICHER L'ÉTAPE 1
+        - Au chargement de la page, on affiche toujours l'étape 1
      =============================== */
 
   showStep(1);

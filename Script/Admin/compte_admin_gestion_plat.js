@@ -4,14 +4,14 @@ import { getToken} from '../script.js';
 export function initCompteAdminGestionplatPage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION MENUS
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION MENUS
+     =============================== */
   
   // Variable debug console
   let DebugConsole = true;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // EndPoint de l'API de récupération des infos de l'utilisateur
@@ -41,7 +41,7 @@ export function initCompteAdminGestionplatPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -67,7 +67,7 @@ export function initCompteAdminGestionplatPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
 
@@ -137,9 +137,9 @@ export function initCompteAdminGestionplatPage() {
 
   /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1.  Appelle GET /api/me
-      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
      =============================== */
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -181,8 +181,8 @@ export function initCompteAdminGestionplatPage() {
   loadUserName();
 
   /* ===============================
-    FONCTION : UPLOAD IMAGE VIA LE BACK SYMFONY VIA CLOUDINARY
-    =============================== */
+      FONCTION : UPLOAD IMAGE VIA LE BACK SYMFONY VIA CLOUDINARY
+     =============================== */
   async function uploadImage(file) {
     if (DebugConsole) console.log("[uploadImage] Début - Appel", apiUploadImage);
     // Validation taille
@@ -249,7 +249,7 @@ export function initCompteAdminGestionplatPage() {
   }
 
   /* ===============================
-     LISTENER SÉLECTION FICHIER APERCU ET UPLOAD
+      LISTENER SÉLECTION FICHIER APERCU ET UPLOAD
      =============================== */
   if (inputPhotoFile) {
     inputPhotoFile.addEventListener('change', async (e) => {
@@ -517,8 +517,8 @@ export function initCompteAdminGestionplatPage() {
   }
 
   /* ===============================
-    FONCTION : CRÉATION FORMULAIRE POUR CREER UN PLAT
-    =============================== */
+      FONCTION : CRÉATION FORMULAIRE POUR CREER UN PLAT
+     =============================== */
   function openCreateForm() {
     currentEditId = null;
     platFormTitle.textContent = 'Créer un plat';
@@ -540,8 +540,8 @@ export function initCompteAdminGestionplatPage() {
   }
 
   /* ===============================
-    FONCTION : MODIFICATION FORMULAIRE 
-    =============================== */
+      FONCTION : MODIFICATION FORMULAIRE 
+     =============================== */
   function openEditForm(platId) {
 
     // Trouver le plat correspondantd'après son ID
@@ -703,8 +703,8 @@ export function initCompteAdminGestionplatPage() {
 
   /* ===============================
       FONCTION : APPLIQUER LES FILTRES (recherche + catégorie)
-      Recherche par titre par catégory ou par allergènes
-      Select par catégorie (Entrée/Plat/Dessert)
+        Recherche par titre par catégory ou par allergènes
+        Select par catégorie (Entrée/Plat/Dessert)
      =============================== */
   function applyFilters() {
     const search = searchInput ? searchInput.value.toLowerCase().trim() : '';

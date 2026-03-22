@@ -4,14 +4,14 @@ import { getToken, getRole } from '../script.js';
 export function initCompteAdminProfilPage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN PROFIL
-    =============================== */
+      SCRIPT PAGE ADMIN PROFIL
+     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = false;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de récupération des infos de l'utilisateur
@@ -29,7 +29,7 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -56,7 +56,7 @@ export function initCompteAdminProfilPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
@@ -100,11 +100,11 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-      - Appelle GET /api/me
+      FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
+        - Appelle GET /api/me
           Décode le token JWT pour récupérer le prenom, nom, email, role
           Remplit le span #hero-user-name avec le prenom récuperer du token
-    =============================== */
+     =============================== */
 
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -146,12 +146,12 @@ export function initCompteAdminProfilPage() {
   loadUserName();
 
   /* ===============================
-     FONCTION : CHARGER LES DONNÉES UTILISATEUR
-      -  Appelle GET /api/me qui retourne le compte client profil connecté
-          Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
-          Remplit tous les champs du formulaire avec les données reçues
-          Met à jour le nom et l'email affichés sous l'avatar
-    =============================== */
+      FONCTION : CHARGER LES DONNÉES UTILISATEUR
+        -  Appelle GET /api/me qui retourne le compte client profil connecté
+            Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
+            Remplit tous les champs du formulaire avec les données reçues
+            Met à jour le nom et l'email affichés sous l'avatar
+     =============================== */
   async function loadUserProfil() {
     if (DebugConsole) console.log("[loadUserProfil] Début - Appel GET", apiProfilUrl);
 
@@ -198,10 +198,10 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     FONCTION : MISE À JOUR DE L'AFFICHAGE DE L'IDENTITÉ
-     -  Récupère le prénom et le nom depuis les inputs du formulaire
-     -  Met à jour le texte affiché sous l'avatar (nom complet + email)
-     -  Appelée après le chargement initial et après chaque sauvegarde
+      FONCTION : MISE À JOUR DE L'AFFICHAGE DE L'IDENTITÉ
+        -  Récupère le prénom et le nom depuis les inputs du formulaire
+        -  Met à jour le texte affiché sous l'avatar (nom complet + email)
+        -  Appelée après le chargement initial et après chaque sauvegarde
      =============================== */
 
   function updateDisplayIdentity() {
@@ -236,11 +236,11 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     FONCTION : SAUVEGARDER LES MODIFICATIONS DU COMPTE ADMIN
-     -  Collecte toutes les valeurs du formulaire
-     -  Envoie une requête PUT /api/client/profil avec les nouvelles données
-          Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
-          Met à jour l'affichage sous l'avatar après la sauvegarde
+      FONCTION : SAUVEGARDER LES MODIFICATIONS DU COMPTE ADMIN
+        -  Collecte toutes les valeurs du formulaire
+        -  Envoie une requête PUT /api/client/profil avec les nouvelles données
+              Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
+              Met à jour l'affichage sous l'avatar après la sauvegarde
      =============================== */
 
   async function saveProfil() {
@@ -292,11 +292,11 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     FONCTION : AFFICHER UNE NOTIFICATION
-     - Crée dynamiquement un élément de notification
-     - Ajoute en haut de la section profil
-        La notification disparaît automatiquement après 4 secondes
-        type : 'success' (vert) ou 'error' (rouge)
+      FONCTION : AFFICHER UNE NOTIFICATION
+        - Crée dynamiquement un élément de notification
+        - Ajoute en haut de la section profil
+            La notification disparaît automatiquement après 4 secondes
+            type : 'success' (vert) ou 'error' (rouge)
      =============================== */
     function showNotification(message, type = 'success') {
     if (DebugConsole) console.log(`[showNotification] ${type} : ${message}`);
@@ -389,9 +389,9 @@ export function initCompteAdminProfilPage() {
   }
 
   /* ===============================
-     INITIALISATION
-     - Charge le prénom dans le hero
-     - Charge les données du profil depuis l'API pour pré-remplir le formulaire
+      INITIALISATION
+        - Charge le prénom dans le hero
+        - Charge les données du profil depuis l'API pour pré-remplir le formulaire
      =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE PROFIL ===");

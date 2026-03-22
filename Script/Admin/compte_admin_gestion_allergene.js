@@ -4,14 +4,14 @@ import { getToken, getRole } from '../script.js';
 export function initCompteAdminGestionAllergenePage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION ALLERGENE
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION ALLERGENE
+     =============================== */
   
   // Active/désactive les logs dans la console (debug)
   let DebugConsole = false;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de récupération des infos de l'utilisateur
@@ -31,7 +31,7 @@ export function initCompteAdminGestionAllergenePage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -58,7 +58,7 @@ export function initCompteAdminGestionAllergenePage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroName = document.getElementById('hero-user-name'); 
@@ -89,8 +89,8 @@ export function initCompteAdminGestionAllergenePage() {
   let currentEditId = null;
 
   /* ===============================
-    FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
-    =============================== */
+      FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
+     =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
     // Texte du message
@@ -104,11 +104,11 @@ export function initCompteAdminGestionAllergenePage() {
   }
 
   /* ===============================
-    FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1.  Appelle GET /api/me
-      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
-    =============================== */
+      FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+     =============================== */
 
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -153,7 +153,7 @@ export function initCompteAdminGestionAllergenePage() {
   loadUserName();
 
   /* ===============================
-     FONCTION : AFFICHAGE & RECUPERATION DE LA LISTE ALLERGÈNES EN DDB 
+      FONCTION : AFFICHAGE & RECUPERATION DE LA LISTE ALLERGÈNES EN DDB 
      =============================== */
   function renderAllergenes(allergenes) {
 
@@ -212,7 +212,7 @@ export function initCompteAdminGestionAllergenePage() {
   }
 
   /* ===============================
-     RECUPERE LES ALLERGÈNES AVEC LES INFORMATONS PRESENTE EN DDB
+      RECUPERE LES ALLERGÈNES AVEC LES INFORMATONS PRESENTE EN DDB
      =============================== */
   async function loadAllergenes() {
     if (DebugConsole) console.log("[loadAllergenes] Appel GET", apiGetAllergenes);
@@ -239,8 +239,8 @@ export function initCompteAdminGestionAllergenePage() {
   loadAllergenes();
 
    /* ===============================
-     AJOUT ALLERGÈNE
-     =============================== */
+        AJOUT ALLERGÈNE
+      =============================== */
   // On écoute le clic sur le bouton "Ajouter"
   btnAdd.addEventListener('click', async () => {
     // On récupère la valeur de l'input + suppression des espaces inutiles
@@ -281,7 +281,7 @@ export function initCompteAdminGestionAllergenePage() {
   });
 
   /* ===============================
-     SUPPRESSION ALLERGÈNE (MODALE)
+      SUPPRESSION ALLERGÈNE (MODALE)
      =============================== */
   confirmDeleteBtn.addEventListener('click', async () => {
     if (!currentDeleteId) return;
@@ -315,7 +315,7 @@ export function initCompteAdminGestionAllergenePage() {
   });
 
   /* ===============================
-     MODIFICATION ALLERGÈNE (MODALE)
+      MODIFICATION ALLERGÈNE (MODALE)
      =============================== */
   // On écoute le bouton de confirmation dans la modale d'édition
   confirmEditBtn.addEventListener('click', async () => {

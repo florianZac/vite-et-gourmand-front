@@ -14,7 +14,7 @@ export function initCompteAdminGestionHorrairePage() {
   let originalHoraires = {};
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de récupération des infos de l'utilisateur
@@ -36,7 +36,7 @@ export function initCompteAdminGestionHorrairePage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -60,7 +60,7 @@ export function initCompteAdminGestionHorrairePage() {
     console.log("================================");
   }
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   // span qui contiendra le prénom de l'administrateur
@@ -85,11 +85,11 @@ export function initCompteAdminGestionHorrairePage() {
   };
 
   /* ===============================
-  FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-    - 1.  Appelle GET /api/me
-    - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-    - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
-    =============================== */
+      FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+     =============================== */
 
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -129,8 +129,8 @@ export function initCompteAdminGestionHorrairePage() {
   loadUserName();
 
   /* ===============================
-    FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
-    =============================== */
+      FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
+     =============================== */
   const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 3000 }); // delay = 3 secondes
 
   function showToast(message) {
@@ -141,10 +141,10 @@ export function initCompteAdminGestionHorrairePage() {
   }
 
   /* ===============================
-    FONCTION : TOAST BOOTSTRAP changement de classe en cas d'érreur
-    Utilisation : 
-      Erreur -> showToast("Aucune modification détectée.", "error"); 
-      Pas d'érreur  ->showToast("Horaires mis à jour !");
+      FONCTION : TOAST BOOTSTRAP changement de classe en cas d'érreur
+        Utilisation : 
+          Erreur -> showToast("Aucune modification détectée.", "error"); 
+          Pas d'érreur  ->showToast("Horaires mis à jour !");
     =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
@@ -157,9 +157,9 @@ export function initCompteAdminGestionHorrairePage() {
   }
 
  /* ===============================
-    FONCTION : VERIFICATION DE LA VALEUR HORRAIRE
-     - 1. Vérifie si la valeur rentrer dans l'input de texte est valide
-     - 2. Gestion du cas Fermé ou 00:00 ou vide = Fermé point de vue UX
+      FONCTION : VERIFICATION DE LA VALEUR HORRAIRE
+        - 1. Vérifie si la valeur rentrer dans l'input de texte est valide
+        - 2. Gestion du cas Fermé ou 00:00 ou vide = Fermé point de vue UX
     =============================== */
   function ValidationHoraire(timeValue) {
     if (!timeValue || timeValue === "00:00" || timeValue === "Fermé") {
@@ -175,8 +175,8 @@ export function initCompteAdminGestionHorrairePage() {
   }  
 
  /* ===============================
-    FONCTION : RECUPERATION DES DONNEES HORRAIRES DU SITE
-     - récupère les données de l'input et stock les variable dans originalHoraires
+      FONCTION : RECUPERATION DES DONNEES HORRAIRES DU SITE
+        - récupère les données de l'input et stock les variable dans originalHoraires
     =============================== */
 
   async function GetHoraire() {
@@ -238,9 +238,9 @@ export function initCompteAdminGestionHorrairePage() {
   GetHoraire();
 
   /* ===============================
-     FONCTION : FILTRE DES DONNEE QUI ONT ETAIT MODIFIER
-      Compare les données actuel au tableau originalHoraires 
-      pour éviter trop d'appel APi 
+      FONCTION : FILTRE DES DONNEE QUI ONT ETAIT MODIFIER
+        Compare les données actuel au tableau originalHoraires 
+        pour éviter trop d'appel APi 
      =============================== */
   function getChangedHoraires() {
     const horairesToSend = [];
@@ -279,8 +279,8 @@ export function initCompteAdminGestionHorrairePage() {
   }
 
   /* ===============================
-     FONCTION : MET A JOUR LES HORRAIRES 
-      1- Appel PUT /api/admin/horaires/{id}  
+      FONCTION : MET A JOUR LES HORRAIRES 
+        1- Appel PUT /api/admin/horaires/{id}  
      =============================== */
   async function updateHoraires(horairesToSend) {
     for (const horaire of horairesToSend) {
@@ -313,7 +313,7 @@ export function initCompteAdminGestionHorrairePage() {
   }
 
   /* ===============================
-     SUBMIT : SOUMISSION DES DONNEE QUI ONT ETAIT MODIFIER
+      SUBMIT : SOUMISSION DES DONNEE QUI ONT ETAIT MODIFIER
      =============================== */
   submitBtn.addEventListener('click', async (e) => {
     e.preventDefault();

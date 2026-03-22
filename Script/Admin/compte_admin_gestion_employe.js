@@ -4,14 +4,14 @@ import { getToken} from '../script.js';
 export function initCompteAdminGestionEmployePage() {
   
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION EMPLOYEE
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION EMPLOYEE
+     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = true;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // EndPoint de l'API de récupération des infos de l'utilisateur
@@ -37,7 +37,7 @@ export function initCompteAdminGestionEmployePage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -63,7 +63,7 @@ export function initCompteAdminGestionEmployePage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
@@ -356,10 +356,10 @@ export function initCompteAdminGestionEmployePage() {
   });
 
  /* ===============================
-    CRÉER UN EMPLOYÉ
-      - APPEL : POST /api/admin/employes
-        Données fixes pour l'employée : pays, ville, adresse, code_postal
-     =============================== */
+      CRÉER UN EMPLOYÉ
+        - APPEL : POST /api/admin/employes
+          Données fixes pour l'employée : pays, ville, adresse, code_postal
+    =============================== */
   btnCreate.addEventListener('click', async function() {
 
     const nom = inputNom.value.trim();

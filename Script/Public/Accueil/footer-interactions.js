@@ -6,9 +6,9 @@ const apiHoraire = `${API_URL}/api/horaires`;
 // Variable debug console si à true
 let DebugConsole = false;
 
-/**
- * Fonction principale pour injecter dynamiquement les horaires dans le footer
- */
+/* ========================================
+    FONCTION:  INITIALISATION DYNAMIQUE DES HORRAIRES VIA API
+   ======================================== */
 export async function initFooterInteractions() {
 
   // Sélection de la colonne des horaires dans le footer

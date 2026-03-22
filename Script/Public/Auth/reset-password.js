@@ -1,22 +1,22 @@
 import { API_URL } from '../../config.js';
 
 /* ===============================
-SCRIPT PAGE RESET PASSWORD
-=============================== */
+    SCRIPT PAGE RESET PASSWORD
+   =============================== */
 
 let DebugConsole = true;
 
 /* ===============================
-  Configuration API
-  =============================== */
+    Configuration API
+   =============================== */
 
 const apiResetpassword = `${API_URL}/api/reset-password`;
 
 export function initResetpasswordPage() {
 
 /* ===============================
-    RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+   =============================== */
 
   const passwordInput = document.getElementById('NewPasswordInput');
   const confirmPasswordInput = document.getElementById('ConfirmPasswordInput');
@@ -44,7 +44,7 @@ export function initResetpasswordPage() {
   if(submitButton) submitButton.disabled = true;
 
   /* ===============================
-     EXTRACTION DU TOKEN DANS L'URL
+      EXTRACTION DU TOKEN DANS L'URL
      =============================== */
 
   // Récupère le token depuis l'URL
@@ -65,7 +65,7 @@ export function initResetpasswordPage() {
 
 
   /* ===============================
-     AFFICHE / CACHE LE MOT DE PASSE
+      AFFICHE / CACHE LE MOT DE PASSE
      =============================== */
   if(submitButton) submitButton.disabled = true;
 
@@ -97,10 +97,8 @@ export function initResetpasswordPage() {
   }
 
   /* ===============================
-     FONCTIONS POUR AFFICHER / MASQUER LES MESSAGES
+      FONCTIONS POUR AFFICHER / MASQUER LES MESSAGES
      =============================== */
-
-
   function showError(message) {
 
     if (successMessage) successMessage.style.display = 'none';
@@ -113,24 +111,24 @@ export function initResetpasswordPage() {
 
   }
 
-function showSuccess(message) {
+  function showSuccess(message) {
 
-  if (errorMessage) errorMessage.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
 
-  if (successMessage) {
-    successMessage.textContent = message;
-    successMessage.style.display = 'block';
-  }
-
-  if (DebugConsole) console.log("Succès :", message);
-  // Redirection vers login après 2 secondes
-  setTimeout(() => {
-    if (DebugConsole) {
-      console.log("Redirection vers la page de connection...");
+    if (successMessage) {
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
     }
-    window.location.href = "/login";
-  }, 2000);
-}
+
+    if (DebugConsole) console.log("Succès :", message);
+    // Redirection vers login après 2 secondes
+    setTimeout(() => {
+      if (DebugConsole) {
+        console.log("Redirection vers la page de connection...");
+      }
+      window.location.href = "/login";
+    }, 2000);
+  }
 
   function hideMessages() {
 
@@ -147,13 +145,13 @@ function showSuccess(message) {
   }
 
   /* =====================================================
-     VALIDATION DU MOT DE PASSE
-     Règles :
-     - 10 caractères minimum
-     - 1 majuscule
-     - 1 minuscule
-     - 1 chiffre
-     - 1 caractère spécial
+      VALIDATION DU MOT DE PASSE
+        Règles :
+        - 10 caractères minimum
+        - 1 majuscule
+        - 1 minuscule
+        - 1 chiffre
+        - 1 caractère spécial
      ===================================================== */
 
   function validatePassword(password) {
@@ -180,7 +178,7 @@ function showSuccess(message) {
   }
 
   /* =====================================================
-     VÉRIFICATION QUE LES DEUX MOTS DE PASSE SONT IDENTIQUES
+      VÉRIFICATION QUE LES DEUX MOTS DE PASSE SONT IDENTIQUES
      ===================================================== */
 
   // Vérification de la concordance entre les deux mot de passe
@@ -196,7 +194,7 @@ function showSuccess(message) {
   }
 
   /* =====================================================
-     GÉNÉRATION DES ICÔNES DE VALIDATION
+      GÉNÉRATION DES ICÔNES DE VALIDATION
      ===================================================== */
 
   function getValidationIcon(isValid) {
@@ -210,8 +208,8 @@ function showSuccess(message) {
   }
 
   /* =====================================================
-    AFFICHAGE DES RÈGLES DE VALIDATION
-    ===================================================== */
+      AFFICHAGE DES RÈGLES DE VALIDATION
+     ===================================================== */
 
   function updateValidationMessage(validation) {
 
@@ -230,7 +228,7 @@ function showSuccess(message) {
   }
 
   /* =====================================================
-     LISTENER SUR LE CHAMP MOT DE PASSE
+      LISTENER SUR LE CHAMP MOT DE PASSE
      ===================================================== */
 
   if (passwordInput) {
@@ -248,8 +246,8 @@ function showSuccess(message) {
   }
 
   /* ===============================
-    LISTENER SUR LE CHAMP CONFIRMATION
-  =============================== */
+      LISTENER SUR LE CHAMP CONFIRMATION
+     =============================== */
 
 if(confirmPasswordInput) {
     confirmPasswordInput.addEventListener('input', () => {
@@ -263,7 +261,7 @@ if(confirmPasswordInput) {
 
 
   /* ===============================
-     GESTION DE LA SOUMISSION DU FORMULAIRE
+      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
 
   if (resetForm) {
@@ -339,7 +337,7 @@ if(confirmPasswordInput) {
 }
 
 /* =====================================================
-   INITIALISATION DU SCRIPT
+    INITIALISATION DU SCRIPT
    ===================================================== */
 
 initResetpasswordPage();

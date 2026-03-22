@@ -45,7 +45,7 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -185,7 +185,7 @@ export function initCompteAdminGestionMenusPage() {
         - 3.  Traitement des données régimes
         - 4.  Traitement des plats
         - 5.  Chargement des selects
-    =============================== */
+     =============================== */
   async function loadSelectData() {
 
     try {

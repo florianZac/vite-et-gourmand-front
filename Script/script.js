@@ -1,8 +1,8 @@
 import { API_URL } from './config.js';
 
 /* ===============================
-   GESTION DES COOKIES et ROLE
-	=============================== */
+    GESTION DES COOKIES et ROLE
+	 =============================== */
 
 // Nom du cookie pour le token d'accès
 const tokenCookieName = "accesstoken";
@@ -14,15 +14,15 @@ const roleCookieName = "role";
 let DebugConsole = false;
 
 /* ===============================
-   Configuration API
+    Configuration API
    =============================== */
 
 //récupere les informations de l'utilisateur concerné
 const apiAccountMeUrl = `${API_URL}/api/me`;
 
 /* ===============================
-   Initialisation globale
-	=============================== */
+    Initialisation globale
+	 =============================== */
 
 // Au chargement complet du DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ===============================
-	 Gestion du token
-	=============================== */
+	  Gestion du token
+	 =============================== */
 
 // Fonction pour sauvegarder le token dans un cookie
 export function setToken(token){
@@ -65,8 +65,8 @@ export function getToken(){
 }
 
 /* ===============================
-	 Gestion des cookies
-	=============================== */
+	  Gestion des cookies
+	 =============================== */
 
 // Fonction pour récupérer la valeur d'un cookie par son nom
 export function getCookie(name) {
@@ -110,8 +110,8 @@ export function eraseCookie(name) {
 }
 
 /* ===============================
-	 Permet d'éviter les attaque XSS en échappant les balises HTML
-	=============================== */
+	  Permet d'éviter les attaque XSS en échappant les balises HTML
+	 =============================== */
 function sanitizeHtml(text){
   // Créez un élément HTML temporaire de type "div"
   const tempHtml = document.createElement('div');
@@ -125,8 +125,8 @@ function sanitizeHtml(text){
 }
 
 /* ===============================
-	 Affichage dynamique de la navbar 
-	=============================== */
+	  Affichage dynamique de la navbar 
+	 =============================== */
 
 export function showAndHideElementsForRole() {
   // Vérifie si l'utilisateur est connecté
@@ -185,8 +185,8 @@ export function showAndHideElementsForRole() {
 }
 
 /* ===============================
-	 Déconnexion
-	=============================== */
+	  Déconnexion
+	 =============================== */
 
 export function signout() {
     // Supprime les cookies connus
@@ -215,8 +215,8 @@ export function signout() {
 
 
 /* ===============================
-	 Récupération des infos utilisateur
-	=============================== */
+	  Récupération des infos utilisateur
+	 =============================== */
 export async function getInfosUser() {
     const token = getToken();
 

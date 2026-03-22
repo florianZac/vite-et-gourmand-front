@@ -2,18 +2,18 @@ import { API_URL } from '../../config.js';
 export function initforgotpasswordPage() {
 
   /* ===============================
-   SCRIPT PAGE RESET PASSWORD
-   =============================== */
+      SCRIPT PAGE RESET PASSWORD
+     =============================== */
   let DebugConsole = true;
 
   /* ===============================
-    Configuration API
-    =============================== */
+      Configuration API
+     =============================== */
    
   const apiForgotpassword = `${API_URL}/api/forgot-password`;
 
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   const emailInput = document.getElementById('EmailInput');
@@ -28,7 +28,7 @@ export function initforgotpasswordPage() {
     console.log("===============================");
   }
   /* ===============================
-     CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
+      CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
      =============================== */
 
   // Message d'erreur
@@ -50,7 +50,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     FONCTIONS POUR AFFICHER/MASQUER LES MESSAGES
+      FONCTIONS POUR AFFICHER/MASQUER LES MESSAGES
      =============================== */
 
   function showError(message) {
@@ -83,7 +83,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - EMAIL
+      FONCTIONS DE VALIDATION - EMAIL
      =============================== */
 
   /**
@@ -101,7 +101,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     FONCTION POUR VÉRIFIER L'ÉTAT DU FORMULAIRE
+      FONCTION POUR VÉRIFIER L'ÉTAT DU FORMULAIRE
      =============================== */
 
   function checkFormValidity() {
@@ -115,7 +115,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     LISTENER SUR L'INPUT EMAIL
+      LISTENER SUR L'INPUT EMAIL
      =============================== */
 
   if (emailInput) {
@@ -143,7 +143,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     GESTION DE LA SOUMISSION DU FORMULAIRE
+      GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
 
   if (resetForm) {
@@ -196,7 +196,7 @@ export function initforgotpasswordPage() {
   }
 
   /* ===============================
-     INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
+      INITIALISATION - DÉSACTIVER LE BOUTON AU DÉMARRAGE
      =============================== */
   if (submitButton) {
     submitButton.disabled = true;

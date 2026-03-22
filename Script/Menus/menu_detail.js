@@ -1,21 +1,22 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
 export function initDetailMenusPage() {
+
 /* ===============================
-	SCRIPT PAGE DÉTAIL MENU
-	Gère :
-		1. La récupération de l'ID du menu depuis l'URL
-		2. Le chargement des données du menu depuis l'API (GET)
-		3. L'affichage de toutes les informations dans le DOM
-		4. La galerie photos (clic miniature + flèches)
-		5. Le bouton "Commander" (redirection selon connexion)
-		6. La composition du menu (Entrée, Plat, Dessert)
-		7. La modale édition photo (titre + description + upload)
-		8. La modale suppression photo (double vérification)
-	=============================== */
+    SCRIPT PAGE DÉTAIL MENU
+    Gère :
+      1. La récupération de l'ID du menu depuis l'URL
+      2. Le chargement des données du menu depuis l'API (GET)
+      3. L'affichage de toutes les informations dans le DOM
+      4. La galerie photos (clic miniature + flèches)
+      5. Le bouton "Commander" (redirection selon connexion)
+      6. La composition du menu (Entrée, Plat, Dessert)
+      7. La modale édition photo (titre + description + upload)
+      8. La modale suppression photo (double vérification)
+	 =============================== */
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de l'API Symfony pour la récupération des menus
@@ -27,9 +28,9 @@ export function initDetailMenusPage() {
   const apiEmployePlats = `${API_URL}/api/employe/plats`;
 
 	/* ===============================
-		 RÉCUPÉRATION DE L'ID DU MENU DEPUIS L'URL
-			- 1.  L'URL est de la forme /detail_menu?id=3
-			- 2.	On récupère le paramètre "id" depuis le query string
+		  RÉCUPÉRATION DE L'ID DU MENU DEPUIS L'URL
+        - 1.  L'URL est de la forme /detail_menu?id=3
+        - 2.	On récupère le paramètre "id" depuis le query string
 		 =============================== */
   let DebugConsole = false;
 
@@ -44,9 +45,8 @@ export function initDetailMenusPage() {
   }
   
   /* ===============================
-     RÉCUPÉRATION DU TOKEN
+      RÉCUPÉRATION DU TOKEN
      =============================== */
-
   const token = getToken();
   const authHeaders = token ? {
     'Authorization': `Bearer ${token}`,
@@ -64,8 +64,9 @@ export function initDetailMenusPage() {
     console.log("[init] ID du menu récupéré :", menuId);
     console.log("================================");
   }
+
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   // Breadcrumb
@@ -121,9 +122,9 @@ export function initDetailMenusPage() {
   let currentPhotoIndex = 0;
 
 	/* ===============================
-		 FONCTION : CHARGER LES DONNÉES DU MENU DEPUIS L'API
-			-	1.	Appelle GET /api/menus/{id}
-			- 2.	Remplit tous les éléments du DOM
+		  FONCTION : CHARGER LES DONNÉES DU MENU DEPUIS L'API
+        -	1.	Appelle GET /api/menus/{id}
+        - 2.	Remplit tous les éléments du DOM
 		 =============================== */
 
 	async function loadMenuDetail() {
@@ -178,8 +179,8 @@ export function initDetailMenusPage() {
   }
 
   /* ===============================
-     FONCTION : FIL D'ARIANE
-     - Affiche le titre du menu dans le breadcrumb
+      FONCTION : FIL D'ARIANE
+        - Affiche le titre du menu dans le breadcrumb
      =============================== */
 
   function renderBreadcrumb(menu) {
@@ -199,10 +200,10 @@ export function initDetailMenusPage() {
   }
 
   /* ===============================
-     FONCTION : BADGES (thème + régime + disponibilité)
-     - theme est un objet { id, titre }
-     - regime est un objet { id, libelle }
-     - Disponibilité basée sur quantite_restante > 0
+      FONCTION : BADGES (thème + régime + disponibilité)
+        - theme est un objet { id, titre }
+        - regime est un objet { id, libelle }
+        - Disponibilité basée sur quantite_restante > 0
      =============================== */
 
  function renderBadges(menu) {
@@ -280,7 +281,7 @@ export function initDetailMenusPage() {
 
 	/* ===============================
 			FONCTION : TAGS (ingrédients principaux)
-      menu.tags retourné par l'API
+        menu.tags retourné par l'API
 		 =============================== */
 
  function renderTags(menu) {
@@ -297,12 +298,12 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 FONCTION : CARD PRIX
-			- 1.	Prix par personne
-			- 2.	Minimum de personnes
-			- 3.	Texte de réduction "-10% à partir de X personnes supplémentaires"
-       où X = nombre_personne_minimum + 5 (règle métier)
-		=============================== */
+		  FONCTION : CARD PRIX
+        - 1.	Prix par personne
+        - 2.	Minimum de personnes
+        - 3.	Texte de réduction "-10% à partir de X personnes supplémentaires"
+        où X = nombre_personne_minimum + 5 (règle métier)
+		 =============================== */
 
   function renderPriceCard(menu) {
     // Vérifie que detailPrice existe
@@ -338,11 +339,11 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 FONCTION : CONDITIONS DU MENU
-     - 1. Texte dynamique basé sur le nombre min de personnes
-     - 2. Délai de réservation + acompte
-      Si menu.conditions existe, on l'utilise à la place
-		=============================== */
+		  FONCTION : CONDITIONS DU MENU
+        - 1. Texte dynamique basé sur le nombre min de personnes
+        - 2. Délai de réservation + acompte
+          Si menu.conditions existe, on l'utilise à la place
+		 =============================== */
 
   function renderConditions(menu) {
     if (!detailConditions) return;
@@ -362,12 +363,12 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 FONCTION : GALERIE PHOTOS
-     - Les photos viennent des plats du menu : plats[x].photo
-     - Chaque plat a une catégorie (Entrée, Plat, Dessert)
-     - Photo 1 = entrée, Photo 2 = plat, Photo 3 = dessert
-     - Miniatures cliquables + flèches prev/next
-		=============================== */
+      FONCTION : GALERIE PHOTOS
+        - Les photos viennent des plats du menu : plats[x].photo
+        - Chaque plat a une catégorie (Entrée, Plat, Dessert)
+        - Photo 1 = entrée, Photo 2 = plat, Photo 3 = dessert
+        - Miniatures cliquables + flèches prev/next
+		 =============================== */
 
   function renderGallery(menu) {
     if (DebugConsole) console.log("[renderGallery] Nombre de plats :", plats.length);
@@ -390,10 +391,10 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 FONCTION : METTRE À JOUR LA PHOTO PRINCIPALE
-		  - 1.	Affiche la photo à l'index currentPhotoIndex
-		  - 2.	Met à jour la miniature active
-		  - 3.	Affiche ou cache les boutons action pour admin/employé
+		  FONCTION : METTRE À JOUR LA PHOTO PRINCIPALE
+        - 1.	Affiche la photo à l'index currentPhotoIndex
+        - 2.	Met à jour la miniature active
+        - 3.	Affiche ou cache les boutons action pour admin/employé
 		 =============================== */
 
   function updateMainPhoto() {
@@ -436,9 +437,9 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 FONCTION : GÉNÉRER LES MINIATURES
-		  - 1.	Crée une miniature par plat/photo (max 3)
-		  - 2.	Au clic sur une miniature la photo cliquée devient la photo principale
+      FONCTION : GÉNÉRER LES MINIATURES
+          - 1.	Crée une miniature par plat/photo (max 3)
+          - 2.	Au clic sur une miniature la photo cliquée devient la photo principale
 		 =============================== */
 
   function renderThumbnails() {
@@ -461,7 +462,7 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 LISTENERS : FLÈCHES DE NAVIGATION GALERIE
+      LISTENERS : FLÈCHES DE NAVIGATION GALERIE
 		 =============================== */
   if (DebugConsole) console.log("[initial] IndexPhoto :", currentPhotoIndex);
 	// Flèche précédente
@@ -487,12 +488,11 @@ export function initDetailMenusPage() {
 	}
 
    /* ===============================
-     FONCTION : COMPOSITION DU MENU
-     - Affiche les plats groupés par catégorie (Entrée, Plat, Dessert)
-     - Chaque card : icône + catégorie + titre du plat + description
-     - Les données viennent de menu.plats[{ id, titre, categorie, photo }]
-     =============================== */
-
+        FONCTION : COMPOSITION DU MENU
+          - Affiche les plats groupés par catégorie (Entrée, Plat, Dessert)
+          - Chaque card : icône + catégorie + titre du plat + description
+          - Les données viennent de menu.plats[{ id, titre, categorie, photo }]
+      =============================== */
   function renderComposition(menu) {
     if (!compositionGrid) return;
 
@@ -566,11 +566,11 @@ export function initDetailMenusPage() {
   }
 
   /* ===============================
-     FONCTION : BOUTON COMMANDER
-     - Si le menu est indisponible le bouton est désactivé
-     - Si l'utilisateur n'est pas connecté on redirige vers /login
-     - Si connecté + rôle ROLE_CLIENT on redirige vers /commander
-     - Sinon (employé, admin) on redirige vers /
+      FONCTION : BOUTON COMMANDER
+        - Si le menu est indisponible le bouton est désactivé
+        - Si l'utilisateur n'est pas connecté on redirige vers /login
+        - Si connecté + rôle ROLE_CLIENT on redirige vers /commander
+        - Sinon (employé, admin) on redirige vers /
      =============================== */
  function setupOrderButton(menu) {
     if (!btnOrder) return;
@@ -605,15 +605,14 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 MODALE ÉDITION PHOTO (EditionPhotoModal)
-		  - Quand la modale s'ouvre : pré-remplit la prévisualisation avec la photo actuelle
-		  - L'utilisateur peut :
-		 		1. Sélectionner une nouvelle image (prévisualisation en temps réel) avec fileReader
-				2. Saisir un titre
-				3. Saisir une description 
-		  - Au clic sur "Sauvegarder" on envoie le tout à l'API en POST avec FormData
+      MODALE ÉDITION PHOTO (EditionPhotoModal)
+        - Quand la modale s'ouvre : pré-remplit la prévisualisation avec la photo actuelle
+        - L'utilisateur peut :
+          1. Sélectionner une nouvelle image (prévisualisation en temps réel) avec fileReader
+          2. Saisir un titre
+          3. Saisir une description 
+        - Au clic sur "Sauvegarder" on envoie le tout à l'API en POST avec FormData
 		 =============================== */
-
 	// Quand la modale édition s'ouvre
 	// Pré-remplit la prévisualisation avec la photo actuellement affichée en grand
 	const editionModal = document.getElementById('EditionPhotoModal');
@@ -754,13 +753,13 @@ export function initDetailMenusPage() {
   }
 
 	/* ===============================
-		 MODALE SUPPRESSION PHOTO (SuppresionPhotoModal)
-		 	- Double vérification en 2 étapes :
-				Étape 1 : Aperçu de la photo + message d'avertissement + bouton "Continuer"
-				Étape 2 : L'utilisateur doit taper "SUPPRIMER" pour activer le bouton final
-		 	- Au clic sur "Supprimer définitivement" on envoie DELETE à l'API
-		 	- Endpoint API : DELETE /api/menus/{id}/photos/{index}
-		 	- Protection : impossible de supprimer la dernière photo
+      MODALE SUPPRESSION PHOTO (SuppresionPhotoModal)
+        - Double vérification en 2 étapes :
+          Étape 1 : Aperçu de la photo + message d'avertissement + bouton "Continuer"
+          Étape 2 : L'utilisateur doit taper "SUPPRIMER" pour activer le bouton final
+        - Au clic sur "Supprimer définitivement" on envoie DELETE à l'API
+        - Endpoint API : DELETE /api/menus/{id}/photos/{index}
+        - Protection : impossible de supprimer la dernière photo
 		 =============================== */
 
 	// Quand la modale suppression s'ouvre
@@ -920,8 +919,8 @@ export function initDetailMenusPage() {
   }
 
   /* ===============================
-     INITIALISATION
-     - Charge les données du menu depuis l'API
+      INITIALISATION
+        - Charge les données du menu depuis l'API
      =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE DETAIL MENU ===");

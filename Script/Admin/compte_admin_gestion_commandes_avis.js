@@ -4,20 +4,19 @@ import { getToken, getRole } from '../script.js';
 export function initCompteAdminGestionCommandesAvisPage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION COMMANDE & AVIS
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION COMMANDE & AVIS
+     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = false;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG API ===");
     console.log("API_URL :", API_URL);
@@ -26,7 +25,7 @@ export function initCompteAdminGestionCommandesAvisPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -52,11 +51,11 @@ export function initCompteAdminGestionCommandesAvisPage() {
   };
 
   /* ===============================
-    FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-     - 1.  Appelle GET /api/me
-     - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-     - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
-      =============================== */
+      FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+     =============================== */
 
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -99,7 +98,7 @@ export function initCompteAdminGestionCommandesAvisPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
@@ -116,21 +115,6 @@ export function initCompteAdminGestionCommandesAvisPage() {
   const commandesList = document.getElementById('commandes-list'); 
   // div qui contiendra les cards injectées dynamiquement
 
-  // ----- Modal d'annulation -----
-  const cancelModal = document.getElementById('cancelModal'); 
-  // modal bootstrap pour annuler une commande
-  const cancelReasonInput = document.getElementById('cancel-reason'); 
-  // textarea pour saisir le motif d'annulation
-  const cancelCount = document.getElementById('cancel-count'); 
-  // compteur de caractères saisis dans le textarea
-  const cancelError = document.getElementById('cancel-error'); 
-  // message d'erreur si aucun motif n'est renseigné
-  const confirmCancelBtn = document.getElementById('confirm-cancel'); 
-  // bouton pour confirmer l'annulation
-
   loadUserName();
 
-
-
-  
 }

@@ -1,19 +1,18 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
-// ATTENTION AU NOM j'arrete pas de me faire avoir deuxieme element du tableau allrouter
 //init+nom+Page
 export function initcompteclientPage() {
   /* ===============================
-    SCRIPT PAGE COMMANDES CLIENT
-    Gère :
-    1. L'affichage du prénom dans le hero via /api/me
-    2. Le chargement des commandes du client via GET /api/client/commandes
-    3. La génération dynamique des cards de commande
-    4. La timeline de suivi via GET /api/client/commandes/{id}/suivi
-    5. La section avis (si commande terminée + avis déposé)
-    6. La modale de dépôt d'avis via POST /api/client/commandes/{id}/avis
-    7. La section prêt de matériel (si applicable)
-    8. Le bouton annuler via POST /api/client/commandes/{id}/annuler
+      SCRIPT PAGE COMMANDES CLIENT
+        Gère :
+        1. L'affichage du prénom dans le hero via /api/me
+        2. Le chargement des commandes du client via GET /api/client/commandes
+        3. La génération dynamique des cards de commande
+        4. La timeline de suivi via GET /api/client/commandes/{id}/suivi
+        5. La section avis (si commande terminée + avis déposé)
+        6. La modale de dépôt d'avis via POST /api/client/commandes/{id}/avis
+        7. La section prêt de matériel (si applicable)
+        8. Le bouton annuler via POST /api/client/commandes/{id}/annuler
     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
@@ -64,10 +63,10 @@ export function initcompteclientPage() {
   };
 
   /* ===============================
-    MAPPING DES STATUTS
-    - 1.  Les clés correspondent exactement aux valeurs retournées par le back Symfony
-    - 2.  label : texte affiché dans le badge
-    - 3.  css : classe CSS pour la couleur du badge
+      MAPPING DES STATUTS
+      - 1.  Les clés correspondent exactement aux valeurs retournées par le back Symfony
+      - 2.  label : texte affiché dans le badge
+      - 3.  css : classe CSS pour la couleur du badge
   =============================== */
 
   const STATUS_MAP = {
@@ -82,10 +81,10 @@ export function initcompteclientPage() {
   };
 
  /* ===============================
-    INJECTION DE LA MODALE D'AVIS DANS LE DOM
-    - 1.  Insérée une seule fois au chargement de la page
-    - 2.  Contient : sélecteur de note 1-5 étoiles + textarea description
-    - 3.  Réutilisée pour chaque commande via data-commande-id
+      INJECTION DE LA MODALE D'AVIS DANS LE DOM
+      - 1.  Insérée une seule fois au chargement de la page
+      - 2.  Contient : sélecteur de note 1-5 étoiles + textarea description
+      - 3.  Réutilisée pour chaque commande via data-commande-id
     =============================== */
 
   function injectAvisModal() {
@@ -242,10 +241,10 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : OUVRIR LA MODALE D'AVIS
-      - Réinitialise les champs
-      - Renseigne l'ID de la commande et le nom du menu
-      - Ouvre la modale Bootstrap
+      FONCTION : OUVRIR LA MODALE D'AVIS
+        - Réinitialise les champs
+        - Renseigne l'ID de la commande et le nom du menu
+        - Ouvre la modale Bootstrap
     =============================== */
 
   function openAvisModal(commandeId, menuTitre) {
@@ -276,11 +275,11 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : SOUMETTRE L'AVIS
-      - Valide les champs (note 1-5, description non vide)
-      - Appelle POST /api/client/commandes/{id}/avis
-      - Corps JSON : { "note": 5, "description": "..." }
-      - Ferme la modale et recharge les commandes si succès
+      FONCTION : SOUMETTRE L'AVIS
+        - Valide les champs (note 1-5, description non vide)
+        - Appelle POST /api/client/commandes/{id}/avis
+        - Corps JSON : { "note": 5, "description": "..." }
+        - Ferme la modale et recharge les commandes si succès
     =============================== */
 
   async function submitAvis() {
@@ -366,10 +365,10 @@ export function initcompteclientPage() {
 
   /* ===============================
       AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1.  Appelle GET /api/me
-      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
-      =============================== */
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+     =============================== */
 
   async function loadUserName() {
      if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -406,17 +405,17 @@ export function initcompteclientPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // Conteneur où les cards de commande seront injectées dynamiquement
   const commandesList = document.getElementById('commandes-list');
 
   /* ===============================
-    FONCTION : CHARGER LES COMMANDES DEPUIS L'API
-      - 1.  Appelle GET /api/client/commandes
-      - 2.  Le back filtre automatiquement les commandes du client connecté grâce au token JWT
-      - 3.  Réponse attendue : { status: "Succès", total: X, commandes: [...] }
-    =============================== */
+      FONCTION : CHARGER LES COMMANDES DEPUIS L'API
+        - 1.  Appelle GET /api/client/commandes
+        - 2.  Le back filtre automatiquement les commandes du client connecté grâce au token JWT
+        - 3.  Réponse attendue : { status: "Succès", total: X, commandes: [...] }
+     =============================== */
 
   async function loadOrders() {
     if (DebugConsole) console.log("[loadOrders] Début - Appel GET", apiCommandesUrl);
@@ -457,11 +456,11 @@ export function initcompteclientPage() {
     }
   }
 
- /* ===============================
-    FONCTION : CHARGER LE SUIVI D'UNE COMMANDE
-      - 1.  Appelle GET /api/client/commandes/{id}/suivi
-      - 2.  Réponse attendue : { status, total, suivis: [{ statut, date_statut }] }
-    =============================== */
+  /* ===============================
+      FONCTION : CHARGER LE SUIVI D'UNE COMMANDE
+        - 1.  Appelle GET /api/client/commandes/{id}/suivi
+        - 2.  Réponse attendue : { status, total, suivis: [{ statut, date_statut }] }
+     =============================== */
 
   async function loadSuivi(commandeId) {
     const url = `${apiCommandesUrl}/${commandeId}/suivi`;
@@ -494,17 +493,17 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LES CARDS DE COMMANDE
-      - Crée une card HTML pour chaque commande
-      - Chaque card contient :
-        1.  Titre du menu en gras + badge statut à droite
-        2.  Numéro commande — date prestation à heure
-        3.  Ligne d'infos : Personnes | Livraison | Réduction | Total
-        4.  Timeline de suivi (badges horizontaux)
-        5.  Section avis déposé (si commande terminée + avis existant)
-        6.  Section prêt de matériel (si en attente de restitution)
-        7.  Bouton Annuler (si commande en attente)
-    =============================== */
+      FONCTION : GÉNÉRER LES CARDS DE COMMANDE
+        - Crée une card HTML pour chaque commande
+        - Chaque card contient :
+          1.  Titre du menu en gras + badge statut à droite
+          2.  Numéro commande — date prestation à heure
+          3.  Ligne d'infos : Personnes | Livraison | Réduction | Total
+          4.  Timeline de suivi (badges horizontaux)
+          5.  Section avis déposé (si commande terminée + avis existant)
+          6.  Section prêt de matériel (si en attente de restitution)
+          7.  Bouton Annuler (si commande en attente)
+     =============================== */
 
   async function renderOrders(orders) {
     if (!commandesList) {
@@ -633,11 +632,11 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LA TIMELINE DE SUIVI
-      - 1.  Affiche les étapes de la commande sous forme de badges horizontaux
-      - 2.  Chaque badge contient : statut + date
-        Chaque suivi : { statut: "En attente", date_statut: "10/01/2026 10:00" }
-    =============================== */
+      FONCTION : GÉNÉRER LA TIMELINE DE SUIVI
+        - 1.  Affiche les étapes de la commande sous forme de badges horizontaux
+        - 2.  Chaque badge contient : statut + date
+          Chaque suivi : { statut: "En attente", date_statut: "10/01/2026 10:00" }
+     =============================== */
 
   function renderTimeline(suivis) {
     // Si pas de timeline, on n'affiche rien
@@ -667,11 +666,11 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LA SECTION AVIS
-      - 1.  Si commande "Terminée" + avis existant, on affiche "Avis déposé (statut)"
-      - 2.  Si commande "Terminée" + pas d'avis on affiche le bouton "Laisser un avis"
-      - 3.  Sinon on fait rien
-    =============================== */
+      FONCTION : GÉNÉRER LA SECTION AVIS
+        - 1.  Si commande "Terminée" + avis existant, on affiche "Avis déposé (statut)"
+        - 2.  Si commande "Terminée" + pas d'avis on affiche le bouton "Laisser un avis"
+        - 3.  Sinon on fait rien
+     =============================== */
 
   function renderAvis(order) {
     // Si la commande n'est pas terminée pas de section avis
@@ -718,9 +717,9 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : BRANCHER LES LISTENERS SUR LES BOUTONS "LAISSER UN AVIS"
-      Au clic on ouvre la modale d'avis pré-remplie avec l'ID commande et le nom du menu
-    =============================== */
+      FONCTION : BRANCHER LES LISTENERS SUR LES BOUTONS "LAISSER UN AVIS"
+        Au clic on ouvre la modale d'avis pré-remplie avec l'ID commande et le nom du menu
+     =============================== */
 
   function setupAvisButtons() {
     const avisButtons = commandesList.querySelectorAll('.btn-compte_client-avis');
@@ -740,11 +739,11 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LA SECTION PRÊT DE MATÉRIEL
-      - 1.  Affichée uniquement si etat_materiel === 'ATTENTE_RESTITUTION'
-      - 2.  Utilise le champ etat_materiel retourné par getEtatMateriel() côté back
-       Valeurs possibles : 'TERMINEE', 'ATTENTE_RESTITUTION', 'INCOHERENT'
-    =============================== */
+      FONCTION : GÉNÉRER LA SECTION PRÊT DE MATÉRIEL
+        - 1.  Affichée uniquement si etat_materiel === 'ATTENTE_RESTITUTION'
+        - 2.  Utilise le champ etat_materiel retourné par getEtatMateriel() côté back
+        Valeurs possibles : 'TERMINEE', 'ATTENTE_RESTITUTION', 'INCOHERENT'
+     =============================== */
 
   function renderMaterial(order) {
     if (DebugConsole) console.log(`[renderMaterial] Commande ${order.id} - etat_materiel: ${order.etat_materiel}`);
@@ -778,10 +777,10 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LE BOUTON ANNULER
-      - 1.  Affiché uniquement si la commande est en statut "En attente"
-      - 2.  Le clic déclenchera une demande de motif puis l'appel API
-    =============================== */
+      FONCTION : GÉNÉRER LE BOUTON ANNULER
+        - 1.  Affiché uniquement si la commande est en statut "En attente"
+        - 2.  Le clic déclenchera une demande de motif puis l'appel API
+     =============================== */
 
   function renderCancelButton(order) {
     // Le bouton annuler n'apparaît que si la commande est "En attente"
@@ -800,12 +799,12 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    FONCTION : BRANCHER LES LISTENERS SUR LES BOUTONS ANNULER
-      - 1.  Au clic : demande le motif (obligatoire côté back)
-      - 2.  Appelle POST /api/client/commandes/{id}/annuler
-      - 3.  Corps JSON : { "motif_annulation": "..." }
-      - 4.  Recharge la liste après annulation réussie
-    =============================== */
+      FONCTION : BRANCHER LES LISTENERS SUR LES BOUTONS ANNULER
+        - 1.  Au clic : demande le motif (obligatoire côté back)
+        - 2.  Appelle POST /api/client/commandes/{id}/annuler
+        - 3.  Corps JSON : { "motif_annulation": "..." }
+        - 4.  Recharge la liste après annulation réussie
+     =============================== */
 
   function setupCancelButtons() {
     // Sélectionne tous les boutons annuler dans le conteneur
@@ -883,11 +882,11 @@ export function initcompteclientPage() {
   }
 
   /* ===============================
-    INITIALISATION
-      - 1. Injecte la modale d'avis dans le DOM
-      - 2. Charge le prénom dans le hero
-      - 3. Charge les commandes du client depuis l'API
-    =============================== */
+      INITIALISATION
+        - 1. Injecte la modale d'avis dans le DOM
+        - 2. Charge le prénom dans le hero
+        - 3. Charge les commandes du client depuis l'API
+     =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE COMPTE CLIENT ===");
   injectAvisModal();

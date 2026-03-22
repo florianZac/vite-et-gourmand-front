@@ -3,14 +3,14 @@ import { getToken, getRole } from '../script.js';
 
 export function initCompteAdminGestionUtilisateurPage() {
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION UTILISATEURS
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION UTILISATEURS
+     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
   let DebugConsole = true;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // EndPoint de l'API de récupération des infos de l'utilisateur
@@ -36,7 +36,7 @@ export function initCompteAdminGestionUtilisateurPage() {
   }
 
   /* ===============================
-     RECUPERATION DES INFOS UTILISATEURS
+      RECUPERATION DES INFOS UTILISATEURS
      =============================== */
 
   // Récupère le token JWT depuis le cookie
@@ -62,7 +62,7 @@ export function initCompteAdminGestionUtilisateurPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
 
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
@@ -122,7 +122,7 @@ export function initCompteAdminGestionUtilisateurPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - TÉLÉPHONE
+      FONCTIONS DE VALIDATION - TÉLÉPHONE
      =============================== */
   /**
    * Vérifie si le téléphone est valide
@@ -165,7 +165,7 @@ export function initCompteAdminGestionUtilisateurPage() {
   }
 
   /* ===============================
-     FONCTIONS DE VALIDATION - TÉLÉPHONE
+      FONCTIONS DE VALIDATION - TÉLÉPHONE
      =============================== */
   /**
    * Vérifie si le code postal est valide
@@ -277,9 +277,9 @@ export function initCompteAdminGestionUtilisateurPage() {
           <strong>${c.prenom || ''} ${c.nom || ''}</strong>
           <span class="badge ms-2 ${isActif ? 'bg-success' : 'bg-warning text-dark'}">${isActif ? 'Actif' : 'Désactivé'}</span>
           <br>
-          <small class="text-muted">${c.email || ''} — ${c.role || ''}</small>
+          <small class="text-muted">${c.email || ''} </small>
           ${c.telephone ? '<br><small class="text-muted">' + c.telephone + '</small>' : ''}
-          ${c.ville ? '<br><small class="text-muted">' + c.ville + (c.code_postal ? ' ' + c.code_postal : '') + '</small>' : ''}
+          ${c.ville ? '<br><small class="text-muted">' + c.adresse_postale +  " " + c.code_postal + " " + c.ville + '</small>' : ''}
         </div>
         <div class="d-flex flex-wrap gap-2 align-items-center">
           <button class="btn btn-outline-secondary btn-sm rounded-pill btn-modifier" 
@@ -422,7 +422,7 @@ export function initCompteAdminGestionUtilisateurPage() {
   }
 
   /* ===============================
-     ANNULER LA MODIFICATION
+      ANNULER LA MODIFICATION
      =============================== */
   btnCancelEdit.addEventListener('click', function() {
     editCard.classList.add('d-none');
@@ -430,8 +430,8 @@ export function initCompteAdminGestionUtilisateurPage() {
   });
 
   /* ===============================
-     ENREGISTRER LA MODIFICATION
-      - APPEL : PUT /api/admin/utilisateurs/{id}
+      ENREGISTRER LA MODIFICATION
+        - APPEL : PUT /api/admin/utilisateurs/{id}
      =============================== */
   btnSaveEdit.addEventListener('click', async function() {
     if (!currentEditId) return;
@@ -491,8 +491,8 @@ export function initCompteAdminGestionUtilisateurPage() {
 
 
   /* ===============================
-     CRÉER UN CLIENT
-      - APPEL : POST /api/admin/employes
+      CRÉER UN CLIENT
+        - APPEL : POST /api/admin/employes
      =============================== */
   btnCreate.addEventListener('click', async function() {
 
@@ -576,8 +576,8 @@ export function initCompteAdminGestionUtilisateurPage() {
   });
 
   /* ===============================
-     RÉINITIALISER LE MOT DE PASSE TEMPORAIRE
-     - APPEL : PUT /api/admin/utilisateurs/{id} avec { password: "true" }
+      RÉINITIALISER LE MOT DE PASSE TEMPORAIRE
+        - APPEL : PUT /api/admin/utilisateurs/{id} avec { password: "true" }
      =============================== */
   btnResetPassword.addEventListener('click', async function() {
     if (!currentEditId) return;

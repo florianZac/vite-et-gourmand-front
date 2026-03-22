@@ -4,20 +4,20 @@ console.log("=== nos_menus.js chargé ===");
 export function initNosMenusPage() {
 
   /* ===============================
-   SCRIPT PAGE NOS MENUS
-   Gère :
-   1. Le chargement des menus depuis l'API via AJAX (GET)
-   2. La génération dynamique des cards dans la grille
-   3. La génération dynamique des badges Thème et Régime depuis les données API
-   4. Le filtrage en temps réel (recherche, thème, régime, prix, personnes)
-   5. Le compteur "X menus trouvés"
-   6. La réinitialisation des filtres
+      SCRIPT PAGE NOS MENUS
+        Gère :
+          1. Le chargement des menus depuis l'API via AJAX (GET)
+          2. La génération dynamique des cards dans la grille
+          3. La génération dynamique des badges Thème et Régime depuis les données API
+          4. Le filtrage en temps réel (recherche, thème, régime, prix, personnes)
+          5. Le compteur "X menus trouvés"
+          6. La réinitialisation des filtres
    =============================== */
 
   // Variable debug console
   let DebugConsole = false;
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // URL de base de l'API Symfony
@@ -30,7 +30,7 @@ export function initNosMenusPage() {
     console.log("==================================");
   }
   /* ===============================
-     RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
      =============================== */
 
   // Grille où les cards seront injectées
@@ -70,7 +70,7 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     VARIABLES GLOBALES
+      VARIABLES GLOBALES
      =============================== */
 
   // Stocke TOUS les menus reçus de l'API (non filtrés)
@@ -86,8 +86,8 @@ export function initNosMenusPage() {
   let selectedDisponibilite = 'Tous';
 
   /* ===============================
-     FONCTIONS UTILITAIRES
-     - Extraient le libellé texte depuis les objets theme/regime retournés par l'API
+      FONCTIONS UTILITAIRES
+        - Extraient le libellé texte depuis les objets theme/regime retournés par l'API
      =============================== */
 
   // Retourne le libellé du thème
@@ -165,11 +165,11 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : CHARGER LES MENUS DEPUIS L'API (AJAX)
-     - Appelle GET /api/menus
-     - Stocke les données dans allMenus
-     - Génère les badges thème/régime dynamiquement
-     - Affiche toutes les cards
+      FONCTION : CHARGER LES MENUS DEPUIS L'API (AJAX)
+        - Appelle GET /api/menus
+        - Stocke les données dans allMenus
+        - Génère les badges thème/régime dynamiquement
+        - Affiche toutes les cards
      =============================== */
 
   async function loadMenus() {
@@ -236,10 +236,10 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : GÉNÉRER LES BADGES THÈME DYNAMIQUEMENT
-     - Parcourt tous les menus pour extraire les thèmes uniques
-     - Crée un badge "Tous" + un badge par thème trouvé
-     - "Tous" est actif par défaut
+      FONCTION : GÉNÉRER LES BADGES THÈME DYNAMIQUEMENT
+        - Parcourt tous les menus pour extraire les thèmes uniques
+        - Crée un badge "Tous" + un badge par thème trouvé
+        - "Tous" est actif par défaut
      =============================== */
 
   function generateDisponibiliteBadges() {
@@ -321,8 +321,8 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LES BADGES TAG DYNAMIQUEMENT
-    - Parcourt tous les menus pour extraire les tags uniques
+      FONCTION : GÉNÉRER LES BADGES TAG DYNAMIQUEMENT
+        - Parcourt tous les menus pour extraire les tags uniques
     =============================== */
 
   function generateTagBadges(menu) {
@@ -340,8 +340,8 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-    FONCTION : GÉNÉRER LES BADGES DISPONIBLE/INDISPONIBLE DYNAMIQUEMENT
-    - récupère la quantité restante si inférieur à 1 indisponible sinon disponible
+      FONCTION : GÉNÉRER LES BADGES DISPONIBLE/INDISPONIBLE DYNAMIQUEMENT
+        - récupère la quantité restante si inférieur à 1 indisponible sinon disponible
     =============================== */
   function generateDisponibiliteBadge(menu) {
     // Vérifie que le menu existe et que quantite_restante est un nombre
@@ -364,9 +364,9 @@ export function initNosMenusPage() {
 
   
   /* ===============================
-     FONCTION : GÉNÉRER LES BADGES RÉGIME DYNAMIQUEMENT
-     - Même logique que pour les thèmes
-     - Parcourt tous les menus pour extraire les régimes uniques
+      FONCTION : GÉNÉRER LES BADGES RÉGIME DYNAMIQUEMENT
+        - Même logique que pour les thèmes
+        - Parcourt tous les menus pour extraire les régimes uniques
      =============================== */
 
   function generateRegimeBadges() {
@@ -414,9 +414,9 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : METTRE À JOUR LE BADGE ACTIF
-     - 1. Retire la classe "active" de tous les badges du conteneur
-     - 2. Ajoute la classe "active" uniquement sur le badge cliqué
+      FONCTION : METTRE À JOUR LE BADGE ACTIF
+        - 1. Retire la classe "active" de tous les badges du conteneur
+        - 2. Ajoute la classe "active" uniquement sur le badge cliqué
      =============================== */
 
   function updateBadgesActive(container, activeBtn) {
@@ -429,10 +429,10 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : METTRE À JOUR LE SLIDER PRIX MAX
-     - 1. Trouve le prix le plus élevé parmi tous les menus
-     - 2. Configure le max du slider avec cette valeur
-     - 3. Positionne le slider au maximum par défaut
+      FONCTION : METTRE À JOUR LE SLIDER PRIX MAX
+        - 1. Trouve le prix le plus élevé parmi tous les menus
+        - 2. Configure le max du slider avec cette valeur
+        - 3. Positionne le slider au maximum par défaut
      =============================== */
 
   function updatePriceSliderMax() {
@@ -464,10 +464,10 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : APPLIQUER TOUS LES FILTRES
-     - 1. Filtre le tableau allMenus selon TOUS les critères actifs
-     - 2. Chaque filtre réduit progressivement la liste
-     - 3. Met à jour le compteur et réaffiche les cards
+      FONCTION : APPLIQUER TOUS LES FILTRES
+        - 1. Filtre le tableau allMenus selon TOUS les critères actifs
+        - 2. Chaque filtre réduit progressivement la liste
+        - 3. Met à jour le compteur et réaffiche les cards
      =============================== */
 
   function applyFilters() {
@@ -581,14 +581,14 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : AFFICHER LES CARDS DANS LA GRILLE
-     - 1. Vide la grille
-     - 2. Crée une card HTML pour chaque menu du tableau filtré
-     - 3. Injecte les cards dans le DOM
-     - 4. Image du premier plat avec badges thème + régime + dispo
-       - 4.1 Titre, description (3 lignes max)
-       - 4.2 Tags (noms des plats : Foie gras, Magret, Truffe...)
-       - 4.3 Prix/pers + nb min personnes + bouton "Voir le détail"
+      FONCTION : AFFICHER LES CARDS DANS LA GRILLE
+        - 1. Vide la grille
+        - 2. Crée une card HTML pour chaque menu du tableau filtré
+        - 3. Injecte les cards dans le DOM
+        - 4. Image du premier plat avec badges thème + régime + dispo
+          - 4.1 Titre, description (3 lignes max)
+          - 4.2 Tags (noms des plats : Foie gras, Magret, Truffe...)
+          - 4.3 Prix/pers + nb min personnes + bouton "Voir le détail"
      =============================== */
 
   function renderCards(menus) {
@@ -685,12 +685,12 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     FONCTION : RÉINITIALISER TOUS LES FILTRES
-     - 1. Vide la recherche
-     - 2. Remet "Tous" actif pour thème et régime
-     - 3. Remet le slider prix au max
-     - 4. Vide le nombre de personnes
-     - 5. Relance le filtrage
+      FONCTION : RÉINITIALISER TOUS LES FILTRES
+        - 1. Vide la recherche
+        - 2. Remet "Tous" actif pour thème et régime
+        - 3. Remet le slider prix au max
+        - 4. Vide le nombre de personnes
+        - 5. Relance le filtrage
      =============================== */
 
   function resetFilters() {
@@ -736,8 +736,8 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     LISTENERS : FILTRES EN TEMPS RÉEL AVEC AJAX (tout est instantané=> U_u)
-     - Chaque modification d'un filtre relance applyFilters()
+      LISTENERS : FILTRES EN TEMPS RÉEL AVEC AJAX (tout est instantané=> U_u)
+        - Chaque modification d'un filtre relance applyFilters()
      =============================== */
 
   // Recherche texte : filtre à chaque frappe
@@ -766,8 +766,8 @@ export function initNosMenusPage() {
   }
 
   /* ===============================
-     INITIALISATION
-     - Charge les menus depuis l'API au chargement de la page
+      INITIALISATION
+        - Charge les menus depuis l'API au chargement de la page
      =============================== */
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE NOS MENUS ===");
