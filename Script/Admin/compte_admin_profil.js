@@ -17,11 +17,14 @@ export function initCompteAdminProfilPage() {
   // URL de récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
+  // URL du profil client (GET pour charger, PUT pour sauvegarder)
+  const apiProfilUrl = `${API_URL}/api/client/profil`;
   
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG API ===");
     console.log("API_URL :", API_URL);
     console.log("apiMeUrl :", apiMeUrl);
+    console.log("apiProfilUrl :", apiProfilUrl);
     console.log("========================");
   }
 
@@ -318,6 +321,7 @@ export function initCompteAdminProfilPage() {
       font-size: 0.9rem;
       display: flex;
       align-items: center;
+      justify-content:center;
       gap: 0.5rem;
       background: ${type === 'success' ? '#d4edda' : '#f8d7da'};
       color: ${type === 'success' ? '#155724' : '#721c24'};

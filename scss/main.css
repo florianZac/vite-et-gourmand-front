@@ -16221,12 +16221,10 @@ textarea.form-control-lg {
   .compte_client_profil-section {
     padding: 1.5rem 1rem 3rem;
   }
-  .compte_client_profil-tabs {
-    gap: 0.25rem;
-  }
   .compte_client_profil-tab {
     padding: 0.4rem 0.85rem;
     font-size: 0.8rem;
+    gap: 0.25rem;
   }
   .compte_client_profil-card {
     padding: 1.5rem;
@@ -17940,6 +17938,112 @@ textarea.form-control-lg {
   border: 1px solid #e8ddd0;
 }
 
+/* ===============================
+    GESTION PROFIL ADMIN
+   =============================== */
+/* ===============================
+   CARTE IDENTITE AVATAR
+   =============================== */
+.compte_admin_profil-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Cercle avatar */
+.compte_admin_profil-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: hsl(38, 58%, 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+/* Icône dans l'avatar */
+.compte_admin_profil-avatar i {
+  font-size: 2rem;
+  color: #FFFFFF;
+}
+
+/* Nom de l'utilisateur */
+.compte_admin_profil-name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 0.15rem;
+}
+
+/* Email de l'utilisateur */
+.compte_admin_profil-email {
+  font-size: 0.85rem;
+  color: #999999;
+  margin-bottom: 0;
+}
+
+/* ===============================
+   CARTE FORMULAIRE
+   =============================== */
+.compte_admin_profil-card {
+  background-color: #FFFFFF;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* ===============================
+   INPUTS
+   =============================== */
+.compte_admin_profil-input {
+  border: 1px solid #E8E8E8;
+  border-radius: 2rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  background-color: rgba(251.94, 246.942, 237.66, 0.5);
+  transition: all 0.3s ease;
+}
+
+.compte_admin_profil-input:focus {
+  border-color: hsl(14, 61%, 47%);
+  box-shadow: 0 0 0 3px rgba(192.9585, 80.8588, 46.7415, 0.3);
+  background-color: #FFFFFF;
+}
+
+.compte_admin_profil-input::-moz-placeholder {
+  color: #999999;
+}
+
+.compte_admin_profil-input::placeholder {
+  color: #999999;
+}
+
+/* ===============================
+   BOUTON SAUVEGARDER
+   =============================== */
+.btn-compte_admin_profil-save {
+  background: linear-gradient(90deg, #C1613A, #803050);
+  color: #FFFFFF !important;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
+.btn-compte_admin_profil-save:hover {
+  background: linear-gradient(90deg, #803050, #C1613A);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(192.9585, 80.8588, 46.7415, 0.3);
+}
+
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
   .compte_admin-section .container {
@@ -17959,6 +18063,25 @@ textarea.form-control-lg {
   }
   .compte_admin a.card {
     width: 100%;
+  }
+  .compte_admin_profil-card {
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+  }
+  .compte_admin_profil-input {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  .compte_admin_profil-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .compte_admin_profil-avatar i {
+    font-size: 1.75rem;
+  }
+  .btn-compte_admin_profil-save {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
   }
 }
 /* Desktop / Tablette : grille 3 colonnes centrée */
