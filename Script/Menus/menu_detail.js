@@ -620,13 +620,23 @@ export function initDetailMenusPage() {
 	if (editionModal) {
     if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
       editionModal.addEventListener('show.bs.modal', () => {
-        // Affiche la photo actuelle dans la prévisualisation de la modale
-        if (editPhotoPreviewImg && plats[currentPhotoIndex]) {
-          editPhotoPreviewImg.src = plats[currentPhotoIndex].photo || '';
+        const currentPlat = plats[currentPhotoIndex];
+        if (!currentPlat) return;
+
+        // Affiche la photo actuelle dans la prévisualisation
+        if (editPhotoPreviewImg) {
+          editPhotoPreviewImg.src = currentPlat.photo || '';
         }
-        // Réinitialise les champs du formulaire à chaque ouverture
+        // Pré-remplit le titre avec le titre du plat
+        if (editPhotoTitle) {
+          editPhotoTitle.value = currentPlat.titre || '';
+        }
+        // Pré-remplit la description avec la description du plat
+        if (editPhotoDescription) {
+          editPhotoDescription.value = currentPlat.description || '';
+        }
+        // Reset le file input
         if (editPhotoFile) editPhotoFile.value = '';
-        if (editPhotoTitle) editPhotoTitle.value = '';
       });
     }
   }
