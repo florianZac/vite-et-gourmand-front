@@ -108,7 +108,6 @@
           </div>
         </div>
                
-
         <!------ Titre -------->
         <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion des Plats</h2>
 
@@ -116,21 +115,31 @@
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <div class="row g-2 align-items-center">
-              <div class="col-md-8">
+              <!-- Recherche -->
+              <div class="col-12 col-md-5">
                 <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-search"></i></span>
-                  <input type="text" id="search-plat" class="form-control" placeholder="Rechercher un plat...">
+                  <span class="input-group-text rounded-start-pill"><i class="bi bi-search"></i></span>
+                  <input type="text" id="search-plat" class="form-control rounded-end-pill" placeholder="Rechercher un plat...">
                 </div>
               </div>
-              <div class="col-md-4 text-end">
-                <button class="btn btn-primary" id="btn-new-plat">
+              <!-- Filtre catégorie -->
+              <div class="col-6 col-md-3">
+                <select id="filter-categorie" class="form-select rounded-pill" title="Filtrer par catégorie">
+                  <option value="">Toutes catégories</option>
+                  <option value="Entrée">Entrée</option>
+                  <option value="Plat">Plat</option>
+                  <option value="Dessert">Dessert</option>
+                </select>
+              </div>
+              <!-- Bouton nouveau -->
+              <div class="col-6 col-md-4 text-end">
+                <button class="btn btn-primary rounded-pill px-4" id="btn-new-plat">
                   <i class="bi bi-plus me-1"></i> Nouveau plat
                 </button>
               </div>
             </div>
           </div>
         </div>
-
         <!------ Formulaire création/modification (caché) -------->
         <div class="card mb-4 shadow-sm d-none" id="plat-form-card">
           <div class="card-body">

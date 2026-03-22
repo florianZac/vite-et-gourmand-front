@@ -81,6 +81,8 @@ export function initCompteAdminGestionplatPage() {
   const platFormCard = document.getElementById('plat-form-card');
   // Titre du formulaire
   const platFormTitle = document.getElementById('plat-form-title');
+  // Select filtre les catégories de plat (Entrée/Plat/Dessert)
+  const filterCategorie = document.getElementById('filter-categorie');
   // Bouton pour sauvegarder le plat
   const btnSavePlat = document.getElementById('btn-save-plat');
   // Bouton pour annuler
@@ -91,7 +93,7 @@ export function initCompteAdminGestionplatPage() {
   const selectCategorie = document.getElementById('plat-categorie');
   // Champ texte pour la description
   const inputDescription = document.getElementById('plat-description');
-// Input file pour choisir une image
+  // Input file pour choisir une image
   const inputPhotoFile = document.getElementById('plat-photo-file');
   // Input hidden qui stocke l'URL Cloudinary retournée par le back
   const inputPhotoUrl = document.getElementById('plat-photo-url');
@@ -263,7 +265,7 @@ export function initCompteAdminGestionplatPage() {
       };
       reader.readAsDataURL(file);
 
-      if (DebugConsole) console.log("[inputPhotoFile] reader:", reader.readAsDataURL(file));
+      if (DebugConsole) console.log("[inputPhotoFile] lecture du fichier lancée");
       // Affiche la progress bar
       if (uploadProgress) uploadProgress.classList.remove('d-none');
       if (uploadBar) uploadBar.style.width = '0%';
@@ -700,27 +702,46 @@ export function initCompteAdminGestionplatPage() {
   });
 
   /* ===============================
-      RECHERCHE PAR TITRE PAR CATEGORIE OU PAR ALLERGENES
+      FONCTION : APPLIQUER LES FILTRES (recherche + catégorie)
+      Recherche par titre par catégory ou par allergènes
+      Select par catégorie (Entrée/Plat/Dessert)
      =============================== */
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      const search = searchInput.value.toLowerCase().trim();
-      if (!search) { renderPlats(allPlats); return; }
+  function applyFilters() {
+    const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const categorie = filterCategorie ? filterCategorie.value : '';
 
-      if (DebugConsole) console.log("[searchInput] ", search);
+    if (DebugConsole) console.log("[applyFilters] search:", search, "categorie:", categorie);
 
-      const filtered = allPlats.filter(plat => {
+    const filtered = allPlats.filter(plat => {
+
+      // Filtre catégorie
+      if (categorie) {
+        if ((plat.categorie || '') !== categorie) return false;
+      }
+
+      // Filtre recherche texte
+      if (search) {
         const titre = (plat.titre || '').toLowerCase();
-        const categorie = (plat.categorie || '').toLowerCase();
+        const cat = (plat.categorie || '').toLowerCase();
         const allergenes = plat.allergenes ? plat.allergenes.map(a => a.libelle).join(' ').toLowerCase() : '';
+        if (!titre.includes(search) && !cat.includes(search) && !allergenes.includes(search)) return false;
+      }
 
-        if (DebugConsole) console.log("[searchInput] ", titre,categorie,allergenes);
-        return titre.includes(search) || categorie.includes(search) || allergenes.includes(search);
-      });
-      renderPlats(filtered);
+      return true;
     });
+
+    renderPlats(filtered);
   }
 
+  /* ===============================
+      LISTENERS FILTRES
+     =============================== */
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+  if (filterCategorie) {
+    filterCategorie.addEventListener('change', applyFilters);
+  }
   /* ===============================
       LISTENERS
      =============================== */

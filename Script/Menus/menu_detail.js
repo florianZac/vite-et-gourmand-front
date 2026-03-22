@@ -21,6 +21,11 @@ export function initDetailMenusPage() {
   // URL de l'API Symfony pour la récupération des menus
   const apiMenusUrl = `${API_URL}/api/menus`;
   
+  // Upload image via Cloudinary
+  const apiUploadImage = `${API_URL}/api/employe/upload/image`;
+  // CRUD plats
+  const apiEmployePlats = `${API_URL}/api/employe/plats`;
+
 	/* ===============================
 		 RÉCUPÉRATION DE L'ID DU MENU DEPUIS L'URL
 			- 1.  L'URL est de la forme /detail_menu?id=3
@@ -653,21 +658,12 @@ export function initDetailMenusPage() {
 
 	// Bouton "Sauvegarder" dans la modale édition
 	// Envoie le fichier + titre + description à l'API
-	if (btnSavePhoto) {
-
+  if (btnSavePhoto) {
     if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
-        
       btnSavePhoto.addEventListener('click', async () => {
-        // Récupère le fichier sélectionné
         const file = editPhotoFile?.files[0];
-
-        // Récupère le titre
         const title = editPhotoTitle?.value?.trim() || '';
 
-        // Récupère la description
-        const description = editPhotoDescription?.value?.trim() || '';
-
-        // Validation : vérifie qu'un fichier et un titre sont remplis
         if (!file) {
           alert('Veuillez sélectionner une image.');
           return;
@@ -678,58 +674,69 @@ export function initDetailMenusPage() {
         }
         if (!token) return;
 
-        // Index de la photo affichée en grand à remplacer
-        const photoIndex = currentPhotoIndex;
+        const currentPlat = plats[currentPhotoIndex];
+        if (!currentPlat) return;
 
-        // Crée un FormData pour envoyer le fichier + les métadonnées
-        // FormData gère automatiquement le Content-Type multipart/form-data
-        const formData = new FormData();
-        formData.append('photo', file);              // Le fichier image
-        formData.append('title', title);             // Le titre pour le champ alt
-        formData.append('description', description); // La description
-        formData.append('index', photoIndex);        // L'index de la photo à remplacer
-        
-        if (DebugConsole) console.log(`[btnSavePhoto] Envoi POST photo index ${photoIndex}`);
+        if (DebugConsole) console.log(`[btnSavePhoto] Upload photo pour plat ${currentPlat.id}`);
 
         try {
-          // Envoie à l'API : POST /api/menus/{menuId}/photos/{photoIndex}
-            const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
+          // Étape 1 : Upload vers Cloudinary via le back
+          const formData = new FormData();
+          formData.append('image', file);
+
+          const uploadRes = await fetch(apiUploadImage, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}` },
             body: formData
           });
 
-          if (response.ok) {
-            // L'API retourne la nouvelle URL de la photo
-            let data = null;
-            // évite que le script crash si la réponse n'est pas du JSON
-            try {
-              data = await response.json();
-            } catch {
-              data = {};
-            }
-            if (DebugConsole) console.log("[btnSavePhoto] Photo modifiée avec succès");
+          let uploadData = {};
+          try { uploadData = await uploadRes.json(); } catch { uploadData = {}; }
 
-            // Met à jour l'URL de la photo dans le tableau local
-            if (data.photoUrl && plats[photoIndex]) {
-              plats[photoIndex].photo = data.photoUrl;
-            }
+          if (!uploadRes.ok) {
+            alert(uploadData.message || 'Erreur upload image.');
+            return;
+          }
 
-            // Rafraîchit l'affichage de la galerie
+          const newPhotoUrl = uploadData.url;
+          if (DebugConsole) console.log("[btnSavePhoto] URL Cloudinary :", newPhotoUrl);
+
+          // Étape 2 : Met à jour le plat avec la nouvelle URL + description
+          const description = editPhotoDescription?.value?.trim() || '';
+          const bodyData = { photo: newPhotoUrl };
+          if (description) bodyData.description_plat = description;
+
+          const updateRes = await fetch(`${apiEmployePlats}/${currentPlat.id}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bodyData)
+          });
+
+          let updateData = {};
+          try { updateData = await updateRes.json(); } catch { updateData = {}; }
+
+          if (updateRes.ok) {
+            if (DebugConsole) console.log("[btnSavePhoto] Plat mis à jour avec succès");
+
+            // Met à jour localement
+            plats[currentPhotoIndex].photo = newPhotoUrl;
+
+            // Rafraîchit la galerie
             updateMainPhoto();
             renderThumbnails();
 
-            // Ferme la modale via Bootstrap
+            // Ferme la modale
             const modalInstance = bootstrap.Modal.getInstance(editionModal);
             if (modalInstance) modalInstance.hide();
-
           } else {
-            const error = await response.json();
-            console.error('[btnSavePhoto] Erreur :', error.message);
-            alert('Erreur lors de la sauvegarde de la photo.');
+            alert(updateData.message || 'Erreur lors de la mise à jour du plat.');
           }
+
         } catch (err) {
-          console.error('[btnSavePhoto] Erreur réseau :', err);
+          console.error('[btnSavePhoto] Erreur :', err);
           alert('Erreur réseau, veuillez réessayer.');
         }
       });
@@ -836,60 +843,54 @@ export function initDetailMenusPage() {
 	// Bouton "Supprimer définitivement" (étape 3)
 	// Envoie le DELETE à l'API puis ferme la modale
 	if (btnDeleteConfirm) {
-
     if ((role === 'ROLE_ADMIN') || (role === 'ROLE_EMPLOYE')) {
-
       btnDeleteConfirm.addEventListener('click', async () => {
-        // Double vérification : vérifie encore une fois que le texte est correct
         const value = deleteConfirmInput?.value?.trim().toUpperCase();
         if (value !== 'SUPPRIMER') {
-          // Affiche le message d'erreur
           if (deleteConfirmError) deleteConfirmError.classList.remove('d-none');
           return;
         }
 
-        // Récupère le token JWT pour l'authentification
         if (!token) return;
 
-        // Index de la photo à supprimer
-        const photoIndex = currentPhotoIndex;
+        const currentPlat = plats[currentPhotoIndex];
+        if (!currentPlat) return;
 
-        if (DebugConsole) console.log(`[btnDeleteConfirm] Suppression photo index ${photoIndex}`);
+        if (DebugConsole) console.log(`[btnDeleteConfirm] Suppression photo plat ${currentPlat.id}`);
 
-        // Envoie DELETE à l'API : DELETE /api/menus/{menuId}/photos/{photoIndex}
         try {
-          const response = await fetch(`${apiMenusUrl}/${menuId}/photos/${photoIndex}`, {
-            method: 'DELETE',
-            headers: authHeaders
+          // Met à jour le plat avec une photo vide
+          const response = await fetch(`${apiEmployePlats}/${currentPlat.id}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ photo: '' })
           });
+
+          let data = {};
+          try { data = await response.json(); } catch { data = {}; }
 
           if (response.ok) {
             if (DebugConsole) console.log("[btnDeleteConfirm] Photo supprimée avec succès");
 
-            // Retire la photo du tableau local avec splice
-            plats.splice(photoIndex, 1);
-
-            // Si l'index actuel dépasse le nouveau tableau après suppression,
-            // on revient à la dernière photo disponible
-            if (currentPhotoIndex >= plats.length) {
-              currentPhotoIndex = plats.length - 1;
-            }
+            // Met à jour localement — vide la photo du plat
+            plats[currentPhotoIndex].photo = '';
 
             // Rafraîchit l'affichage
             updateMainPhoto();
             renderThumbnails();
 
-            // Ferme la modale via Bootstrap
+            // Ferme la modale
             const modalInstance = bootstrap.Modal.getInstance(suppressionModal);
             if (modalInstance) modalInstance.hide();
-
           } else {
-            const error = await response.json();
-            console.error('[btnDeleteConfirm] Erreur :', error.message);
-            alert('Erreur lors de la suppression de la photo.');
+            alert(data.message || 'Erreur lors de la suppression de la photo.');
           }
+
         } catch (err) {
-          console.error('[btnDeleteConfirm] Erreur réseau :', err);
+          console.error('[btnDeleteConfirm] Erreur :', err);
           alert('Erreur réseau, veuillez réessayer.');
         }
       });
