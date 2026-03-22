@@ -4,14 +4,14 @@ import { getToken} from '../script.js';
 export function initCompteAdminGestionMenusPage() {
 
   /* ===============================
-    SCRIPT PAGE ADMIN GESTION MENUS
-    =============================== */
+      SCRIPT PAGE ADMIN GESTION MENUS
+     =============================== */
   
   // Variable debug console
   let DebugConsole = true;
 
   /* ===============================
-     CONFIGURATION API
+      CONFIGURATION API
      =============================== */
 
   // EndPoint de l'API de récupération des infos de l'utilisateur
@@ -71,7 +71,7 @@ export function initCompteAdminGestionMenusPage() {
 
   /* ===============================
       RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-    =============================== */
+     =============================== */
   // span qui contiendra le prénom de l'administrateur
   const heroUserName = document.getElementById('hero-user-name'); 
 
@@ -106,6 +106,9 @@ export function initCompteAdminGestionMenusPage() {
   const toastEl = document.getElementById('toast-message');
   const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 3000 });
 
+  // Filtre de stock
+  const filterStatus = document.getElementById('filter-status');
+
   // Variables
   let allMenus = [];
   let allPlats = [];
@@ -129,9 +132,9 @@ export function initCompteAdminGestionMenusPage() {
 
   /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
-      - 1.  Appelle GET /api/me
-      - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
-      - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
+        - 1.  Appelle GET /api/me
+        - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
+        - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
      =============================== */
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
@@ -173,15 +176,15 @@ export function initCompteAdminGestionMenusPage() {
   loadUserName();
 
   /* ===============================
-    FONCTION : RÉCUPERATION DES DONNEES API POUR LES SELECT THÈMES, RÉGIMES, PLATS
-    - 1.  Récupération des données via les API Appelle GET
-            apiGetThemes
-            apiGetRegimes
-            apiGetPlats
-    - 2.  Traitement des données thèmes
-    - 3.  Traitement des données régimes
-    - 4.  Traitement des plats
-    - 5.  Chargement des selects
+      FONCTION : RÉCUPERATION DES DONNEES API POUR LES SELECT THÈMES, RÉGIMES, PLATS
+        - 1.  Récupération des données via les API Appelle GET
+                apiGetThemes
+                apiGetRegimes
+                apiGetPlats
+        - 2.  Traitement des données thèmes
+        - 3.  Traitement des données régimes
+        - 4.  Traitement des plats
+        - 5.  Chargement des selects
     =============================== */
   async function loadSelectData() {
 
@@ -312,8 +315,8 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-    FONCTION : REMPLISSAGE DES SELECT  THÈMES, RÉGIMES
-    =============================== */
+      FONCTION : REMPLISSAGE DES SELECT  THÈMES, RÉGIMES
+     =============================== */
   function fillSelect(selectEl, items, valueKey, labelKey) {
 
     // Vérifie que l'élément existe
@@ -514,8 +517,8 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-    FONCTION : OUVRIR LE FORMULAIRE DE CRÉATION D'UN MENU
-    =============================== */
+      FONCTION : OUVRIR LE FORMULAIRE DE CRÉATION D'UN MENU
+     =============================== */
   function openCreateForm() {
     if (DebugConsole) console.log("[openCreateForm] Appel openCreateForm");
     currentEditId = null;
@@ -543,7 +546,7 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-     FONCTION : OUVRIR LE FORMULAIRE DE MODIFICATION
+      FONCTION : OUVRIR LE FORMULAIRE DE MODIFICATION
      =============================== */
   function openEditForm(menuId) {
     if (DebugConsole) console.log("[openEditForm] Appel openEditForm");
@@ -605,7 +608,7 @@ export function initCompteAdminGestionMenusPage() {
   }
 
   /* ===============================
-     SAUVEGARDER, CRÉER OU MODIFIER UN MENU
+      SAUVEGARDER, CRÉER OU MODIFIER UN MENU
      =============================== */
   btnSaveMenu.addEventListener('click', async () => {
     if (DebugConsole) console.log("[openEditForm] Appel btnSaveMenu");
@@ -684,7 +687,7 @@ export function initCompteAdminGestionMenusPage() {
   });
 
   /* ===============================
-     SUPPRESSION MENU (MODALE)
+      SUPPRESSION MENU (MODALE)
      =============================== */
   confirmDeleteBtn.addEventListener('click', async () => {
     if (DebugConsole) console.log("[openEditForm] Appel confirmDeleteBtn");
@@ -715,41 +718,129 @@ export function initCompteAdminGestionMenusPage() {
   });
 
   /* ===============================
-      RECHERCHE DES MODIFICATIONS
+      FONCTION : APPLIQUER LES FILTRES RECHERCHE ET STOCK DISPONIBLE
      =============================== */
-  if (searchInput) { 
+  function applyFilters() {
 
-    // Écoute l'événement 'input' : chaque fois que l'utilisateur tape quelque chose
-    searchInput.addEventListener('input', () => {
+    let search = "";
+    let status = "";
 
-      // Récupère la valeur saisie, la met en minuscules et enlève les espaces autour
-      const search = searchInput.value.toLowerCase().trim();
+    if (searchInput) {
+      search = searchInput.value.toLowerCase().trim();
+    }
 
-      // Si le champ est vide, on affiche tous les menus
-      if (!search) {
-        renderMenus(allMenus);
-        return; 
+    if (filterStatus) {
+      status = filterStatus.value;
+    }
+
+    if (DebugConsole) {
+      console.log("[applyFilters] search:", search, "status:", status);
+    }
+
+    const filtered = allMenus.filter(function(menu) {
+
+      /*
+       * Filtre des stocks disponible
+      */
+      if (status !== "") {
+
+        let quantite = 0;
+        let minimum = 1;
+
+        if (menu.quantite_restante) {
+          quantite = menu.quantite_restante;
+        }
+
+        if (menu.nombre_personne_minimum) {
+          minimum = menu.nombre_personne_minimum;
+        }
+
+        let enStock = false;
+
+        if (quantite >= minimum) {
+          enStock = true;
+        } else {
+          enStock = false;
+        }
+
+        if (status === "En stock") {
+          if (enStock === false) {
+            return false;
+          }
+        }
+
+        if (status === "Rupture") {
+          if (enStock === true) {
+            return false;
+          }
+        }
+      }
+      if (DebugConsole) {
+        console.log("[applyFilters] status:", status);
       }
 
-      // Filtrage des menus
-      const filtered = allMenus.filter(menu => {
+      /*
+       * Filtre recherche
+      */
+      if (search !== "") {
+
+        let titre = "";
+        let theme = "";
+        let regime = "";
 
         // Récupère le titre du menu
-        const titre = (menu.titre || '').toLowerCase();
-
+        if (menu.titre) {
+          titre = menu.titre.toLowerCase();
+        }
         // Récupère le titre du thème
-        const theme = menu.theme ? (menu.theme.titre || '').toLowerCase() : '';
-
+        if (menu.theme && menu.theme.titre) {
+          theme = menu.theme.titre.toLowerCase();
+        }
         // Récupère le libellé du régime
-        const regime = menu.regime ? (menu.regime.libelle || '').toLowerCase() : '';
+        if (menu.regime && menu.regime.libelle) {
+          regime = menu.regime.libelle.toLowerCase();
+        }
+        if (DebugConsole) {
+          console.log("[applyFilters] titre:", titre);
+          console.log("[applyFilters] theme:", theme);
+          console.log("[applyFilters] regime:", regime);
+        }
+        let contientRecherche = false;
 
         // Retourne true si une des valeurs contient le texte recherché
-        return titre.includes(search) || theme.includes(search) || regime.includes(search);
-      });
+        if (titre.includes(search)) {
+          contientRecherche = true;
+        } else if (theme.includes(search)) {
+          contientRecherche = true;
+        } else if (regime.includes(search)) {
+          contientRecherche = true;
+        } else {
+          contientRecherche = false;
+        }
 
-      // Affiche uniquement les menus filtrés
-      renderMenus(filtered);
+        if (contientRecherche === false) {
+          return false;
+        }
+        if (DebugConsole) {
+          console.log("[applyFilters] contientRecherche:", contientRecherche);
+        }
+      }
+
+      return true;
     });
+
+    // Affiche uniquement les menus filtrés
+    renderMenus(filtered);
+  }
+
+  /* ===============================
+      LISTENERS FILTRES
+     =============================== */
+  if (searchInput) {
+    searchInput.addEventListener('input', applyFilters);
+  }
+  if (filterStatus) {
+    filterStatus.addEventListener('change', applyFilters);
   }
 
   /* ===============================

@@ -454,8 +454,8 @@ export function initCompteEmployerPage() {
 
 /* ===============================
    FILTRE AJAX DES COMMANDES
-   - Filtre par numéro de commande
-   - Filtre par statut
+    - Filtre par numéro de commande
+    - Filtre par statut
    =============================== */
 
   function applyFilters() {

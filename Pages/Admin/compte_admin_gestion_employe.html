@@ -1,0 +1,210 @@
+<!------ Section Hero compte Admin -------->
+<section class="compte_admin-hero py-5">
+  <div class="container">
+    <h1 class="compte_admin-hero-title text-center">Espace Administrateur</h1>
+    <p class="compte_admin-hero-welcome text-center">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section compte Admin -------->
+<section class="compte_admin-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="row justify-content-center compte_admin">
+
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          <!------ Onglets Statistiques -------->
+          <div class="col-12 col-md-4">
+            <a href="/statistiques" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-graph-up fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Statistiques</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Profil</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Employés & Utilisateurs (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_employes" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-people-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Employés & Utilisateurs</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menus -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-fork-knife fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menus</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergènes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergènes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Commandes & Avis -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-calculator-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Commandes & Avis</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Horraire -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_horraire" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-clock-fill fs-4 mb-1 "></i>
+                <h6 class="card-title mb-0">Gestion Horraire</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Employés & Utilisateurs</h2>
+
+          <!------ Onglets Gestion Employés (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_employes" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0 ">Gestion Employés</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Utilisateurs -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-database-fill-gear mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Utilisateurs</h6>
+              </div>
+            </a>
+          </div>
+
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Employés </h3>
+        
+        <!------ Card : Liste des comptes employés -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h3 class="fw-bold mb-3 text-center pb-4 pt-2">Comptes employés</h3>
+            <div id="employes-list">
+              <!-- Injecté dynamiquement par le JS -->
+            </div>
+          </div>
+        </div>
+
+        <!------ Card : Formulaire création employé -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <h3 class="fw-bold mb-3 text-center pb-4 pt-2">Créer un compte employé</h3>
+
+            <!-- Nom + Prénom -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="employe-nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                <input type="text" id="employe-nom" class="form-control rounded-pill" placeholder="Dupont">
+              </div>
+              <div class="col-md-6">
+                <label for="employe-prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+                <input type="text" id="employe-prenom" class="form-control rounded-pill" placeholder="Jean">
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="employe-email" class="form-label">Email professionnel <span class="text-danger">*</span></label>
+              <input type="email" id="employe-email" class="form-control rounded-pill" placeholder="prenom@vitegourmand.fr">
+            </div>
+
+            <!-- Téléphone -->
+            <div class="mb-3">
+              <label for="employe-telephone" class="form-label">Téléphone <span class="text-danger">*</span></label>
+              <input type="tel" id="employe-telephone" class="form-control rounded-pill" placeholder="06 12 34 56 78">
+            </div>
+
+            <!-- Info mot de passe -->
+            <p class="text-muted small mb-3 text-center pt-2">
+              <i class="bi bi-info-circle me-1"></i>
+              Un email avec le mot de passe temporaire sera envoyé automatiquement.
+            </p>
+
+            <!-- Bouton créer -->
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary rounded-pill px-4" id="btn-create-employe">
+                <i class="bi bi-person-plus me-1"></i> Créer le compte
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!------ Toast -------->
+        <div class="d-flex justify-content-center mt-3">
+          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Suppression Employé -->
+<div class="modal fade" id="deleteEmployeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer l'employé</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>Voulez-vous vraiment supprimer le compte de <strong id="delete-employe-name"></strong> ?</p>
+        <p class="text-muted small">Cette action est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-employe">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
