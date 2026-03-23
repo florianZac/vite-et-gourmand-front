@@ -16,16 +16,16 @@ export function initCompteAdminGestionAvisPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API de récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // GET tous les avis (admin)
+  // EndPoint de l'API pour la récupération de tous les avis.
   const apiGetAvis = `${API_URL}/api/admin/avis`;
 
-  // Approuver / Refuser les avis
+  // EndPoint de l'API pour Approuver / Refuser les avis
   const apiEmployeAvis = `${API_URL}/api/employe/avis`;
 
-  // Supprimer un avis
+  // EndPoint de l'API pour Supprimer un avis
   const apiAdminAvis = `${API_URL}/api/admin/avis`;
 
   if (DebugConsole) {

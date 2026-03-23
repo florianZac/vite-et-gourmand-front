@@ -74,7 +74,7 @@ export async function initAccueilPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des avis validés de l'API Symfony
+  // EndPoint de l'API pour la récupération des avis validés de l'API Symfony
   const apiAvisclient = `${API_URL}/api/avis`;
 
   // Variable debug console : si true, affichage des logs

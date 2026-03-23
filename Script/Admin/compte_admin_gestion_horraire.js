@@ -17,13 +17,13 @@ export function initCompteAdminGestionHorrairePage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération  des infos de l'utilisateur
   const apiGetHoraire = `${API_URL}/api/horaires`;
 
-  // URL de mise à jour des données
+  // EndPoint de l'API de mise à jour des horraires du site
   const apiUpdateHoraire = `${API_URL}/api/admin/horaires/`;
 
   if (DebugConsole) {

@@ -1,5 +1,6 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
+import Chart from 'chart.js/auto';
 
 export function initCompteAdminPage() {
 
@@ -14,7 +15,7 @@ export function initCompteAdminPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
   

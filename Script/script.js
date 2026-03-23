@@ -17,7 +17,7 @@ let DebugConsole = false;
     Configuration API
    =============================== */
 
-//récupere les informations de l'utilisateur concerné
+// EndPoint de l'API pour la récupération des informations de l'utilisateur concerné
 const apiAccountMeUrl = `${API_URL}/api/me`;
 
 /* ===============================

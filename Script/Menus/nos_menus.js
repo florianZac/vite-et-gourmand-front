@@ -16,11 +16,12 @@ export function initNosMenusPage() {
 
   // Variable debug console
   let DebugConsole = false;
+
   /* ===============================
       CONFIGURATION API
      =============================== */
 
-  // URL de base de l'API Symfony
+  // EndPoint de l'API pour la récupération des mennus
   const apiMenusUrl = `${API_URL}/api/menus/full`;
 
   if (DebugConsole) {

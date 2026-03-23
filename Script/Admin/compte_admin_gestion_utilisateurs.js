@@ -13,7 +13,7 @@ export function initCompteAdminGestionUtilisateurPage() {
       CONFIGURATION API
      =============================== */
 
-  // EndPoint de l'API de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
   // EndPoint de l'API de récupération de l'ensemble des utilisateurs

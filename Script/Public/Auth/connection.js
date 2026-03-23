@@ -20,7 +20,7 @@ export function initConnexionPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de base de l'API Symfony
+  // EndPoint de l'API pour le traitement du login 
   const apiConnectionUser = `${API_URL}/api/login`;
 
   // Variable debug console si à true

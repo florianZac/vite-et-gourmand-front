@@ -59,22 +59,23 @@ export async function initCommanderPage() {
   /* ===============================
       CONFIGURATION API
       =============================== */
-  // URL de l'API Symfony pour créer la commande 
+
+  // EndPoint de l'API pour créer la commande 
   const apiCommander = `${API_URL}/api/commandes`;
 
-  // URL de l'API Symfony pour la récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL de l'API Symfony pour la récupération des menus
+  // EndPoint de l'API pour la récupération des menus
   const apiMenusUrl = `${API_URL}/api/menus`;
 
-  // URL de l'API Symfony pour la modification du profil
+  // EndPoint de l'API pour la modification du profil
   const apiProfilUrl = `${API_URL}/api/client/profil`;
 
-  // URL de l'API Symfony pour la géolocalisation et le calcul du coup vias la distance
+  // EndPoint de l'API pour la géolocalisation et le calcul du coup vias la distance
   const apigeocodeUrl = `${API_URL}/delivery-cost?adresse=`;
   
-  // URL de l'API Symfony pour la récupération des horraires du site
+  // EndPoint de l'API pour la récupération des horraires du site
   const apiHorraireUrl = `${API_URL}/api/horaires`;
 
   /* ===============================

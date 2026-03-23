@@ -15,7 +15,7 @@ export function initInscriptionPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de base de l'API Symfony
+  // EndPoint de l'API pour l'inscription d'un utilisateur 
   const apiInscriptionUser = `${API_URL}/api/register`;
 
   /* ===============================

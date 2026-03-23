@@ -22,10 +22,10 @@ export function initcompteclientPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL de récupération des commandes de l'API Symfony
+  // EndPoint de l'API pour la récupération des commandes de l'API Symfony
   const apiCommandesUrl = `${API_URL}/api/client/commandes`;
 
   if (DebugConsole) {

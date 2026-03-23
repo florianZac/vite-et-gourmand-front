@@ -1,6 +1,6 @@
 import { API_URL } from '../../config.js';
 
-// URL de base de l'API Symfony pour récupérer les horaires
+  // EndPoint de l'API pour la récupération des horaires
 const apiHoraire = `${API_URL}/api/horaires`;
 
 // Variable debug console si à true

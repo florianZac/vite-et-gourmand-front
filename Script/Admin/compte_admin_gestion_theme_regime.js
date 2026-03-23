@@ -17,16 +17,16 @@ export function initCompteAdminGestionThemeRegimePage() {
   // URL de récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL pour récupérer tous les themes
+  // EndPoint de l'API pour la récupération  tous les themes
   const apiGetThemes = `${API_URL}/api/themes`;
 
-  // URL de gestion CRUD (Create, Update, Delete) des themes
+  // EndPoint de l'API de gestion CRUD (Create, Update, Delete) des themes
   const apiEmployeThemes = `${API_URL}/api/employe/themes`;
 
-  // URL pour récupérer tous les régimes
+  // EndPoint de l'API pour récupérer tous les régimes
   const apiGetRegimes = `${API_URL}/api/regimes`;
 
-  // URL de gestion CRUD (Create, Update, Delete) des regimes
+  // EndPoint de l'API pour la gestion CRUD (Create, Update, Delete) des regimes
   const apiEmployeRegimes = `${API_URL}/api/employe/regimes`;
 
   if (DebugConsole) {

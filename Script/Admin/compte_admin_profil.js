@@ -14,10 +14,10 @@ export function initCompteAdminProfilPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL du profil client (GET pour charger, PUT pour sauvegarder)
+  // EndPoint de l'API pour la gestion du profil client (GET pour charger, PUT pour sauvegarder)
   const apiProfilUrl = `${API_URL}/api/client/profil`;
   
   if (DebugConsole) {

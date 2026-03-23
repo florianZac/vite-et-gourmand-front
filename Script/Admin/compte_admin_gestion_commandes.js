@@ -4,18 +4,34 @@ import { getToken, getRole } from '../script.js';
 export function initCompteAdminGestionCommandesPage() {
 
   /* ===============================
-      SCRIPT PAGE ADMIN GESTION AVIS
+      SCRIPT PAGE ADMIN GESTION COMMANDE
      =============================== */
   
-  // Variable debug console : passer à false pour désactiver tous les logs
+  // Variable debug console 
   let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API pour la récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
+
+  // EndPoint de l'API pour la récupération de toutes les commandes
+  const apiGetCommandes = `${API_URL}/api/commandes/admin`;
+
+  // EndPoint de l'API pour la récupération des status d'une commande
+  const apiChangerStatut = `${API_URL}/api/employe/commandes`;
+
+  // EndPoint de l'API pour l'annulation d'une commande
+  const apiAnnuler = `${API_URL}/api/commandes/admin`;
+
+  // EndPoint de l'API pour la mise à jour des données de restitution retour matériel
+  const apiRestitution = `${API_URL}/api/employe/commandes`;
+  
+  // EndPoint de l'API pour la gestion du suivis des commandes
+  const apiSuivi = `${API_URL}/api/employe/commandes`;
+
 
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG API ===");
@@ -36,6 +52,13 @@ export function initCompteAdminGestionCommandesPage() {
     return;
   }
 
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
+
+
   if (DebugConsole) {
     console.log("=== DEBUG INIT COMPTE ADMIN ===");
     console.log("Cookies actuels :", document.cookie);
@@ -44,11 +67,27 @@ export function initCompteAdminGestionCommandesPage() {
     console.log("================================");
   }
 
-  // Headers réutilisables pour toutes les requêtes authentifiées
-  const authHeaders = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
+ 
+
+  /* ===============================
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+     =============================== */
+
+  // span qui contiendra le prénom de l'administrateur
+  const heroUserName = document.getElementById('hero-user-name'); 
+
+  // ----- Barre de recherche et filtres -----
+  const searchInput = document.getElementById('search-order'); 
+  // input texte pour rechercher un menu/commande
+  const filterStatus = document.getElementById('filter-status'); 
+  // select pour filtrer par statut
+  const resetFiltersBtn = document.getElementById('reset-filters'); 
+  // bouton pour réinitialiser les filtres
+
+  // ----- Liste des commandes/employés -----
+  const commandesList = document.getElementById('commandes-list'); 
+  // div qui contiendra les cards injectées dynamiquement
+
 
   /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
@@ -56,7 +95,6 @@ export function initCompteAdminGestionCommandesPage() {
         - 2.  Décode le token JWT pour récupérer le prenom, nom, email, role
         - 3.  Remplit le span #hero-user-name avec le prenom récuperer du token
      =============================== */
-
   async function loadUserName() {
     if (DebugConsole) console.log("[loadUserName] Début - Appel GET", apiMeUrl);
 
@@ -95,26 +133,11 @@ export function initCompteAdminGestionCommandesPage() {
       console.error('[loadUserName] Erreur :', err);
     }
   }
-
-  /* ===============================
-      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-     =============================== */
-
-  // span qui contiendra le prénom de l'administrateur
-  const heroUserName = document.getElementById('hero-user-name'); 
-
-  // ----- Barre de recherche et filtres -----
-  const searchInput = document.getElementById('search-order'); 
-  // input texte pour rechercher un menu/commande
-  const filterStatus = document.getElementById('filter-status'); 
-  // select pour filtrer par statut
-  const resetFiltersBtn = document.getElementById('reset-filters'); 
-  // bouton pour réinitialiser les filtres
-
-  // ----- Liste des commandes/employés -----
-  const commandesList = document.getElementById('commandes-list'); 
-  // div qui contiendra les cards injectées dynamiquement
-
   loadUserName();
+
+
+
+
+
 
 }

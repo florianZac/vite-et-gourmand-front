@@ -20,13 +20,13 @@ export function initcompte_client_profilPage() {
      CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos utilisateur (prénom hero)
+  // EndPoint de l'API pour la récupération des infos utilisateur (prénom hero)
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL du profil client (GET pour charger, PUT pour sauvegarder)
+  // EndPoint de l'API pour la gestion du profil client (GET pour charger, PUT pour sauvegarder)
   const apiProfilUrl = `${API_URL}/api/client/profil`;
 
-  // URL de demande de désactivation du compte
+  // EndPoint de l'API pour la demande de désactivation du compte
   const apiDesactivationUrl = `${API_URL}/api/client/compte/desactivation`;
  
   if (DebugConsole) {

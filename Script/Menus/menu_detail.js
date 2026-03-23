@@ -19,12 +19,13 @@ export function initDetailMenusPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de l'API Symfony pour la récupération des menus
+  // EndPoint de l'API pour la récupération  des menus
   const apiMenusUrl = `${API_URL}/api/menus`;
   
-  // Upload image via Cloudinary
+  // EndPoint de l'API pour l'Upload image via Cloudinary
   const apiUploadImage = `${API_URL}/api/employe/upload/image`;
-  // CRUD plats
+  
+  // EndPoint de l'API pour la gestion CRUD plats
   const apiEmployePlats = `${API_URL}/api/employe/plats`;
 
 	/* ===============================

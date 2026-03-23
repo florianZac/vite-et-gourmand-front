@@ -9,7 +9,8 @@ export function initforgotpasswordPage() {
   /* ===============================
       Configuration API
      =============================== */
-   
+  
+  // EndPoint de l'API pour la gestion de l'oublie du mot de passe  
   const apiForgotpassword = `${API_URL}/api/forgot-password`;
 
   /* ===============================

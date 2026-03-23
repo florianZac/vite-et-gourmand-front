@@ -22,7 +22,7 @@ export function initContactPage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de base de l'API Symfony
+  // EndPoint de l'API pour la gestion de la page contact
   const apiContact = `${API_URL}/api/contact`;
 
   // Variable debug console si à true

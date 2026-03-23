@@ -10,6 +10,7 @@ let DebugConsole = true;
     Configuration API
    =============================== */
 
+  // EndPoint de l'API pour la Mise à jour du mot de passe 
 const apiResetpassword = `${API_URL}/api/reset-password`;
 
 export function initResetpasswordPage() {

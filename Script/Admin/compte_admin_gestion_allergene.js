@@ -14,13 +14,13 @@ export function initCompteAdminGestionAllergenePage() {
       CONFIGURATION API
      =============================== */
 
-  // URL de récupération des infos de l'utilisateur
+  // EndPoint de l'API de récupération des infos de l'utilisateur
   const apiMeUrl = `${API_URL}/api/me`;
 
-  // URL pour récupérer tous les allergènes
+  // EndPoint de l'API pour récupérer tous les allergènes
   const apiGetAllergenes = `${API_URL}/api/allergenes`;
 
-  // URL de gestion CRUD (Create, Update, Delete) des allergènes
+  // EndPoint de l'API de gestion CRUD (Create, Update, Delete) des allergènes
   const apiEmployeAllergenes = `${API_URL}/api/employe/allergenes`;
 
   if (DebugConsole) {
