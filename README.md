@@ -173,3 +173,6 @@ heroku open
 
 # SI sa plante Vérifier les logs Heroku
 heroku logs --tail
+
+# Installation de chart JS
+npm install chart.js
