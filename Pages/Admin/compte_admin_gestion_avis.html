@@ -26,15 +26,17 @@
               </div>
             </a>
           </div>
-          <!------ Onglets Profil (ACTIVE) -------->
+
+          <!------ Onglets Profil -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_profil" class="card text-center text-decoration-none h-100 active">
+            <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-person-gear fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Profil</h6>
               </div>
             </a>
           </div>
+
           <!------ Onglets Gestion Utilisateurs -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
@@ -44,6 +46,7 @@
               </div>
             </a>
           </div>
+
           <!------ Onglets Gestion Menus -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_menus" class="card text-center text-decoration-none h-100">
@@ -53,6 +56,7 @@
               </div>
             </a>
           </div>
+
           <!------ Onglets Gestion Plat -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
@@ -62,6 +66,7 @@
               </div>
             </a>
           </div>
+
           <!------ Onglets Gestion Allergènes -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
@@ -71,6 +76,7 @@
               </div>
             </a>
           </div>
+
           <!------ Onglets Thèmes & Règimes -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
@@ -80,15 +86,17 @@
               </div>
             </a>
           </div>
-          <!------ Onglets Commandes & Avis -------->
+
+          <!------ Onglets Commandes & Avis (ACTIVE) -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_avis" class="card text-center text-decoration-none h-100">
+            <a href="/gestion_avis" class="card text-center text-decoration-none h-100 active">
               <div class="card-body py-3">
                 <i class="bi bi-calculator-fill fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Commandes & Avis</h6>
               </div>
             </a>
           </div>
+
           <!------ Onglets Gestion Horraire -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_horraire" class="card text-center text-decoration-none h-100">
@@ -100,80 +108,83 @@
           </div>
         </div>
 
-        <!------ Titre de la Navigation  -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Profil Administrateur</h2>
+        <!------ Titre de la Navigation -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Commandes & Avis</h2>
+
+        <!------ Onglets Gestion avis (ACTIVE) -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_avis" class="card text-center text-decoration-none h-100 active">
+            <div class="card-body py-3">
+              <i class="bi bi-star-half mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Avis</h6>
+            </div>
+          </a>
+        </div>   
+
+        <!------ Onglets Gestion Commandes  -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_commandes" class="card text-center text-decoration-none h-100 ">
+            <div class="card-body py-3">
+              <i class="bi bi-bag-dash-fill fs-4 mb-1"></i>
+              <h6 class="card-title mb-0 ">Gestion Commandes</h6>
+            </div>
+          </a>
+        </div>
+
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Avis Client </h3>
 
         <!------ Barre recherche + filtres -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
-
             <div class="row g-2 align-items-center">
-              <!------ Formulaire Informations Personnelles -------->
 
-                <!------ Carte compte client_profil (avatar + nom + email) -------->
-                <div class="compte_admin_profil-identity">
-                  <!-- Avatar utilisateur -->
-                  <div class="compte_admin_profil-avatar">
-                    <i class="bi bi-person-fill"></i>
-                  </div>
-                  <!-- Nom et email affichés sous l'avatar -->
-                  <h2 class="compte_admin_profil-name" id="compte_admin_profil-display-name">Marie Dupont</h2>
-                  <p class="compte_admin_profil-email" id="compte_admin_profil-display-email">marie.dupont@email.com</p>
+              <!-- Recherche numéro commande -->
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                  </span>
+                  <input 
+                    type="text"
+                    id="search-order"
+                    class="form-control"
+                    placeholder="Rechercher un menus..."
+                  >
                 </div>
-                <form class="compte_admin_profil-form" id="form-compte_admin_profil">
-                  <!-- Prénom et Nom -->
-                  <div class="row mb-4">
-                    <div class="col-6">
-                      <label for="compte_admin_profilFirstName" class="form-label">Prénom</label>
-                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilFirstName" placeholder="Marie">
-                    </div>
-                    <div class="col-6">
-                      <label for="compte_admin_profilLastName" class="form-label">Nom</label>
-                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilLastName" placeholder="Dupont">
-                    </div>
-                  </div>
+              </div>
 
-                  <!-- Téléphone -->
-                  <div class="mb-4">
-                    <label for="compte_admin_profilPhone" class="form-label">Téléphone</label>
-                    <input type="tel" class="form-control compte_admin_profil-input" id="compte_admin_profilPhone" placeholder="06 12 34 56 78">
-                  </div>
+              <!-- Filtre statut avis -->
+              <div class="col-md-2">
+                <select id="filter-status" class="form-select" title="Filtrer par statut">
+                  <option value="">Tous</option>
+                  <option value="en_attente">En attente</option>
+                  <option value="validé">Validé</option>
+                  <option value="refusé">Refusé</option>
+                </select>
+              </div>
 
-                  <!-- Email -->
-                  <div class="mb-4">
-                    <label for="compte_admin_profilEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control compte_admin_profil-input" id="compte_admin_profilEmail" placeholder="marie.dupont@email.com">
-                  </div>
+              <!-- Reset -->
+              <div class="col-md-2 d-grid">
+                <button type="button" id="reset-filters" class="btn btn-outline-secondary">
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>  
+        </div> 
+        <!------ Liste des commandes injectée dynamiquement par le JS -------->
+        <div id="commandes-list">
+          <!-- Les cards de commandes seront injectées ici par le JS -->
 
-                  <!-- Adresse -->
-                  <div class="mb-4">
-                    <label for="compte_admin_profilAddress" class="form-label">Adresse</label>
-                    <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilAddress" placeholder="12 rue des Roses">
-                  </div>
-
-                  <!-- Ville et Code Postal -->
-                  <div class="row mb-4">
-                    <div class="col-6">
-                      <label for="compte_admin_profilCity" class="form-label">Ville</label>
-                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilCity" placeholder="Bordeaux">
-                    </div>
-                    <div class="col-6">
-                      <label for="compte_admin_profilPostal" class="form-label">Code Postal</label>
-                      <input type="text" class="form-control compte_admin_profil-input" id="compte_admin_profilPostal" placeholder="33000">
-                    </div>
-                  </div>
-
-                  <!-- Bouton sauvegarder -->
-                  <div class="d-grid mb-3">
-                    <button type="button" class="btn btn-compte_admin_profil-save" id="btn-save-compte_admin_profil">
-                      Sauvegarder les modifications
-                    </button>
-                  </div>
-                </form>  
+          <!------ Toast -------->
+          <div class="d-flex justify-content-center mt-3">
+            <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-body"></div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> 
+      </div>         
     </div>
   </div>
 </section>

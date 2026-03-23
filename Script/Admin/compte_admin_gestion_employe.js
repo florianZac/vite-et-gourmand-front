@@ -8,7 +8,7 @@ export function initCompteAdminGestionEmployePage() {
      =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
@@ -250,14 +250,14 @@ export function initCompteAdminGestionEmployePage() {
         </div>
         <div class="d-flex flex-column gap-2">
           ${isActif
-            ? `<button class="btn btn-outline-warning btn-sm rounded-pill btn-desactiver" data-id="${employe.id}" title="Désactiver">
+            ? `<button class="btn btn-warning btn-sm  btn-desactiver" data-id="${employe.id}" title="Désactiver">
                 <i class="bi bi-pause-circle me-1"></i> Désactiver
                </button>`
-            : `<button class="btn btn-outline-success btn-sm rounded-pill btn-reactiver" data-id="${employe.id}" title="Réactiver">
+            : `<button class="btn btn-success btn-sm  btn-reactiver" data-id="${employe.id}" title="Réactiver">
                 <i class="bi bi-play-circle me-1"></i> Réactiver
                </button>`
           }
-          <button class="btn btn-outline-danger btn-sm rounded-pill btn-supprimer" 
+          <button class="btn btn-danger btn-sm  btn-supprimer" 
             data-id="${employe.id}" 
             data-nom="${employe.prenom} ${employe.nom}" 
             title="Supprimer">

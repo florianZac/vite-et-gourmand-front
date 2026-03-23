@@ -8,7 +8,7 @@ export function initCompteAdminGestionMenusPage() {
      =============================== */
   
   // Variable debug console
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
@@ -486,12 +486,12 @@ export function initCompteAdminGestionMenusPage() {
           <small class="text-muted">${themeLabel} · ${regimeLabel} · Min. ${menu.nombre_personne_minimum || 1} pers. · ${menu.prix_par_personne || 0}€/pers</small><br>
           <small>${nbPlats} plat(s) — ${enStock ? '<span style="color:green">En stock</span>' : '<span style="color:red">Rupture</span>'} · Qté: ${menu.quantite_restante || 0}</small>
         </div>
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-secondary btn-sm btn-edit-menu" data-id="${menu.id}" title="Modifier">
+        <div class="d-flex flex-column gap-2">
+          <button class="btn btn-secondary btn-sm btn-edit-menu" data-id="${menu.id}" title="Modifier">
             <i class="bi bi-pencil-fill me-1"></i> Modifier
           </button>
           <button class="btn btn-danger btn-sm btn-delete-menu" data-id="${menu.id}" data-titre="${menu.titre}" title="Supprimer">
-            <i class="bi bi-trash-fill"></i>
+            <i class="bi bi-trash-fill me-1"></i> Supprimer
           </button>
         </div>
       `;

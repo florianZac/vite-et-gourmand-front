@@ -7,7 +7,7 @@ export function initCompteAdminGestionUtilisateurPage() {
      =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
@@ -272,7 +272,7 @@ export function initCompteAdminGestionUtilisateurPage() {
       row.style.backgroundColor = '#fdf8f0';
       row.style.border = '1px solid #e8ddd0';
 
-      row.innerHTML = `
+row.innerHTML = `
         <div>
           <strong>${c.prenom || ''} ${c.nom || ''}</strong>
           <span class="badge ms-2 ${isActif ? 'bg-success' : 'bg-warning text-dark'}">${isActif ? 'Actif' : 'Désactivé'}</span>
@@ -281,20 +281,20 @@ export function initCompteAdminGestionUtilisateurPage() {
           ${c.telephone ? '<br><small class="text-muted">' + c.telephone + '</small>' : ''}
           ${c.ville ? '<br><small class="text-muted">' + c.adresse_postale +  " " + c.code_postal + " " + c.ville + '</small>' : ''}
         </div>
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill btn-modifier" 
+        <div class="d-flex flex-column gap-2">
+          <button class="btn btn-secondary btn-sm btn-modifier" 
             data-id="${c.id}" title="Modifier">
             <i class="bi bi-pencil me-1"></i> Modifier
           </button>
           ${isActif
-            ? '<button class="btn btn-outline-warning btn-sm rounded-pill btn-desactiver" data-id="' + c.id + '" title="Désactiver"><i class="bi bi-pause-circle me-1"></i> Désactiver</button>'
-            : '<button class="btn btn-outline-success btn-sm rounded-pill btn-reactiver" data-id="' + c.id + '" title="Réactiver"><i class="bi bi-play-circle me-1"></i> Réactiver</button>'
+            ? '<button class="btn btn-warning btn-sm btn-desactiver" data-id="' + c.id + '" title="Désactiver"><i class="bi bi-pause-circle me-1"></i> Désactiver</button>'
+            : '<button class="btn btn-success btn-sm btn-reactiver" data-id="' + c.id + '" title="Réactiver"><i class="bi bi-play-circle me-1"></i> Réactiver</button>'
           }
-          <button class="btn btn-outline-danger btn-sm rounded-pill btn-supprimer" 
+          <button class="btn btn-danger btn-sm btn-supprimer" 
             data-id="${c.id}" 
             data-nom="${c.prenom} ${c.nom}" 
             title="Supprimer">
-            <i class="bi bi-trash me-1"></i>
+            <i class="bi bi-trash me-1"></i> Supprimer
           </button>
         </div>
       `;

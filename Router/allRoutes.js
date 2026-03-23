@@ -33,17 +33,20 @@ export const allRoutes = [
    new Route("/compte_employer", "Compte Employer", "Pages/Employer/compte_employer.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer.js", true),
    /* Role ADMIN (ROLE_ADMIN)*/
    new Route("/statistiques", "Compte Admin", "Pages/Admin/compte_admin.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin.js", true),
-   new Route("/gestion_profil", "Compte Admin Profil", "Pages/Admin/compte_admin_profil.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_profil.js", true),
-   new Route("/gestion_commandes_avis", "Compte Admin Gestion Commandes Avis", "Pages/Admin/compte_admin_gestion_commandes_avis.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_commandes_avis.js", true),
+   new Route("/gestion_horraire", "Compte Admin Gestion Horraire", "Pages/Admin/compte_admin_gestion_horraire.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_horraire.js", true),
+   new Route("/gestion_plat", "Compte Admin Gestion plat", "Pages/Admin/compte_admin_gestion_plat.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_plat.js", true),
    new Route("/gestion_theme_regimes", "Compte Admin Gestion Theme Regime", "Pages/Admin/compte_admin_gestion_theme_regime.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_theme_regime.js", true),
    new Route("/gestion_allergene", "Compte Admin Gestion Allergene", "Pages/Admin/compte_admin_gestion_allergene.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_allergene.js", true),
    new Route("/gestion_menus", "Compte Admin Gestion Menus", "Pages/Admin/compte_admin_gestion_menus.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_menus.js", true),
-   new Route("/gestion_horraire", "Compte Admin Gestion Horraire", "Pages/Admin/compte_admin_gestion_horraire.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_horraire.js", true),
-   new Route("/gestion_plat", "Compte Admin Gestion plat", "Pages/Admin/compte_admin_gestion_plat.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_plat.js", true),
+   new Route("/gestion_profil", "Compte Admin Profil", "Pages/Admin/compte_admin_profil.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_profil.js", true),
    new Route("/gestion_utilisateurs", "Compte Admin Gestion Utilisateur", "Pages/Admin/compte_admin_gestion_utilisateurs.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_utilisateurs.js", true),
-   
-   
    new Route("/gestion_employes", "Compte Admin Gestion Employe", "Pages/Admin/compte_admin_gestion_employe.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_employe.js", true),
+
+
+   new Route("/gestion_avis", "Compte Admin Gestion Avis", "Pages/Admin/compte_admin_gestion_avis.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_avis.js", true),
+   new Route("/gestion_commandes", "Compte Admin Gestion Commandes", "Pages/Admin/compte_admin_gestion_commandes.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_commandes.js", true),
+
+
 ];
 
 /* =====================================================

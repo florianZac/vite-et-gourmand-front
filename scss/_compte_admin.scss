@@ -336,7 +336,93 @@
   width:0%;
 }
 
+/* -------- Boutons admin custom -------- */
 
+// Désactiver
+.btn-warning {
+  background-color: $ocre-light;
+  border-color: $ocre-light;
+  color: $gray-800;
+
+  &:hover {
+    background-color: $ocre-dark;
+    border-color: $ocre-dark;
+    color: $white-warm;
+  }
+}
+
+// Supprimer
+.btn-danger {
+  background-color: $Rouge-coquine;
+  border-color: $Rouge-coquine;
+  color: $white-warm;
+
+  &:hover {
+    background-color: darken($error-message, 12%);
+    border-color: darken($error-message, 12%);
+    color: $white-warm;
+  }
+}
+
+// Réactiver (success)
+.btn-success {
+  background-color: $sucess-icon;
+  border-color: $sucess-icon;
+  color: $white-warm;
+
+  &:hover {
+    background-color: darken($success-message, 20%);
+    border-color: darken($success-message, 20%);
+    color: $white-warm;
+  }
+}
+
+// Modifier 
+.btn-secondary {
+  background-color: $olive-light;
+  border-color: $olive-light;
+  color: $white-warm;
+
+  &:hover {
+    background-color: darken($olive-light, 10%);
+    border-color: darken($olive-light, 10%);
+    color: $white-warm;
+  }
+}
+
+// Outline variants (pour les avis)
+.btn-outline-success {
+  color: $success-message;
+  border-color: $success-message;
+
+  &:hover {
+    background-color: $sucess-icon;
+    border-color: $sucess-icon;
+    color: $white-warm;
+  }
+}
+
+.btn-outline-danger {
+  color: $error-message;
+  border-color: $error-message;
+
+  &:hover {
+    background-color: $error-message;
+    border-color: $error-message;
+    color: $white-warm;
+  }
+}
+
+.btn-outline-secondary {
+  color: $terracotta;
+  border-color: $terracotta;
+
+  &:hover {
+    background-color: $terracotta;
+    border-color: $terracotta;
+    color: $white-warm;
+  }
+}
 
 
 

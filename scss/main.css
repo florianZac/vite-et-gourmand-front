@@ -13350,7 +13350,7 @@ textarea.form-control-lg {
 }
 
 .hero-scroll-btn:hover {
-  color: #EF4444;
+  color: #bf3737;
 }
 
 .hero-scroll-btn i {
@@ -14417,7 +14417,7 @@ textarea.form-control-lg {
 .login-error-message {
   display: none;
   text-align: center;
-  color: #dc3545;
+  color: #b4202f;
   font-size: 0.9rem;
   margin-top: 1rem;
 }
@@ -14736,7 +14736,7 @@ textarea.form-control-lg {
 .inscription-login-error-message {
   display: none;
   text-align: center;
-  color: #dc3545;
+  color: #b4202f;
   font-size: 0.9rem;
   margin-top: 1rem;
 }
@@ -14998,7 +14998,7 @@ textarea.form-control-lg {
 .reset-password-error-message {
   display: none;
   text-align: center;
-  color: #dc3545;
+  color: #b4202f;
   font-size: 0.9rem;
   margin-top: 1rem;
 }
@@ -15303,7 +15303,7 @@ textarea.form-control-lg {
 .contact-error-message {
   display: none;
   text-align: center;
-  color: #dc3545;
+  color: #b4202f;
   font-size: 0.9rem;
   margin-top: 1rem;
 }
@@ -15474,7 +15474,7 @@ textarea.form-control-lg {
 
 /* -------- Texte mis en avant -------- */
 .mentions-highlight {
-  color: #EF4444;
+  color: #bf3737;
   font-weight: 600;
 }
 
@@ -15770,7 +15770,7 @@ textarea.form-control-lg {
 
 .commander-confirm-icon i {
   font-size: 3rem;
-  color: #15803D;
+  color: #1e9c4c;
 }
 
 .commander-confirm-title {
@@ -15879,7 +15879,7 @@ textarea.form-control-lg {
   color: #22c55e;
 }
 #toast-message.toast-error {
-  color: #dc3545;
+  color: #b4202f;
 }
 
 /* -------- Desktop uniquement -------- */
@@ -16468,9 +16468,9 @@ textarea.form-control-lg {
 
 /* -------- Badge statut "Disponible" à la commande-------- */
 .detail_menu-badge-available {
-  background-color: rgba(21, 128, 61, 0.1);
-  color: #15803D;
-  border: 1px solid rgba(21, 128, 61, 0.3);
+  background-color: rgba(30, 156, 76, 0.1);
+  color: #1e9c4c;
+  border: 1px solid rgba(30, 156, 76, 0.3);
   padding: 0.5rem 0.6rem;
   border-radius: 2rem;
   font-size: 0.8rem;
@@ -16806,9 +16806,9 @@ textarea.form-control-lg {
 
 /* -------- Badge lorsqu'il n'y a aucun allergène -------- */
 .detail_menu-dish-allergen-none {
-  background-color: rgba(21, 128, 61, 0.1);
-  color: #15803D;
-  border: 1px solid rgba(21, 128, 61, 0.2);
+  background-color: rgba(30, 156, 76, 0.1);
+  color: #1e9c4c;
+  border: 1px solid rgba(30, 156, 76, 0.2);
   padding: 0.2rem 0.6rem;
   border-radius: 2rem;
   font-size: 0.75rem;
@@ -17314,9 +17314,9 @@ textarea.form-control-lg {
 
 /* -------- Statut : Terminée -------- */
 .compte_client-status-completed {
-  background-color: rgba(21, 128, 61, 0.1);
-  color: #15803D;
-  border: 1px solid rgba(21, 128, 61, 0.3);
+  background-color: rgba(30, 156, 76, 0.1);
+  color: #1e9c4c;
+  border: 1px solid rgba(30, 156, 76, 0.3);
 }
 
 /* -------- Statut : Annulée  -------- */
@@ -17368,7 +17368,7 @@ textarea.form-control-lg {
 
 /* -------- Valeur réduction en vert -------- */
 .compte_client-order-info-value-reduction {
-  color: #15803D;
+  color: #1e9c4c;
 }
 
 /* ===============================
@@ -17423,7 +17423,7 @@ textarea.form-control-lg {
 
 .compte_client-order-review i {
   font-size: 0.85rem;
-  color: #15803D;
+  color: #1e9c4c;
 }
 
 .btn-compte_client-avis {
@@ -17488,7 +17488,7 @@ textarea.form-control-lg {
 
 /* -------- Texte "Restitué" -------- */
 .compte_client-material-status-returned {
-  color: #15803D;
+  color: #1e9c4c;
   font-weight: 600;
 }
 
@@ -17911,7 +17911,7 @@ textarea.form-control-lg {
   color: #22c55e;
 }
 #toast-message.toast-error {
-  color: #dc3545;
+  color: #b4202f;
 }
 
 /* ===============================
@@ -18063,6 +18063,81 @@ textarea.form-control-lg {
 
 .progress-bar {
   width: 0%;
+}
+
+/* -------- Boutons admin custom -------- */
+.btn-warning {
+  background-color: hsl(38, 58%, 70%);
+  border-color: hsl(38, 58%, 70%);
+  color: #4A4A4A;
+}
+.btn-warning:hover {
+  background-color: hsl(38, 58%, 40%);
+  border-color: hsl(38, 58%, 40%);
+  color: #FCF7EE;
+}
+
+.btn-danger {
+  background-color: #bf3737;
+  border-color: #bf3737;
+  color: #FCF7EE;
+}
+.btn-danger:hover {
+  background-color: rgb(128.0377358491, 22.7622641509, 33.4320754717);
+  border-color: rgb(128.0377358491, 22.7622641509, 33.4320754717);
+  color: #FCF7EE;
+}
+
+.btn-success {
+  background-color: #1e9c4c;
+  border-color: #1e9c4c;
+  color: #FCF7EE;
+}
+.btn-success:hover {
+  background-color: rgb(18.987012987, 110.012987013, 52.4935064935);
+  border-color: rgb(18.987012987, 110.012987013, 52.4935064935);
+  color: #FCF7EE;
+}
+
+.btn-secondary {
+  background-color: hsl(79, 41%, 37%);
+  border-color: hsl(79, 41%, 37%);
+  color: #FCF7EE;
+}
+.btn-secondary:hover {
+  background-color: hsl(79, 41%, 27%);
+  border-color: hsl(79, 41%, 27%);
+  color: #FCF7EE;
+}
+
+.btn-outline-success {
+  color: #22c55e;
+  border-color: #22c55e;
+}
+.btn-outline-success:hover {
+  background-color: #1e9c4c;
+  border-color: #1e9c4c;
+  color: #FCF7EE;
+}
+
+.btn-outline-danger {
+  color: #b4202f;
+  border-color: #b4202f;
+}
+.btn-outline-danger:hover {
+  background-color: #b4202f;
+  border-color: #b4202f;
+  color: #FCF7EE;
+}
+
+.btn-outline-secondary {
+  color: hsl(14, 61%, 47%);
+  border-color: hsl(14, 61%, 47%);
+}
+.btn-outline-secondary:hover {
+  background-color: hsl(14, 61%, 47%);
+  border-color: hsl(14, 61%, 47%);
+  color: #FCF7EE;
 }
 
 /* -------- RESPONSIVE -------- */
@@ -18464,7 +18539,7 @@ textarea.form-control-lg {
 
 /* -------- Badge Disponibilité du menus centrer -------- */
 .nos_menu-card-badge-dispo {
-  background-color: hsl(79, 30%, 50%);
+  background-color: hsl(79, 41%, 37%);
   color: #FFFFFF;
   padding: 0.2rem 0.6rem;
   border-radius: 0.3rem;

@@ -81,7 +81,7 @@
           </div>
           <!------ Onglets Commandes & Avis -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+            <a href="/gestion_avis" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-calculator-fill fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Commandes & Avis</h6>
@@ -109,7 +109,7 @@
               <div class="col-12" id="themes-list"></div>
               <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
                 <input type="text" id="new-theme" class="form-control" placeholder="Nouveau Thème...">
-                <button class="btn btn-primary" id="btn-add-theme" title="Ajouter un thème">
+                <button type="button" class="btn btn-primary" id="btn-add-theme" title="Ajouter un thème">
                   <i class="bi bi-plus me-1"></i> Ajouter
                 </button>
               </div>
@@ -124,7 +124,7 @@
               <div class="col-12" id="regimes-list"></div>
               <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
                 <input type="text" id="new-regime" class="form-control" placeholder="Nouveau Régime...">
-                <button class="btn btn-primary" id="btn-add-regime" title="Ajouter un régime">
+                <button type="button" class="btn btn-primary" id="btn-add-regime" title="Ajouter un régime">
                   <i class="bi bi-plus me-1"></i> Ajouter
                 </button>
               </div>
@@ -149,7 +149,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="delete-modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer</h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
         <p>Voulez-vous vraiment supprimer <strong id="delete-item-name"></strong> ?</p>

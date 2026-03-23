@@ -8,7 +8,7 @@ export function initCompteAdminGestionplatPage() {
      =============================== */
   
   // Variable debug console
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
@@ -468,9 +468,9 @@ export function initCompteAdminGestionplatPage() {
             <small class="text-muted">Allergènes : ${allergLabels}</small>
           </div>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex flex-column gap-2">
           <button 
-            class="btn btn-outline-secondary btn-sm btn-edit-plat" 
+            class="btn btn-secondary btn-sm btn-edit-plat" 
             data-id="${plat.id}" 
             title="Modifier">
             <i class="bi bi-pencil-fill me-1"></i> Modifier
@@ -480,7 +480,7 @@ export function initCompteAdminGestionplatPage() {
             data-id="${plat.id}" 
             data-titre="${plat.titre}" 
             title="Supprimer">
-            <i class="bi bi-trash-fill"></i>
+            <i class="bi bi-trash-fill me-1"></i> Supprimer
           </button>
         </div>
       `;
@@ -565,7 +565,7 @@ export function initCompteAdminGestionplatPage() {
     platFormTitle.textContent = "Modifier : " + (plat.titre || '');
 
     // Modifier le bouton sauvegarder
-    btnSavePlat.innerHTML = '<i class="bi bi-save me-1"></i> Enregistrer';
+    btnSavePlat.innerHTML = '<i class="bi bi-save me-1 "></i> Enregistrer';
 
     // Remplir les champs
     inputTitre.value = plat.titre || '';

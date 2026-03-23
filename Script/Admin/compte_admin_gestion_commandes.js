@@ -1,10 +1,10 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
 
-export function initCompteAdminGestionCommandesAvisPage() {
+export function initCompteAdminGestionCommandesPage() {
 
   /* ===============================
-      SCRIPT PAGE ADMIN GESTION COMMANDE & AVIS
+      SCRIPT PAGE ADMIN GESTION AVIS
      =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs

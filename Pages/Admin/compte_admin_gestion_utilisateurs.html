@@ -81,7 +81,7 @@
           </div>
           <!------ Onglets Commandes & Avis -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_commandes_avis" class="card text-center text-decoration-none h-100">
+            <a href="/gestion_avis" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-calculator-fill fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Commandes & Avis</h6>
@@ -127,7 +127,7 @@
         <!------ Card : Liste des comptes Utilisateurs -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
-            <h3 class="fw-bold mb-3 text-center pb-4 pt-2">Comptes Utilisateurs</h3>
+            <h4 class="fw-bold mb-3 text-center pb-4 pt-2">Comptes Client</h4>
             <div id="utilisateurs-list">
               <!-- Injecté dynamiquement par le JS -->
             </div>
@@ -137,7 +137,7 @@
         <!------ Card : Formulaire modification utilisateur caché de base -------->
         <div class="card mb-4 shadow-sm d-none" id="edit-utilisateur-card">
           <div class="card-body">
-            <h3 class="fw-bold mb-3" id="edit-utilisateur-title">Modifier — </h3>
+            <h4 class="fw-bold mb-3" id="edit-utilisateur-title">Modifier — </h3>
 
             <!-- Prénom + Nom -->
             <div class="row mb-3">
@@ -193,13 +193,13 @@
 
             <!-- Boutons -->
             <div class="d-flex gap-3 align-items-center flex-wrap mt-4">
-              <button class="btn btn-primary rounded-pill px-4" id="btn-save-edit">
+              <button type="button" title="Enregistrer" class="btn btn-primary rounded-pill px-4" id="btn-save-edit">
                 <i class="bi bi-save me-1"></i> Enregistrer
               </button>
-              <button class="btn btn-outline-warning rounded-pill px-4" id="btn-reset-password">
-                <i class="bi bi-key me-1"></i> MDP temp.
+              <button type="button" title="Générer un mot de passe temporaire" class="btn btn-outline-warning rounded-pill px-4" id="btn-reset-password">
+                <i class="bi bi-key me-1"></i> MDP temp
               </button>
-              <button class="btn btn-outline-secondary rounded-pill" id="btn-cancel-edit">
+              <button type="button" title="Annuler" class="btn btn-outline-secondary rounded-pill" id="btn-cancel-edit">
                 <i class="bi bi-x me-1"></i> Annuler
               </button>
             </div>
@@ -210,7 +210,7 @@
         <!------ Card : Formulaire création Utilisateurs -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
-            <h3 class="fw-bold mb-3 text-center pb-4 pt-2">Créer un compte Utilisateurs</h3>
+            <h4 class="fw-bold mb-3 text-center pb-4 pt-2">Créer un compte Utilisateurs</h4>
 
             <!-- Nom + Prénom -->
             <div class="row mb-3">
