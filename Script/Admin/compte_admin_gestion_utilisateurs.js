@@ -2,6 +2,7 @@ import { API_URL } from '../config.js';
 import { getToken, getRole } from '../script.js';
 
 export function initCompteAdminGestionUtilisateurPage() {
+  
   /* ===============================
       SCRIPT PAGE ADMIN GESTION UTILISATEURS
      =============================== */

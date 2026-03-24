@@ -190,7 +190,6 @@
    =============================== */
 
 /* -------- Input ajouter un allergène -------- */
-
 #new-allergene,
 #new-theme,
 #new-regime {
@@ -224,7 +223,7 @@
   margin-bottom: 1.5rem;
 }
 
-/* Cercle avatar */
+/* -------- Cercle avatar -------- */
 .compte_admin_profil-avatar {
   width: 70px;
   height: 70px;
@@ -236,13 +235,13 @@
   margin-bottom: 0.75rem;
 }
 
-/* Icône dans l'avatar */
+/* -------- Icône dans l'avatar -------- */
 .compte_admin_profil-avatar i {
   font-size: 2rem;
   color: $white-pure;
 }
 
-/* Nom de l'utilisateur */
+/* -------- Nom de l'utilisateur -------- */
 .compte_admin_profil-name {
   font-family: $headings-font-family;
   font-size: 1.15rem;
@@ -251,7 +250,7 @@
   margin-bottom: 0.15rem;
 }
 
-/* Email de l'utilisateur */
+/* -------- Email de l'utilisateur -------- */
 .compte_admin_profil-email {
   font-size: 0.85rem;
   color: $gray-600;
@@ -262,6 +261,7 @@
    CARTE FORMULAIRE
    =============================== */
 
+/* -------- Card Profil -------- */
 .compte_admin_profil-card {
   background-color: $white-pure;
   border-radius: 1.5rem;
@@ -275,6 +275,7 @@
    INPUTS
    =============================== */
 
+/* -------- Input Profil -------- */
 .compte_admin_profil-input {
   border: 1px solid $gray-400;
   border-radius: 2rem;
@@ -284,12 +285,14 @@
   transition: all 0.3s ease;
 }
 
+/* -------- Input Profil focus -------- */
 .compte_admin_profil-input:focus {
   border-color: $terracotta;
   box-shadow: 0 0 0 3px rgba($terracotta, 0.3);
   background-color: $white-pure;
 }
 
+/* -------- Input Profil placeholder -------- */
 .compte_admin_profil-input::placeholder {
   color: $gray-600;
 }
@@ -298,6 +301,7 @@
    BOUTON SAUVEGARDER PROFIL
    =============================== */
 
+/* -------- Input Profil bouton sauvegarder -------- */
 .btn-compte_admin_profil-save {
   background: linear-gradient(90deg, $btn-gradient-start, $btn-gradient-end);
   color: $white-pure !important;
@@ -310,6 +314,7 @@
   box-shadow: 0 2px 8px rgba($terracotta, 0.3);
 }
 
+/* -------- Input Profil bouton sauvegarder survole -------- */
 .btn-compte_admin_profil-save:hover {
   background: linear-gradient(90deg, $btn-gradient-end, $btn-gradient-start);
   transform: translateY(-2px);
@@ -319,6 +324,8 @@
 /* ===============================
    PLAT
    =============================== */
+
+/* -------- Conteneur de l'image du plat -------- */
 .plat-photo-preview-container img{
   width:80px;
   height:80px;
@@ -328,6 +335,7 @@
   border:1px solid #e8ddd0;
 }
 
+/* -------- Progresse barre de chargement de l'image du plat -------- */
 .progress{
   height:6px;
 }
@@ -336,9 +344,11 @@
   width:0%;
 }
 
-/* -------- Boutons admin custom -------- */
+/* ===============================
+   BOUTON ADMIN CUSTOM
+   =============================== */
 
-// Désactiver
+/* -------- Bouton Désactiver -------- */
 .btn-warning {
   background-color: $ocre-light;
   border-color: $ocre-light;
@@ -351,7 +361,7 @@
   }
 }
 
-// Supprimer
+/* -------- Bouton Supprimer -------- */
 .btn-danger {
   background-color: $Rouge-coquine;
   border-color: $Rouge-coquine;
@@ -364,7 +374,7 @@
   }
 }
 
-// Réactiver (success)
+/* -------- Bouton Réactiver -------- */
 .btn-success {
   background-color: $sucess-icon;
   border-color: $sucess-icon;
@@ -377,7 +387,7 @@
   }
 }
 
-// Modifier 
+/* -------- Bouton Modifier -------- */
 .btn-secondary {
   background-color: $olive-light;
   border-color: $olive-light;
@@ -390,7 +400,7 @@
   }
 }
 
-// Outline variants (pour les avis)
+/* -------- Outline variants pour les avis -------- */
 .btn-outline-success {
   color: $success-message;
   border-color: $success-message;
@@ -402,6 +412,7 @@
   }
 }
 
+/* -------- Outline variants pour les avis -------- */
 .btn-outline-danger {
   color: $error-message;
   border-color: $error-message;
@@ -413,6 +424,7 @@
   }
 }
 
+/* -------- Outline secondary variants pour les plats -------- */
 .btn-outline-secondary {
   color: $terracotta;
   border-color: $terracotta;
@@ -424,7 +436,67 @@
   }
 }
 
+/* ===============================
+   MODALES CUSTOM GESTION DES COMMANDES
+   =============================== */
 
+/* -------- Corp de la modale -------- */
+.modal-custom .modal-content {
+  background: #fdf8f0;
+  border-radius: 16px;
+  border: none;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-header {
+  border-bottom: 1px solid #e8dfd4;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-footer {
+  border-top: 1px solid #e8dfd4;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-title {
+  font-family: 'Playfair Display', serif;
+  color: #2c1810;
+}
+
+/* -------- Texte principal de la modale -------- */
+.modal-custom .modal-body p,
+.modal-custom .form-label,
+.modal-custom .form-check-label {
+  color: #5a4a3a;
+}
+
+/* -------- Icônes spécifiques de la modale -------- */
+.modal-custom .icon-brown {
+  color: #c8956c;
+}
+
+.modal-custom .icon-red {
+  color: #c0392b;
+}
+
+/* -------- Box info de la modale -------- */
+.modal-custom .alert-custom {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 10px;
+}
+
+/* -------- Textarea de la modale -------- */
+.modal-custom textarea.form-control {
+  border: 1px solid #d4c5b0;
+  border-radius: 10px;
+  resize: vertical;
+}
+
+/* -------- Message erreur de la modale -------- */
+.modal-custom .error-message {
+  display: none;
+}
 
 /* -------- RESPONSIVE -------- */
 @media (max-width: 768px) {
@@ -473,9 +545,7 @@
     padding: 0.65rem 1rem;
     font-size: 0.85rem;
   }
-
 }
-
 
 /* Desktop / Tablette : grille 3 colonnes centrée */
 @media (min-width: 769px) {

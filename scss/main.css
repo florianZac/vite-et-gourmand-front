@@ -17951,7 +17951,7 @@ textarea.form-control-lg {
   margin-bottom: 1.5rem;
 }
 
-/* Cercle avatar */
+/* -------- Cercle avatar -------- */
 .compte_admin_profil-avatar {
   width: 70px;
   height: 70px;
@@ -17963,13 +17963,13 @@ textarea.form-control-lg {
   margin-bottom: 0.75rem;
 }
 
-/* Icône dans l'avatar */
+/* -------- Icône dans l'avatar -------- */
 .compte_admin_profil-avatar i {
   font-size: 2rem;
   color: #FFFFFF;
 }
 
-/* Nom de l'utilisateur */
+/* -------- Nom de l'utilisateur -------- */
 .compte_admin_profil-name {
   font-family: "Playfair Display", serif;
   font-size: 1.15rem;
@@ -17978,7 +17978,7 @@ textarea.form-control-lg {
   margin-bottom: 0.15rem;
 }
 
-/* Email de l'utilisateur */
+/* -------- Email de l'utilisateur -------- */
 .compte_admin_profil-email {
   font-size: 0.85rem;
   color: #999999;
@@ -17988,6 +17988,7 @@ textarea.form-control-lg {
 /* ===============================
    CARTE FORMULAIRE
    =============================== */
+/* -------- Card Profil -------- */
 .compte_admin_profil-card {
   background-color: #FFFFFF;
   border-radius: 1.5rem;
@@ -18000,6 +18001,7 @@ textarea.form-control-lg {
 /* ===============================
    INPUTS
    =============================== */
+/* -------- Input Profil -------- */
 .compte_admin_profil-input {
   border: 1px solid #E8E8E8;
   border-radius: 2rem;
@@ -18009,16 +18011,17 @@ textarea.form-control-lg {
   transition: all 0.3s ease;
 }
 
+/* -------- Input Profil focus -------- */
 .compte_admin_profil-input:focus {
   border-color: hsl(14, 61%, 47%);
   box-shadow: 0 0 0 3px rgba(192.9585, 80.8588, 46.7415, 0.3);
   background-color: #FFFFFF;
 }
 
+/* -------- Input Profil placeholder -------- */
 .compte_admin_profil-input::-moz-placeholder {
   color: #999999;
 }
-
 .compte_admin_profil-input::placeholder {
   color: #999999;
 }
@@ -18026,6 +18029,7 @@ textarea.form-control-lg {
 /* ===============================
    BOUTON SAUVEGARDER PROFIL
    =============================== */
+/* -------- Input Profil bouton sauvegarder -------- */
 .btn-compte_admin_profil-save {
   background: linear-gradient(90deg, #C1613A, #803050);
   color: #FFFFFF !important;
@@ -18038,6 +18042,7 @@ textarea.form-control-lg {
   box-shadow: 0 2px 8px rgba(192.9585, 80.8588, 46.7415, 0.3);
 }
 
+/* -------- Input Profil bouton sauvegarder survole -------- */
 .btn-compte_admin_profil-save:hover {
   background: linear-gradient(90deg, #803050, #C1613A);
   transform: translateY(-2px);
@@ -18047,6 +18052,7 @@ textarea.form-control-lg {
 /* ===============================
    PLAT
    =============================== */
+/* -------- Conteneur de l'image du plat -------- */
 .plat-photo-preview-container img {
   width: 80px;
   height: 80px;
@@ -18057,6 +18063,7 @@ textarea.form-control-lg {
   border: 1px solid #e8ddd0;
 }
 
+/* -------- Progresse barre de chargement de l'image du plat -------- */
 .progress {
   height: 6px;
 }
@@ -18065,7 +18072,10 @@ textarea.form-control-lg {
   width: 0%;
 }
 
-/* -------- Boutons admin custom -------- */
+/* ===============================
+   BOUTON ADMIN CUSTOM
+   =============================== */
+/* -------- Bouton Désactiver -------- */
 .btn-warning {
   background-color: hsl(38, 58%, 70%);
   border-color: hsl(38, 58%, 70%);
@@ -18077,6 +18087,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Bouton Supprimer -------- */
 .btn-danger {
   background-color: #bf3737;
   border-color: #bf3737;
@@ -18088,6 +18099,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Bouton Réactiver -------- */
 .btn-success {
   background-color: #1e9c4c;
   border-color: #1e9c4c;
@@ -18099,6 +18111,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Bouton Modifier -------- */
 .btn-secondary {
   background-color: hsl(79, 41%, 37%);
   border-color: hsl(79, 41%, 37%);
@@ -18110,6 +18123,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Outline variants pour les avis -------- */
 .btn-outline-success {
   color: #22c55e;
   border-color: #22c55e;
@@ -18120,6 +18134,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Outline variants pour les avis -------- */
 .btn-outline-danger {
   color: #b4202f;
   border-color: #b4202f;
@@ -18130,6 +18145,7 @@ textarea.form-control-lg {
   color: #FCF7EE;
 }
 
+/* -------- Outline secondary variants pour les plats -------- */
 .btn-outline-secondary {
   color: hsl(14, 61%, 47%);
   border-color: hsl(14, 61%, 47%);
@@ -18138,6 +18154,67 @@ textarea.form-control-lg {
   background-color: hsl(14, 61%, 47%);
   border-color: hsl(14, 61%, 47%);
   color: #FCF7EE;
+}
+
+/* ===============================
+   MODALES CUSTOM GESTION DES COMMANDES
+   =============================== */
+/* -------- Corp de la modale -------- */
+.modal-custom .modal-content {
+  background: #fdf8f0;
+  border-radius: 16px;
+  border: none;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-header {
+  border-bottom: 1px solid #e8dfd4;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-footer {
+  border-top: 1px solid #e8dfd4;
+}
+
+/* -------- Header de la modale -------- */
+.modal-custom .modal-title {
+  font-family: "Playfair Display", serif;
+  color: #2c1810;
+}
+
+/* -------- Texte principal de la modale -------- */
+.modal-custom .modal-body p,
+.modal-custom .form-label,
+.modal-custom .form-check-label {
+  color: #5a4a3a;
+}
+
+/* -------- Icônes spécifiques de la modale -------- */
+.modal-custom .icon-brown {
+  color: #c8956c;
+}
+
+.modal-custom .icon-red {
+  color: #c0392b;
+}
+
+/* -------- Box info de la modale -------- */
+.modal-custom .alert-custom {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 10px;
+}
+
+/* -------- Textarea de la modale -------- */
+.modal-custom textarea.form-control {
+  border: 1px solid #d4c5b0;
+  border-radius: 10px;
+  resize: vertical;
+}
+
+/* -------- Message erreur de la modale -------- */
+.modal-custom .error-message {
+  display: none;
 }
 
 /* -------- RESPONSIVE -------- */

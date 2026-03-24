@@ -8,7 +8,7 @@ export function initCompteAdminGestionAvisPage() {
      =============================== */
   
   // Variable debug console
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   let allAvis = [];
 

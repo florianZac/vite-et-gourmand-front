@@ -12,11 +12,11 @@ export async function initCommanderPage() {
     4. page de validation avec rappel commande 
     simplifie les choses évite les duplications de code.
     RAPPEL REGLE METIER BACK :
-    Crée une nouvelle commande avec toutes les règles métier : 
-    délai minimum (3j ouvrables, 14j si >20 pers.), 
-    acompte 30% ou 50% (événement, mariage), 
-    livraison gratuite Bordeaux + 10km ,livraison max 200km, sinon 5€+0.59€/km , 
-    réduction -10% si pers. > min+5, vérification stock.
+      Crée une nouvelle commande avec toutes les règles métier : 
+      délai minimum (3j ouvrables, 14j si >20 pers.), 
+      acompte 30% ou 50% (événement, mariage), 
+      livraison gratuite Bordeaux + 10km ,livraison max 200km, sinon 5€+0.59€/km , 
+      réduction -10% si pers. > min+5, vérification stock.
     =============================== */
 
   /* ===============================
@@ -592,8 +592,8 @@ export async function initCommanderPage() {
           géocodage Nominatim -> distance OSRM -> calcul tarif
         - Stocke le résultat dans la variable deliveryFee
         - Règle tarifaire :
-            • ≤ 50 km du restaurant ->  livraison gratuite (0€)
-            • > 50 km ->  5€ + 0.59€ par km
+            - ≤ 50 km du restaurant -> livraison gratuite (0€)
+            - > 50 km ->  5€ + 0.59€ par km
      =============================== */
 
   async function calculateDeliveryFee() {
@@ -656,7 +656,7 @@ export async function initCommanderPage() {
       // Stocke la distance dans la variable globale
       deliveryDistanceKm = data.distance_km || 0;
       if (DebugConsole) {
-        console.log("[calculateDeliveryFee] Distance:", data.distance_km || '—', "km");
+        console.log("[calculateDeliveryFee] Distance:", data.distance_km || ' ', "km");
         console.log("[calculateDeliveryFee] Frais livraison:", deliveryFee, "€");
         console.log('Type distance:', data.distance_type);
       }
@@ -690,7 +690,7 @@ export async function initCommanderPage() {
     if (DebugConsole) console.log("[updateRecapPrices] selectedOption :", selectedOption);
 
     // Nom du menu
-    let menuName = '—';
+    let menuName = ' ';
     if (selectedOption && selectedOption.text) {menuName = selectedOption.text;}
     
     if (DebugConsole) console.log("[updateRecapPrices] menuName :", menuName);
@@ -863,8 +863,7 @@ export async function initCommanderPage() {
 
     // Mettre à jour le numéro de commande
     if (orderIdElement) {
-      const dateStr = new Date().getFullYear();
-      orderIdElement.textContent = `CMD-${orderTitle}-${dateStr}`;
+      orderIdElement.textContent = orderTitle;
       if (DebugConsole) console.log("[showConfirmation] orderTitle :", orderIdElement.textContent);
     }
 
@@ -881,7 +880,7 @@ export async function initCommanderPage() {
     if (selectedOption && selectedOption.text) {
       menuName = selectedOption.text;
     } else {
-      menuName = '—';
+      menuName = ' ';
     }
     if (DebugConsole) console.log("[showConfirmation] menuName:", menuName);
 
@@ -889,7 +888,7 @@ export async function initCommanderPage() {
     if (personsInput && personsInput.value) {
       persons = personsInput.value;
     } else {
-      persons = '—';
+      persons = ' ';
     }
     if (DebugConsole) console.log("[showConfirmation] persons:", persons);
 
