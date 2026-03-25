@@ -8,7 +8,7 @@ export function initCompteAdminGestionCommandesPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = true;
+  let DebugConsole = false;
   let allCommandes = [];
 
   /* ===============================
@@ -355,11 +355,11 @@ export function initCompteAdminGestionCommandesPage() {
       let suiviHtml = '';
       if (suivis.length > 0) {
         const badges = suivis.map(function(s) {
-          return `<span class="badge bg-light text-dark border me-1 mb-1" style="font-size:0.75rem;">${s.statut} — ${s.date_statut}</span>`;
+          return `<span class="badge bg-light text-dark border me-1 mb-2" style="font-size:0.75rem;">${s.statut} — ${s.date_statut}</span>`;
         }).join('');
         suiviHtml = `
           <div class="mt-2">
-            <small class="text-muted"><i class="bi bi-clock-history me-1"></i>Suivi :</small><br>
+            <small class="text-muted-suivi pb-2" ><i class="bi bi-clock-history me-1"></i>Suivi :</small><br>
             ${badges}
           </div>
         `;
@@ -368,24 +368,78 @@ export function initCompteAdminGestionCommandesPage() {
       const date_cmd = formatDateFR(c.date_commande);
       const date_prestation = formatDateFR(c.date_prestation);
       
+      if(c.prix_livraison == "")
+      {
+        c.prix_livraison = "Gratuite"
+      }
+      else{
+        c.prix_livraison= c.prix_livraison +' €'
+      }
+
       card.innerHTML = `
         <div class="text-center mb-2">
           <strong class="fs-5">${c.numero_commande || ' '}</strong><br>
-          <em class="text-muted">${c.menu?.titre || c.menu_titre || ' '}</em>
+          <em class="text-muted-commande">${c.menu?.titre || c.menu_titre || ' '}</em>
         </div>
-        <div class="mb-2" style="font-size:0.9rem; color:#5a4a3a;">
-          <strong>Nom du Client : </strong> ${c.utilisateur_nom || c.utilisateur?.nom || ' '} ${c.utilisateur_prenom || c.utilisateur?.prenom || ''}<br>
-          <strong>Numero du Client : </strong> ${c.utilisateur?.telephone || ''}<br>
-          <strong>Nombre de personnes : </strong> ${c.nombre_personne || 0} <br>
-          <strong>Date de commande : </strong> ${date_cmd ||  ''}<br>
-          <strong>Date de prestation client : </strong> ${date_prestation  ||  ''}<br>
-          <strong>Heure de livraison prévue : </strong> ${c.heure_livraison  ||  ''}<br>
-          <strong>Ville de livraison : </strong> ${c.ville_livraison || ' '}<br>
-          <strong>Adresse de livraison :</strong> ${c.adresse_livraison || ' '}<br>
-          <strong>Code postal du Client : </strong> ${c.utilisateur?.code_postal || ''}<br>
-          <strong>Total commande : </strong><span style="color:#c8956c; font-weight:600;">${total} €</span><br>
-          <strong>Prêt matériel : </strong> ${pretText}<br>
-          <strong>Restitution matériel</strong> ${restituText}
+        <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
+
+          <strong>Nom du Client : </strong>
+            <span class="client-name">
+              ${c.utilisateur_nom || c.utilisateur?.nom || ' '}
+            </span>
+            <span class="prenom-name">
+              ${c.utilisateur_prenom || c.utilisateur?.prenom || ''}
+            </span><br>
+    
+          <strong>Numero du Client : </strong>
+            <span class="numero-name"> 
+              ${c.utilisateur?.telephone || ''}
+            </span><br>
+          <strong>Nombre de personnes : </strong> 
+            <span class="nombre-personne-name"> 
+              ${c.nombre_personne || 0} 
+            </span><br>
+
+          <strong>Date de commande : </strong>
+            <span class="date-commande"> 
+              ${date_cmd ||  ''} 
+            </span><br>
+
+          <strong>Date de prestation client : </strong>
+            <span class="date-prestation"> 
+              ${date_prestation  ||  ''}
+            </span><br>
+
+          <strong>Heure de livraison prévue : </strong>
+            <span class="heure-livraison"> 
+              ${c.heure_livraison  ||  ''}
+            </span><br>
+
+          <strong>Ville de livraison : </strong>
+            <span class="ville-livraison"> 
+              ${c.ville_livraison || ' '}
+            </span><br>         
+          
+          <strong>Adresse de livraison :</strong>
+            <span class="adresse-livraison"> 
+              ${c.adresse_livraison || ' '}
+            </span><br>         
+      
+          <strong>Code postal du Client : </strong>
+            <span class="codepostal-client"> 
+              ${c.utilisateur?.code_postal || ''}
+            </span><br>    
+          <strong>Distance entre le restaurant et le client : </strong>
+            <span class="distance-livraison"> 
+              ${c.distance_km || ''} km
+            </span><br>  
+          <strong>Prix de la livraison : </strong>
+            <span class="prix-livraison"> 
+              ${c.prix_livraison || ''} 
+            </span><br>  
+          <strong>Total commande TTC: </strong><span class="total-commande" >${total} €</span><br>
+          <strong>Prêt matériel : </strong><span class="pret-mat" ${pretText}</span><br>
+          <strong>Restitution matériel</strong><span class="resti-mat" ${restituText}</span><br>
         </div>
         <div class="mb-2">
           <span class="badge ${badgeCss}">${c.statut}</span>

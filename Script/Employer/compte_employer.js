@@ -8,7 +8,7 @@ export function initCompteEmployerPage() {
      =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API

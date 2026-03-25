@@ -14,7 +14,7 @@
 /* -------- container hero commande admin -------- */
 .compte_admin-hero {
   background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
-  border-bottom: 1px solid rgba($terracotta, 0.3);
+  border-bottom: 0.063rem solid rgba($terracotta, 0.3);
   padding: 3rem 0;
   margin-top: 50px;
   display: flex;
@@ -206,7 +206,7 @@
   object-fit:cover;
   border-radius:0.5rem;
   display:none;
-  border:1px solid #e8ddd0;
+  border:0.063rem solid $white-warm;
 }
 
 /* ===============================
@@ -277,7 +277,7 @@
 
 /* -------- Input Profil -------- */
 .compte_admin_profil-input {
-  border: 1px solid $gray-400;
+  border: 0.063rem solid $gray-400;
   border-radius: 2rem;
   padding: 0.65rem 1.25rem;
   font-size: 0.9rem;
@@ -332,7 +332,7 @@
   object-fit:cover;
   border-radius:0.5rem;
   display:none;
-  border:1px solid #e8ddd0;
+  border:0.063rem solid #e8ddd0;
 }
 
 /* -------- Progresse barre de chargement de l'image du plat -------- */
@@ -437,65 +437,275 @@
 }
 
 /* ===============================
+   GESTION CARD DES COMMANDES
+   =============================== */
+
+/* -------- Titre du plat d'une commande -------- */
+.text-muted-commande {
+  background: linear-gradient(135deg, $btn-gradient-start, $btn-gradient-end);
+  -webkit-background-clip: text; // pour Chrome/Safari 
+  background-clip: text;         // pour Firefox
+  color: transparent;
+
+  font-size: 1.5rem;
+  font-weight: $font-weight-semibold;
+
+  /* Ombre uniquement sur le texte */
+  //text-shadow: 2px 2px 6px rgba($terracotta, 0.3);
+}
+
+/* -------- Valeur des données de la commande -------- */
+.client-name,
+.prenom-name,
+.numero-name,
+.nombre-personne-name,
+.date-commande,
+.date-prestation,
+.heure-livraison,
+.ville-livraison,
+.adresse-livraison,
+.codepostal-client,
+.distance-livraison,
+.prix-livraison{
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+  color: $gray-brownish;
+}
+
+.total-commande{  
+  color: $terracotta; 
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+}
+
+.pret-mat,
+.resti-mat{
+  font-size: 1rem;
+  font-weight: $font-weight-semibold;
+}
+
+/* -------- Titre et icone du suivis de la commande -------- */
+.text-muted-suivi{
+  font-size:1.1rem;
+}
+
+/* ===============================
    MODALES CUSTOM GESTION DES COMMANDES
    =============================== */
 
 /* -------- Corp de la modale -------- */
 .modal-custom .modal-content {
-  background: #fdf8f0;
-  border-radius: 16px;
+  background: $creme;
+  border-radius: 1rem;
   border: none;
 }
 
 /* -------- Header de la modale -------- */
 .modal-custom .modal-header {
-  border-bottom: 1px solid #e8dfd4;
+  border-bottom: 0.063rem solid $gray-400;
 }
 
 /* -------- Header de la modale -------- */
 .modal-custom .modal-footer {
-  border-top: 1px solid #e8dfd4;
+  border-top: 0.063rem solid $gray-400;
 }
 
 /* -------- Header de la modale -------- */
 .modal-custom .modal-title {
   font-family: 'Playfair Display', serif;
-  color: #2c1810;
+  color:$dark-bg;
 }
 
 /* -------- Texte principal de la modale -------- */
 .modal-custom .modal-body p,
 .modal-custom .form-label,
 .modal-custom .form-check-label {
-  color: #5a4a3a;
+  color: $gray-brownish;
 }
 
 /* -------- Icônes spécifiques de la modale -------- */
 .modal-custom .icon-brown {
-  color: #c8956c;
+  color: $ocre;
 }
 
 .modal-custom .icon-red {
-  color: #c0392b;
+  color: $error-message;
 }
 
 /* -------- Box info de la modale -------- */
 .modal-custom .alert-custom {
-  background: #fff3cd;
-  border: 1px solid #ffc107;
-  border-radius: 10px;
+  background: $white-warm;
+  border: 0.063rem solid $ocre;
+  border-radius: 0.625rem;
 }
 
 /* -------- Textarea de la modale -------- */
 .modal-custom textarea.form-control {
-  border: 1px solid #d4c5b0;
-  border-radius: 10px;
+  border: 0.063rem solid $divider-color;
+  border-radius: 0.625rem;
   resize: vertical;
 }
 
 /* -------- Message erreur de la modale -------- */
 .modal-custom .error-message {
   display: none;
+}
+
+/* ===============================
+   STATISTIQUE ADMIN
+   =============================== */
+
+/* -------- container golbal -------- */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+/* -------- Corp de la card -------- */
+.stat-card {
+  background: rgba($ocre-light, 0.2);
+  border-radius: 1rem;
+  padding: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+/* -------- icon de la card -------- */
+.stat-icon {
+  font-size: 1.4rem;
+}
+
+/* -------- Texte de la card -------- */
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* -------- Label de la card -------- */
+.stat-label {
+  font-size: 1rem;
+  color: $gray-900;
+}
+
+/* -------- conterneur Top menus -------- */
+.card-top,
+.stat-user,
+.stat-avis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba($ocre-light, 0.2);
+  border-radius: 2rem;
+  padding: 1rem;
+  gap: 1.2rem;
+}
+
+.title-top{
+  background: linear-gradient(135deg, $btn-gradient-start, $btn-gradient-end);
+  -webkit-background-clip: text; // pour Chrome/Safari 
+  background-clip: text;         // pour Firefox
+  color: transparent;
+  font-weight: $font-weight-semibold;
+  font-size: 1.2rem;
+}
+
+/* -------- Icone Top menus -------- */
+.icone,
+.icon-user,
+.icon-avis{
+  color: $terracotta;
+}
+
+/* -------- card des top menus -------- */
+.top-menu-item {
+  background: $white-warm;
+  padding: 0.5rem 0.8rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 20rem;
+  gap: 1rem;
+}
+
+/* -------- Titre du menu -------- */
+.top-menu-title-gold,
+.count-label-gold {
+  color: $ocre-dark;
+  font-weight: $font-weight-semibold;
+  font-size: 1rem;
+}
+
+.top-menu-title-silver,
+.count-label-silver {
+  color: rgb(137, 127, 127);
+  font-weight: $font-weight-semibold;
+  font-size: 1rem;
+}
+
+.top-menu-title-bronze,
+.count-label-bronze {
+  color: #cd7f32; 
+  font-weight: $font-weight-semibold;
+  font-size: 1rem;
+}
+
+/* -------- nombre de commande -------- */
+.count-value {
+  font-size: 1rem;
+  color: $sucess-icon;
+}
+
+/* -------- Icone Top 1 des vente -------- */
+.gold {
+  color: $ocre;
+}
+
+/* -------- Icone Top 2 des ventes -------- */
+.silver {
+  color: rgb(137, 127, 127);
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.bronze {
+  color: #cd7f32; 
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.content-user,
+.content-avis{
+  color:$dark-bg-secondary;
+  font-weight: $font-weight-semibold;
+  font-size: 1rem;
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.label{
+ color: $dark-bg;
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.label-active{
+ color: $sucess-icon;
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.label-inactive{
+ color: $error-message;
+}
+
+/* -------- Icone Top 3 des ventes -------- */
+.label-warning{
+ color: $ocre-dark;
 }
 
 /* -------- RESPONSIVE -------- */
