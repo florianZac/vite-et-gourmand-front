@@ -20,7 +20,7 @@ export function initCompteAdminGestionAvisPage() {
   const apiMeUrl = `${API_URL}/api/me`;
 
   // EndPoint de l'API pour la récupération de tous les avis.
-  const apiGetAvis = `${API_URL}/api/admin/avis`;
+  const apiGetAvis = `${API_URL}/api/employe/avis`;
 
   // EndPoint de l'API pour Approuver / Refuser les avis
   const apiEmployeAvis = `${API_URL}/api/employe/avis`;

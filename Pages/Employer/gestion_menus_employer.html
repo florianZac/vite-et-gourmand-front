@@ -159,22 +159,25 @@
 
           <!-- Boutons -->
           <div class="d-flex gap-3 mt-4">
-            <button class="btn btn-primary" id="btn-save-menu">
+            <button type="button" class="btn btn-primary" id="btn-save-menu">
               <i class="bi bi-save me-1"></i> Créer le menu
             </button>
-            <button class="btn btn-outline-secondary" id="btn-cancel-menu">Annuler</button>
+            <button type="button" class="btn btn-outline-secondary" id="btn-cancel-menu">Annuler</button>
           </div>
         </div>
+      </div>
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">  
+          <!------ Liste des menus -------->
+          <div id="menus-list"></div>
 
-        <!------ Liste des menus -------->
-        <div id="menus-list"></div>
-
-        <!------ Toast -------->
-        <div class="d-flex justify-content-center mt-3">
-          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body"></div>
+          <!------ Toast -------->
+          <div class="d-flex justify-content-center mt-3">
+            <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-body"></div>
+            </div>
           </div>
-        </div>
+        </div>   
       </div>
     </div>
   </div>
@@ -186,14 +189,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer le menu</h5>
-        <button class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
         <p>Voulez-vous vraiment supprimer <strong id="delete-menu-name"></strong> ?</p>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button class="btn btn-danger" id="confirm-delete-menu">Confirmer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete-menu">Confirmer</button>
       </div>
     </div>
   </div>

@@ -20,7 +20,7 @@ export function initGestionAvisEmployerPage() {
   const apiMeUrl = `${API_URL}/api/me`;
 
   // EndPoint de l'API pour la récupération de tous les avis.
-  const apiGetAvis = `${API_URL}/api/admin/avis`;
+  const apiGetAvis = `${API_URL}/api/employe/avis`;
 
   // EndPoint de l'API pour Approuver / Refuser les avis
   const apiEmployeAvis = `${API_URL}/api/employe/avis`;
@@ -34,7 +34,6 @@ export function initGestionAvisEmployerPage() {
     console.log("apiMeUrl       :", apiMeUrl);
     console.log("apiGetAvis     :", apiGetAvis);
     console.log("apiEmployeAvis :", apiEmployeAvis);
-    console.log("apiAdminAvis   :", apiAdminAvis);
     console.log("========================");
   }
 
@@ -225,13 +224,6 @@ export function initGestionAvisEmployerPage() {
         if (DebugConsole) console.log("[renderAvis] : boutons Valider/Refuser MASQUÉS pour avis", a.id, "(statut:", a.statut, ")");
       }
 
-      // Supprimer toujours visible pour l'admin
-      actionsHtml += `
-        <button class="btn btn-danger btn-sm  btn-supprimer-avis" data-id="${a.id}">
-          <i class="bi bi-trash me-1"></i> Supprimer
-        </button>
-      `;
-
       const card = document.createElement('div');
       card.className = 'p-4 mb-3 rounded';
       card.style.backgroundColor = '#fdf8f0';
@@ -271,12 +263,6 @@ export function initGestionAvisEmployerPage() {
       });
     });
 
-    // Events supprimer
-    document.querySelectorAll('.btn-supprimer-avis').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        deleteAvis(parseInt(btn.dataset.id));
-      });
-    });
   }
 
   /* ===============================
@@ -306,38 +292,6 @@ export function initGestionAvisEmployerPage() {
       }
     } catch (err) {
       console.error('[changeAvisStatut] Erreur :', err);
-      showToast("Erreur réseau.", "error");
-    }
-  }
-
-  /* ===============================
-      FONCTION : SUPPRIMER UN AVIS
-        - APPEL : DELETE /api/admin/avis/{id}
-     =============================== */  
-  async function deleteAvis(avisId) {
-    if (!confirm('Supprimer définitivement cet avis ?')) return;
-
-    if (DebugConsole) console.log("[deleteAvis] DELETE avis id:", avisId);
-
-    const url = `${apiAdminAvis}/${avisId}`;
-
-    try {
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: authHeaders
-      });
-
-      let data = {};
-      try { data = await response.json(); } catch { data = {}; }
-
-      if (response.ok) {
-        showToast("Avis supprimé !");
-        loadAvis();
-      } else {
-        showToast(data.message || "Erreur lors de la suppression.", "error");
-      }
-    } catch (err) {
-      console.error('[deleteAvis] Erreur :', err);
       showToast("Erreur réseau.", "error");
     }
   }

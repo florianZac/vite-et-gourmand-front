@@ -19,13 +19,10 @@ export function initGestionCommandeEmployerPage() {
   const apiMeUrl = `${API_URL}/api/me`;
 
   // EndPoint de l'API pour la récupération de toutes les commandes
-  const apiGetCommandes = `${API_URL}/api/commandes/admin`;
+  const apiGetCommandes = `${API_URL}/api/commandes`;
 
   // EndPoint de l'API pour la récupération des status d'une commande
   const apiChangerStatut = `${API_URL}/api/employe/commandes`;
-
-  // EndPoint de l'API pour l'annulation d'une commande
-  const apiAnnuler = `${API_URL}/api/commandes/admin`;
 
   // EndPoint de l'API pour la mise à jour des données de restitution retour matériel
   const apiRestitution = `${API_URL}/api/employe/commandes`;
@@ -39,7 +36,6 @@ export function initGestionCommandeEmployerPage() {
     console.log("apiMeUrl         :", apiMeUrl);
     console.log("apiGetCommandes  :", apiGetCommandes);
     console.log("apiChangerStatut :", apiChangerStatut);
-    console.log("apiAnnuler       :", apiAnnuler);
     console.log("apiRestitution   :", apiRestitution);
     console.log("apiSuivi         :", apiSuivi);
     console.log("========================");
@@ -97,13 +93,6 @@ export function initGestionCommandeEmployerPage() {
   const modalStatutId = document.getElementById('modal-statut-id');
   const modalStatutValue = document.getElementById('modal-statut-value');
   const modalStatutConfirm = document.getElementById('modal-statut-confirm');
-
-  const modalAnnulerEl = document.getElementById('modalAnnuler');
-  const modalAnnulerMotif = document.getElementById('modal-annuler-motif');
-  const modalAnnulerCount = document.getElementById('modal-annuler-count');
-  const modalAnnulerError = document.getElementById('modal-annuler-error');
-  const modalAnnulerId = document.getElementById('modal-annuler-id');
-  const modalAnnulerConfirm = document.getElementById('modal-annuler-confirm');
 
   const modalRestitEl = document.getElementById('modalRestitution');
   const modalRestitMateriel = document.getElementById('modal-restit-materiel');
@@ -341,14 +330,6 @@ export function initGestionCommandeEmployerPage() {
         `;
       }
 
-      // Bouton annuler sauf Terminée et Annulée
-      if (c.statut !== 'Terminée' && c.statut !== 'Annulée') {
-        actionsHtml += `
-          <button class="btn btn-danger btn-sm btn-annuler" data-id="${c.id}">
-            Annuler
-          </button>
-        `;
-      }
       if (DebugConsole) console.log("[renderCommandes] COMMANDE COMPLETE :", c);
       // Suivi timeline
       const suivis = await loadSuivi(c.id);
@@ -460,13 +441,6 @@ export function initGestionCommandeEmployerPage() {
       });
     });
 
-    // Events : annuler
-    document.querySelectorAll('.btn-annuler').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        ouvrirAnnulation(parseInt(btn.dataset.id));
-      });
-    });
-
     // Events : restitution
     document.querySelectorAll('.btn-restitution').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -521,63 +495,6 @@ export function initGestionCommandeEmployerPage() {
     }
   });
 
-  /* ===============================
-      FONCTION : OUVRIR MODALE ANNULATION
-     =============================== */
-  function ouvrirAnnulation(commandeId) {
-    modalAnnulerId.value = commandeId;
-    modalAnnulerMotif.value = '';
-    modalAnnulerCount.textContent = '0 / 500';
-    modalAnnulerError.style.display = 'none';
-    const modal = new bootstrap.Modal(modalAnnulerEl);
-    modal.show();
-  }
-
-  // Compteur caractères motif
-  modalAnnulerMotif.addEventListener('input', function() {
-    modalAnnulerCount.textContent = modalAnnulerMotif.value.length + ' / 500';
-  });  
-
-  /* ===============================
-      LISTENER : ANNULER UNE COMMANDE
-        APPEL : PUT /api/commandes/admin/{id}/annuler
-     =============================== */
-  modalAnnulerConfirm.addEventListener('click', async function() {
-    const commandeId = modalAnnulerId.value;
-    const motif = modalAnnulerMotif.value.trim();
-
-    if (!motif) {
-      modalAnnulerError.style.display = 'block';
-      return;
-    }
-    modalAnnulerError.style.display = 'none';
-
-    if (DebugConsole) console.log("[annulerCommande]", commandeId, motif);
-
-    try {
-      const response = await fetch(`${apiAnnuler}/${commandeId}/annuler`, {
-        method: 'PUT',
-        headers: authHeaders,
-        body: JSON.stringify({ motif_annulation: motif })
-      });
-
-      let data = {};
-      try { data = await response.json(); } catch { data = {}; }
-
-      const modal = bootstrap.Modal.getInstance(modalAnnulerEl);
-      if (modal) modal.hide();
-
-      if (response.ok) {
-        showToast(data.message || "Commande Annulée !");
-        loadCommandes();
-      } else {
-        showToast(data.message || "Erreur lors de l'annulation.", "error");
-      }
-    } catch (err) {
-      console.error('[annulerCommande] Erreur :', err);
-      showToast("Erreur réseau.", "error");
-    }
-  });
 
   /* ===============================
       FONCTION : OUVRIR MODALE RESTITUTION
