@@ -1,0 +1,151 @@
+<!------ Section Hero compte Employé -------->
+<section class="compte_employer-hero py-5">
+  <div class="container">
+    <h1 class="compte_employer-hero-title">Mon Espace Employé</h1>
+    <p class="compte_employer-hero-welcome">Bienvenue, <span id="hero-user-name"></span></p>
+  </div>
+</section>
+
+<!------ Section compte Employé -------->
+<section class="compte_employer-section">
+  <div class="container">
+
+    <!-- Grille Bootstrap centrée -->
+    <div class="row justify-content-center">
+      <div class="col-6 compte_employer">
+
+        <!------ Onglets Commande -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100 ">
+            <div class="card-body py-3">
+              <i class="bi bi-basket-fill fs-4 mb-1"></i>
+              <h6 class="card-title mb-0 ">Gestion Commande</h6>
+            </div>
+          </a>
+        </div>
+        <!------ Onglets Gestion Avis Client -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100">
+            <div class="card-body py-3">
+              <i class="bi bi-star-half fs-4 mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Avis Client</h6>
+            </div>
+          </a>
+        </div>
+        <!------ Onglets Gestion Menu -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
+            <div class="card-body py-3">
+              <i class="bi bi-wallet-fill mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Menu</h6>
+            </div>
+          </a>
+        </div>
+        <!------ Onglets Gestion Allergènes -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
+            <div class="card-body py-3">
+              <i class="bi bi-virus fs-4 mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Allergènes</h6>
+            </div>
+          </a>
+        </div>
+        <!------ Onglets Gestion Plat -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
+            <div class="card-body py-3">
+              <i class="bi bi-egg-fried fs-4 mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Plat</h6>
+            </div>
+          </a>
+        </div>
+        <!------ Onglets Thèmes & Règimes (ACTIVE) -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100 active">
+            <div class="card-body py-3">
+              <i class="bi bi-receipt fs-4 mb-1"></i>
+              <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!------ Titre de la Navigation  -------->
+      <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Thèmes & Régimes</h2>
+
+      <!------ Card Thèmes -------->
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <div class="row g-2 align-items-center">
+            <div class="col-12" id="themes-list"></div>
+            <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
+              <input type="text" id="new-theme" class="form-control" placeholder="Nouveau Thème...">
+              <button type="button" class="btn btn-primary" id="btn-add-theme" title="Ajouter un thème">
+                <i class="bi bi-plus me-1"></i> Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!------ Card Régimes -------->
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <div class="row g-2 align-items-center">
+            <div class="col-12" id="regimes-list"></div>
+            <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
+              <input type="text" id="new-regime" class="form-control" placeholder="Nouveau Régime...">
+              <button type="button" class="btn btn-primary" id="btn-add-regime" title="Ajouter un régime">
+                <i class="bi bi-plus me-1"></i> Ajouter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!------ Toast -------->
+      <div class="d-flex justify-content-center mt-3">
+        <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Suppression (partagée) -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete-modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous vraiment supprimer <strong id="delete-item-name"></strong> ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modification (partagée) -->
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="edit-modal-title"><i class="bi bi-pencil me-2"></i>Modifier</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="edit-item-libelle" class="form-control" placeholder="Nouveau libellé...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirm-edit">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
           href = "/compte_client";
           break;
       case "ROLE_EMPLOYE":
-          href = "/compte_employer";
+          href = "/gestion_commande_employer";
           break;
       case "ROLE_ADMIN":
           href = "/statistiques";
