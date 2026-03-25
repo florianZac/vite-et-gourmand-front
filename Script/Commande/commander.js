@@ -54,7 +54,7 @@ export async function initCommanderPage() {
   let horaires = [];
 
   // Variable debug console si à true
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API
@@ -738,8 +738,8 @@ export async function initCommanderPage() {
     let totalBeforeDelivery = subtotal - reduction;
     if (DebugConsole) console.log("[updateRecapPrices] totalBeforeDelivery:", totalBeforeDelivery);
 
-    // Total TTC = sous-total des menus + frais de livraison
-    const total = subtotal + deliveryFee;
+    // Total TTC = (sous-total - réduction) + frais de livraison
+    const total = totalBeforeDelivery + deliveryFee;
     if (DebugConsole) console.log("[updateRecapPrices] total:", total);
 
     // Calcul acompte
@@ -994,9 +994,14 @@ export async function initCommanderPage() {
      =============================== */
 
   if (menuSelect) {
-    menuSelect.addEventListener('change', updateRecapPrices);
+    menuSelect.addEventListener('change', function() {
+      const selectedOption = menuSelect.options[menuSelect.selectedIndex];
+      prefillPersonsMin(selectedOption);
+      updateRecapPrices();
+    });
+    if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
   }
-  if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
+  
 
   /* ===============================
       LISTENERS : BOUTONS SUIVANT
@@ -1192,7 +1197,7 @@ export async function initCommanderPage() {
           } catch {
             errorData = { message: "Erreur serveur" };
           }
-          console.log("TOAST MESSAGE :", errorData.message);
+          showToast(errorData.message || "Erreur lors de la création de la commande", 'error');
           return;
         }
       } catch (err) {

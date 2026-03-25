@@ -421,7 +421,7 @@ export function initCompteAdminPage() {
   async function loadStatutsPieChart() {
 
     try {
-      const response = await fetch(`${API_URL}/api/commandes/admin`, { method: 'GET', headers: authHeaders });
+      const response = await fetch(`${API_URL}/api/commandes`, { method: 'GET', headers: authHeaders });
       if (!response.ok) return;
       let result = {};
       try { result = await response.json(); } catch { result = {}; }
