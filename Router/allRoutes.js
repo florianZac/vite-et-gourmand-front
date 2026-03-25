@@ -18,7 +18,6 @@ export const allRoutes = [
    new Route("/detail_menu", "Detail Menus", "Pages/Menus/menu_detail.html", [], "/Script/Menus/menu_detail.js", true),
    new Route("/reset_login", "forgotpassword", "Pages/Auth/forgot-password.html", [], "/Script/Public/Auth/forgot-password.js", true),
    new Route("/reset-password", "Resetpassword", "Pages/Auth/reset-password.html", [], "/Script/Public/Auth/reset-password.js", true),
-
    
    /* Role DECONNECTER*/
    new Route("/login", "Connexion", "Pages/Auth/login.html", ["disconnected"], "/Script/Public/Auth/connection.js", true),

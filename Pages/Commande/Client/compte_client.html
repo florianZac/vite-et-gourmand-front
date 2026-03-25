@@ -12,18 +12,29 @@
 
     <!-- Grille Bootstrap centrée -->
     <div class="row justify-content-center">
-      <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+      <div class="row justify-content-center compte_admin">
 
         <!------ Onglets Navigation -------->
-        <div class="compte_client_profil-tabs">
-          <a href="/compte_client" class="compte_client_profil-tab">
-            Mes commandes
-          </a>
-          <a href="/mon_compte_profil" class="compte_client_profil-tab active">
-            Mon profil
-          </a>
+        <div class="row justify-content-center compte_admin">
+          <!------ Mes Commandes (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/compte_client" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-bag-check-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Mes commandes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil -------->
+          <div class="col-12 col-md-4">
+            <a href="/mon_compte_profil" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Mon profil</h6>
+              </div>
+            </a>
+          </div>
         </div>
-
         <!------ Liste des commandes injectée dynamiquement par le JS -------->
         <div id="commandes-list">
           <!-- Les cards de commandes seront injectées ici par le JS -->
@@ -31,4 +42,52 @@
       </div>
     </div>
   </div>
+  <!------ Toast -------->
+  <div class="d-flex justify-content-center mt-3">
+    <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body"></div>
+    </div>
+  </div>
 </section>
+
+
+<!------ Modale : Annuler commande -------->
+<div class="modal fade modal-custom" id="modalAnnuler" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-x-circle" ></i> Annuler la commande
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 mb-3 rounded">
+          <small>
+            <i class="bi bi-info-circle me-1"></i>
+            Annulation plus de 7 jours : remboursement intégral de l'accompte.<br>
+            Annulation entre 3 et 7 jours : 50% de l'accompte retenu.<br>
+            Annulation moins de 3 jours : accompte non remboursable.
+          </small>
+        </div>
+        <label for="modal-annuler-motif" class="form-label fw-bold">
+          Motif d'annulation obligatoire <span class="text-danger">*</span>
+        </label>
+        <textarea id="modal-annuler-motif" class="form-control" rows="4" maxlength="500"
+          placeholder="Décrivez le motif d'annulation...">
+        </textarea>
+        <small id="modal-annuler-count" class="text-muted float-end">0 / 500</small>
+        <div id="modal-annuler-error">
+          <i class="bi bi-exclamation-circle"></i> Le motif d'annulation est obligatoire.
+        </div>
+        <input type="hidden" id="modal-annuler-id">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Retour</button>
+        <button type="button" class="btn btn-danger" id="modal-annuler-confirm">
+          <i class="bi bi-x-circle me-1"></i> Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

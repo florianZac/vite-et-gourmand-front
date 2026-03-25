@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { getToken} from '../script.js';
 
 export async function initCommanderPage() {
 
@@ -55,6 +55,8 @@ export async function initCommanderPage() {
 
   // Variable debug console si à true
   let DebugConsole = true;
+  
+  let isModified = false;
 
   /* ===============================
       CONFIGURATION API
@@ -117,7 +119,6 @@ export async function initCommanderPage() {
     console.log("apiProfilUrl                 :", apiProfilUrl);
     console.log("Cookies actuels              :", document.cookie);
     console.log("Token actuel                 :", token);
-    console.log("Rôle actuel                  :", getRole());
     console.log("URL complète                 :", window.location.href);
     console.log("SEARCH                       :", window.location.search);
     console.log("menu_id récupéré             :", getMenuIdFromUrl());
@@ -172,7 +173,6 @@ export async function initCommanderPage() {
       horaires = [];
     }
   }
-
 
   /* ===============================
       FONCTION : VALIDATION DES HORRAIRES
@@ -262,7 +262,7 @@ export async function initCommanderPage() {
         option.value = menu.id;
         option.textContent = menu.titre;      
         option.dataset.price = menu.prix_par_personne;
-        option.dataset.minPersons = menu.nombre_min_personnes || 1;
+        option.dataset.minPersons = menu.nombre_personne_minimum || 1;
         option.dataset.theme = menu.theme?.titre || 'autre';
         menuSelect.appendChild(option);
       });
@@ -270,7 +270,16 @@ export async function initCommanderPage() {
       if (DebugConsole) {
         console.log("[loadMenus] Données reçues :", menusArray);
       }
+
+      // autoSelectMenuFromUrl appelle prefillPersonsMin + updateRecapPrices
+      // fallback si pas de menu_id dans l'URL
       autoSelectMenuFromUrl();
+
+      // Si aucun menu_id dans l'URL, on pré-remplit quand même avec le 1er menu
+      if (!getMenuIdFromUrl() && menuSelect.selectedIndex >= 0) {
+        prefillPersonsMin(menuSelect.options[menuSelect.selectedIndex]);
+      }
+
       updateRecapPrices();
 
     } catch (err) {
@@ -301,6 +310,7 @@ export async function initCommanderPage() {
     if (optionExists) {
       menuSelect.value = menuIdFromUrl;
       if (DebugConsole) console.log("[autoSelectMenuFromUrl] Menu auto sélectionné :", menuIdFromUrl);
+      prefillPersonsMin(menuSelect.options[menuSelect.selectedIndex]);
       updateRecapPrices();
     }
   }
@@ -394,7 +404,7 @@ export async function initCommanderPage() {
         - Met à jour les pastilles du stepper (active / completed)
         - Cache le stepper à l'étape 4 (page de confirmation)
      =============================== */
-
+ 
   if (DebugConsole) console.log("[showStep] AFFICHER UNE ÉTAPE");
 
   function showStep(stepNumber) {
@@ -437,43 +447,6 @@ export async function initCommanderPage() {
     // Met à jour la variable qui mémorise l'étape en cours
     currentStep = stepNumber;
     if (DebugConsole) console.log("[showStep] currentStep:",currentStep);
-  }
-
-  // Vérifier chaque champ avant de l'assigner
-  if (firstNameInput && firstNameInput.value) {
-    originalData.prenom = firstNameInput.value;
-  } else {
-    originalData.prenom = '';
-  }
-
-  if (lastNameInput && lastNameInput.value) {
-    originalData.nom = lastNameInput.value;
-  } else {
-    originalData.nom = '';
-  }
-
-  if (phoneInput && phoneInput.value) {
-    originalData.telephone = phoneInput.value;
-  } else {
-    originalData.telephone = '';
-  }
-
-  if (addressInput && addressInput.value) {
-    originalData.adresse_postale = addressInput.value;
-  } else {
-    originalData.adresse_postale = '';
-  }
-
-  if (cityInput && cityInput.value) {
-    originalData.ville = cityInput.value;
-  } else {
-    originalData.ville = '';
-  }
-
-  if (postalInput && postalInput.value) {
-    originalData.code_postal = postalInput.value;
-  } else {
-    originalData.code_postal = '';
   }
 
   /* ===============================
@@ -624,7 +597,7 @@ export async function initCommanderPage() {
       const url = `${apigeocodeUrl}${encodedAdresse}`;
       if (DebugConsole) {
         console.log("fullAddress    : ",fullAddress);
-        console.log("encodedAdresse : ",encodedAdresse);deliveryFee = 0;
+        console.log("encodedAdresse : ",encodedAdresse);
         console.log("Url            : ",url);
       }
        const response = await fetch(url);
@@ -666,7 +639,7 @@ export async function initCommanderPage() {
 
     } catch (err) {
       // En cas d'erreur réseau
-      // On met les frais à 0 par sécurité (gratuit par défaut)
+      // On met les frais à 0 par sécurité gratuit par défaut
       console.error('Erreur réseau calcul livraison:', err);
       deliveryFee = 0;
     }
@@ -771,7 +744,7 @@ export async function initCommanderPage() {
 
     // Mise à jour de chaque ligne du récapitulatif
     if (recapMenuName) {recapMenuName.textContent = `${menuName}`;}
-    if (DebugConsole) console.log("[updateRecapPrices] recapMenuName:", recapMenuName);
+    if (DebugConsole) console.log("[updateRecapPrices] recapMenuName:", recapMenuName.textContent);
 
     if (recapUnitPrice) {
       if (unitPrice > 0) {
@@ -780,16 +753,16 @@ export async function initCommanderPage() {
         recapUnitPrice.textContent =`${'0'} €/pers.`;
       }
     }
-    if (DebugConsole) console.log("[updateRecapPrices] recapUnitPrice:", recapUnitPrice);
+    if (DebugConsole) console.log("[updateRecapPrices] recapUnitPrice:", recapUnitPrice.textContent);
 
     if (recapPersons) {
       if (persons > 0) {
         recapPersons.textContent = `${persons}`;
       } else {
-        recapPersons.textContent = `${'-'}`;
+        recapPersons.textContent = `${' '}`;
       }
     }
-    if (DebugConsole) console.log("[updateRecapPrices] recapPersons:", recapPersons);
+    if (DebugConsole) console.log("[updateRecapPrices] recapPersons:", recapPersons.textContent);
 
     if (recapSubtotal) {
       if (!isNaN(subtotal) && subtotal > 0) {
@@ -798,7 +771,7 @@ export async function initCommanderPage() {
         recapSubtotal.textContent = `${'0'} €`;
       }
     }
-    if (DebugConsole) console.log("[updateRecapPrices] recapSubtotal:", recapSubtotal);
+    if (DebugConsole) console.log("[updateRecapPrices] recapSubtotal:", recapSubtotal.textContent);
 
     if (recapReduction) {
       if (reduction > 0) {
@@ -807,7 +780,7 @@ export async function initCommanderPage() {
         recapReduction.textContent = `${'0'} €`;
       }
     }
-    if (DebugConsole) console.log("[updateRecapPrices] recapReduction:", recapReduction);
+    if (DebugConsole) console.log("[updateRecapPrices] recapReduction:", recapReduction.textContent);
 
 
     if (recapDelivery) {
@@ -817,7 +790,7 @@ export async function initCommanderPage() {
         recapDelivery.textContent = 'Gratuite';
       }
     }
-    if (DebugConsole) console.log("[updateRecapPrices] recapDelivery:", recapDelivery);
+    if (DebugConsole) console.log("[updateRecapPrices] recapDelivery:", recapDelivery.textContent);
 
     if (recapAcompte) {
       if (!isNaN(acompte) && acompte > 0) {
@@ -857,7 +830,7 @@ export async function initCommanderPage() {
 
     // Mettre à jour l'email dans la confirmation
     if (emailElement) {
-      emailElement.textContent = clientEmail || '-';
+      emailElement.textContent = clientEmail || ' ';
       if (DebugConsole) console.log("[showConfirmation] Email :", emailElement.textContent);
     }
 
@@ -915,8 +888,6 @@ export async function initCommanderPage() {
       }
     }
     if (DebugConsole) console.log("[showConfirmation] unitPrice:", unitPrice);
-
-    //const total = (unitPrice * parseInt(persons) + deliveryFee).toFixed(2);
 
     // Récupère les éléments du DOM de la page confirmation
     const confirmMenu = document.getElementById('confirm-menu');
@@ -1002,7 +973,6 @@ export async function initCommanderPage() {
     if (DebugConsole) console.log("[LISTENERS] menuSelect:", menuSelect);
   }
   
-
   /* ===============================
       LISTENERS : BOUTONS SUIVANT
         - Étape 1 -> 2 : vérifie que les infos personnelles sont remplies
@@ -1084,12 +1054,21 @@ export async function initCommanderPage() {
     if (DebugConsole) console.log("[LISTENERS] btnPrev3:", btnPrev3);
   }
 
-    /* ===============================
-        LISTENER : BOUTON CONFIRMER LA COMMANDE
-          - 1. Collecte toutes les données du formulaire multi-étapes
-          - 2. En production : envoie les données à l'API POST /api/orders
-          - 3. Pour l'instant : log en console + affiche la confirmation
+  /* ===============================
+      FONCTION : RESET STATE BOUTON
      =============================== */
+  function resetSubmitButton() {
+    btnSubmit.disabled = false;
+    btnSubmit.classList.remove('disabled');
+    btnSubmit.innerHTML = 'Confirmer la commande';
+  }
+
+  /* ===============================
+      LISTENER : BOUTON CONFIRMER LA COMMANDE
+        - 1. Collecte toutes les données du formulaire multi-étapes
+        - 2. En production : envoie les données à l'API POST /api/orders
+        - 3. Pour l'instant : log en console + affiche la confirmation
+    =============================== */
 
   const btnSubmit = document.getElementById('btn-submit');
   if (btnSubmit) {
@@ -1157,8 +1136,18 @@ export async function initCommanderPage() {
         ville_livraison: cityInput.value,
         distance_km: deliveryDistanceKm,
         pret_materiel: materialCheckbox.checked,
-        //prix_total: prixTotal
+        // prix_total: prixTotal
       };
+
+      // Désactive le bouton pour éviter le multi click
+      btnSubmit.disabled = true;
+      btnSubmit.classList.add('disabled');
+
+      // Change le texte du bouton 
+      btnSubmit.innerHTML = `
+        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+        Envoi en cours...
+      `;
 
       if (DebugConsole) console.log("Commande confirmée:", formData);
       try {
@@ -1181,13 +1170,15 @@ export async function initCommanderPage() {
             createdOrder = { message: "Erreur serveur" };
           }
 
-          const orderTitle = createdOrder.numero_commande ||  '-';
-          const clientEmail = createdOrder.email || createdOrder.utilisateur?.email || '-';
+          const orderTitle = createdOrder.numero_commande ||  ' ';
+          const clientEmail = createdOrder.email || createdOrder.utilisateur?.email || ' ';
 
           setTimeout(() => {
             showConfirmation(orderTitle,clientEmail);
-          }, 2000);
+          }, 1000);
 
+          btnSubmit.innerHTML = 'Commande validée';
+          
           if (DebugConsole) console.log("[submitCommande] Commande créée :", createdOrder);
         } else {
           // Erreur côté API
@@ -1197,12 +1188,14 @@ export async function initCommanderPage() {
           } catch {
             errorData = { message: "Erreur serveur" };
           }
+          resetSubmitButton();
           showToast(errorData.message || "Erreur lors de la création de la commande", 'error');
           return;
         }
       } catch (err) {
         // Erreur réseau
         console.error('Erreur réseau :', err);
+        resetSubmitButton();
       }
     });
   }

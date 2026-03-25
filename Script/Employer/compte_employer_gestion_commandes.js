@@ -1,5 +1,5 @@
-import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { API_URL,sanitizeHtml } from '../config.js';
+import { getToken } from '../script.js';
 
 export function initGestionCommandeEmployerPage() {
 

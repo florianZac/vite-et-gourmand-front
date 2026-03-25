@@ -15752,6 +15752,14 @@ textarea.form-control-lg {
   box-shadow: 0 4px 16px hsl(14, 61%, 47%);
 }
 
+/* -------- Mise à jour du bouton commander lors du spinner pour informer l'utilisateur -------- */
+.btn-commander-submit:disabled {
+  background-color: hsl(14, 61%, 35%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px hsl(14, 61%, 47%);
+  color: #FFFFFF;
+}
+
 /* -------- Récapitulatif -------- */
 .commander-recap {
   font-size: 0.9rem;

@@ -33,7 +33,7 @@ export function initDetailMenusPage() {
         - 1.  L'URL est de la forme /detail_menu?id=3
         - 2.	On récupère le paramètre "id" depuis le query string
 		 =============================== */
-  let DebugConsole = false;
+  let DebugConsole = true;
 
 	// Découpe l'URL 
   const params = new URLSearchParams(window.location.search);

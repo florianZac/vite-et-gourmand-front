@@ -1,7 +1,7 @@
 import { API_URL } from '../config.js';
 import { getToken, getRole, signout } from '../script.js';
 
-export function initcompte_client_profilPage() {
+export function initcompteclientprofilPage() {
 
   /* ===============================
    SCRIPT PAGE COMPTE CLIENT PROFIL
@@ -49,6 +49,11 @@ export function initcompte_client_profilPage() {
     console.error('Pas de token, impossible de charger le profil');
     return;
   }
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
 
   if (DebugConsole) {
     console.log("=== DEBUG INIT PROFIL ===");
@@ -58,15 +63,9 @@ export function initcompte_client_profilPage() {
     console.log("================================");
   }
 
-  // Headers réutilisables pour toutes les requêtes authentifiées
-  const authHeaders = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-
-  /* ===============================
-      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
-     =============================== */
+/* ===============================
+    RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+    =============================== */
 
   // Champs du formulaire profil
   const firstNameInput = document.getElementById('compte_client_profilFirstName');
@@ -103,14 +102,20 @@ export function initcompte_client_profilPage() {
     });
   }
 
+
+  /* ===============================
+      CHARGEMENT INITIAL
+     =============================== */
+
+  loadHeroName();
+  loadUserProfil();
+
   /* ===============================
       AFFICHAGE DU PRÉNOM DANS LE HERO
         - 1.  Appelle GET /api/me
         - 2.  Récupère le prénom depuis { utilisateur: { prenom, ... } }
         - 3.  Remplit le span #hero-user-name
      =============================== */
-
-
   async function loadHeroName() {
     if (DebugConsole) console.log("[loadHeroName] Début - Appel GET", apiMeUrl);
 
@@ -140,12 +145,11 @@ export function initcompte_client_profilPage() {
 
   /* ===============================
       FONCTION : CHARGER LES DONNÉES UTILISATEUR
-        - 1. Appelle GET /api/me qui retourne le compte client profil connecté
+        - 1. Appelle GET /api/client/profil qui retourne le profil client connecté
         - 2. Réponse attendue : { status: "Succès", utilisateur: { id, nom, prenom, email, telephone, adresse_postale, ville, code_postal, pays, ... } }
         - 3. Remplit tous les champs du formulaire avec les données reçues
         - 4. Met à jour le nom et l'email affichés sous l'avatar
      =============================== */
-
   async function loadUserProfil() {
     if (DebugConsole) console.log("[loadUserProfil] Début - Appel GET", apiProfilUrl);
 
@@ -230,9 +234,8 @@ export function initcompte_client_profilPage() {
     if (DebugConsole) console.log("[updateDisplayIdentity] Nom:", `${firstName} ${lastName}`, "Email:", email);
   }
 
-
   /* ===============================
-      FONCTION : SAUVEGARDER LES MODIFICATIONS DU compte client profil
+      FONCTION : SAUVEGARDER LES MODIFICATIONS DU COMPTE CLIENT
         - 1. Collecte toutes les valeurs du formulaire
         - 2. Envoie une requête PUT /api/client/profil avec les nouvelles données
         - 3. Corps JSON : { nom, prenom, telephone, email, adresse_postale, ville, code_postal }
@@ -275,7 +278,7 @@ export function initcompte_client_profilPage() {
         if (DebugConsole) console.log("[saveProfil] Profil sauvegardé avec succès");
         showNotification(result.message || 'Vos modifications ont été sauvegardées.', 'success');
       } else {
-        // L'API a retourné une erreur (validation, doublon email/téléphone, etc.)
+        // L'API a retourné une erreur
         console.error('[saveProfil] Erreur :', result.message);
         showNotification(result.message || 'Erreur lors de la sauvegarde.', 'error');
       }
@@ -491,13 +494,4 @@ export function initcompte_client_profilPage() {
     emailInput.addEventListener('input', updateDisplayIdentity);
   }
 
-  /* ===============================
-      INITIALISATION
-        - 1. Charge le prénom dans le hero
-        - 2. Charge les données du profil depuis l'API pour pré-remplir le formulaire
-     =============================== */
-
-  if (DebugConsole) console.log("=== INITIALISATION PAGE PROFIL ===");
-  loadHeroName();
-  loadUserProfil();
 }

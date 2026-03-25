@@ -1,4 +1,4 @@
-import { API_URL } from '../../config.js';
+import { API_URL, sanitizeHtml } from '../../config.js';
 /* ===============================
     CAROUSEL DE TÉMOIGNAGES
       Gère la navigation entre 5 avis clients différents
@@ -78,7 +78,7 @@ export async function initAccueilPage() {
   const apiAvisclient = `${API_URL}/api/avis`;
 
   // Variable debug console : si true, affichage des logs
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   // Vérifie que les éléments existent
   if (!carouselContainer || !prevBtn || !nextBtn || dots.length === 0) {
@@ -145,14 +145,14 @@ export async function initAccueilPage() {
           
           <!-- Texte du testimonial -->
           <p class="temoignages-card-text">
-            ${currentTestimonial.text}
+            ${sanitizeHtml(currentTestimonial.text)}
           </p>
           
           <!-- Auteur -->
-          <div class="temoignages-card-author">${currentTestimonial.author}</div>
+          <div class="temoignages-card-author">${sanitizeHtml(currentTestimonial.author)}</div>
           
           <!-- Date -->
-          <div class="temoignages-card-date">${currentTestimonial.date}</div>
+          <div class="temoignages-card-date">${sanitizeHtml(currentTestimonial.date)}</div>
         </div>
       `;
     

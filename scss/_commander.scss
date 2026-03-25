@@ -221,6 +221,14 @@
   box-shadow: 0 4px 16px  $terracotta;
 }
 
+/* -------- Mise à jour du bouton commander lors du spinner pour informer l'utilisateur -------- */
+.btn-commander-submit:disabled {
+  background-color:  $terracotta-dark;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px  $terracotta;
+  color: $white-pure;
+}
+
 /* -------- Récapitulatif -------- */
 .commander-recap {
   font-size: 0.9rem;
@@ -352,6 +360,8 @@
     color: $error-message;
   }
 }
+
+
 
 /* -------- Desktop uniquement -------- */
 @media (min-width: 769px) {

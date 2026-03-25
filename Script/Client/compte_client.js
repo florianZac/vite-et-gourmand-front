@@ -36,6 +36,21 @@ export function initcompteclientPage() {
     console.log("========================");
   }
 
+  // Toast
+  const toastEl = document.getElementById('toast-message');
+  const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 3000 });
+
+  /* ===============================
+      FONCTION : TOAST D'AFFICHAGE BOOTSTRAP
+     =============================== */
+  function showToast(message, type = 'success') {
+    const body = toastEl.querySelector('.toast-body');
+    body.textContent = message || "Action effectuée !";
+    toastEl.classList.remove('toast-success', 'toast-error');
+    toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
+    toastBootstrap.show();
+  }
+
   /* ===============================
       RECUPERATION DES INFOS UTILISATEURS
      =============================== */
@@ -47,6 +62,11 @@ export function initcompteclientPage() {
     console.error('Pas de token, impossible de charger les commandes');
     return;
   }
+  // Headers réutilisables pour toutes les requêtes authentifiées
+  const authHeaders = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
 
   if (DebugConsole) {
     console.log("=== DEBUG INIT COMPTE CLIENT ===");
@@ -56,18 +76,12 @@ export function initcompteclientPage() {
     console.log("================================");
   }
 
-  // Headers réutilisables pour toutes les requêtes authentifiées
-  const authHeaders = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-
   /* ===============================
       MAPPING DES STATUTS
       - 1.  Les clés correspondent exactement aux valeurs retournées par le back Symfony
       - 2.  label : texte affiché dans le badge
       - 3.  css : classe CSS pour la couleur du badge
-  =============================== */
+     =============================== */
 
   const STATUS_MAP = {
     'En attente':                    { label: 'En attente',                 css: 'compte_client-status-pending' },
@@ -79,6 +93,16 @@ export function initcompteclientPage() {
     'Terminée':                      { label: 'Terminée',                   css: 'compte_client-status-completed' },
     'Annulée':                       { label: 'Annulée',                    css: 'compte_client-status-cancelled' }
   };
+
+  /* ===============================
+      RÉCUPÉRATION DES ÉLÉMENTS DU DOM
+     =============================== */
+
+  // APPEL MODAL
+  const confirmBtn = document.getElementById('modal-annuler-confirm');
+  const motifInput = document.getElementById('modal-annuler-motif');
+  const errorDiv = document.getElementById('modal-annuler-error');
+  const count = document.getElementById('modal-annuler-count');
 
  /* ===============================
       INJECTION DE LA MODALE D'AVIS DANS LE DOM
@@ -343,7 +367,7 @@ export function initcompteclientPage() {
         if (modal) modal.hide();
 
         // Message de succès
-        alert(result.message || 'Avis soumis avec succès !');
+        showToast(result.message || 'Avis envoyé avec succès');
         if (DebugConsole) console.log(`[submitAvis] Avis soumis avec succès, rechargement...`);
 
         // Recharge les commandes pour afficher le nouvel avis
@@ -351,6 +375,7 @@ export function initcompteclientPage() {
 
       } else {
         // Affiche l'erreur retournée par l'API dans la modale
+        showToast(result.message || "Erreur lors de l'envoi de l'avis", "error");
         errorSpan.textContent = result.message || 'Erreur lors de l\'envoi de l\'avis.';
         errorDiv.style.display = 'block';
         if (DebugConsole) console.log(`[submitAvis] Erreur API :`, result.message);
@@ -558,15 +583,16 @@ export function initcompteclientPage() {
       // Livraison : "Gratuite" si 0€, sinon le montant
       const livraisonText = order.prix_livraison > 0 ? order.prix_livraison.toFixed(2) + '€' : 'Gratuite';
 
-      // Réduction : si reduction_montant > 0 on affiche "-XX€", sinon "—"
-      let reductionText = ' ';
+      // Réduction : si reduction_montant > 0 on affiche "-XX€" sinon on affiche 0€
+      let reductionText = '0€';
       let reductionClass = '';
-      if (order.reduction_montant && order.reduction_montant > 0) {
+
+      if (order.reduction_montant > 0) {
         reductionText = `-${order.reduction_montant}€`;
         reductionClass = 'compte_client-order-info-value-reduction';
       }
 
-      // Heure de livraison (si disponible) : " à 19:30"
+      // Heure de livraison si disponible : " à 19:30"
       const heureText = order.heure_livraison ? ` à ${order.heure_livraison}` : '';
 
       if (DebugConsole) {
@@ -598,7 +624,7 @@ export function initcompteclientPage() {
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Réduction</span>
-            <span class="compte_client-order-info-value ${reductionClass}">${reductionText}</span>
+            <span class="compte_client-order-info-value ${reductionClass}">${reductionText || '0€'}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Total</span>
@@ -683,7 +709,7 @@ export function initcompteclientPage() {
     if (order.avis) {
       let avisStatutText = '';
       switch (order.avis.statut) {
-        case 'validé':
+        case 'validé'||'publié' :
           avisStatutText = 'Validé';
           break;
         case 'en_attente':
@@ -805,79 +831,96 @@ export function initcompteclientPage() {
         - 3.  Corps JSON : { "motif_annulation": "..." }
         - 4.  Recharge la liste après annulation réussie
      =============================== */
-
   function setupCancelButtons() {
-    // Sélectionne tous les boutons annuler dans le conteneur
     const cancelButtons = commandesList.querySelectorAll('.btn-compte_client-cancel');
 
     if (DebugConsole) console.log("[setupCancelButtons] Nombre de boutons annuler trouvés :", cancelButtons.length);
 
     cancelButtons.forEach(btn => {
-      btn.addEventListener('click', async () => {
-        // Récupère l'ID de la commande depuis l'attribut data-order-id
+      btn.addEventListener('click', () => {
         const orderId = btn.dataset.orderId;
         if (!orderId) return;
 
-        if (DebugConsole) console.log(`[setupCancelButtons] Clic annuler sur commande ${orderId}`);
+        if (DebugConsole) console.log(`[setupCancelButtons] Ouverture modale pour commande ${orderId}`);
 
-        // Demande confirmation à l'utilisateur
-        const confirmed = confirm(
-          'Êtes-vous sûr de vouloir annuler cette commande ?\n' +
-          'Cette action est irréversible.'
-        );
-        if (!confirmed) {
-          if (DebugConsole) console.log(`[setupCancelButtons] Commande ${orderId} - Annulation refusée par l'utilisateur`);
-          return;
-        }
+        document.getElementById('modal-annuler-id').value = orderId;
 
-        // Demande le motif d'annulation à l'utilisateur (obligatoire)
-        const motif = prompt(
-          'Veuillez indiquer le motif d\'annulation :\n(Ce champ est obligatoire)'
-        );
+        document.getElementById('modal-annuler-motif').value = '';
+        document.getElementById('modal-annuler-count').textContent = '0 / 500';
+        document.getElementById('modal-annuler-error').style.display = 'none';
 
-        // Si l'utilisateur annule le prompt ou ne saisit rien
-        if (!motif || motif.trim() === '') {
-          alert('Le motif d\'annulation est obligatoire.');
-          if (DebugConsole) console.log(`[setupCancelButtons] Commande ${orderId} - Motif vide, abandon`);
-          return;
-        }
-
-        if (DebugConsole) console.log(`[setupCancelButtons] Commande ${orderId} - Motif: "${motif.trim()}"`);
-
-        const url = `${apiCommandesUrl}/${orderId}/annuler`;
-        if (DebugConsole) console.log(`[setupCancelButtons] Appel POST ${url}`);
-
-        try {
-          // Appel API : POST /api/client/commandes/{id}/annuler
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: authHeaders,
-            body: JSON.stringify({ motif_annulation: motif.trim() })
-          });
-
-          const result = await response.json();
-
-          if (DebugConsole) {
-            console.log(`[setupCancelButtons] Commande ${orderId} - Réponse status :`, response.status);
-            console.log(`[setupCancelButtons] Commande ${orderId} - Réponse body :`, result);
-          }
-
-          if (response.ok) {
-            // Affiche le message de remboursement retourné par l'API
-            alert(result.message || 'Commande annulée.');
-            if (DebugConsole) console.log(`[setupCancelButtons] Commande ${orderId} - Annulée avec succès, rechargement...`);
-            // Recharge la liste des commandes pour afficher le nouveau statut
-            loadOrders();
-          } else {
-            alert(result.message || 'Impossible d\'annuler cette commande.');
-            if (DebugConsole) console.log(`[setupCancelButtons] Commande ${orderId} - Erreur API :`, result.message);
-          }
-
-        } catch (err) {
-          console.error(`[setupCancelButtons] Commande ${orderId} - Erreur réseau :`, err);
-          alert('Erreur réseau, veuillez réessayer.');
-        }
+        // Ouverture de la modale
+        const modalEl = document.getElementById('modalAnnuler');
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
       });
+    });
+  }
+
+  /* ===============================
+      FONCTION : GESTION DE LA MODALE
+     =============================== */
+  function setupModalAnnulation() {
+
+    if (!confirmBtn) return;
+    // compteur caractères
+    motifInput.addEventListener('input', () => {
+      count.textContent = `${motifInput.value.length} / 500`;
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      const orderId = document.getElementById('modal-annuler-id').value;
+      const motif = motifInput.value.trim();
+
+      if (!motif) {
+        errorDiv.style.display = 'block';
+        return;
+      }
+      if (DebugConsole) console.log(`[setupModalAnnulation] Clic annuler sur commande ${orderId}`);
+
+      errorDiv.style.display = 'none';
+
+      // Désactiver bouton + spinner
+      confirmBtn.disabled = true;
+      confirmBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Annulation...`;
+
+      const url = `${apiCommandesUrl}/${orderId}/annuler`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: authHeaders,
+          body: JSON.stringify({ motif_annulation: motif })
+        });
+
+        const result = await response.json();
+
+        if (DebugConsole) {
+          console.log(`[setupModalAnnulation] Commande ${orderId} - Réponse status :`, response.status);
+          console.log(`[setupModalAnnulation] Commande ${orderId} - Réponse body :`, result);
+        }
+        if (response.ok) {
+          const modalEl = document.getElementById('modalAnnuler');
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          if (modal) modal.hide();
+
+          showToast(result.message || 'Commande annulée avec succès');
+
+          loadOrders();
+        } else {
+          showToast(result.message || "Erreur lors de l'annulation", "error");
+          errorDiv.style.display = 'block';
+        }
+
+      } catch (err) {
+        console.error(err);
+        showToast(result.message || "Erreur lors de l'annulation", "error");
+        errorDiv.style.display = 'block';
+      } finally {
+        // Réactivation du bouton
+        confirmBtn.disabled = false;
+        confirmBtn.innerHTML = `<i class="bi bi-x-circle me-1"></i> Confirmer`;
+      }
     });
   }
 
@@ -888,8 +931,8 @@ export function initcompteclientPage() {
         - 3. Charge les commandes du client depuis l'API
      =============================== */
 
-  if (DebugConsole) console.log("=== INITIALISATION PAGE COMPTE CLIENT ===");
   injectAvisModal();
+  setupModalAnnulation(); 
   loadUserName();
   loadOrders();
 }

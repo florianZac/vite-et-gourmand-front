@@ -12,16 +12,28 @@
 
     <!-- Grille Bootstrap centrée -->
     <div class="row justify-content-center">
-      <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+      <div class="row justify-content-center compte_admin">
 
         <!------ Onglets Navigation -------->
-        <div class="compte_client_profil-tabs">
-          <a href="/compte_client" class="compte_client_profil-tab">
-            Mes commandes
-          </a>
-          <a href="/mon_compte_profil" class="compte_client_profil-tab active">
-            Mon profil
-          </a>
+        <div class="row justify-content-center compte_admin">
+          <!------ Mes Commandes  -------->
+          <div class="col-12 col-md-4">
+            <a href="/compte_client" class="card text-center text-decoration-none h-100 ">
+              <div class="card-body py-3">
+                <i class="bi bi-bag-check-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Mes commandes</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Profil (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/mon_compte_profil" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-person-gear fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Mon profil</h6>
+              </div>
+            </a>
+          </div>
         </div>
 
         <!------ Carte compte client_profil (avatar + nom + email) -------->

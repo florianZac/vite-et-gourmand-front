@@ -1,4 +1,4 @@
-import { API_URL } from '../../config.js';
+import { API_URL,sanitizeHtml } from '../../config.js';
 
   // EndPoint de l'API pour la récupération des horaires
 const apiHoraire = `${API_URL}/api/horaires`;

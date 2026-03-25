@@ -19,13 +19,13 @@ export function initCompteAdminGestionCommandesPage() {
   const apiMeUrl = `${API_URL}/api/me`;
 
   // EndPoint de l'API pour la récupération de toutes les commandes
-  const apiGetCommandes = `${API_URL}/api/commandes/admin`;
+  const apiGetCommandes = `${API_URL}/api/commandes`;
 
   // EndPoint de l'API pour la récupération des status d'une commande
   const apiChangerStatut = `${API_URL}/api/employe/commandes`;
 
   // EndPoint de l'API pour l'annulation d'une commande
-  const apiAnnuler = `${API_URL}/api/commandes/admin`;
+  const apiAnnuler = `${API_URL}/api/commandes`;
 
   // EndPoint de l'API pour la mise à jour des données de restitution retour matériel
   const apiRestitution = `${API_URL}/api/employe/commandes`;
