@@ -14,7 +14,7 @@ export function initcompte_client_profilPage() {
    =============================== */
 
   // Variable debug console
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
      CONFIGURATION API

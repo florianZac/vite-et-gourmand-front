@@ -4,7 +4,7 @@ import { API_URL } from '../../config.js';
     SCRIPT PAGE RESET PASSWORD
    =============================== */
 
-let DebugConsole = true;
+let DebugConsole = false;
 
 /* ===============================
     Configuration API

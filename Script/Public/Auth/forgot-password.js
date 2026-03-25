@@ -4,7 +4,7 @@ export function initforgotpasswordPage() {
   /* ===============================
       SCRIPT PAGE RESET PASSWORD
      =============================== */
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       Configuration API
