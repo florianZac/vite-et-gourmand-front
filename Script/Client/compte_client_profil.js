@@ -224,7 +224,7 @@ export function initcompte_client_profilPage() {
 
     // Met à jour l'email affiché sous le nom
     if (displayEmail) {
-      displayEmail.textContent = email || '—';
+      displayEmail.textContent = email || ' ';
     }
 
     if (DebugConsole) console.log("[updateDisplayIdentity] Nom:", `${firstName} ${lastName}`, "Email:", email);

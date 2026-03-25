@@ -187,11 +187,11 @@ export function initDetailMenusPage() {
   function renderBreadcrumb(menu) {
     // Vérifie si breadcrumbName existe
     if (breadcrumbName) {
-      // Si menu.titre existe, on l'affiche, sinon '—'
+      // Si menu.titre existe, on l'affiche, sinon ' '
       if (menu && menu.titre) {
         breadcrumbName.textContent = menu.titre;
       } else {
-        breadcrumbName.textContent = '—';
+        breadcrumbName.textContent = ' ';
       }
 
       if (DebugConsole) {
@@ -257,7 +257,7 @@ export function initDetailMenusPage() {
       if (menu && menu.titre) {
         detailTitle.textContent = menu.titre;
       } else {
-        detailTitle.textContent = '—';
+        detailTitle.textContent = ' ';
       }
     }
 
@@ -524,7 +524,7 @@ export function initDetailMenusPage() {
       if (DebugConsole) console.log(`[renderComposition] ${cat.label} :`, plat ? plat.titre : 'Aucun');
 
       // Titre et description du plat (ou fallback)
-      const platTitre = plat ? plat.titre : '—';
+      const platTitre = plat ? plat.titre : ' ';
       let allergens = [];
 
       if (plat && plat.allergenes) {
@@ -552,7 +552,7 @@ export function initDetailMenusPage() {
             <span class="detail_menu-dish-type-icon">${cat.icon}</span>
             <span class="detail_menu-dish-type-label">${cat.label}</span>
           </div>
-          <h3 class="detail_menu-dish-name">${platTitre || '—'}</h3>
+          <h3 class="detail_menu-dish-name">${platTitre || ' '}</h3>
           <p class="detail_menu-dish-description">${plat ? plat.description : ''}</p>
           <div class="detail_menu-dish-allergens-label">
             <i class="bi bi-shield-exclamation"></i>

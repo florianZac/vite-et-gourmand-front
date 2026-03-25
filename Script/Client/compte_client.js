@@ -559,7 +559,7 @@ export function initcompteclientPage() {
       const livraisonText = order.prix_livraison > 0 ? order.prix_livraison.toFixed(2) + '€' : 'Gratuite';
 
       // Réduction : si reduction_montant > 0 on affiche "-XX€", sinon "—"
-      let reductionText = '—';
+      let reductionText = ' ';
       let reductionClass = '';
       if (order.reduction_montant && order.reduction_montant > 0) {
         reductionText = `-${order.reduction_montant}€`;
@@ -577,13 +577,13 @@ export function initcompteclientPage() {
       card.innerHTML = `
         <!-- En-tête : titre du menu + badge statut -->
         <div class="compte_client-order-header">
-          <h3 class="compte_client-order-menu-name">${order.menu_titre || '—'}</h3>
+          <h3 class="compte_client-order-menu-name">${order.menu_titre || ' '}</h3>
           <span class="compte_client-order-status ${status.css}">${status.label}</span>
         </div>
 
         <!-- Numéro commande — date prestation à heure -->
         <p class="compte_client-order-ref">
-          ${order.numero_commande || '—'} — ${order.date_prestation || ''}${heureText}
+          ${order.numero_commande || ' '} — ${order.date_prestation || ''}${heureText}
         </p>
 
         <!-- Ligne d'infos : Personnes | Livraison | Réduction | Total -->

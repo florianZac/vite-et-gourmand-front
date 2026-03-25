@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Éléments data-show présents :", document.querySelectorAll('[data-show]'));
     console.log("=================");
   }
-
 });
 
 /* ===============================
@@ -213,7 +212,6 @@ export function signout() {
   if (DebugConsole) console.log("Utilisateur déconnecté, cookies nettoyés.");
 }
 
-
 /* ===============================
 	  Récupération des infos utilisateur
 	 =============================== */
@@ -263,7 +261,6 @@ export async function getInfosUser() {
           const prenom = user.utilisateur.prenom || user.utilisateur.email || 'Mon compte';
           btnUser.innerHTML = `<i class="bi bi-person"></i> Mon compte : ${prenom}`;
         }
-
       }
       // Met à jour la navbar selon le rôle
       showAndHideElementsForRole();
