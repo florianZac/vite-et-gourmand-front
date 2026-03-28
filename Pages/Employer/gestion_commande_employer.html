@@ -12,63 +12,65 @@
 
     <!-- Grille Bootstrap centrée -->
     <div class="row justify-content-center">
-      <div class="col-6 compte_employer">
-
-        <!------ Onglets Commande (ACTIVE) -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100 active">
-            <div class="card-body py-3">
-              <i class="bi bi-basket-fill fs-4 mb-1"></i>
-              <h6 class="card-title mb-0 ">Gestion Commande</h6>
-            </div>
-          </a>
+      <div class="row justify-content-center compte_admin">
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          
+          <!------ Onglets Commande (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-basket-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0 ">Gestion Commande</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Avis Client -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-star-half fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Avis Client</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menu -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-wallet-fill mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menu</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergène & Menus tag -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
         </div>
-        <!------ Onglets Gestion Avis Client -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-star-half fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Avis Client</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Menu -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-wallet-fill mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Menu</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Allergènes -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-virus fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Allergènes</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Plat -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-egg-fried fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Plat</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Thèmes & Règimes -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-receipt fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Thèmes & Règimes</h6>
-            </div>
-          </a>
-        </div>
-      </div>
       <!------ Titre de la section   -------->
       <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Commande Client </h3>
 
@@ -88,7 +90,7 @@
                   type="text"
                   id="search-order"
                   class="form-control"
-                  placeholder="Rechercher un menus..."
+                  placeholder="Rechercher une commande..."
                 >
               </div>
             </div>
@@ -103,6 +105,7 @@
                 <option value="En livraison">En livraison</option>
                 <option value="Livré">Livré</option>
                 <option value="En attente du retour matériel">En attente retour matériel</option>
+                <option value="Restitution confirmée">Restitution confirmée</option>
                 <option value="Terminée">Terminée</option>
                 <option value="Annulée">Annulée</option>
               </select>

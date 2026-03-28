@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken} from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 export function initCompteAdminPage() {
 
   /* ===============================
@@ -95,7 +95,7 @@ export function initCompteAdminPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -115,14 +115,14 @@ export function initCompteAdminPage() {
     return `
       <div class="stat-card">
         <div class="stat-icon" style="color:${color}">
-          <i class="bi ${icon}"></i>
+          <i class="bi ${sanitizeHtml(icon)}"></i>
         </div>
         <div class="stat-content">
           <div class="stat-value" style="color:${color}">
-            ${value}
+             ${sanitizeHtml(value)}
           </div>
-          <div class="stat-label">
-            ${label}
+          <div class="statistique-label">
+            ${sanitizeHtml(label)}
           </div>
         </div>
       </div>
@@ -150,9 +150,9 @@ export function initCompteAdminPage() {
           <div class="top-menu-item">
             <i class="bi bi-trophy ${trophyClass}"></i>
             <div>
-              <div class="top-menu-title-${trophyClass}">${m.titre || m.menu}</div>
+              <div class="top-menu-title-${trophyClass}">${sanitizeHtml(m.titre || m.menu || '')}</div>
               <div class="top-menu-count">
-                <span class="count-value">${m.total || m.nombre_commandes || 0}</span>
+                <span class="count-value">${sanitizeHtml(String(m.total || m.nombre_commandes || 0))}</span>
                 <span class="count-label-${trophyClass}">commandes</span>
               </div>
             </div>
@@ -186,10 +186,10 @@ export function initCompteAdminPage() {
           <strong class="title-top">Statistiques utilisateurs</strong>
         </div>
         <small class="ms-4 content-user">
-          Total Utilisateur : <strong class="label">${u.total || 0}</strong><br>
-          Total Utilisateur actif : <strong class="label-active">${u.actifs || 0}</strong><br>
-          Total Utilisateur Inactifs : <strong class="label-warning">${u.inactifs || 0}</strong><br>
-          Demande de désactivation : <strong class="label-inactive">${u.en_attente || 0}</strong>
+          Total Utilisateur : <strong class="label">${sanitizeHtml(String(u.total || 0))}</strong><br>
+          Total Utilisateur actif : <strong class="label-active">${sanitizeHtml(String(u.actifs || 0))}</strong><br>
+          Total Utilisateur Inactifs : <strong class="label-warning">${sanitizeHtml(String(u.inactifs || 0))}</strong><br>
+          Demande de désactivation : <strong class="label-inactive">${sanitizeHtml(String(u.en_attente || 0))}</strong>
         </small>
       </div>
 
@@ -199,10 +199,10 @@ export function initCompteAdminPage() {
           <strong class="title-top">Statistiques Avis</strong>
         </div>
         <small class="ms-4 content-avis">
-          Total Avis : <strong class="label">${a.total || 0}</strong><br>
-          Total Avis En attente actif : <strong class="label-inactive ">${a.en_attente || 0}</strong><br>
-          Total Avis Validés : <strong class="label-active">${a.valides || 0}</strong><br>
-          Total Avis Refusés : <strong class="label-warning">${a.refuses || 0}</strong>
+          Total Avis : <strong class="label">${sanitizeHtml(String(a.total || 0))}</strong><br>
+          Total Avis En attente actif : <strong class="label-inactive">${sanitizeHtml(String(a.en_attente || 0))}</strong><br>
+          Total Avis Validés : <strong class="label-active">${sanitizeHtml(String(a.valides || 0))}</strong><br>
+          Total Avis Refusés : <strong class="label-warning">${sanitizeHtml(String(a.refuses || 0))}</strong>
         </small>
       </div>
     `;
@@ -285,7 +285,7 @@ export function initCompteAdminPage() {
         data: {
           // Mise en place des labels
           labels: caParMois.map(function(element) {
-            return element.mois;
+            return sanitizeHtml(element.mois);
           }),
           datasets: [
             {
@@ -349,7 +349,7 @@ export function initCompteAdminPage() {
         data: {
           // Mise à jour des labels d'après le noms des menus
           labels: caParMenu.map(function(element) {
-            return element.menu;
+            return  sanitizeHtml(element.menu);
           }),
           // Légende
           datasets: [
@@ -431,7 +431,7 @@ export function initCompteAdminPage() {
       // Compter par statut
       const counts = {};
       commandes.forEach(function(c) {
-        const statut = c.statut || 'Inconnu';
+        const statut = sanitizeHtml(c.statut || 'Inconnu');
         counts[statut] = (counts[statut] || 0) + 1;
       });
 

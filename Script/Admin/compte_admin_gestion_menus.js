@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken} from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionMenusPage() {
 
@@ -123,7 +123,7 @@ export function initCompteAdminGestionMenusPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeInput(message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -162,7 +162,7 @@ export function initCompteAdminGestionMenusPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -332,10 +332,10 @@ export function initCompteAdminGestionMenusPage() {
       const opt = document.createElement('option');
 
       // définition de sa valeur
-      opt.value = item[valueKey];
+      opt.value = sanitizeInput(item[valueKey]);
 
       // Définit le texte visible pour l'utilisateur
-      opt.textContent = item[labelKey];
+      opt.textContent = sanitizeHtml(item[labelKey]);
 
       // Ajout la donnée au select
       selectEl.appendChild(opt);
@@ -380,13 +380,13 @@ export function initCompteAdminGestionMenusPage() {
       let allergenes = '';
       if (plat.allergenes) {
         allergenes = plat.allergenes.map(function(a) {
-          return a.libelle;
+          return sanitizeHtml(a.libelle);
         }).join(', ');
       }
       if (DebugConsole) {console.log(`[addPlatSelect] : ${allergenes}`);}
       // Construction de l'option HTML
-      options += `<option value="${plat.id}" ${selected}>
-        ${plat.titre} (${plat.categorie})${allergenes ? ' - ' + allergenes : ''}
+      options += `<option value="${sanitizeInput(plat.id)}" ${selected}>
+        ${sanitizeHtml(plat.titre)} (${sanitizeHtml(plat.categorie)})${allergenes ? ' - ' + allergenes : ''}
       </option>`;
 
       if (DebugConsole) {console.log(`[addPlatSelect] : ${selected}:${allergenes}:${options}`);}
@@ -468,8 +468,8 @@ export function initCompteAdminGestionMenusPage() {
     }
 
     menus.forEach(menu => {
-      const themeLabel = menu.theme ? menu.theme.titre : '—';
-      const regimeLabel = menu.regime ? menu.regime.libelle : '—';
+      const themeLabel = sanitizeHtml(menu.theme?.titre || " ");
+      const regimeLabel = sanitizeHtml(menu.regime?.libelle || " ");
       const nbPlats = menu.plats ? menu.plats.length : 0;
       const enStock = (menu.quantite_restante || 0) >= (menu.nombre_personne_minimum || 1);
 
@@ -482,15 +482,15 @@ export function initCompteAdminGestionMenusPage() {
 
       row.innerHTML = `
         <div>
-          <strong class="fs-5">${menu.titre || 'Sans titre'}</strong><br>
-          <small class="text-muted">${themeLabel} · ${regimeLabel} · Min. ${menu.nombre_personne_minimum || 1} pers. · ${menu.prix_par_personne || 0}€/pers</small><br>
-          <small>${nbPlats} plat(s) — ${enStock ? '<span style="color:green">En stock</span>' : '<span style="color:red">Rupture</span>'} · Qté: ${menu.quantite_restante || 0}</small>
+          <strong class="fs-5">${sanitizeHtml(menu.titre || 'Sans titre')}</strong><br>
+          <small class="text-muted">${themeLabel} · ${regimeLabel} · Min. ${sanitizeInput(menu.nombre_personne_minimum || 1)} pers. · ${sanitizeInput(menu.prix_par_personne || 0)}€/pers</small><br>
+          <small>${nbPlats} plat(s) — ${enStock ? '<span style="color:green">En stock</span>' : '<span style="color:red">Rupture</span>'} · Qté: ${sanitizeInput(menu.quantite_restante || 0)}</small>
         </div>
         <div class="d-flex flex-column gap-2">
-          <button class="btn btn-secondary btn-sm btn-edit-menu" data-id="${menu.id}" title="Modifier">
+          <button class="btn btn-secondary btn-sm btn-edit-menu" data-id="${sanitizeInput(menu.id)}" title="Modifier">
             <i class="bi bi-pencil-fill me-1"></i> Modifier
           </button>
-          <button class="btn btn-danger btn-sm btn-delete-menu" data-id="${menu.id}" data-titre="${menu.titre}" title="Supprimer">
+          <button class="btn btn-danger btn-sm btn-delete-menu" data-id="${sanitizeInput(menu.id)}" data-titre="${sanitizeHtml(menu.titre)}" title="Supprimer">
             <i class="bi bi-trash-fill me-1"></i> Supprimer
           </button>
         </div>
@@ -557,16 +557,16 @@ export function initCompteAdminGestionMenusPage() {
     if (DebugConsole) console.log("[openEditForm] menu",menu);
 
     currentEditId = menuId;
-    menuFormTitle.textContent = `Modifier : ${menu.titre}`;
+    menuFormTitle.textContent = `Modifier : ${sanitizeInput(menu.titre)}`;
     btnSaveMenu.innerHTML = '<i class="bi bi-save me-1"></i> Enregistrer';
 
     // Remplir les champs
-    inputTitre.value = menu.titre || '';
-    inputDescription.value = menu.description || '';
-    inputMinPersonnes.value = menu.nombre_personne_minimum || 1;
-    inputPrix.value = menu.prix_par_personne || 0;
-    inputQuantite.value = menu.quantite_restante || 50;
-    inputConditions.value = menu.conditions || '';
+    inputTitre.value = sanitizeInput(menu.titre || '');
+    inputDescription.value = sanitizeInput(menu.description || '');
+    inputMinPersonnes.value = sanitizeInput(menu.nombre_personne_minimum || 1);
+    inputPrix.value = sanitizeInput(menu.prix_par_personne || 0);
+    inputQuantite.value = sanitizeInput(menu.quantite_restante || 50);
+    inputConditions.value = sanitizeInput(menu.conditions || '');
 
     // Sélectionner thème et régime
     if (menu.theme) selectTheme.value = menu.theme.id;
@@ -612,12 +612,12 @@ export function initCompteAdminGestionMenusPage() {
      =============================== */
   btnSaveMenu.addEventListener('click', async () => {
     if (DebugConsole) console.log("[openEditForm] Appel btnSaveMenu");
-    const titre = inputTitre.value.trim();
-    const description = inputDescription.value.trim();
+    const titre = sanitizeInput(inputTitre.value.trim());
+    const description = sanitizeInput(inputDescription.value.trim());
     const nombre_personne_minimum = parseInt(inputMinPersonnes.value) || 1;
     const prix_par_personne = parseFloat(inputPrix.value) || 0;
     const quantite_restante = parseInt(inputQuantite.value) || 50;
-    const conditions = inputConditions.value.trim();
+    const conditions = sanitizeInput((inputConditions.value.trim()));
     const theme_id = parseInt(selectTheme.value);
     const regime_id = parseInt(selectRegime.value);
 
@@ -726,7 +726,7 @@ export function initCompteAdminGestionMenusPage() {
     let status = "";
 
     if (searchInput) {
-      search = searchInput.value.toLowerCase().trim();
+      search = sanitizeInput(searchInput.value.toLowerCase().trim());
     }
 
     if (filterStatus) {
@@ -790,15 +790,15 @@ export function initCompteAdminGestionMenusPage() {
 
         // Récupère le titre du menu
         if (menu.titre) {
-          titre = menu.titre.toLowerCase();
+          titre = sanitizeInput(menu.titre.toLowerCase());
         }
         // Récupère le titre du thème
         if (menu.theme && menu.theme.titre) {
-          theme = menu.theme.titre.toLowerCase();
+          theme = sanitizeInput(menu.theme.titre.toLowerCase());
         }
         // Récupère le libellé du régime
         if (menu.regime && menu.regime.libelle) {
-          regime = menu.regime.libelle.toLowerCase();
+          regime = sanitizeInput(menu.regime.libelle.toLowerCase());
         }
         if (DebugConsole) {
           console.log("[applyFilters] titre:", titre);

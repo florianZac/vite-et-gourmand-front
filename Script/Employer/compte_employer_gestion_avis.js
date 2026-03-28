@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initGestionAvisEmployerPage() {
 
@@ -8,7 +8,7 @@ export function initGestionAvisEmployerPage() {
      =============================== */
   
   // Variable debug console
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   let allAvis = [];
 
@@ -93,7 +93,7 @@ export function initGestionAvisEmployerPage() {
   function showToast(message, type = 'success') {
     if (!toastEl || !toastBootstrap) return;
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -177,7 +177,9 @@ export function initGestionAvisEmployerPage() {
 
     avis.forEach(function(a) {
       if (DebugConsole) console.log("[renderAvis] :", a.id, a.utilisateur_nom, a.statut);
-
+      const nomUtilisateur = sanitizeHtml(a.utilisateur_nom || 'Anonyme');
+      const description = sanitizeHtml(a.description || 'Aucun commentaire');
+      const numeroCommande = sanitizeHtml(a.numero_commande || '#' + (a.commande_id || " "));
       // Génération des étoiles
       let starsHtml = '';
       const note = a.note || 0;
@@ -190,14 +192,15 @@ export function initGestionAvisEmployerPage() {
       }
 
       // Badge statut
-            const statutLower = (a.statut || '').toLowerCase();
+      const statutLower = (a.statut || '').toLowerCase();
       let statutBadge = '';
-      if (statutLower === 'validé' || statutLower === 'publié') {
-        statutBadge = '<span class="badge bg-success ms-2">Validé</span>';
+      // Badge selon workflow 3 statuts
+      if (statutLower === 'publié') {
+          statutBadge = '<span class="badge bg-success ms-2">Publié</span>';
       } else if (statutLower === 'refusé') {
-        statutBadge = '<span class="badge bg-danger ms-2">Refusé</span>';
+          statutBadge = '<span class="badge bg-danger ms-2">Refusé</span>';
       } else {
-        statutBadge = '<span class="badge bg-warning text-dark ms-2">En attente</span>';
+          statutBadge = '<span class="badge bg-warning text-dark ms-2">En attente</span>';
       }
 
       // Longueur description
@@ -232,17 +235,17 @@ export function initGestionAvisEmployerPage() {
       card.innerHTML = `
         <div class="d-flex justify-content-between align-items-start mb-2">
           <div>
-            <strong class="fs-5">${a.utilisateur_nom || 'Anonyme'}</strong>
+            <strong class="fs-5">${nomUtilisateur}</strong>
             ${statutBadge}
             <br>
-            <small class="text-muted">${a.date || '—'} — Commande ${a.numero_commande || '#' + (a.commande_id || '—')}</small>
+            <small class="text-muted">${sanitizeHtml(a.date || " ")} — Commande ${numeroCommande}</small>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             ${actionsHtml}
           </div>
         </div>
         <div class="mb-2">${starsHtml}</div>
-        <p class="mb-1 fst-italic" style="color:#5a4a3a;">"${a.description || 'Aucun commentaire'}"</p>
+        <p class="mb-1 fst-italic" style="color:#5a4a3a;">"${description}"</p>
         <small class="text-muted">${descLength}/255 caractères</small>
       `;
 
@@ -303,11 +306,10 @@ export function initGestionAvisEmployerPage() {
 
     let search = "";
     let status = "";
-
     // Gestion du champ recherche
     if (searchInput) {
       if (searchInput.value) {
-        search = searchInput.value.toLowerCase().trim();
+        search = sanitizeInput(searchInput.value.toLowerCase().trim());
       } else {
         search = "";
       }
@@ -325,7 +327,8 @@ export function initGestionAvisEmployerPage() {
     } else {
       status = "";
     }
-    if (DebugConsole) console.log("[applyFilters] search:", search, "status:", status);
+    if (DebugConsole) console.log("[applyFilters] search", search, "statuts:", status);
+
 
     const filtered = allAvis.filter(function(a) {
 

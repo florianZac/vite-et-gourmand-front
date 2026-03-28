@@ -1,5 +1,5 @@
-import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { API_URL} from '../config.js';
+import { getToken, getRole, sanitizeInput, sanitizeHtml } from '../script.js';
 //init+nom+Page
 export function initcompteclientPage() {
   /* ===============================
@@ -45,7 +45,7 @@ export function initcompteclientPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeInput(message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -307,9 +307,9 @@ export function initcompteclientPage() {
     =============================== */
 
   async function submitAvis() {
-    const commandeId = document.getElementById('modal-avis-commande-id').value;
+    const commandeId = sanitizeInput(document.getElementById('modal-avis-commande-id').value);
     const note = parseInt(document.getElementById('modal-avis-note').value);
-    const description = document.getElementById('modal-avis-description').value.trim();
+    const description = sanitizeHtml(document.getElementById('modal-avis-description').value.trim());
     const errorDiv = document.getElementById('modal-avis-error');
     const errorSpan = errorDiv.querySelector('span');
 
@@ -375,7 +375,7 @@ export function initcompteclientPage() {
 
       } else {
         // Affiche l'erreur retournée par l'API dans la modale
-        showToast(result.message || "Erreur lors de l'envoi de l'avis", "error");
+        showToast(sanitizeInput(result.message) || "Erreur lors de l'envoi de l'avis", "error");
         errorSpan.textContent = result.message || 'Erreur lors de l\'envoi de l\'avis.';
         errorDiv.style.display = 'block';
         if (DebugConsole) console.log(`[submitAvis] Erreur API :`, result.message);
@@ -416,7 +416,7 @@ export function initcompteclientPage() {
 
       const heroName = document.getElementById('hero-user-name');
       if (heroName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
         heroName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -603,46 +603,46 @@ export function initcompteclientPage() {
       card.innerHTML = `
         <!-- En-tête : titre du menu + badge statut -->
         <div class="compte_client-order-header">
-          <h3 class="compte_client-order-menu-name">${order.menu_titre || ' '}</h3>
-          <span class="compte_client-order-status ${status.css}">${status.label}</span>
+          <h3 class="compte_client-order-menu-name">${sanitizeHtml(order.menu_titre || ' ')}</h3>
+          <span class="compte_client-order-status ${sanitizeHtml(status.css)}">${sanitizeHtml(status.label)}</span>
         </div>
 
         <!-- Numéro commande — date prestation à heure -->
         <p class="compte_client-order-ref">
-          ${order.numero_commande || ' '} — ${order.date_prestation || ''}${heureText}
+          ${sanitizeHtml(order.numero_commande || ' ')} — ${sanitizeHtml(order.date_prestation || '')}${sanitizeHtml(heureText)}
         </p>
 
         <!-- Ligne d'infos : Personnes | Livraison | Réduction | Total -->
         <div class="compte_client-order-infos">
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Personnes</span>
-            <span class="compte_client-order-info-value">${order.nombre_personne || 0}</span>
+            <span class="compte_client-order-info-value">${sanitizeHtml(order.nombre_personne || 0)}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Livraison</span>
-            <span class="compte_client-order-info-value">${livraisonText}</span>
+            <span class="compte_client-order-info-value">${(livraisonText)}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Réduction</span>
-            <span class="compte_client-order-info-value ${reductionClass}">${reductionText || '0€'}</span>
+            <span class="compte_client-order-info-value ${reductionClass}">${sanitizeInput(reductionText || '0€')}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Total</span>
-            <span class="compte_client-order-info-value compte_client-order-info-value-total">${total}€</span>
+            <span class="compte_client-order-info-value compte_client-order-info-value-total">${sanitizeInput(total)}€</span>
           </div>
         </div>
 
         <!-- Timeline de suivi -->
-        ${timelineHtml}
+        ${(timelineHtml)}
 
         <!-- Section avis (si commande terminée + avis existant) -->
-        ${avisHtml}
+        ${(avisHtml)}
 
         <!-- Section prêt de matériel (si applicable) -->
-        ${materialHtml}
+        ${(materialHtml)}
 
         <!-- Bouton annuler (si commande en attente) -->
-        ${cancelHtml}
+        ${(cancelHtml)}
       `;
 
       commandesList.appendChild(card);
@@ -677,7 +677,7 @@ export function initcompteclientPage() {
     const badgesHtml = suivis.map(step => {
       const stepStatus = STATUS_MAP[step.statut] || { label: step.statut };
       if (DebugConsole) console.log(`[renderTimeline] Badge : ${stepStatus.label} — ${step.date_statut}`);
-      return `<span class="compte_client-timeline-badge">${stepStatus.label} — ${step.date_statut || ''}</span>`;
+      return `<span class="compte_client-timeline-badge">${sanitizeInput(stepStatus.label)} — ${sanitizeInput(step.date_statut || '')}</span>`;
     }).join('');
 
     return `
@@ -701,7 +701,7 @@ export function initcompteclientPage() {
   function renderAvis(order) {
     // Si la commande n'est pas terminée pas de section avis
     if (order.statut !== 'Terminée') {
-      if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Statut "${order.statut}" != "Terminée", pas d'avis`);
+      if (DebugConsole) console.log(`[renderAvis] Commande ${sanitizeInput(order.id)} - Statut "${sanitizeInput(order.statut)}" != "Terminée", pas d'avis`);
       return '';
     }
 
@@ -722,21 +722,21 @@ export function initcompteclientPage() {
           avisStatutText = order.avis.statut;
       }
 
-      if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Avis trouvé, statut: ${avisStatutText}, note: ${order.avis.note}`);
+      if (DebugConsole) console.log(`[renderAvis] Commande ${(order.id)} - Avis trouvé, statut: ${(avisStatutText)}, note: ${(order.avis.note)}`);
 
       return `
         <div class="compte_client-order-review">
           <i class="bi bi-chat-left-dots"></i>
-          <span>Avis déposé (${avisStatutText})</span>
+          <span>Avis déposé (${sanitizeInput(avisStatutText)})</span>
         </div>
       `;
     }
 
     // Pas d'avis déposé on affiche le bouton "Laisser un avis"
-    if (DebugConsole) console.log(`[renderAvis] Commande ${order.id} - Terminée mais pas d'avis, affichage bouton`);
+    if (DebugConsole) console.log(`[renderAvis] Commande ${(order.id)} - Terminée mais pas d'avis, affichage bouton`);
 
     return `
-      <button type="button" class="btn btn-compte_client-avis" data-commande-id="${order.id}" data-menu-titre="${order.menu_titre || ''}">
+      <button type="button" class="btn btn-compte_client-avis" data-commande-id="${(order.id)}" data-menu-titre="${(order.menu_titre || '')}">
         <i class="bi bi-chat-left-dots"></i> Laisser un avis
       </button>
     `;
@@ -772,17 +772,17 @@ export function initcompteclientPage() {
      =============================== */
 
   function renderMaterial(order) {
-    if (DebugConsole) console.log(`[renderMaterial] Commande ${order.id} - etat_materiel: ${order.etat_materiel}`);
+    if (DebugConsole) console.log(`[renderMaterial] Commande ${sanitizeInput(order.id)} - etat_materiel: ${sanitizeInput(order.etat_materiel)}`);
 
     // Si la commande n'inclut pas de matériel, on n'affiche rien
    if (!order.etat_materiel || order.etat_materiel === 'TERMINEE') {
-      if (DebugConsole) console.log(`[renderMaterial] Commande ${order.id} - Pas de matériel ou terminé, section vide`);
+      if (DebugConsole) console.log(`[renderMaterial] Commande ${sanitizeInput(order.id)} - Pas de matériel ou terminé, section vide`);
       return '';
     }
 
     // Détermine le statut de restitution matériel si présent on affiche la card matériel
     if (order.etat_materiel === 'ATTENTE_RESTITUTION') {
-      if (DebugConsole) console.log(`[renderMaterial] Commande ${order.id} - Matériel en attente de restitution, affichage card`);
+      if (DebugConsole) console.log(`[renderMaterial] Commande ${sanitizeInput(order.id)} - Matériel en attente de restitution, affichage card`);
       return `
         <div class="compte_client-material-card">
           <div class="compte_client-material-title">
@@ -811,14 +811,14 @@ export function initcompteclientPage() {
   function renderCancelButton(order) {
     // Le bouton annuler n'apparaît que si la commande est "En attente"
     if (order.statut !== 'En attente') {
-      if (DebugConsole) console.log(`[renderCancelButton] Commande ${order.id} - Statut "${order.statut}" != "En attente", pas de bouton`);
+      if (DebugConsole) console.log(`[renderCancelButton] Commande ${sanitizeInput(order.id)} - Statut "${sanitizeInput(order.statut)}" != "En attente", pas de bouton`);
       return '';
     }
 
-    if (DebugConsole) console.log(`[renderCancelButton] Commande ${order.id} - Bouton annuler généré`);
+    if (DebugConsole) console.log(`[renderCancelButton] Commande ${sanitizeInput(order.id)} - Bouton annuler généré`);
 
     return `
-      <button type="button" class="btn btn-compte_client-cancel" data-order-id="${order.id}">
+      <button type="button" class="btn btn-compte_client-cancel" data-order-id="${sanitizeInput(order.id)}">
         <i class="bi bi-x-circle"></i> Annuler
       </button>
     `;
@@ -841,7 +841,7 @@ export function initcompteclientPage() {
         const orderId = btn.dataset.orderId;
         if (!orderId) return;
 
-        if (DebugConsole) console.log(`[setupCancelButtons] Ouverture modale pour commande ${orderId}`);
+        if (DebugConsole) console.log(`[setupCancelButtons] Ouverture modale pour commande ${sanitizeInput(orderId)}`);
 
         document.getElementById('modal-annuler-id').value = orderId;
 
@@ -870,13 +870,13 @@ export function initcompteclientPage() {
 
     confirmBtn.addEventListener('click', async () => {
       const orderId = document.getElementById('modal-annuler-id').value;
-      const motif = motifInput.value.trim();
+      const motif = sanitizeInput(motifInput.value.trim());
 
       if (!motif) {
         errorDiv.style.display = 'block';
         return;
       }
-      if (DebugConsole) console.log(`[setupModalAnnulation] Clic annuler sur commande ${orderId}`);
+      if (DebugConsole) console.log(`[setupModalAnnulation] Clic annuler sur commande ${(orderId)}`);
 
       errorDiv.style.display = 'none';
 

@@ -35,6 +35,12 @@ export const allRoutes = [
    new Route("/gestion_allergene_employer", "Gestion allergene Employer", "Pages/Employer/gestion_allergene_employer.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer_gestion_allergene.js", true),
    new Route("/gestion_plat_employer", "Gestion Plat Employer", "Pages/Employer/gestion_plat_employer.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer_gestion_plat.js", true),
    new Route("/gestion_theme_regime_employer", "Gestion Theme Regime Employer", "Pages/Employer/gestion_theme_regime_employer.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer_gestion_theme_regime.js", true),
+  
+  
+   new Route("/gestion_Menus_tag", "Gestion Tag Menu","Pages/Employer/gestion_menu_tag.html", ["ROLE_EMPLOYE"], "/Script/Employer/compte_employer_gestion_MenuTag.js", true),
+   
+
+
    /* Role ADMIN (ROLE_ADMIN)*/
    new Route("/statistiques", "Compte Admin", "Pages/Admin/compte_admin.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin.js", true),
    new Route("/gestion_horraire", "Compte Admin Gestion Horraire", "Pages/Admin/compte_admin_gestion_horraire.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_horraire.js", true),
@@ -47,6 +53,8 @@ export const allRoutes = [
    new Route("/gestion_employes", "Compte Admin Gestion Employe", "Pages/Admin/compte_admin_gestion_employe.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_employe.js", true),
    new Route("/gestion_avis", "Compte Admin Gestion Avis", "Pages/Admin/compte_admin_gestion_avis.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_avis.js", true),
    new Route("/gestion_commandes", "Compte Admin Gestion Commandes", "Pages/Admin/compte_admin_gestion_commandes.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_commandes.js", true),
+   new Route("/gestion_admin_Menus_tag", "Compte Admin Gestion Tag Menu","Pages/Admin/compte_admin_gestion_menu_tag.html", ["ROLE_ADMIN"], "/Script/Admin/compte_admin_gestion_MenuTag.js", true),
+
 ];
 
 /* =====================================================

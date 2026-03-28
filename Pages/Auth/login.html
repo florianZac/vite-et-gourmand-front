@@ -36,31 +36,28 @@
             Le mail est correct.
           </div>
         </div>
-
         <!-- Mot de passe -->
-        <div class="mb-4">
+        <div class="mb-4 password-field">
           <label for="PasswordInput" class="form-label">Mot de passe <span class="required">*</span></label>
-          <div class="password-wrapper">
-            <input 
-              type="password" 
-              class="form-control login-input" 
-              id="PasswordInput" 
-              placeholder="Votre mot de passe"
-              name="Password"
-              required
-            >
-            <div class="invalid-feedback">
-              Le mot de passe ne correspondent pas.
-            </div>
-            <div class="valid-feedback">
-              Le mot de passe est correct.
-            </div>
-            <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher/masquer le mot de passe">
-              <i class="bi bi-eye"></i>
-            </button>
+          <input 
+            type="password" 
+            class="form-control login-input" 
+            id="PasswordInput" 
+            placeholder="Votre mot de passe"
+            name="Password"
+            required
+          >
+          <button type="button" class="btn-show-password" id="togglePassword" aria-label="Afficher/masquer le mot de passe">
+            <i class="bi bi-eye"></i>
+          </button>
+          <div class="invalid-feedback">
+            Le mot de passe ne correspond pas.
+          </div>
+          <div class="valid-feedback">
+            Le mot de passe est correct.
           </div>
         </div>
-
+      
         <!-- Mot de passe oublié -->
         <div class="mb-4">
           <a href="/reset_login" class="login-forgot">Mot de passe oublié ?</a>

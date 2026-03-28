@@ -13397,7 +13397,7 @@ textarea.form-control-lg {
 
 /* -------- Texte descriptif -------- */
 .stat-label {
-  color: #666666;
+  color: #E8D4BE !important;
   margin-bottom: 0;
   font-size: 0.95rem;
 }
@@ -14230,7 +14230,7 @@ textarea.form-control-lg {
   align-items: center;
   justify-content: center;
   background-color: #F5E6D3;
-  padding: 6rem 2rem 3rem;
+  padding: 3rem 2rem;
 }
 
 /* -------- Carte de connexion -------- */
@@ -14305,15 +14305,46 @@ textarea.form-control-lg {
   align-items: center;
 }
 
-.password-wrapper .login-input {
+/* -------- Champ mot de passe avec bouton œil -------- */
+.password-field {
+  position: relative;
+}
+
+.password-field .login-input {
   padding-right: 2.5rem;
+}
+
+.password-field .btn-show-password {
+  position: absolute;
+  right: 1rem;
+  top: 2.85rem;
+  border: none;
+  background: transparent;
+  color: #999999;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.password-field .btn-show-password:hover {
+  color: hsl(14, 61%, 47%);
+}
+
+#PasswordInput.is-valid,
+#PasswordInput.is-invalid {
+  background-position: right 2.5rem center;
+}
+
+.password-wrapper .login-input {
+  padding-right: 2rem;
 }
 
 /* -------- décalage de is_valid bootstrap
             Pour éviter la superposition avec l'oeil -------- */
 #PasswordInput.is-valid,
 #PasswordInput.is-invalid {
-  background-position: right 2.5rem center;
+  background-position: right 2rem center;
 }
 
 /* -------- Bouton afficher/masquer mot de passe -------- */
@@ -18310,7 +18341,7 @@ textarea.form-control-lg {
 }
 
 /* -------- Label de la card -------- */
-.stat-label {
+.statistique-label {
   font-size: 1rem;
   color: #333333;
 }

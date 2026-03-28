@@ -12,93 +12,120 @@
 
     <!-- Grille Bootstrap centrée -->
     <div class="row justify-content-center">
-      <div class="col-6 compte_employer">
+      <div class="row justify-content-center compte_admin">
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
 
-        <!------ Onglets Commande -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-basket-fill fs-4 mb-1"></i>
-              <h6 class="card-title mb-0 ">Gestion Commande</h6>
-            </div>
-          </a>
+          <!------ Onglets Commande -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-basket-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0 ">Gestion Commande</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Avis Client -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-star-half fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Avis Client</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menu -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-wallet-fill mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menu</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergène & Menus tag (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
         </div>
-        <!------ Onglets Gestion Avis Client -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-star-half fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Avis Client</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Menu -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-wallet-fill mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Menu</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Allergènes (ACTIVE) -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100 active">
-            <div class="card-body py-3">
-              <i class="bi bi-virus fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Allergènes</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Plat -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-egg-fried fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Plat</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Thèmes & Règimes -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-receipt fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Thèmes & Règimes</h6>
-            </div>
-          </a>
-        </div>
-      </div>
-      <!------ Titre de la Navigation  -------->
-      <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène</h2>
 
-      <!------ Barre recherche + filtres -------->
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-          <div class="row g-2 align-items-center">
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène & Menus tag</h2>
 
-            <!-- Liste des allergènes -->
+          <!------ Gestion Allergène (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-star-half mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergène</h6>
+              </div>
+            </a>
+          </div>   
+
+          <!------ Onglets Gestion Tag Menus  -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_Menus_tag" class="card text-center text-decoration-none h-100 ">
+              <div class="card-body py-3">
+                <i class="bi bi-cpu fs-4 mb-1"></i>
+                <h6 class="card-title mb-0 ">Gestion Tag Menus</h6>
+              </div>
+            </a>
+          </div>
+
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Allergène</h3>
+
+        <!------ Barre recherche + filtres -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row g-2 align-items-center">
+
+              <!-- Liste des allergènes -->
               <div class="col-12" id="allergenes-list">
                 <!-- Injecté dynamiquement par le JS -->
               </div>
 
-            <!-- Champ ajout d'un nouveau allergène-->
-            <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
-              <input type="text" id="new-allergene" class="form-control" placeholder="Nouveau Alergène...">
-              <button type="button" class="btn btn-primary" id="btn-add-allergene" title="Ajouter un allergène">
-                <i class="bi bi-plus me-1"></i> Ajouter
-              </button>
-            </div>
+              <!-- Champ ajout d'un nouveau allergène-->
+              <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
+                <input type="text" id="new-allergene" class="form-control" placeholder="Nouveau Alergène...">
+                <button type="button" class="btn btn-primary" id="btn-add-allergene" title="Ajouter un allergène">
+                  <i class="bi bi-plus me-1"></i> Ajouter
+                </button>
+              </div>
 
-            <!-- Toast -->
-            <div class="col-12 d-flex justify-content-center mt-3">
-              <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-body"></div>
+              <!-- Toast -->
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-body"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div>    
     </div>
   </div>
 </section>

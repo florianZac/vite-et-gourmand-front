@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken} from '../script.js';
+import { getToken, getRole, sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../script.js';
 
 export async function initCommanderPage() {
 
@@ -136,7 +136,7 @@ export async function initCommanderPage() {
 
   function showToast(message, type = 'error') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeHtml(message || "Action effectuée !");
 
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
@@ -260,7 +260,7 @@ export async function initCommanderPage() {
       menusArray.forEach(menu => {
         const option = document.createElement('option');
         option.value = menu.id;
-        option.textContent = menu.titre;      
+        option.textContent = sanitizeHtml(menu.titre);      
         option.dataset.price = menu.prix_par_personne;
         option.dataset.minPersons = menu.nombre_personne_minimum || 1;
         option.dataset.theme = menu.theme?.titre || 'autre';
@@ -364,12 +364,12 @@ export async function initCommanderPage() {
         const user = data.utilisateur;
 
         // Remplit les inputs
-        if (firstNameInput) firstNameInput.value = user.prenom || '';
-        if (lastNameInput) lastNameInput.value = user.nom || '';
-        if (phoneInput) phoneInput.value = user.telephone || '';
-        if (addressInput) addressInput.value = user.adresse_postale || '';
-        if (cityInput) cityInput.value = user.ville || '';
-        if (postalInput) postalInput.value = user.code_postal || '';
+        if (firstNameInput) firstNameInput.value = sanitizeInput(user.prenom || '');
+        if (lastNameInput) lastNameInput.value = sanitizeInput(user.nom || '');
+        if (phoneInput) phoneInput.value = sanitizeInput(user.telephone || '');
+        if (addressInput) addressInput.value = sanitizeInput(user.adresse_postale || '');
+        if (cityInput) cityInput.value = sanitizeInput(user.ville || '');
+        if (postalInput) postalInput.value = sanitizeInput(user.code_postal || '');
 
         // Mets à jour originalData pour comparaison
         originalData = {
@@ -393,7 +393,7 @@ export async function initCommanderPage() {
   /* ===============================
       CHARGEMENT DU PROFIL AVANT INTERACTION
      ===============================*/
-
+  await getHoraires();
   await loadUserProfile(); // charge les données du client
   await loadMenus();       // charge les menus de la BDD
 
@@ -500,14 +500,14 @@ export async function initCommanderPage() {
     return;
   }
     const currentData = {
-      prenom: firstNameInput?.value || '',
-      nom: lastNameInput?.value || '',
-      email: originalData.email || '', // on garde l'email existant
-      telephone: phoneInput?.value || '',
-      adresse_postale: addressInput?.value || '',
-      ville: cityInput?.value || '',
-      code_postal: postalInput?.value || '',
-      pays: 'France' // valeur fixe si non modifiable
+      prenom: sanitizeInput(firstNameInput.value),
+      nom: sanitizeInput(lastNameInput.value),
+      email: originalData.email || '',
+      telephone: sanitizeInput(phoneInput.value),
+      adresse_postale: sanitizeInput(addressInput.value),
+      ville: sanitizeInput(cityInput.value),
+      code_postal: sanitizeInput(postalInput.value),
+      pays: 'France'// valeur fixe si non modifiable
     };
 
     // Vérifier si un champ a réellement changé
@@ -572,9 +572,9 @@ export async function initCommanderPage() {
   async function calculateDeliveryFee() {
     if (DebugConsole) console.log("[calculateDeliveryFee] CALCUL DES FRAIS DE LIVRAISON");
     // Récupère les valeurs saisies par le client à l'étape 2
-    const address = addressInput?.value || '';
-    const city = cityInput?.value || '';
-    const postal = postalInput?.value || '';
+    const address = sanitizeInput(addressInput?.value || '');
+    const city = sanitizeInput(cityInput?.value || '');
+    const postal = sanitizeInput(postalInput?.value || '');
     const fullAddress = `${address}, ${postal} ${city}, France`;
 
     // Construit l'adresse complète au format attendu par Nominatim
@@ -664,7 +664,7 @@ export async function initCommanderPage() {
 
     // Nom du menu
     let menuName = ' ';
-    if (selectedOption && selectedOption.text) {menuName = selectedOption.text;}
+    if (selectedOption && sanitizeHtml(selectedOption.text)) {menuName = sanitizeHtml(selectedOption.text);}
     
     if (DebugConsole) console.log("[updateRecapPrices] menuName :", menuName);
 
@@ -743,12 +743,12 @@ export async function initCommanderPage() {
     const recapAcompte = document.getElementById('recap-acompte');
 
     // Mise à jour de chaque ligne du récapitulatif
-    if (recapMenuName) {recapMenuName.textContent = `${menuName}`;}
+    if (recapMenuName) {recapMenuName.textContent = `${sanitizeHtml(menuName)}`;}
     if (DebugConsole) console.log("[updateRecapPrices] recapMenuName:", recapMenuName.textContent);
 
     if (recapUnitPrice) {
       if (unitPrice > 0) {
-        recapUnitPrice.textContent =`${unitPrice} €/pers.`;
+        recapUnitPrice.textContent =`${sanitizeHtml(unitPrice)} €/pers.`;
       } else {
         recapUnitPrice.textContent =`${'0'} €/pers.`;
       }
@@ -757,7 +757,7 @@ export async function initCommanderPage() {
 
     if (recapPersons) {
       if (persons > 0) {
-        recapPersons.textContent = `${persons}`;
+        recapPersons.textContent = `${sanitizeHtml(persons)}`;
       } else {
         recapPersons.textContent = `${' '}`;
       }
@@ -830,13 +830,13 @@ export async function initCommanderPage() {
 
     // Mettre à jour l'email dans la confirmation
     if (emailElement) {
-      emailElement.textContent = clientEmail || ' ';
+      emailElement.textContent = sanitizeHtml(clientEmail || ' ')
       if (DebugConsole) console.log("[showConfirmation] Email :", emailElement.textContent);
     }
 
     // Mettre à jour le numéro de commande
     if (orderIdElement) {
-      orderIdElement.textContent = orderTitle;
+      orderIdElement.textContent = sanitizeHtml(orderTitle);
       if (DebugConsole) console.log("[showConfirmation] orderTitle :", orderIdElement.textContent);
     }
 
@@ -851,7 +851,7 @@ export async function initCommanderPage() {
 
     let menuName;
     if (selectedOption && selectedOption.text) {
-      menuName = selectedOption.text;
+      menuName = sanitizeHtml(selectedOption?.text || ' ');
     } else {
       menuName = ' ';
     }
@@ -859,7 +859,7 @@ export async function initCommanderPage() {
 
     let persons;
     if (personsInput && personsInput.value) {
-      persons = personsInput.value;
+      persons = sanitizeInput(personsInput.value);
     } else {
       persons = ' ';
     }
@@ -870,12 +870,12 @@ export async function initCommanderPage() {
     let time = '';
 
     if (dateInput && dateInput.value) {
-      date = dateInput.value;
+      date = sanitizeInput(dateInput.value);
     }
     if (DebugConsole) console.log("[showConfirmation] date:", date);
 
     if (timeInput && timeInput.value) {
-      time = timeInput.value;
+      time = sanitizeInput(timeInput.value);
     }
     if (DebugConsole) console.log("[showConfirmation] time:", time);
 
@@ -895,9 +895,9 @@ export async function initCommanderPage() {
     const confirmDate = document.getElementById('confirm-date');
     const confirmTotal = document.getElementById('confirm-total');
 
-    if (confirmMenu) confirmMenu.textContent = menuName;
-    if (confirmPersons) confirmPersons.textContent = persons;
-    if (confirmDate) confirmDate.textContent = `${date} à ${time}`;
+    if (confirmMenu) confirmMenu.textContent = sanitizeInput(menuName);
+    if (confirmPersons) confirmPersons.textContent = sanitizeInput(persons);
+    if (confirmDate) confirmDate.textContent = `${sanitizeInput(date)} à ${sanitizeInput(time)}`;
     if (confirmTotal) confirmTotal.textContent = `${updateRecapPrices()}€`;
 
     if (DebugConsole) {
@@ -922,12 +922,12 @@ export async function initCommanderPage() {
     const maxPersons = parseInt(selectedOption.dataset.maxPersons) || 1000;
 
     if (personsInput.value < minPersons) {
-      personsInput.value = minPersons;
+      personsInput.value = sanitizeInput(minPersons);
       showToast(`Minimum ${minPersons} personnes pour ce menu`,'error');
     }
 
     if (personsInput.value > maxPersons) {
-      personsInput.value = maxPersons;
+      personsInput.value = sanitizeInput(maxPersons);
       showToast(`Maximum ${maxPersons} personnes pour ce menu`,'error');
     }
 

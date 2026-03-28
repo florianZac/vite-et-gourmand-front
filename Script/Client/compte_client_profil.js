@@ -1,6 +1,6 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole, signout } from '../script.js';
-
+import { getToken, getRole, signout, sanitizeInput, sanitizeHtml } from '../script.js';
+//init+nom+Page
 export function initcompteclientprofilPage() {
 
   /* ===============================
@@ -102,7 +102,6 @@ export function initcompteclientprofilPage() {
     });
   }
 
-
   /* ===============================
       CHARGEMENT INITIAL
      =============================== */
@@ -134,7 +133,7 @@ export function initcompteclientprofilPage() {
 
       const heroName = document.getElementById('hero-user-name');
       if (heroName && data.utilisateur) {
-        heroName.textContent = data.utilisateur.prenom || data.utilisateur.email || '';
+        heroName.textContent = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
         if (DebugConsole) console.log("[loadHeroName] Prénom affiché :", data.utilisateur.prenom);
       }
 
@@ -177,13 +176,13 @@ export function initcompteclientprofilPage() {
       }
 
       // Remplit chaque champ du formulaire avec les données de l'API
-      if (firstNameInput) firstNameInput.value = user.prenom || '';
-      if (lastNameInput) lastNameInput.value = user.nom || '';
-      if (phoneInput) phoneInput.value = user.telephone || '';
-      if (emailInput) emailInput.value = user.email || '';
-      if (addressInput) addressInput.value = user.adresse_postale || '';
-      if (cityInput) cityInput.value = user.ville || '';
-      if (postalInput) postalInput.value = user.code_postal || '';
+      if (firstNameInput) firstNameInput.value = sanitizeInput(user.prenom || '');
+      if (lastNameInput) lastNameInput.value = sanitizeInput(user.nom || '');
+      if (phoneInput) phoneInput.value = sanitizeInput(user.telephone || '');
+      if (emailInput) emailInput.value = sanitizeInput(user.email || '');
+      if (addressInput) addressInput.value = sanitizeInput(user.adresse_postale || '');
+      if (cityInput) cityInput.value = sanitizeInput(user.ville || '');
+      if (postalInput) postalInput.value = sanitizeInput(user.code_postal || '');
 
       if (DebugConsole) console.log("[loadUserProfil] Champs remplis avec succès");
 
@@ -205,9 +204,9 @@ export function initcompteclientprofilPage() {
   function updateDisplayIdentity() {
 
     // Construit le nom complet à partir des champs du formulaire
-    const firstName = firstNameInput?.value || '';
-    const lastName = lastNameInput?.value || '';
-    const email = emailInput?.value || '';
+    const firstName = sanitizeInput(firstNameInput?.value || '');
+    const lastName = sanitizeInput(lastNameInput?.value || '');
+    const email = sanitizeInput(emailInput?.value || '');
 
     if (DebugConsole) {
       console.log("Mise à jour affichage identité");
@@ -246,13 +245,13 @@ export function initcompteclientprofilPage() {
     // Collecte les données du formulaire dans un objet
     // Les clés correspondent aux noms attendus par le back (ClientController::updateUserById)
     const profilData = {
-      prenom: firstNameInput?.value || '',
-      nom: lastNameInput?.value || '',
-      telephone: phoneInput?.value || '',
-      email: emailInput?.value || '',
-      adresse_postale: addressInput?.value || '',
-      ville: cityInput?.value || '',
-      code_postal: postalInput?.value || ''
+      prenom: sanitizeInput(firstNameInput?.value || ''),
+      nom: sanitizeInput(lastNameInput?.value || ''),
+      telephone: sanitizeInput(phoneInput?.value || ''),
+      email: sanitizeInput(emailInput?.value || ''),
+      adresse_postale: sanitizeInput(addressInput?.value || ''),
+      ville: sanitizeInput(cityInput?.value || ''),
+      code_postal: sanitizeInput(postalInput?.value || '')
     };
 
     if (DebugConsole) console.log("[saveProfil] Données à sauvegarder :", profilData);
@@ -276,11 +275,11 @@ export function initcompteclientprofilPage() {
         // Succès : met à jour l'affichage sous l'avatar
         updateDisplayIdentity();
         if (DebugConsole) console.log("[saveProfil] Profil sauvegardé avec succès");
-        showNotification(result.message || 'Vos modifications ont été sauvegardées.', 'success');
+        showNotification(sanitizeHtml(result.message || 'Vos modifications ont été sauvegardées.'), 'success');
       } else {
         // L'API a retourné une erreur
         console.error('[saveProfil] Erreur :', result.message);
-        showNotification(result.message || 'Erreur lors de la sauvegarde.', 'error');
+        showNotification(sanitizeHtml(result.message || 'Erreur lors de la sauvegarde.'), 'error');
       }
 
     } catch (err) {
@@ -325,10 +324,10 @@ export function initcompteclientprofilPage() {
 
       if (response.ok) {
         if (DebugConsole) console.log("[requestDeactivation] Demande envoyée avec succès");
-        showNotification(result.message || 'Votre demande de désactivation a été envoyée.', 'success');
+        showNotification(sanitizeHtml(result.message || 'Votre demande de désactivation a été envoyée.'), response.ok ? 'success' : 'error');
       } else {
         console.error('[requestDeactivation] Erreur :', result.message);
-        showNotification(result.message || 'Erreur lors de la demande de désactivation.', 'error');
+        showNotification(sanitizeHtml(result.message || 'Erreur lors de la suppression du compte.'), 'error');
       }
 
     } catch (err) {
@@ -402,7 +401,7 @@ export function initcompteclientprofilPage() {
 
     // Icône Bootstrap selon le type
     const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
-    notification.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
+    notification.innerHTML = `<i class="bi ${icon}"></i> ${sanitizeHtml(message)}`;
 
     // Style inline pour la notification
     notification.style.cssText = `

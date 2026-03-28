@@ -1,5 +1,6 @@
-import { API_URL } from '../../config.js';
-import { setToken, setCookie, showAndHideElementsForRole } from '../../script.js';
+import { API_URL} from '../../config.js';
+import { setToken, setCookie, showAndHideElementsForRole,sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../../script.js';
+
 export function initConnexionPage() {
 
   /* ===============================
@@ -13,7 +14,7 @@ export function initConnexionPage() {
   const passwordInput = document.getElementById('PasswordInput');
   const toggleButton = document.getElementById('togglePassword');
   const emailInput = document.getElementById('EmailInput');
-  const connectionForm = document.querySelector('.login-form');
+  const btnLogin = document.getElementById('btnLogin');
   const submitButton = document.querySelector('.btn-login');
 
   /* ===============================
@@ -34,28 +35,26 @@ export function initConnexionPage() {
      =============================== */
 
   // Crée l'élément d'erreur sous le bouton de connexion
-  let errorMessage = document.querySelector('.login-error-message');
-  if (!errorMessage) {
-    errorMessage = document.createElement('p');
-    errorMessage.className = 'login-error-message';
+  let serverErrorMessage = document.querySelector('.login-error-message');
+  if (!serverErrorMessage) {
+    serverErrorMessage = document.createElement('p');
+    serverErrorMessage.className = 'login-error-message';
     // Insère après le bouton submit
-  submitButton.insertAdjacentElement('afterend', errorMessage);
+    submitButton.insertAdjacentElement('afterend', serverErrorMessage);
   }
 
   /* ===============================
       FONCTION POUR AFFICHER/MASQUER L'ERREUR
      =============================== */
-
   function showError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
+    serverErrorMessage.textContent = sanitizeHtml(message);
+    serverErrorMessage.style.display = 'block';
   }
 
   function hideError() {
-    errorMessage.style.display = 'none';
-    errorMessage.textContent = '';
+    serverErrorMessage.style.display = 'none';
+    serverErrorMessage.textContent = '';
   }
-
   /* ===============================
       FONCTIONS DE VALIDATION - EMAIL
      =============================== */
@@ -97,26 +96,41 @@ export function initConnexionPage() {
   /* ===============================
       FACTORISATION DE LA VALIDATION
      =============================== */
-  function updateFieldState(input, isValid) {
+  function updateFieldState(input, isValid, successMessage, errorMessage) {
+    // Remonte au .mb-4 parent (au lieu de .password-wrapper)
+    const parentDiv = input.closest('.mb-4');
+    const validDiv = parentDiv.querySelector('.valid-feedback');
+    const invalidDiv = parentDiv.querySelector('.invalid-feedback');
+
     if (input.value.trim() === '') {
       input.classList.remove('is-valid', 'is-invalid');
+      if (validDiv) validDiv.style.display = 'none';
+      if (invalidDiv) invalidDiv.style.display = 'none';
     } else if (isValid) {
       input.classList.add('is-valid');
       input.classList.remove('is-invalid');
+      if (validDiv) {
+        validDiv.textContent = successMessage;
+        validDiv.style.display = 'block';
+      }
+      if (invalidDiv) invalidDiv.style.display = 'none';
     } else {
       input.classList.add('is-invalid');
       input.classList.remove('is-valid');
+      if (invalidDiv) {
+        invalidDiv.textContent = errorMessage;
+        invalidDiv.style.display = 'block';
+      }
+      if (validDiv) validDiv.style.display = 'none';
     }
   }
 
   /* ===============================
       FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
-  
   function checkFormValidity() {
-    // Récupère les valeurs
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+    const email = sanitizeInput(emailInput.value.trim());
+    const password = sanitizeInput(passwordInput.value.trim());
 
     // Vérifie que les champs sont remplis ET les validations OK
     const isFormValid = email !== '' && password !== '' && validateEmail(email) && validatePassword(password);
@@ -131,20 +145,19 @@ export function initConnexionPage() {
   /* ===============================
       LISTENERS SUR LES INPUTS
      =============================== */
-
-  if (passwordInput) {
-    passwordInput.addEventListener('input', () => {
-      const password = passwordInput.value.trim(); // valeur actuelle
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      const val = sanitizeInput(emailInput.value.trim());
+      updateFieldState(emailInput, validateEmail(val), "Le mail est correct.", "Le mail n'est pas valide.");
       checkFormValidity();
-      updateFieldState(passwordInput, validatePassword(password));
     });
   }
 
-  if (emailInput) {
-    emailInput.addEventListener('input', () => {
-      const email = emailInput.value.trim();
+  if (passwordInput) {
+    passwordInput.addEventListener('input', () => {
+      const val = sanitizeInput(passwordInput.value.trim());
+      updateFieldState(passwordInput, validatePassword(val), "Le mot de passe est correct.", "Le mot de passe n'est pas valide.");
       checkFormValidity();
-      updateFieldState(emailInput, validateEmail(emailInput.value.trim()));
     });
   }
 
@@ -170,8 +183,6 @@ export function initConnexionPage() {
       GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
   // Le bouton est type="button", on écoute le click
-  
-  const btnLogin = document.getElementById('btnLogin');
 
   if (btnLogin) {
     btnLogin.addEventListener('click', async (e) => {
@@ -189,17 +200,21 @@ export function initConnexionPage() {
       // Mapping des champs HTML pour l'API Symfony
       // Pour l'email on enlèves les espaces avant/après
       // Pour l'email non car cela peut faire partie du mdp
-      const formData = {
-        email: emailInput.value.trim(), 
-        password: passwordInput.value
+      const safeData = {
+        email: sanitizeInput(emailInput.value),
+        password: sanitizeInput(passwordInput.value)
       };
+
+      if(DebugConsole){
+        console.log("[btnLogin] safeData : ",safeData);
+      }
 
       // Appel de l'API :
       try {
         const response = await fetch(apiConnectionUser, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(safeData)
         });
 
         let data = null;
@@ -223,9 +238,9 @@ export function initConnexionPage() {
           if(DebugConsole){
             console.log("Utilisateur Connecté :", {
               token: data.token,
-              email: data.utilisateur.email,
-              prenom: data.utilisateur.prenom,
-              role: data.utilisateur.role,
+              email: sanitizeHtml(data.utilisateur.email),
+              prenom: sanitizeHtml(data.utilisateur.prenom),
+              role: sanitizeHtml(data.utilisateur.role),
             });
           }
           // Met à jour la navbar

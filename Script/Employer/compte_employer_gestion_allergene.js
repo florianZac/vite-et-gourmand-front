@@ -1,5 +1,5 @@
-import { API_URL, } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { API_URL } from '../config.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initGestionallergeneEmployerPage() {
 
@@ -46,7 +46,6 @@ export function initGestionallergeneEmployerPage() {
     console.log("=== DEBUG INIT COMPTE ADMIN ===");
     console.log("Cookies actuels :", document.cookie);
     console.log("Token actuel :", token);
-    console.log("Rôle actuel :", getRole());
     console.log("================================");
   }
 
@@ -138,7 +137,7 @@ export function initGestionallergeneEmployerPage() {
 
       // Si utilisateur présent on affiche le nom
       if (heroName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -170,14 +169,16 @@ export function initGestionallergeneEmployerPage() {
       row.style.backgroundColor = '#fdf8f0';
       row.style.border = '1px solid #e8ddd0';
 
+      // Sécurisation du libellé avant injection HTML
+      const safeLibelle = sanitizeHtml(allergene.libelle);
       // Remplissage du contenue
       row.innerHTML = `
-        <span class="fw-semibold">${allergene.libelle}</span>
+        <span class="fw-semibold">${safeLibelle}</span>
         <div class="d-flex gap-2">
-          <button class="btn btn-danger btn-sm btn-delete" data-id="${allergene.id}" data-libelle="${allergene.libelle}" title="Supprimer">
+          <button class="btn btn-danger btn-sm btn-delete" data-id="${allergene.id}" data-libelle="${safeLibelle}" title="Supprimer">
             <i class="bi bi-trash-fill"></i>
           </button>
-          <button class="btn btn-outline-secondary btn-sm btn-edit" data-id="${allergene.id}" data-libelle="${allergene.libelle}" title="Modifier">
+          <button class="btn btn-outline-secondary btn-sm btn-edit" data-id="${allergene.id}" data-libelle="${safeLibelle}" title="Modifier">
             <i class="bi bi-pencil-fill"></i>
           </button>
         </div>
@@ -194,7 +195,7 @@ export function initGestionallergeneEmployerPage() {
         // stock ID
         currentDeleteId = btn.dataset.id; 
         // nom affiché
-        deleteAllergeneName.textContent = btn.dataset.libelle;
+        deleteAllergeneName.textContent = sanitizeInput(btn.dataset.libelle);
         // ouverture modal
         deleteModal.show();
       });
@@ -203,7 +204,7 @@ export function initGestionallergeneEmployerPage() {
     document.querySelectorAll('.btn-edit').forEach(btn => {
       btn.addEventListener('click', () => {
         currentEditId = btn.dataset.id;
-        editLibelleInput.value = btn.dataset.libelle;
+        editLibelleInput.value = sanitizeInput(btn.dataset.libelle);
         editModal.show();
       });
     });
@@ -244,7 +245,7 @@ export function initGestionallergeneEmployerPage() {
   // On écoute le clic sur le bouton "Ajouter"
   btnAdd.addEventListener('click', async () => {
     // On récupère la valeur de l'input + suppression des espaces inutiles
-    const libelle = newAllergeneInput.value.trim();
+    const libelle = sanitizeInput(newAllergeneInput.value.trim());
 
     // Vérification : si le champ est vide
     if (!libelle) {
@@ -323,7 +324,7 @@ export function initGestionallergeneEmployerPage() {
     if (!currentEditId) return;
 
     // Récupération du nouveau libellé
-    const libelle = editLibelleInput.value.trim();
+    const libelle = sanitizeInput(editLibelleInput.value.trim());
     if (!libelle) {
       showToast("Le libellé ne peut pas être vide.", "error");
       return;

@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-
+import {sanitizeInput, sanitizeHtml } from '../script.js';
 console.log("=== nos_menus.js chargé ===");
 export function initNosMenusPage() {
 
@@ -247,8 +247,6 @@ export function initNosMenusPage() {
     
     // Badge filtre disponible
     if (!filterDisponibilite) return;
-    
-    if (DebugConsole) console.log("[generateDisponibiliteBadges] Disponibilite trouvés :", themes);
 
     // Vide le conteneur avant de régénérer
     filterDisponibilite.innerHTML = '';
@@ -325,15 +323,14 @@ export function initNosMenusPage() {
       FONCTION : GÉNÉRER LES BADGES TAG DYNAMIQUEMENT
         - Parcourt tous les menus pour extraire les tags uniques
     =============================== */
-
   function generateTagBadges(menu) {
     if (!menu.tags || menu.tags.length === 0) return '';
 
     let tagsHtml = '';
     for (let i = 0; i < menu.tags.length; i++) {
       const tag = menu.tags[i];
-      if (tag && tag.libelle) { // <-- ici on utilise libelle
-        tagsHtml += `<span class="nos_menu-card-tag">${tag.libelle}</span>`;
+      if (tag && tag.tag) {
+        tagsHtml += `<span class="nos_menu-card-tag">${tag.tag}</span>`;
       }
     }
     if (DebugConsole) console.log("[generateTagBadges] Tags trouvés :", tagsHtml);
@@ -627,23 +624,23 @@ export function initNosMenusPage() {
       const imageUrl = getMenuImage(menu);
 
       if (DebugConsole) {
-        if (imageUrl.includes('placeholder')) console.warn(`[renderCards] Menu "${menu.titre}" sans photo, placeholder utilisé`);
+        if (imageUrl.includes('placeholder')) console.warn(`[renderCards] Menu "${sanitizeHtml(menu.titre)}" sans photo, placeholder utilisé`);
         console.log(`[renderCards] Menu "${menu.titre}" - Thème: ${themeLabel}, Régime: ${regimeLabel}, Dispo: ${dispoBadgeHtml}, Plats: ${getPlatNames(menu).length}`);
       }
       // Construit le HTML complet de la card
       card.innerHTML = `
         <!-- Image du menu avec badges thème/régime/dispo -->
         <div class="nos_menu-card-img">
-          <img src="${imageUrl}" alt="${menu.titre || 'Menu'}">
+          <img src="${imageUrl}" alt="${sanitizeHtml(menu.titre) || 'Menu'}">
           <div class="nos_menu-card-badges">
             <div class="left-badges">
-              ${themeLabel ? `<span class="nos_menu-card-badge-theme">${themeLabel}</span>` : ''}
+              ${sanitizeHtml(themeLabel) ? `<span class="nos_menu-card-badge-theme">${sanitizeHtml(themeLabel)}</span>` : ''}
             </div>
             <div class="center-badges">
-              ${dispoBadgeHtml}
+              ${(dispoBadgeHtml)}
             </div>
             <div class="right-badges">
-              ${regimeLabel ? `<span class="nos_menu-card-badge-regime">${regimeLabel}</span>` : ''}
+              ${sanitizeHtml(regimeLabel) ? `<span class="nos_menu-card-badge-regime">${sanitizeHtml(regimeLabel)}</span>` : ''}
             </div>
           </div>
         </div>
@@ -651,10 +648,10 @@ export function initNosMenusPage() {
         <!-- Contenu de la card -->
         <div class="nos_menu-card-body">
           <!-- Titre du menu -->
-          <h3 class="nos_menu-card-title">${menu.titre || 'Sans titre'}</h3>
+          <h3 class="nos_menu-card-title">${sanitizeHtml(menu.titre) || 'Sans titre'}</h3>
 
           <!-- Description courte -->
-          <p class="nos_menu-card-description">${menu.description || ''}</p>
+          <p class="nos_menu-card-description">${sanitizeHtml(menu.description) || ''}</p>
 
           <!-- Tags (noms des plats du menu) -->
           <div class="nos_menu-card-tags">

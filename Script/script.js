@@ -108,10 +108,70 @@ export function eraseCookie(name) {
   if (DebugConsole) console.log(`Cookie supprimé : ${name}`);
 }
 
+/**
+ * @description Echappe les caractères spéciaux pour éviter les attaques XSS
+ * @param {string} str
+ * @returns {string}
+ */
+export function sanitizeInput(str) {
+  if (typeof str !== "string") return str;
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/**
+ * @description Récupère les données d'un formulaire en sécurisant les champs visibles
+ * @param {HTMLFormElement} form
+ * @returns {object} - données sécurisées
+ */
+export function getSanitizedFormData(form) {
+  const data = {};
+
+  for (const element of form.elements) {
+    if (!element.name) continue; // ignore les éléments sans name
+
+    switch (element.type) {
+      case "password":
+        // ne pas sanitizer le mot de passe
+        data[element.name] = element.value;
+        break;
+
+      case "checkbox":
+        data[element.name] = element.checked;
+        break;
+
+      case "radio":
+        if (element.checked) data[element.name] = sanitizeInput(element.value);
+        break;
+
+      case "textarea":
+      case "text":
+      case "email":
+      case "tel":
+      case "number":
+      case "url":
+      case "search":
+      case "hidden":
+        data[element.name] = sanitizeInput(element.value);
+        break;
+
+      default:
+        // fallback
+        data[element.name] = sanitizeInput(element.value);
+    }
+  }
+
+  return data;
+}
+
 /* ===============================
-	  Permet d'éviter les attaque XSS en échappant les balises HTML
-	 =============================== */
-function sanitizeHtml(text){
+      Permet d'éviter les attaque XSS en échappant les balises HTML
+     =============================== */
+export function sanitizeHtml(text){
   // Créez un élément HTML temporaire de type "div"
   const tempHtml = document.createElement('div');
   

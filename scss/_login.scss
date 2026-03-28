@@ -46,7 +46,7 @@
   align-items: center;
   justify-content: center;
   background-color: $bg-gradient-start;
-  padding: 6rem 2rem 3rem;
+  padding: 3rem 2rem
 }
 
 /* -------- Carte de connexion -------- */
@@ -117,15 +117,46 @@
   align-items: center;
 }
 
-.password-wrapper .login-input {
+/* -------- Champ mot de passe avec bouton œil -------- */
+.password-field {
+  position: relative;
+}
+
+.password-field .login-input {
   padding-right: 2.5rem;
+}
+
+.password-field .btn-show-password {
+  position: absolute;
+  right: 1rem;
+  top: 2.85rem;
+  border: none;
+  background: transparent;
+  color: $gray-600;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.password-field .btn-show-password:hover {
+  color: $terracotta;
+}
+
+#PasswordInput.is-valid,
+#PasswordInput.is-invalid {
+  background-position: right 2.5rem center;
+}
+
+.password-wrapper .login-input {
+  padding-right: 2rem;
 }
 
 /* -------- décalage de is_valid bootstrap
             Pour éviter la superposition avec l'oeil -------- */
 #PasswordInput.is-valid,
 #PasswordInput.is-invalid {
-  background-position: right 2.5rem center;
+  background-position: right 2rem center;
 }
 
 /* -------- Bouton afficher/masquer mot de passe -------- */

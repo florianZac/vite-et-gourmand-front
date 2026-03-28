@@ -1,4 +1,5 @@
 import { API_URL } from '../../config.js';
+import { sanitizeInput, sanitizeHtml } from '../../script.js';
 export function initInscriptionPage() {
 
   /* ===============================
@@ -33,6 +34,11 @@ export function initInscriptionPage() {
   const inscriptionForm = document.querySelector('.inscription-form');
   const submitButton = document.querySelector('.btn-inscription-submit');
 
+  // Toast Bootstrap
+  const toastEl = document.getElementById('toast-message');
+  const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 4000 });
+
+
   if (DebugConsole) {
     console.log("=== DEBUG INIT INSCRIPTION PAGE ===");
     console.log("prenom :", prenom);
@@ -50,6 +56,24 @@ export function initInscriptionPage() {
   }
 
   /* ===============================
+      FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES AU CLIENTS
+        Déplace l'affichage en fonction de l'étape sous les btns
+        gere la version Erreur / et Success
+          Exemple d'utilisation :
+            showToast("Erreur Prénom ",'error');
+            showToast("Prénom modifié ",'success');
+     =============================== */
+    function showToast(message, type = 'error') {
+    const body = toastEl.querySelector('.toast-body');
+    body.textContent = message || "Action effectuée !";
+
+    toastEl.classList.remove('toast-success', 'toast-error');
+    toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
+
+    toastBootstrap.show();
+  }
+  
+  /* ===============================
       FONCTIONS DE VALIDATION - TÉLÉPHONE
      =============================== */
   /**
@@ -59,7 +83,7 @@ export function initInscriptionPage() {
    */
   function validatePhone(phone) {
     // Enlève les espaces
-    const cleanPhone = phone.replace(/\s/g, '');
+    const cleanPhone = sanitizeInput(phone).replace(/\s/g, '');
     
     // Vérifie le format: commence par 06, 07, +336 ou +337
     const startsCorrectly = /^(06|07|\+336|\+337)/.test(cleanPhone);
@@ -87,7 +111,7 @@ export function initInscriptionPage() {
     // Regex: min 3 char avant @, @ obligatoire, min 3 après, .fr ou .com obligatoire
     const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
     
-    const valid = emailRegex.test(email);
+    const valid = emailRegex.test(sanitizeInput(email));
     
     if (DebugConsole) console.log(`validateEmail("${email}") =>`, valid);
     return valid;
@@ -96,7 +120,6 @@ export function initInscriptionPage() {
   /* ===============================
       FONCTIONS DE VALIDATION - CODE POSTAL
      =============================== */
-  
   /**
    * Vérifie si le code postal est valide
    * Doit avoir exactement 5 chiffres
@@ -104,7 +127,7 @@ export function initInscriptionPage() {
   function validatePostalCode(postalCode) {
     // Vérifie qu'il contient exactement 5 chiffres
     const postalRegex = /^\d{5}$/;
-    const valid = postalRegex.test(postalCode);
+    const valid = postalRegex.test(sanitizeInput(postalCode));
     if (DebugConsole) console.log(`validatePostalCode("${postalCode}") =>`, valid);
     return valid;
   }
@@ -121,6 +144,7 @@ export function initInscriptionPage() {
    * Au moins 1 caractère spécial (!@#$...)
    */
   function validatePassword(password) {
+    password = sanitizeInput(password);
     const validation = {
       // Min 10 caractères
       hasCorrectLength: password.length >= 10,
@@ -199,27 +223,26 @@ export function initInscriptionPage() {
     }
     
     // Crée le HTML avec l'icône
-    messageElement.innerHTML = getValidationIcon(isValid) + ' ' + messageText;
+    messageElement.innerHTML = getValidationIcon(isValid) + ' ' + sanitizeHtml(messageText);
     
     // Change la couleur
     updateMessageColor(messageElement, isValid);
     if (DebugConsole) console.log('updateValidationMessage(${inputElement.id}): ${messageText} (isValid=${isValid})');
   }
 
-
   /* ===============================
       FONCTION POUR VÉRIFIER L'ÉTAT GLOBAL DU FORMULAIRE
      =============================== */
   function checkFormValidity() {
     // Récupère les valeurs
-    const phone = phoneInput.value;
-    const email = emailInput.value;
-    const postalCode = postalInput.value;
-    const password = passwordInput.value;
-    const prenomValue  = prenom.value;
-    const nomValue = nom.value;
-    const address = addressInput.value;
-    const city = villeInput.value;
+    const phone = sanitizeInput(phoneInput.value);
+    const email = sanitizeInput(emailInput.value);
+    const postalCode = sanitizeInput(postalInput.value);
+    const password = sanitizeInput(passwordInput.value);
+    const prenomValue = sanitizeInput(prenom.value);
+    const nomValue = sanitizeInput(nom.value);
+    const address = sanitizeInput(addressInput.value);
+    const city = sanitizeInput(villeInput.value);
 
     // Vérifie que tous les champs requis sont remplis
     const allFieldsFilled = prenomValue && nomValue && phone && email && address && city && postalCode && password;
@@ -251,11 +274,10 @@ export function initInscriptionPage() {
   /* ===============================
       LISTENERS SUR LES INPUTS - PRÉNOM & NOM
      =============================== */
-
   if (prenom) {
     prenom.addEventListener('input', () => {
-      const value = prenom.value.trim();
-      const isValid = value.length > 0; 
+      const val = sanitizeInput(prenom.value.trim()); 
+      const isValid = val.length > 0; 
       updateFieldState(prenom, isValid); 
       checkFormValidity();
     });
@@ -263,21 +285,20 @@ export function initInscriptionPage() {
 
   if (nom) {
     nom.addEventListener('input', () => {
-      const value = nom.value.trim();
-      const isValid = value.length > 0; 
+      const val = sanitizeInput(nom.value.trim()); 
+      const isValid = val.length > 0;
       updateFieldState(nom, isValid); 
-      checkFormValidity();
+      checkFormValidity(); 
     });
   }
 
   /* ===============================
       LISTENERS SUR LES INPUTS - TÉLÉPHONE
      =============================== */
-  
   if (phoneInput) {
     phoneInput.addEventListener('input', (e) => {
-      const phone = e.target.value;
-      const isValid = validatePhone(phone);
+      const val = sanitizeInput(e.target.value);
+      const isValid = validatePhone(val);
       
       updateFieldState(phoneInput, isValid);
       updateValidationMessage(
@@ -294,9 +315,9 @@ export function initInscriptionPage() {
      =============================== */
   if (emailInput) {
     emailInput.addEventListener('input', (e) => {
-      const email = e.target.value;
-      const isValid = validateEmail(email);
-      updateFieldState(emailInput, isValid); 
+      const val = sanitizeInput(e.target.value);
+      const isValid = validateEmail(val);
+      updateFieldState(emailInput, isValid);
       updateValidationMessage(
         emailInput,
         isValid,
@@ -311,9 +332,9 @@ export function initInscriptionPage() {
      =============================== */
   if (postalInput) {
     postalInput.addEventListener('input', (e) => {
-      const postal = e.target.value;
-      const isValid = validatePostalCode(postal);
-      updateFieldState(postalInput, isValid); 
+      const val = sanitizeInput(e.target.value);
+      const isValid = validatePostalCode(val);
+      updateFieldState(postalInput, isValid);
       updateValidationMessage(
         postalInput,
         isValid,
@@ -328,17 +349,17 @@ export function initInscriptionPage() {
      =============================== */
   if (addressInput) {
     addressInput.addEventListener('input', () => {
-      const value = addressInput.value.trim();
-      const isValid = value.length > 0;
-      updateFieldState(addressInput, isValid); 
+      const val = sanitizeInput(addressInput.value.trim());
+      const isValid = val.length > 0;
+      updateFieldState(addressInput, isValid);
       checkFormValidity();
     });
   }
 
   if (villeInput) {
     villeInput.addEventListener('input', () => {
-      const value = villeInput.value.trim();
-      const isValid = value.length > 0;
+      const val = sanitizeInput(villeInput.value.trim());
+      const isValid = val.length > 0;
       updateFieldState(villeInput, isValid); 
       checkFormValidity();
     });
@@ -347,20 +368,11 @@ export function initInscriptionPage() {
   /* ===============================
       LISTENERS SUR LES INPUTS - MOT DE PASSE
      =============================== */
-  
   if (passwordInput) {
     passwordInput.addEventListener('input', (e) => {
-      const password = e.target.value;
-      const validation = validatePassword(password);
-      
-      // Crée le message avec les icônes
-      let messageHTML = '';
-      messageHTML += getValidationIcon(validation.hasCorrectLength) + ' Min 10 caractères<br>';
-      messageHTML += getValidationIcon(validation.hasUpperCase) + ' Une lettre majuscule<br>';
-      messageHTML += getValidationIcon(validation.hasLowerCase) + ' Une lettre minuscule<br>';
-      messageHTML += getValidationIcon(validation.hasDigit) + ' Un chiffre<br>';
-      messageHTML += getValidationIcon(validation.hasSpecialChar) + ' Un caractère spécial (!@#$...)';
-      
+      const val = sanitizeInput(e.target.value);
+      const validation = validatePassword(val);
+    
       // On cible le parent .mb-4 (au-dessus du password-wrapper)
       // pour que le message apparaisse SOUS le wrapper, pas dedans
       const wrapperParent = passwordInput.closest('.mb-4');
@@ -376,7 +388,15 @@ export function initInscriptionPage() {
         // Ajoute après le password-wrapper, pas dedans
         wrapperParent.appendChild(messageElement);
       }
-      
+
+      // Crée le message avec les icônes
+      let messageHTML = '';
+        messageHTML += getValidationIcon(validation.hasCorrectLength) + ' Min 10 caractères<br>';
+        messageHTML += getValidationIcon(validation.hasUpperCase) + ' Une lettre majuscule<br>';
+        messageHTML += getValidationIcon(validation.hasLowerCase) + ' Une lettre minuscule<br>';
+        messageHTML += getValidationIcon(validation.hasDigit) + ' Un chiffre<br>';
+        messageHTML += getValidationIcon(validation.hasSpecialChar) + ' Un caractère spécial (!@#$...)';
+
       messageElement.innerHTML = messageHTML;
       updateMessageColor(messageElement, validation.isValid);
       updateFieldState(passwordInput, validation.isValid); 
@@ -387,7 +407,6 @@ export function initInscriptionPage() {
   /* ===============================
       TOGGLE AFFICHER/MASQUER MOT DE PASSE
      =============================== */
-  
   if (passwordInput && toggleButton) {
     toggleButton.addEventListener('click', (e) => {
       e.preventDefault();
@@ -406,7 +425,6 @@ export function initInscriptionPage() {
   /* ===============================
       GESTION DE LA SOUMISSION DU FORMULAIRE
      =============================== */
-  
   if (inscriptionForm) {
     inscriptionForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -421,26 +439,26 @@ export function initInscriptionPage() {
 
       // Les validations ont déjà été faites, on peut envoyer
       // Mapping des champs HTML pour l'API Symfony
-      const formData = {
-        nom: nom.value,
-        prenom: prenom.value,
-        telephone: phoneInput.value,
-        email: emailInput.value,
-        password: passwordInput.value,
+      const safeFormData = {
+        prenom: sanitizeInput(prenom.value),
+        nom: sanitizeInput(nom.value),
+        email: sanitizeInput(emailInput.value),
+        telephone: sanitizeInput(phoneInput.value),
+        password: sanitizeInput(passwordInput.value),
         pays: 'France',
-        ville: villeInput.value,
-        code_postal: postalInput.value,
-        adresse_postale: addressInput.value,
-        site_web: ''  // Honeypot : toujours vide pour un vrai utilisateur
+        ville: sanitizeInput(villeInput.value),
+        code_postal: sanitizeInput(postalInput.value),
+        adresse_postale: sanitizeInput(addressInput.value),
+        site_web: '' // Honeypot
       };
 
-      if (DebugConsole) console.log("Form data to submit:", formData);
+      if (DebugConsole)  console.log("Utilisateur inscrit :", safeFormData);
 
       try {
         const response = await fetch(apiInscriptionUser, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(safeFormData)
         });
 
         let data = null;
@@ -453,7 +471,7 @@ export function initInscriptionPage() {
 
         if (response.ok) {
           // Succès on redirige vers la page de connexion
-          //alert("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit, Vous pouvez maintenant vous connecter.");
+          showToast("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit !!");
           if(DebugConsole){
             console.log("Utilisateur inscrit :", {
               prenom: prenom.value,
@@ -465,7 +483,7 @@ export function initInscriptionPage() {
           window.location.href = '/login';
         } else {
           // Erreur retournée par l'API (400, 409...)
-          alert(data.message || 'Erreur lors de l\'inscription.');
+          showToast(sanitizeHtml(data.message) || 'Erreur lors de l\'inscription.');
           if (DebugConsole) console.warn("Erreur inscription:", data);
         }
       } catch (err) {
@@ -474,7 +492,7 @@ export function initInscriptionPage() {
             err
           });
         }
-        alert('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
+        showToast('Impossible de contacter le serveur. Vérifiez que l\'API est lancée.');
 
       } finally {
 
@@ -485,7 +503,6 @@ export function initInscriptionPage() {
         checkFormValidity();
       }
     });
-
   }
 
   /* ===============================

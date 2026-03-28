@@ -1,5 +1,5 @@
 import { API_URL } from '../../config.js';
-
+import { sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../../script.js';
 /* ===============================
     SCRIPT PAGE RESET PASSWORD
    =============================== */
@@ -50,20 +50,19 @@ export function initResetpasswordPage() {
 
   // Récupère le token depuis l'URL
 
-  //const token = decodeURIComponent(urlParams.get('token'));
+  // const token = decodeURIComponent(urlParams.get('token'));
   const urlParams = new URLSearchParams(window.location.search);
-  const token = decodeURIComponent(urlParams.get('token'));
+  const token = sanitizeInput(decodeURIComponent(urlParams.get('token')));
   if (DebugConsole) console.log("Token récupéré :", token);
 
   if (!token) {
     if (errorMessage) {
-      errorMessage.textContent = "Token manquant ou invalide.";
+      errorMessage.textContent = sanitizeHtml("Token manquant ou invalide.");
       errorMessage.style.display = "block";
     }
     if (resetForm) resetForm.style.display = "none";
     return;
   }
-
 
   /* ===============================
       AFFICHE / CACHE LE MOT DE PASSE
@@ -105,7 +104,7 @@ export function initResetpasswordPage() {
     if (successMessage) successMessage.style.display = 'none';
 
     if (errorMessage) {
-      errorMessage.textContent = message;
+      errorMessage.textContent = sanitizeHtml(message);
       errorMessage.style.display = 'block';
     }
     if (DebugConsole) console.log("Erreur :", message);
@@ -117,7 +116,7 @@ export function initResetpasswordPage() {
     if (errorMessage) errorMessage.style.display = 'none';
 
     if (successMessage) {
-      successMessage.textContent = message;
+      successMessage.textContent = sanitizeHtml(message);
       successMessage.style.display = 'block';
     }
 
@@ -157,13 +156,13 @@ export function initResetpasswordPage() {
 
   function validatePassword(password) {
 
-    const validation = {
-      hasCorrectLength: password.length >= 10,
-      hasUpperCase: /[A-Z]/.test(password),
-      hasLowerCase: /[a-z]/.test(password),
-      hasDigit: /\d/.test(password),
-      hasSpecialChar: /[\W_]/.test(password)
-    };
+      const validation = {
+        hasCorrectLength = password.length >= 10;
+        hasUpperCase = /[A-Z]/.test(password);
+        hasLowerCase = /[a-z]/.test(password);
+        hasDigit = /\d/.test(password);
+        hasSpecialChar = /[\W_]/.test(password);
+      };
     
     validation.isValid =
       validation.hasCorrectLength &&
@@ -250,16 +249,18 @@ export function initResetpasswordPage() {
       LISTENER SUR LE CHAMP CONFIRMATION
      =============================== */
 
-if(confirmPasswordInput) {
+  if(confirmPasswordInput) {
     confirmPasswordInput.addEventListener('input', () => {
       hideMessages();
       const validation = validatePassword(passwordInput.value);
       if(submitButton) submitButton.disabled = !validation.isValid || !passwordsMatch();
       confirmPasswordInput.classList.toggle('is-valid', passwordsMatch());
       confirmPasswordInput.classList.toggle('is-invalid', !passwordsMatch());
+      if (submitButton) {
+        submitButton.disabled = !validation.isValid || !passwordsMatch();
+      }
     });
   }
-
 
   /* ===============================
       GESTION DE LA SOUMISSION DU FORMULAIRE
@@ -273,17 +274,30 @@ if(confirmPasswordInput) {
 
     if(!passwordsMatch()) return showError("Les mots de passe ne correspondent pas");
 
-      const password = passwordInput.value;
-      submitButton.disabled = true;
-      submitButton.textContent = 'Réinitialisation en cours...';
+    const password = sanitizeInput(passwordInput.value);
+    submitButton.disabled = true;
+    submitButton.textContent = 'Réinitialisation en cours...';
 
-      if(DebugConsole) {
-        console.log("Envoi requête reset password :", {
-          token,
-          password
-        });
-      }
-    
+    if(DebugConsole) {
+      console.log("Envoi requête reset password :", {
+        token,
+        password
+      });
+    }
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    // maintenant seulement
+    const formData = getSanitizedFormData(resetForm);
+    // On injecte le token proprement
+    const tokensafe = sanitizeInput(token);
+
+    if (DebugConsole) {
+      console.log("Données envoyées :", formData);
+    }
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Réinitialisation...`;
+
     try {
         const response = await fetch(apiResetpassword, {
 
@@ -292,7 +306,7 @@ if(confirmPasswordInput) {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            token,
+            tokensafe,
             password
           })
         });

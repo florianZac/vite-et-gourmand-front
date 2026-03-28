@@ -1,5 +1,5 @@
-import { API_URL,sanitizeHtml } from '../config.js';
-import { getToken} from '../script.js';
+import { API_URL } from '../config.js';
+import { getToken, sanitizeInput, sanitizeHtml, getSanitizedFormData } from '../script.js';
 
 export function initGestionPlatEmployerPage() {
 
@@ -129,7 +129,7 @@ export function initGestionPlatEmployerPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeHtml(message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -167,7 +167,7 @@ export function initGestionPlatEmployerPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -335,7 +335,7 @@ export function initGestionPlatEmployerPage() {
         <label 
           class="form-check-label" 
           for="allerg-${allergene.id}">
-          ${allergene.libelle}
+          ${sanitizeInput(allergene.libelle)}
         </label>
       `;
 
@@ -434,7 +434,7 @@ export function initGestionPlatEmployerPage() {
       // Gestion des allergènes
       let allergLabels = '';
       if (plat.allergenes && plat.allergenes.length) {
-        allergLabels = plat.allergenes.map(a => a.libelle).join(', ');
+        allergLabels = plat.allergenes.map(a => sanitizeInput(a.libelle)).join(', ');
       }
 
       // Création de la ligne 
@@ -449,7 +449,7 @@ export function initGestionPlatEmployerPage() {
 
       if (plat.photo) {
         // Si une image existe
-        imageHtml = `<img src="${plat.photo}" alt="${plat.titre}" 
+        imageHtml = `<img src="${plat.photo}" alt="${sanitizeInput(plat.titre)}" 
           style="width:60px;height:60px;object-fit:cover;border-radius:0.5rem;">`;
       } else {
         // Sinon image par défaut
@@ -463,8 +463,8 @@ export function initGestionPlatEmployerPage() {
         <div class="d-flex align-items-center gap-3">
           ${imageHtml}
           <div>
-            <strong>${plat.titre || 'Sans titre'}</strong>
-            <span class="badge bg-secondary ms-2">${plat.categorie || ' '}</span><br>
+            <strong>${sanitizeInput(plat.titre || 'Sans titre')}</strong>
+            <span class="badge bg-secondary ms-2">${sanitizeInput(plat.categorie || ' ')}</span><br>
             <small class="text-muted">Allergènes : ${allergLabels}</small>
           </div>
         </div>
@@ -478,7 +478,7 @@ export function initGestionPlatEmployerPage() {
           <button 
             class="btn btn-danger btn-sm btn-delete-plat" 
             data-id="${plat.id}" 
-            data-titre="${plat.titre}" 
+            data-titre="${sanitizeInput(plat.titre)}" 
             title="Supprimer">
             <i class="bi bi-trash-fill me-1"></i> Supprimer
           </button>
@@ -568,12 +568,12 @@ export function initGestionPlatEmployerPage() {
     btnSavePlat.innerHTML = '<i class="bi bi-save me-1 "></i> Enregistrer';
 
     // Remplir les champs
-    inputTitre.value = plat.titre || '';
-    selectCategorie.value = plat.categorie || 'Entrée';
-    inputDescription.value = plat.description || '';
+    inputTitre.value = sanitizeInput(plat.titre || '');
+    selectCategorie.value = sanitizeInput(plat.categorie || 'Entrée');
+    inputDescription.value = sanitizeInput(plat.description || '');
 
     // Stocke l'URL existante dans le hidden input
-    inputPhotoUrl.value = plat.photo || '';
+    inputPhotoUrl.value = sanitizeInput(plat.photo || '');
     // Reset le file input
     inputPhotoFile.value = '';
 
@@ -618,9 +618,9 @@ export function initGestionPlatEmployerPage() {
      =============================== */
   btnSavePlat.addEventListener('click', async () => {
 
-    const titre_plat = inputTitre.value.trim();
-    const categorie = selectCategorie.value;
-    const description_plat = inputDescription.value.trim();
+    const titre_plat = sanitizeInput(inputTitre.value.trim());
+    const categorie = sanitizeInput(selectCategorie.value);
+    const description_plat =sanitizeInput(inputDescription.value.trim());
 
     // Récupère l'URL depuis le hidden input (uploadée ou existante en edit)
     const photo = inputPhotoUrl.value.trim();
@@ -721,9 +721,9 @@ export function initGestionPlatEmployerPage() {
 
       // Filtre recherche texte
       if (search) {
-        const titre = (plat.titre || '').toLowerCase();
-        const cat = (plat.categorie || '').toLowerCase();
-        const allergenes = plat.allergenes ? plat.allergenes.map(a => a.libelle).join(' ').toLowerCase() : '';
+        const titre = sanitizeInput((plat.titre || '').toLowerCase());
+        const cat = sanitizeInput((plat.categorie || '').toLowerCase());
+        const allergenes = plat.allergenes ? plat.allergenes.map(a => sanitizeInput(a.libelle)).join(' ').toLowerCase() : '';
         if (!titre.includes(search) && !cat.includes(search) && !allergenes.includes(search)) return false;
       }
 

@@ -12,116 +12,119 @@
 
     <!-- Grille Bootstrap centrée -->
     <div class="row justify-content-center">
-      <div class="col-6 compte_employer">
+      <div class="row justify-content-center compte_admin">
+        <!------ Onglets Navigation -------->
+        <div class="row justify-content-center compte_admin">
+          
+          <!------ Onglets Commande -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-basket-fill fs-4 mb-1"></i>
+                <h6 class="card-title mb-0 ">Gestion Commande</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Avis Client (ACTIVE) -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100 active">
+              <div class="card-body py-3">
+                <i class="bi bi-star-half fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Avis Client</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Menu -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-wallet-fill mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Menu</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Allergène & Menus tag -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-virus fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Gestion Plat -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-egg-fried fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Gestion Plat</h6>
+              </div>
+            </a>
+          </div>
+          <!------ Onglets Thèmes & Règimes -------->
+          <div class="col-12 col-md-4">
+            <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
+              <div class="card-body py-3">
+                <i class="bi bi-receipt fs-4 mb-1"></i>
+                <h6 class="card-title mb-0">Thèmes & Règimes</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Avis Client </h3>
 
-        <!------ Onglets Commande -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_commande_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-basket-fill fs-4 mb-1"></i>
-              <h6 class="card-title mb-0 ">Gestion Commande</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Avis Client (ACTIVE) -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_avis_employer" class="card text-center text-decoration-none h-100 active">
-            <div class="card-body py-3">
-              <i class="bi bi-star-half fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Avis Client</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Menu -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_menus_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-wallet-fill mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Menu</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Allergènes -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-virus fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Allergènes</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Gestion Plat -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_plat_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-egg-fried fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Plat</h6>
-            </div>
-          </a>
-        </div>
-        <!------ Onglets Thèmes & Règimes -------->
-        <div class="col-12 col-md-4">
-          <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
-            <div class="card-body py-3">
-              <i class="bi bi-receipt fs-4 mb-1"></i>
-              <h6 class="card-title mb-0">Thèmes & Règimes</h6>
-            </div>
-          </a>
-        </div>
-      </div>
-      <!------ Titre de la section   -------->
-      <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Avis Client </h3>
+        <!------ Barre recherche + filtres -------->
+        <div class="card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="row g-2 align-items-center">
 
-      <!------ Barre recherche + filtres -------->
-      <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-          <div class="row g-2 align-items-center">
+              <!-- Recherche numéro commande -->
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                  </span>
+                  <input 
+                    type="text"
+                    id="search-order"
+                    class="form-control"
+                    placeholder="Rechercher avis..."
+                  >
+                </div>
+              </div>
 
-            <!-- Recherche numéro commande -->
-            <div class="col-md-8">
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="bi bi-search"></i>
-                </span>
-                <input 
-                  type="text"
-                  id="search-order"
-                  class="form-control"
-                  placeholder="Rechercher un menus..."
-                >
+              <!-- Filtre statut avis -->
+              <div class="col-md-2">
+                <select id="filter-status" class="form-select" title="Filtrer par statut">
+                  <option value="">Tous</option>
+                  <option value="en_attente">En attente</option>
+                  <option value="publié">Publié</option>
+                  <option value="refusé">Refusé</option>
+                </select>
+              </div>
+
+              <!-- Reset -->
+              <div class="col-md-2 d-grid">
+                <button type="button" id="reset-filters" class="btn btn-outline-secondary">
+                  Reset
+                </button>
               </div>
             </div>
+          </div>  
+        </div> 
+        <!------ Liste des commandes injectée dynamiquement par le JS -------->
+        <div id="commandes-list">
+          <!-- Les cards de commandes seront injectées ici par le JS -->
 
-            <!-- Filtre statut avis -->
-            <div class="col-md-2">
-              <select id="filter-status" class="form-select" title="Filtrer par statut">
-                <option value="">Tous</option>
-                <option value="en_attente">En attente</option>
-                <option value="validé">Validé</option>
-                <option value="refusé">Refusé</option>
-              </select>
-            </div>
-
-            <!-- Reset -->
-            <div class="col-md-2 d-grid">
-              <button type="button" id="reset-filters" class="btn btn-outline-secondary">
-                Reset
-              </button>
+          <!------ Toast -------->
+          <div class="d-flex justify-content-center mt-3">
+            <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-body"></div>
             </div>
           </div>
-        </div>  
-      </div> 
-      <!------ Liste des commandes injectée dynamiquement par le JS -------->
-      <div id="commandes-list">
-        <!-- Les cards de commandes seront injectées ici par le JS -->
-
-        <!------ Toast -------->
-        <div class="d-flex justify-content-center mt-3">
-          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body"></div>
-          </div>
-        </div>
-      </div> 
+        </div> 
+      </div>         
     </div>         
   </div>
 </section>

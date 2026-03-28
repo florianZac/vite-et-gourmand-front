@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken } from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionHorrairePage() {
 
@@ -116,7 +116,7 @@ export function initCompteAdminGestionHorrairePage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        heroUserName.textContent = data.utilisateur.prenom || data.utilisateur.email || '';
+        heroUserName.textContent = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :",  data.utilisateur.prenom);
       } else {
         if (DebugConsole) console.log("[loadUserName] Element #hero-user-name non trouvé ou pas de donnée utilisateurs disponible");

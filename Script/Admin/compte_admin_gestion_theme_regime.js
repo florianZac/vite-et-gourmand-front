@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionThemeRegimePage() {
 
@@ -56,7 +56,6 @@ export function initCompteAdminGestionThemeRegimePage() {
     console.log("=== DEBUG INIT COMPTE ADMIN ===");
     console.log("Cookies actuels :", document.cookie);
     console.log("Token actuel :", token);
-    console.log("Rôle actuel :", getRole());
     console.log("================================");
   }
 
@@ -155,7 +154,7 @@ export function initCompteAdminGestionThemeRegimePage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -188,9 +187,9 @@ export function initCompteAdminGestionThemeRegimePage() {
       label = 'le régime'; 
     }
     // On met à jour le titre
-    deleteModalTitle.innerHTML = `<i class="bi bi-trash text-danger me-2"></i>Supprimer ${label}`;
+    deleteModalTitle.innerHTML = `<i class="bi bi-trash text-danger me-2"></i>Supprimer ${sanitizeHtml(label)}`;
     // On affiche le nom à supprimer
-    deleteItemName.textContent = name;
+    deleteItemName.textContent = sanitizeInput(name);
     // On ouvre la modale de suppression
     deleteModal.show();
   }
@@ -216,13 +215,13 @@ export function initCompteAdminGestionThemeRegimePage() {
     }
 
     // On met à jour le titre de la modale
-    editModalTitle.innerHTML = `<i class="bi bi-pencil me-2"></i>Modifier ${label}`;
+    editModalTitle.innerHTML = `<i class="bi bi-pencil me-2"></i>Modifier ${sanitizeHtml(label)}`;
 
     // On remplit le champ avec le nom actuel
-    editLibelleInput.value = name;
+    editLibelleInput.value = sanitizeHtml(name);
 
     // On met à jour le placeholder
-    editLibelleInput.placeholder = placeholder;
+    editLibelleInput.placeholder = sanitizeHtml(placeholder);
 
     // On affiche la modale
     editModal.show();
@@ -253,12 +252,12 @@ export function initCompteAdminGestionThemeRegimePage() {
       row.style.border = '1px solid #e8ddd0';
 
       row.innerHTML = `
-        <span class="fw-semibold">${theme.titre}</span>
+        <span class="fw-semibold">${sanitizeHtml(theme.titre)}</span>
         <div class="d-flex gap-2">
-          <button class="btn btn-danger btn-sm btn-delete-theme" data-id="${theme.id}" data-titre="${theme.titre}" title="Supprimer">
+          <button class="btn btn-danger btn-sm btn-delete-theme" data-id="${theme.id}" data-titre="${sanitizeHtml(theme.titre)}" title="Supprimer">
             <i class="bi bi-trash-fill"></i>
           </button>
-          <button class="btn btn-outline-secondary btn-sm btn-edit-theme" data-id="${theme.id}" data-titre="${theme.titre}" title="Modifier">
+          <button class="btn btn-outline-secondary btn-sm btn-edit-theme" data-id="${theme.id}" data-titre="${sanitizeHtml(theme.titre)}" title="Modifier">
             <i class="bi bi-pencil-fill"></i>
           </button>
         </div>
@@ -306,12 +305,12 @@ export function initCompteAdminGestionThemeRegimePage() {
 
       // Remplissage du contenue
       row.innerHTML = `
-        <span class="fw-semibold">${regime.libelle}</span>
+        <span class="fw-semibold">${sanitizeHtml(regime.libelle)}</span>
         <div class="d-flex gap-2">
-          <button class="btn btn-danger btn-sm btn-delete-regime" data-id="${regime.id}" data-libelle="${regime.libelle}" title="Supprimer">
+          <button class="btn btn-danger btn-sm btn-delete-regime" data-id="${regime.id}" data-libelle="${sanitizeHtml(regime.libelle)}" title="Supprimer">
             <i class="bi bi-trash-fill"></i>
           </button>
-          <button class="btn btn-outline-secondary btn-sm btn-edit-regime" data-id="${regime.id}" data-libelle="${regime.libelle}" title="Modifier">
+          <button class="btn btn-outline-secondary btn-sm btn-edit-regime" data-id="${regime.id}" data-libelle="${sanitizeHtml(regime.libelle)}" title="Modifier">
             <i class="bi bi-pencil-fill"></i>
           </button>
         </div>
@@ -398,7 +397,7 @@ export function initCompteAdminGestionThemeRegimePage() {
   // On écoute le clic sur le bouton "Ajouter"
     btnAddTheme.addEventListener('click', async () => {
     // On récupère la valeur de l'input + suppression des espaces inutiles
-    const libelle  = newThemeInput.value.trim();
+    const libelle = sanitizeInput(newThemeInput.value.trim());
 
     // Vérification : si le champ est vide
     if (!libelle ) {
@@ -440,7 +439,7 @@ export function initCompteAdminGestionThemeRegimePage() {
   // On écoute le clic sur le bouton "Ajouter"
   btnAddRegime.addEventListener('click', async () => {
     // On récupère la valeur de l'input + suppression des espaces inutiles
-    const libelle = newRegimeInput.value.trim();
+    const libelle = sanitizeInput(newRegimeInput.value.trim());
 
     // Vérification : si le champ est vide
     if (!libelle) {
@@ -533,7 +532,7 @@ export function initCompteAdminGestionThemeRegimePage() {
     if (!currentEditId || !currentType) return;
 
     // Récupération du nouveau libellé
-    const libelle  = editLibelleInput.value.trim();
+    const libelle = sanitizeInput(editLibelleInput.value.trim());
     if (!libelle ) {
       showToast("Le libellé ne peut pas être vide.", "error");
       return;

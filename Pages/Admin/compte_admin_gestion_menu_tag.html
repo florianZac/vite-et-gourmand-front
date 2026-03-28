@@ -17,7 +17,7 @@
         <!------ Onglets Navigation -------->
         <div class="row justify-content-center compte_admin">
           
-          <!------ Onglets Statistiques -------->
+          <!------ Onglets Statistiques  -------->
           <div class="col-12 col-md-4">
             <a href="/statistiques" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
@@ -26,7 +26,6 @@
               </div>
             </a>
           </div>
-
           <!------ Onglets Profil -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_profil" class="card text-center text-decoration-none h-100">
@@ -36,7 +35,6 @@
               </div>
             </a>
           </div>
-
           <!------ Onglets Gestion Utilisateurs -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_utilisateurs" class="card text-center text-decoration-none h-100">
@@ -46,7 +44,6 @@
               </div>
             </a>
           </div>
-
           <!------ Onglets Gestion Menus -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_menus" class="card text-center text-decoration-none h-100">
@@ -56,7 +53,6 @@
               </div>
             </a>
           </div>
-
           <!------ Onglets Gestion Plat -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_plat" class="card text-center text-decoration-none h-100">
@@ -66,17 +62,15 @@
               </div>
             </a>
           </div>
-
-          <!------ Onglets Gestion Allergènes -------->
+          <!------ Onglets Gestion Allergènes (ACTIVE) -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
+            <a href="/gestion_allergene" class="card text-center text-decoration-none h-100 active">
               <div class="card-body py-3">
                 <i class="bi bi-virus fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
               </div>
             </a>
           </div>
-
           <!------ Onglets Thèmes & Règimes -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_theme_regimes" class="card text-center text-decoration-none h-100">
@@ -86,17 +80,15 @@
               </div>
             </a>
           </div>
-
-          <!------ Onglets Commandes & Avis (ACTIVE) -------->
+          <!------ Onglets Commandes & Avis -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_avis" class="card text-center text-decoration-none h-100 active">
+            <a href="/gestion_avis" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-calculator-fill fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Commandes & Avis</h6>
               </div>
             </a>
           </div>
-
           <!------ Onglets Gestion Horraire -------->
           <div class="col-12 col-md-4">
             <a href="/gestion_horraire" class="card text-center text-decoration-none h-100">
@@ -108,83 +100,121 @@
           </div>
         </div>
 
-        <!------ Titre de la Navigation -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Commandes & Avis</h2>
-
-        <!------ Onglets Gestion avis (ACTIVE) -------->
+        <!------ Titre de la Navigation  -------->
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène & Menus tag</h2>
+        <!------ Gestion Allergène  -------->
         <div class="col-12 col-md-4">
-          <a href="/gestion_avis" class="card text-center text-decoration-none h-100 active">
+          <a href="/gestion_allergene" class="card text-center text-decoration-none h-100">
             <div class="card-body py-3">
               <i class="bi bi-star-half mb-1"></i>
-              <h6 class="card-title mb-0">Gestion Avis</h6>
+              <h6 class="card-title mb-0">Gestion Allergène</h6>
             </div>
           </a>
         </div>   
 
-        <!------ Onglets Gestion Commandes  -------->
+        <!------ Onglets Gestion Tag Menus (ACTIVE)  -------->
         <div class="col-12 col-md-4">
-          <a href="/gestion_commandes" class="card text-center text-decoration-none h-100 ">
+          <a href="/gestion_admin_Menus_tag" class="card text-center text-decoration-none h-100 active ">
             <div class="card-body py-3">
-              <i class="bi bi-bag-dash-fill fs-4 mb-1"></i>
-              <h6 class="card-title mb-0 ">Gestion Commandes</h6>
+              <i class="bi bi-cpu fs-4 mb-1"></i>
+              <h6 class="card-title mb-0 ">Gestion Tag Menus</h6>
             </div>
           </a>
         </div>
 
         <!------ Titre de la section   -------->
-        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Avis Client </h3>
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Tag Menus</h3>
 
-        <!------ Barre recherche + filtres -------->
+        <!------ Barre recherche -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <div class="row g-2 align-items-center">
-
-              <!-- Recherche numéro commande -->
-              <div class="col-md-8">
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-search"></i>
-                  </span>
-                  <input 
-                    type="text"
-                    id="search-order"
-                    class="form-control"
-                    placeholder="Rechercher avis..."
-                  >
-                </div>
-              </div>
-
-              <!-- Filtre statut avis -->
-              <div class="col-md-2">
-                <select id="filter-status" class="form-select" title="Filtrer par statut">
-                  <option value="">Tous</option>
-                  <option value="en_attente">En attente</option>
-                  <option value="publié">Publié</option>
-                  <option value="refusé">Refusé</option>
-                </select>
-              </div>
-
-              <!-- Reset -->
-              <div class="col-md-2 d-grid">
-                <button type="button" id="reset-filters" class="btn btn-outline-secondary">
-                  Reset
+              <!-- Champ ajout d'un nouveau Tag Menus -->
+              <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
+                <input type="text" id="new-tag-menus" class="form-control" placeholder="Nouveau Tag Menus...">
+                <button type="button"  class="btn btn-primary col-md-2" id="btn-add-tag-menus" title="Ajouter un Tag Menus">
+                  <i class="bi bi-plus me-1"></i> Ajouter
                 </button>
               </div>
-            </div>
-          </div>  
-        </div> 
-        <!------ Liste des commandes injectée dynamiquement par le JS -------->
-        <div id="commandes-list">
-          <!-- Les cards de commandes seront injectées ici par le JS -->
 
-          <!------ Toast -------->
-          <div class="d-flex justify-content-center mt-3">
-            <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="toast-body"></div>
+              <!-- Liste des Tag Menus -->
+              <div class="col-12" id="tag-menus-list">
+                <!-- Injecté dynamiquement par le JS -->
+              </div>
+
+              <!------ Titre de la sous section   -------->
+              <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Association des Tag au Menus</h3>
+
+              <!--Drag and drop Tag Menus -->
+              <div class="row mt-4">
+
+                <!-- Menus -->
+                <div class="col-md-4">
+                  <h5>Menus</h5>
+                  <div id="menus-list" class="list-group"></div>
+                </div>
+
+                <!-- Tags du menu -->
+                <div class="col-md-4">
+                  <h5>Tags du menu</h5>
+                  <div id="menu-tags" class="p-3 border rounded bg-white min-height"></div>
+                </div>
+
+                <!-- Tag Disponible -->
+                <div class="col-md-4">
+                  <h5>Tags disponibles</h5>
+                  <div id="tags-list" class="p-3 border rounded bg-light"></div>
+                </div>
+
+              </div>
+              <!-- Toast -->
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-body"></div>
+                </div>
+              </div>
             </div>
           </div>
-        </div> 
-      </div>         
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- Modal Suppression -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer Tag menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <p>Voulez-vous vraiment supprimer <strong id="delete-tag-menus-name"></strong> ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Modification -->
+<div class="modal fade" id="editModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier le tag-menus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="edit-tag-menus-name" class="form-control" placeholder="Nouveau libellé...">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="confirm-edit">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>

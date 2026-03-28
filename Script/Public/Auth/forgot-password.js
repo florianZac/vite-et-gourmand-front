@@ -1,4 +1,5 @@
 import { API_URL } from '../../config.js';
+import { sanitizeInput, sanitizeHtml } from '../../script.js';
 export function initforgotpasswordPage() {
 
   /* ===============================
@@ -21,6 +22,10 @@ export function initforgotpasswordPage() {
   const resetForm = document.querySelector('.reset-password-form');
   const submitButton = document.querySelector('.btn-reset-password');
 
+  // Toast Bootstrap
+  const toastEl = document.getElementById('toast-message');
+  const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 4000 });
+
   if (DebugConsole) {
     console.log("=== DEBUG INIT RESET PASSWORD ===");
     console.log("Input email :", emailInput);
@@ -28,6 +33,25 @@ export function initforgotpasswordPage() {
     console.log("Bouton submit :", submitButton);
     console.log("===============================");
   }
+
+  /* ===============================
+      FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES AU CLIENTS
+        Déplace l'affichage en fonction de l'étape sous les btns
+        gere la version Erreur / et Success
+          Exemple d'utilisation :
+            showToast("Erreur Prénom ",'error');
+            showToast("Prénom modifié ",'success');
+     =============================== */
+    function showToast(message, type = 'error') {
+    const body = toastEl.querySelector('.toast-body');
+    body.textContent = message || "Action effectuée !";
+
+    toastEl.classList.remove('toast-success', 'toast-error');
+    toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
+
+    toastBootstrap.show();
+  }
+
   /* ===============================
       CRÉATION DES MESSAGES (ERREUR & SUCCÈS)
      =============================== */
@@ -56,14 +80,14 @@ export function initforgotpasswordPage() {
 
   function showError(message) {
     successMessage.style.display = 'none';
-    errorMessage.textContent = message;
+    errorMessage.textContent = sanitizeHtml(message);
     errorMessage.style.display = 'block';
     if (DebugConsole) console.log("Erreur :", message);
   }
 
   function showSuccess(message) {
     errorMessage.style.display = 'none';
-    successMessage.textContent = message;
+    successMessage.textContent = sanitizeHtml(message);
     successMessage.style.display = 'block';
     if (DebugConsole) console.log("Succès :", message);
     // Redirection vers login après 2 secondes
@@ -95,9 +119,10 @@ export function initforgotpasswordPage() {
    * Se termine par .fr ou .com
    */
   function validateEmail(email) {
+    const safeEmail = sanitizeInput(email);
     const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
     const valid = emailRegex.test(email);
-    if (DebugConsole) console.log(`validateEmail("${email}") => ${valid}`);
+    if (DebugConsole) console.log(`validateEmail("${safeEmail}") => ${valid}`);
     return valid;
   }
 
@@ -106,7 +131,7 @@ export function initforgotpasswordPage() {
      =============================== */
 
   function checkFormValidity() {
-    const email = emailInput.value.trim();
+    const email = sanitizeInput(emailInput.value.trim());
 
     // Le bouton est actif si l'email est valide
     submitButton.disabled = !validateEmail(email);
@@ -121,7 +146,7 @@ export function initforgotpasswordPage() {
 
   if (emailInput) {
     emailInput.addEventListener('input', () => {
-      const email = emailInput.value.trim();
+      const email = sanitizeInput(emailInput.value.trim());
 
       // Si le champ est vide on retire les deux classes (état neutre)
       if (email === '') {
@@ -151,8 +176,10 @@ export function initforgotpasswordPage() {
     resetForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const email = emailInput.value.trim();
-      if (DebugConsole) console.log("Reset password envoyé pour : email =", email);
+      const safeData = {
+        email: sanitizeInput(emailInput.value.trim())
+      };
+      if (DebugConsole) console.log("Reset password envoyé pour : safeData email =", safeData);
 
       // Désactive le bouton pendant l'envoi
       submitButton.disabled = true;
@@ -162,7 +189,7 @@ export function initforgotpasswordPage() {
         const response = await fetch(apiForgotpassword, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
+          body: JSON.stringify({ safeData })
         });
 
         let data = null;
@@ -175,7 +202,7 @@ export function initforgotpasswordPage() {
 
         if (response.ok) {
           // Message générique (même si l'email n'existe pas)
-          alert("mot de passe réinitialisé checké vos mail ");
+          showToast("mot de passe réinitialisé checké vos mail ");
           showSuccess('Si cet email existe dans notre système, un lien de réinitialisation a été envoyé');
           emailInput.value=''; 
           emailInput.classList.remove('is-valid','is-invalid');

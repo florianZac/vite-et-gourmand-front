@@ -43,9 +43,9 @@
               </div>
             </a>
           </div>
-          <!------ Onglets Gestion Allergène & Menus tag  -------->
+          <!------ Onglets Gestion Allergène & Menus tag (ACTIVE) -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100 ">
+            <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100 active">
               <div class="card-body py-3">
                 <i class="bi bi-virus fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
@@ -61,9 +61,9 @@
               </div>
             </a>
           </div>
-          <!------ Onglets Thèmes & Règimes (ACTIVE) -------->
+          <!------ Onglets Thèmes & Règimes -------->
           <div class="col-12 col-md-4">
-            <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100 active">
+            <a href="/gestion_theme_regime_employer" class="card text-center text-decoration-none h-100">
               <div class="card-body py-3">
                 <i class="bi bi-receipt fs-4 mb-1"></i>
                 <h6 class="card-title mb-0">Thèmes & Règimes</h6>
@@ -71,43 +71,82 @@
             </a>
           </div>
         </div>
+
         <!------ Titre de la Navigation  -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Thèmes & Régimes</h2>
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène & Menus tag</h2>
 
-        <!------ Card Thèmes -------->
+        <!------ Gestion Allergène  -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_allergene_employer" class="card text-center text-decoration-none h-100">
+            <div class="card-body py-3">
+              <i class="bi bi-star-half mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Allergène</h6>
+            </div>
+          </a>
+        </div>   
+
+        <!------ Onglets Gestion Tag Menus (ACTIVE) -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_Menus_tag" class="card text-center text-decoration-none h-100 active ">
+            <div class="card-body py-3">
+              <i class="bi bi-cpu fs-4 mb-1"></i>
+              <h6 class="card-title mb-0 ">Gestion Tag Menus</h6>
+            </div>
+          </a>
+        </div>
+
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Tag Menus</h3>
+
+        <!------ Barre recherche -------->
         <div class="card mb-4 shadow-sm">
           <div class="card-body">
             <div class="row g-2 align-items-center">
-              <div class="col-12" id="themes-list"></div>
+              <!-- Champ ajout d'un nouveau Tag Menus -->
               <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
-                <input type="text" id="new-theme" class="form-control" placeholder="Nouveau Thème...">
-                <button type="button" class="btn btn-primary" id="btn-add-theme" title="Ajouter un thème">
+                <input type="text" id="new-tag-menus" class="form-control" placeholder="Nouveau Tag Menus...">
+                <button type="button"  class="btn btn-primary col-md-2" id="btn-add-tag-menus" title="Ajouter un Tag Menus">
                   <i class="bi bi-plus me-1"></i> Ajouter
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
 
-        <!------ Card Régimes -------->
-        <div class="card mb-4 shadow-sm">
-          <div class="card-body">
-            <div class="row g-2 align-items-center">
-              <div class="col-12" id="regimes-list"></div>
-              <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
-                <input type="text" id="new-regime" class="form-control" placeholder="Nouveau Régime...">
-                <button type="button" class="btn btn-primary" id="btn-add-regime" title="Ajouter un régime">
-                  <i class="bi bi-plus me-1"></i> Ajouter
-                </button>
+              <!-- Liste des Tag Menus -->
+              <div class="col-12" id="tag-menus-list">
+                <!-- Injecté dynamiquement par le JS -->
+              </div>
+
+              <!------ Titre de la sous section   -------->
+              <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Association des Tag au Menus</h3>
+
+              <!--Drag and drop Tag Menus -->
+              <div class="row mt-4">
+
+                <!-- Menus -->
+                <div class="col-md-4">
+                  <h5>Menus</h5>
+                  <div id="menus-list" class="list-group"></div>
+                </div>
+
+                <!-- Tags du menu -->
+                <div class="col-md-4">
+                  <h5>Tags du menu</h5>
+                  <div id="menu-tags" class="p-3 border rounded bg-white min-height"></div>
+                </div>
+
+                <!-- Tag Disponible -->
+                <div class="col-md-4">
+                  <h5>Tags disponibles</h5>
+                  <div id="tags-list" class="p-3 border rounded bg-light"></div>
+                </div>
+
+              </div>
+              <!-- Toast -->
+              <div class="col-12 d-flex justify-content-center mt-3">
+                <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div class="toast-body"></div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!------ Toast -------->
-        <div class="d-flex justify-content-center mt-3">
-          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-body"></div>
           </div>
         </div>
       </div>
@@ -115,16 +154,16 @@
   </div>
 </section>
 
-<!-- Modal Suppression (partagée) -->
+<!-- Modal Suppression -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="delete-modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer</h5>
+        <h5 class="modal-title"><i class="bi bi-trash text-danger me-2"></i>Supprimer Tag menu</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
-        <p>Voulez-vous vraiment supprimer <strong id="delete-item-name"></strong> ?</p>
+        <p>Voulez-vous vraiment supprimer <strong id="delete-tag-menus-name"></strong> ?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -134,16 +173,16 @@
   </div>
 </div>
 
-<!-- Modal Modification (partagée) -->
+<!-- Modal Modification -->
 <div class="modal fade" id="editModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="edit-modal-title"><i class="bi bi-pencil me-2"></i>Modifier</h5>
+        <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier le tag-menus</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" title="Fermer"></button>
       </div>
       <div class="modal-body">
-        <input type="text" id="edit-item-libelle" class="form-control" placeholder="Nouveau libellé...">
+        <input type="text" id="edit-tag-menus-name" class="form-control" placeholder="Nouveau libellé...">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

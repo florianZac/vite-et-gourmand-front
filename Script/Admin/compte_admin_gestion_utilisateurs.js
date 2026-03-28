@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionUtilisateurPage() {
   
@@ -273,7 +273,7 @@ export function initCompteAdminGestionUtilisateurPage() {
       row.style.backgroundColor = '#fdf8f0';
       row.style.border = '1px solid #e8ddd0';
 
-row.innerHTML = `
+      row.innerHTML = `
         <div>
           <strong>${c.prenom || ''} ${c.nom || ''}</strong>
           <span class="badge ms-2 ${isActif ? 'bg-success' : 'bg-warning text-dark'}">${isActif ? 'Actif' : 'Désactivé'}</span>
@@ -437,14 +437,15 @@ row.innerHTML = `
   btnSaveEdit.addEventListener('click', async function() {
     if (!currentEditId) return;
 
-    const prenom = editPrenom.value.trim();
-    const nom = editNom.value.trim();
-    const email = editEmail.value.trim();
-    const telephone = editTelephone.value.trim();
-    const adresse_postale = editAdresse.value.trim();
-    const ville = editVille.value.trim();
-    const code_postal = editCodePostal.value.trim();
-    const role = editRole.value;
+
+    const prenom = sanitizeInput(editPrenom.value.trim());
+    const nom = sanitizeInput(editNom.value.trim());
+    const email = sanitizeInput(editEmail.value.trim());
+    const telephone = sanitizeInput(editTelephone.value.trim());
+    const adresse_postale = sanitizeInput(editAdresse.value.trim());
+    const ville = sanitizeInput(editVille.value.trim());
+    const code_postal = sanitizeInput(editCodePostal.value.trim());
+    const role = sanitizeInput(editRole.value);
 
     // Validations
     if (!prenom) { showToast("Le prénom est obligatoire.", "error"); return; }
@@ -460,6 +461,7 @@ row.innerHTML = `
       telephone: telephone,
       ville: ville,
       adresse_postale: adresse_postale,
+      code_postal:code_postal,
       role: role
     };
 
@@ -497,13 +499,13 @@ row.innerHTML = `
      =============================== */
   btnCreate.addEventListener('click', async function() {
 
-    const nom = inputNom.value.trim();
-    const prenom = inputPrenom.value.trim();
-    const email = inputEmail.value.trim();
-    const telephone = inputTelephone.value.trim();
-    const addresse = inputAddress.value.trim();
-    const ville = inputCity.value.trim();
-    const code_postale = inputPostal.value.trim();
+    const nom = sanitizeInput(inputNom.value.trim());
+    const prenom = sanitizeInput(inputPrenom.value.trim());
+    const email = sanitizeInput(inputEmail.value.trim());
+    const telephone = sanitizeInput(inputTelephone.value.trim());
+    const addresse = sanitizeInput(inputAddress.value.trim());
+    const ville = sanitizeInput(inputCity.value.trim());
+    const code_postale = sanitizeInput(inputPostal.value.trim());
 
     // Validations vide ou non 
     if (!nom) { showToast("Le nom est obligatoire.", "error"); return; }

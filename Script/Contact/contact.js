@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-
+import { sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../script.js';
 export function initContactPage() {
 
   /* ===============================
@@ -55,13 +55,13 @@ export function initContactPage() {
 
   function showError(message) {
     successMessage.style.display = 'none';
-    errorMessage.textContent = message;
+    errorMessage.textContent = sanitizeHtml(message);
     errorMessage.style.display = 'block';
   }
 
   function showSuccess(message) {
     errorMessage.style.display = 'none';
-    successMessage.textContent = message;
+    successMessage.textContent = sanitizeHtml(message);
     successMessage.style.display = 'block';
   }
 
@@ -88,7 +88,7 @@ export function initContactPage() {
 
   if (MessageInput && charCount) {
     MessageInput.addEventListener('input', () => {
-      charCount.textContent = `${MessageInput.value.length}/500`;
+      charCount.textContent = `${sanitizeInput(MessageInput.value.length)}/500`;
       checkFormValidity();
     });
   }
@@ -113,18 +113,15 @@ export function initContactPage() {
       LISTENERS SUR LES INPUTS
      =============================== */
 
-     
   if (SujetInput) {
     SujetInput.addEventListener('input', () => {
 
       checkFormValidity();
-
       updateFieldState(
         SujetInput,
         SujetInput.value.trim().length >= 3 &&
         SujetInput.value.trim().length <= 100
       );
-
     });
   }
 
@@ -136,7 +133,6 @@ export function initContactPage() {
         EmailInput,
         validateEmail(EmailInput.value.trim())
       );
-
     });
   }
 
@@ -149,7 +145,6 @@ export function initContactPage() {
         MessageInput.value.trim().length >= 10 &&
         MessageInput.value.trim().length <= 500
       );
-
     });
   }
 
@@ -181,10 +176,14 @@ export function initContactPage() {
 
   if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
-
       e.preventDefault();
 
-      // si déjà envoi du formulaire, on bloque tout
+
+      // Récupère et sanitize toutes les données du formulaire
+      const safeData = getSanitizedFormData(contactForm);
+      if(DebugConsole){ console.log("Contact Data sécurisée :", safeData);}
+
+      // bloque double envoi du formulaire
       if (isSubmitting) return;
       isSubmitting = true;
 
@@ -194,11 +193,20 @@ export function initContactPage() {
 
       hideMessages();
 
-      // Mapping des champs HTML pour l'API Symfony
+      // Vérifie le honeypot
+      if (safeData.site_web) {
+        showError("Formulaire suspect détecté.");
+        isSubmitting = false;
+        submitButton.disabled = false;
+        submitButton.innerHTML = '<i class="bi bi-send-fill"></i> Envoyer le message';
+        return;
+      }
+
+      // Mapping des champs pour l'API (texte brut)
       const formData = {
         email: EmailInput.value.trim(),
         sujet: SujetInput.value.trim(),
-        message: MessageInput.value.trim(),
+        message: MessageInput.value.trim(), // en brut
         site_web: honeypot.value.trim(),
       };
 

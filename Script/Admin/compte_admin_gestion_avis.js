@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionAvisPage() {
 
@@ -94,7 +94,7 @@ export function initCompteAdminGestionAvisPage() {
   function showToast(message, type = 'success') {
     if (!toastEl || !toastBootstrap) return;
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeHtml(message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -128,7 +128,7 @@ export function initCompteAdminGestionAvisPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -157,7 +157,10 @@ export function initCompteAdminGestionAvisPage() {
       try { result = await response.json(); } catch { result = {}; }
 
       allAvis = result.data || [];
-      if (DebugConsole) console.log("[loadAvis] Avis chargés :", allAvis.length);
+      if (DebugConsole){
+        console.log("[loadAvis] Avis chargés :", allAvis.length);
+        console.log("[loadAvis] Avis :", result);
+      } 
       applyFilters();
     } catch (err) {
       console.error('[loadAvis] Erreur :', err);
@@ -179,6 +182,11 @@ export function initCompteAdminGestionAvisPage() {
     avis.forEach(function(a) {
       if (DebugConsole) console.log("[renderAvis] :", a.id, a.utilisateur_nom, a.statut);
 
+      // Sanitize contenu HTML avant affichage
+      const utilisateurNom = sanitizeHtml(a.utilisateur_nom || 'Anonyme');
+      const description = sanitizeHtml(a.description || 'Aucun commentaire');
+      // Longueur description
+      const descLength = (a.description || '').length;
       // Génération des étoiles
       let starsHtml = '';
       const note = a.note || 0;
@@ -191,18 +199,16 @@ export function initCompteAdminGestionAvisPage() {
       }
 
       // Badge statut
-            const statutLower = (a.statut || '').toLowerCase();
+      const statutLower = (a.statut || '').toLowerCase();
       let statutBadge = '';
-      if (statutLower === 'validé' || statutLower === 'publié') {
-        statutBadge = '<span class="badge bg-success ms-2">Validé</span>';
+      // Badge selon workflow 3 statuts
+      if (statutLower === 'publié') {
+          statutBadge = '<span class="badge bg-success ms-2">Publié</span>';
       } else if (statutLower === 'refusé') {
-        statutBadge = '<span class="badge bg-danger ms-2">Refusé</span>';
+          statutBadge = '<span class="badge bg-danger ms-2">Refusé</span>';
       } else {
-        statutBadge = '<span class="badge bg-warning text-dark ms-2">En attente</span>';
+          statutBadge = '<span class="badge bg-warning text-dark ms-2">En attente</span>';
       }
-
-      // Longueur description
-      const descLength = (a.description || '').length;
 
       // Boutons d'action
       let actionsHtml = '';
@@ -240,17 +246,17 @@ export function initCompteAdminGestionAvisPage() {
       card.innerHTML = `
         <div class="d-flex justify-content-between align-items-start mb-2">
           <div>
-            <strong class="fs-5">${a.utilisateur_nom || 'Anonyme'}</strong>
+            <strong class="fs-5">${utilisateurNom}</strong>
             ${statutBadge}
             <br>
-            <small class="text-muted">${a.date || '—'} — Commande ${a.numero_commande || '#' + (a.commande_id || '—')}</small>
+            <small class="text-muted">${a.date ||" "} — Commande ${sanitizeHtml(a.numero_commande || '#' + (a.commande_id || " "))}</small>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             ${actionsHtml}
           </div>
         </div>
         <div class="mb-2">${starsHtml}</div>
-        <p class="mb-1 fst-italic" style="color:#5a4a3a;">"${a.description || 'Aucun commentaire'}"</p>
+        <p class="mb-1 fst-italic" style="color:#5a4a3a;">"${description}"</p>
         <small class="text-muted">${descLength}/255 caractères</small>
       `;
 
@@ -347,54 +353,48 @@ export function initCompteAdminGestionAvisPage() {
      =============================== */  
   function applyFilters() {
 
-    let search = "";
-    let status = "";
-
     // Gestion du champ recherche
-    if (searchInput) {
-      if (searchInput.value) {
-        search = searchInput.value.toLowerCase().trim();
-      } else {
-        search = "";
-      }
-    } else {
-      search = "";
-    }
+    let search = searchInput ? sanitizeInput(searchInput.value.toLowerCase().trim()) : '';
 
     // Gestion du filtre status
-    if (filterStatus) {
-      if (filterStatus.value) {
-        status = filterStatus.value;
-      } else {
-        status = "";
-      }
-    } else {
-      status = "";
-    }
+    let status = filterStatus ? sanitizeInput(filterStatus.value) : '';
+
     if (DebugConsole) console.log("[applyFilters] search:", search, "status:", status);
 
     const filtered = allAvis.filter(function(a) {
+    // Filtre statut
+    if (status) {
+      const statutNorm = (a.statut || '').toLowerCase().replace(/\s+/g, '_').replace('é','e');
+      const filterNorm = status.toLowerCase().replace(/\s+/g, '_').replace('é','e');
+      if (statutNorm !== filterNorm) return false;
+    }
 
-      // Filtre statut
-      if (status) {
-        const statutNorm = (a.statut || '').toLowerCase().replace(/\s+/g, '_').replace('é', 'e');
-        const filterNorm = status.toLowerCase().replace(/\s+/g, '_').replace('é', 'e');
-        if (statutNorm !== filterNorm) return false;
-      }
+    // Filtre recherche par nom, description et num commande
+    if (search) {
+      const statutNorm = (a.statut || '').toLowerCase().replace(/\s+/g, '_').replace('é','e');
+      const nom = (a.utilisateur_nom || '').toLowerCase();
+      const desc = (a.description || '').toLowerCase();
+      const cmdId = String(a.commande_id || '');
+      const numeroCommande = String(a.numero_commande || '');
+      if (DebugConsole) console.log("[Filters recherche] statutNorm: "
+        ,statutNorm,
+        "nom : "
+        ,nom,
+        "desc : "
+        ,desc,
+        "cmdId : "
+        ,cmdId,
+        "numeroCommande : "
+        ,numeroCommande);
 
-      // Filtre recherche par nom utilisateur, description, id commande
-      if (search) {
-        const nom = (a.utilisateur_nom || '').toLowerCase();
-        const desc = (a.description || '').toLowerCase();
-        const cmdId = String(a.commande_id || '');
-        if (!nom.includes(search) && !desc.includes(search) && !cmdId.includes(search)) return false;
-      }
+      if (!nom.includes(search) && !desc.includes(search) && !cmdId.includes(search) && !numeroCommande.includes(search) ) return false;
+    }
 
-      return true;
-    });
+    return true;
+  });
 
-    renderAvis(filtered);
-  }
+  renderAvis(filtered);
+}
   /* ===============================
       LISTENERS FILTRES
      =============================== */

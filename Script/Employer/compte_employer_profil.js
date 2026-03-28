@@ -1,6 +1,5 @@
-import { API_URL,sanitizeHtml } from '../config.js';
-import { getToken} from '../script.js';
-
+import { API_URL } from '../config.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 export function initGestionProfilEmployerPage() {
 
   /* ===============================
@@ -131,7 +130,7 @@ export function initGestionProfilEmployerPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -178,13 +177,13 @@ export function initGestionProfilEmployerPage() {
       }
 
       // Remplit chaque champ du formulaire avec les données de l'API
-      if (firstNameInput) firstNameInput.value = user.prenom || '';
-      if (lastNameInput) lastNameInput.value = user.nom || '';
-      if (phoneInput) phoneInput.value = user.telephone || '';
-      if (emailInput) emailInput.value = user.email || '';
-      if (addressInput) addressInput.value = user.adresse_postale || '';
-      if (cityInput) cityInput.value = user.ville || '';
-      if (postalInput) postalInput.value = user.code_postal || '';
+      if (firstNameInput) firstNameInput.value = sanitizeInput(user.prenom || '');
+      if (lastNameInput) lastNameInput.value = sanitizeInput(user.nom || '');
+      if (phoneInput) phoneInput.value = sanitizeInput(user.telephone || '');
+      if (emailInput) emailInput.value = sanitizeInput(user.email || '');
+      if (addressInput) addressInput.value = sanitizeInput(user.adresse_postale || '');
+      if (cityInput) cityInput.value = sanitizeInput(user.ville || '');
+      if (postalInput) postalInput.value = sanitizeInput(user.code_postal || '');
 
       if (DebugConsole) console.log("[loadUserProfil] Champs remplis avec succès");
 
@@ -206,9 +205,9 @@ export function initGestionProfilEmployerPage() {
   function updateDisplayIdentity() {
 
     // Construit le nom complet à partir des champs du formulaire
-    const firstName = firstNameInput?.value || '';
-    const lastName = lastNameInput?.value || '';
-    const email = emailInput?.value || '';
+    const firstName = sanitizeInput(firstNameInput?.value || '');
+    const lastName = sanitizeInput(lastNameInput?.value || '');
+    const email = sanitizeInput(emailInput?.value || '');
 
     if (DebugConsole) {
       console.log("Mise à jour affichage identité");
@@ -244,18 +243,15 @@ export function initGestionProfilEmployerPage() {
 
   async function saveProfil() {
     if (DebugConsole) console.log("[saveProfil] Appel PUT", apiProfilUrl);
-    const prenom = firstNameInput ? firstNameInput.value : '';
-    const nom = lastNameInput ? lastNameInput.value : '';
-    const telephone = phoneInput ? phoneInput.value : '';
 
     const profilData = {
-      prenom: prenom,
-      nom: nom,
-      telephone: telephone,
-      email: emailInput ? emailInput.value : '',
-      adresse_postale: addressInput ? addressInput.value : '',
-      ville: cityInput ? cityInput.value : '',
-      code_postal: postalInput ? postalInput.value : ''
+      prenom: sanitizeInput(firstNameInput?.value || ''),
+      nom: sanitizeInput(lastNameInput?.value || ''),
+      telephone: sanitizeInput(phoneInput?.value || ''),
+      email: sanitizeInput(emailInput?.value || ''),
+      adresse_postale: sanitizeInput(addressInput?.value || ''),
+      ville: sanitizeInput(cityInput?.value || ''),
+      code_postal: sanitizeInput(postalInput?.value || '')
     };
 
     if (DebugConsole) console.log("[saveProfil] Données à sauvegarder :", profilData);
@@ -310,7 +306,7 @@ export function initGestionProfilEmployerPage() {
 
     // Icône Bootstrap selon le type
     const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
-    notification.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
+    notification.innerHTML = `<i class="bi ${icon}"></i> ${sanitizeHtml(message)}`;
 
     // Style inline pour la notification
     notification.style.cssText = `

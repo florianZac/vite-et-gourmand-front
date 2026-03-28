@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken} from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionplatPage() {
 
@@ -167,7 +167,7 @@ export function initCompteAdminGestionplatPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -335,7 +335,7 @@ export function initCompteAdminGestionplatPage() {
         <label 
           class="form-check-label" 
           for="allerg-${allergene.id}">
-          ${allergene.libelle}
+          ${sanitizeHtml(allergene.libelle)}
         </label>
       `;
 
@@ -434,7 +434,7 @@ export function initCompteAdminGestionplatPage() {
       // Gestion des allergènes
       let allergLabels = '';
       if (plat.allergenes && plat.allergenes.length) {
-        allergLabels = plat.allergenes.map(a => a.libelle).join(', ');
+        allergLabels = plat.allergenes.map(a =>sanitizeHtml(a.libelle)).join(', ');
       }
 
       // Création de la ligne 
@@ -449,7 +449,7 @@ export function initCompteAdminGestionplatPage() {
 
       if (plat.photo) {
         // Si une image existe
-        imageHtml = `<img src="${plat.photo}" alt="${plat.titre}" 
+        imageHtml = `<img src="${plat.photo}" alt="${sanitizeHtml(plat.titre)}" 
           style="width:60px;height:60px;object-fit:cover;border-radius:0.5rem;">`;
       } else {
         // Sinon image par défaut
@@ -463,8 +463,8 @@ export function initCompteAdminGestionplatPage() {
         <div class="d-flex align-items-center gap-3">
           ${imageHtml}
           <div>
-            <strong>${plat.titre || 'Sans titre'}</strong>
-            <span class="badge bg-secondary ms-2">${plat.categorie || ' '}</span><br>
+            <strong>${sanitizeHtml(plat.titre || 'Sans titre')}</strong>
+            <span class="badge bg-secondary ms-2">${sanitizeHtml(plat.categorie || '')}</span><br>
             <small class="text-muted">Allergènes : ${allergLabels}</small>
           </div>
         </div>
@@ -478,7 +478,7 @@ export function initCompteAdminGestionplatPage() {
           <button 
             class="btn btn-danger btn-sm btn-delete-plat" 
             data-id="${plat.id}" 
-            data-titre="${plat.titre}" 
+            data-titre="${sanitizeHtml(plat.titre)}" 
             title="Supprimer">
             <i class="bi bi-trash-fill me-1"></i> Supprimer
           </button>
@@ -618,9 +618,9 @@ export function initCompteAdminGestionplatPage() {
      =============================== */
   btnSavePlat.addEventListener('click', async () => {
 
-    const titre_plat = inputTitre.value.trim();
+    const titre_plat = sanitizeInput(inputTitre.value.trim());
     const categorie = selectCategorie.value;
-    const description_plat = inputDescription.value.trim();
+    const description_plat = sanitizeInput(inputDescription.value.trim());
 
     // Récupère l'URL depuis le hidden input (uploadée ou existante en edit)
     const photo = inputPhotoUrl.value.trim();

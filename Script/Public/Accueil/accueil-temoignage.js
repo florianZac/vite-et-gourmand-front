@@ -1,4 +1,5 @@
-import { API_URL, sanitizeHtml } from '../../config.js';
+import { API_URL} from '../../config.js';
+import { sanitizeInput, sanitizeHtml } from '../../script.js';
 /* ===============================
     CAROUSEL DE TÉMOIGNAGES
       Gère la navigation entre 5 avis clients différents
@@ -303,9 +304,9 @@ export async function initAccueilPage() {
       .map(avis => ({
         id: avis.id,
         stars: Number(avis.stars) || 5,
-        text: avis.text ? avis.text : 'Avis sans texte',
-        author: avis.author || 'Anonyme',
-        date: avis.date ? formatDateFR(avis.date) : 'Date inconnue'
+        text: sanitizeInput(avis.text ? avis.text : 'Avis sans texte'),
+        author: sanitizeInput(avis.author || 'Anonyme'),
+        date: sanitizeInput(avis.date ? formatDateFR(avis.date) : 'Date inconnue')
       }));
 
     if (DebugConsole) console.log(`Total avis récupérés et triés : ${testimonials.length}`, testimonials);
@@ -326,6 +327,4 @@ export async function initAccueilPage() {
        ======================================== */
     MiseAjourCarousel();
   }
-  
- 
 }

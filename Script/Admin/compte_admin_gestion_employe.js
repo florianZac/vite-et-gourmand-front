@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken} from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionEmployePage() {
   
@@ -97,7 +97,7 @@ export function initCompteAdminGestionEmployePage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent = sanitizeHtml(message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -175,7 +175,7 @@ export function initCompteAdminGestionEmployePage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -232,7 +232,10 @@ export function initCompteAdminGestionEmployePage() {
 
     employes.forEach(function(employe) {
       if (DebugConsole) console.log("[renderEmployes] :", employe.prenom, employe.nom, employe.statut_compte);
-
+      const prenom = sanitizeHtml(employe.prenom || '');
+      const nom = sanitizeHtml(employe.nom || '');
+      const email = sanitizeHtml(employe.email || '');
+      const telephone = sanitizeHtml(employe.telephone || '');
       const isActif = employe.statut_compte === 'actif';
 
       const row = document.createElement('div');
@@ -242,11 +245,11 @@ export function initCompteAdminGestionEmployePage() {
 
       row.innerHTML = `
         <div>
-          <strong>${employe.prenom || ''} ${employe.nom || ''}</strong>
+          <strong>${prenom} ${nom}</strong>
           <span class="badge ms-2 ${isActif ? 'bg-success' : 'bg-warning text-dark'}">${isActif ? 'Actif' : 'Désactivé'}</span>
           <br>
-          <small class="text-muted">${employe.email || ''}</small>
-          ${employe.telephone ? '<br><small class="text-muted">' + employe.telephone + '</small>' : ''}
+          <small class="text-muted">${email}</small>
+          ${telephone ? '<br><small class="text-muted">' + telephone + '</small>' : ''}
         </div>
         <div class="d-flex flex-column gap-2">
           ${isActif
@@ -259,7 +262,7 @@ export function initCompteAdminGestionEmployePage() {
           }
           <button class="btn btn-danger btn-sm  btn-supprimer" 
             data-id="${employe.id}" 
-            data-nom="${employe.prenom} ${employe.nom}" 
+            data-nom="${prenom} ${nom}" 
             title="Supprimer">
             <i class="bi bi-trash me-1"></i> Supprimer
           </button>
@@ -362,10 +365,10 @@ export function initCompteAdminGestionEmployePage() {
     =============================== */
   btnCreate.addEventListener('click', async function() {
 
-    const nom = inputNom.value.trim();
-    const prenom = inputPrenom.value.trim();
-    const email = inputEmail.value.trim();
-    const telephone = inputTelephone.value.trim();
+    const nom = sanitizeInput(inputNom.value.trim());
+    const prenom = sanitizeInput(inputPrenom.value.trim());
+    const email = sanitizeInput(inputEmail.value.trim());
+    const telephone = sanitizeInput(inputTelephone.value.trim());
 
     // Validations
     if (!nom) { showToast("Le nom est obligatoire.", "error"); return; }

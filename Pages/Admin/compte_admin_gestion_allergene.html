@@ -67,7 +67,7 @@
             <a href="/gestion_allergene" class="card text-center text-decoration-none h-100 active">
               <div class="card-body py-3">
                 <i class="bi bi-virus fs-4 mb-1"></i>
-                <h6 class="card-title mb-0">Gestion Allergènes</h6>
+                <h6 class="card-title mb-0">Gestion Allergène & Menus tag</h6>
               </div>
             </a>
           </div>
@@ -101,7 +101,29 @@
         </div>
 
         <!------ Titre de la Navigation  -------->
-        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène</h2>
+        <h2 class="compte_admin-title text-center pb-4 pt-2">Gestion Allergène & Menus tag</h2>
+        <!------ Gestion Allergène (ACTIVE) -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_allergene" class="card text-center text-decoration-none h-100 active">
+            <div class="card-body py-3">
+              <i class="bi bi-star-half mb-1"></i>
+              <h6 class="card-title mb-0">Gestion Allergène</h6>
+            </div>
+          </a>
+        </div>   
+
+        <!------ Onglets Gestion Tag Menus  -------->
+        <div class="col-12 col-md-4">
+          <a href="/gestion_admin_Menus_tag" class="card text-center text-decoration-none h-100 ">
+            <div class="card-body py-3">
+              <i class="bi bi-cpu fs-4 mb-1"></i>
+              <h6 class="card-title mb-0 ">Gestion Tag Menus</h6>
+            </div>
+          </a>
+        </div>
+
+        <!------ Titre de la section   -------->
+        <h3 class="compte_admin-title text-center pb-4 pt-2 fs-2">Gestion Allergène</h3>
 
         <!------ Barre recherche + filtres -------->
         <div class="card mb-4 shadow-sm">
@@ -109,9 +131,9 @@
             <div class="row g-2 align-items-center">
 
               <!-- Liste des allergènes -->
-                <div class="col-12" id="allergenes-list">
-                  <!-- Injecté dynamiquement par le JS -->
-                </div>
+              <div class="col-12" id="allergenes-list">
+                <!-- Injecté dynamiquement par le JS -->
+              </div>
 
               <!-- Champ ajout d'un nouveau allergène-->
               <div class="col-12 d-flex justify-content-center align-items-center gap-2 mt-3">
@@ -127,9 +149,7 @@
                   <div class="toast-body"></div>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>

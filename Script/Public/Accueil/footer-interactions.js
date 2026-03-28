@@ -1,5 +1,5 @@
-import { API_URL,sanitizeHtml } from '../../config.js';
-
+import { API_URL } from '../../config.js';
+import { sanitizeInput, sanitizeHtml } from '../../script.js';
   // EndPoint de l'API pour la récupération des horaires
 const apiHoraire = `${API_URL}/api/horaires`;
 
@@ -46,7 +46,7 @@ export async function initFooterInteractions() {
         displayHeures = `${horaire.heureOuverture} – ${horaire.heureFermeture}`;
       }
       // Injection du HTML de la ligne
-      row.innerHTML = `<span>${horaire.jour}</span><span>${displayHeures}</span>`;
+      row.innerHTML = `<span>${sanitizeHtml(horaire.jour)}</span><span>${sanitizeHtml(displayHeures)}</span>`;
       // Ajout de la ligne dans la colonne
       horairesCol.appendChild(row);
       // Affichage du débug si égal à true 
@@ -59,7 +59,7 @@ export async function initFooterInteractions() {
     // Affiche un message par défaut dans le footer
     const errorRow = document.createElement('div');
     errorRow.className = 'hours-row';
-    errorRow.innerHTML = `<span colspan="2">Horaires indisponibles</span>`;
+    errorRow.innerHTML = `<span colspan="2">${sanitizeHtml('Horaires indisponibles')}</span>`;
     horairesCol.appendChild(errorRow);
   }
 }

@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import { getToken, getRole, sanitizeInput, sanitizeHtml } from '../script.js';
 export function initDetailMenusPage() {
 
 /* ===============================
@@ -214,12 +214,12 @@ export function initDetailMenusPage() {
 
     // Badge thème
     if (menu.theme && menu.theme.titre) {
-      detailBadges.innerHTML += `<span class="detail_menu-badge-theme">${menu.theme.titre}</span>`;
+      detailBadges.innerHTML += `<span class="detail_menu-badge-theme">${sanitizeHtml(menu.theme.titre)}</span>`;
     }
 
     // Badge régime
     if (menu.regime && menu.regime.libelle) {
-      detailBadges.innerHTML += `<span class="detail_menu-badge-regime"> ${menu.regime.libelle}</span>`;
+      detailBadges.innerHTML += `<span class="detail_menu-badge-regime"> ${sanitizeHtml(menu.regime.libelle)}</span>`;
     }
 
     // Badge disponibilité
@@ -238,7 +238,7 @@ export function initDetailMenusPage() {
       if (restant > 0 && restant <= 10) {
         detailBadges.innerHTML += `
           <span class="detail_menu-badge-stock">
-            Plus que ${restant} menu${restant > 1 ? 's' : ''} disponible${restant > 1 ? 's' : ''}
+            Plus que ${(restant)} menu${(restant) > 1 ? 's' : ''} disponible${(restant) > 1 ? 's' : ''}
           </span>
         `;
       }
@@ -292,7 +292,9 @@ export function initDetailMenusPage() {
 
     const tags = menu.tags || [];
     tags.forEach(tag => {
-      detailTags.innerHTML += `<span class="detail_menu-tag">${tag}</span>`;
+      if (tag && tag.tag) {
+        detailTags.innerHTML += `<span class="detail_menu-tag">${sanitizeHtml(tag.tag)}</span>`;
+      }
     });
 
     if (DebugConsole) console.log("[renderTags] Tags:", tags);
@@ -451,7 +453,7 @@ export function initDetailMenusPage() {
     for (let i = 0; i < maxPhotos; i++) {
       const thumb = document.createElement('div');
       thumb.className = `detail_menu-gallery-thumb ${i === currentPhotoIndex ? 'active' : ''}`;
-      thumb.innerHTML = `<img src="${plats[i].photo}" alt="${plats[i].titre || 'Photo ' + (i + 1)}">`;
+      thumb.innerHTML = `<img src="${sanitizeHtml(plats[i].photo)}" alt="${sanitizeHtml(plats[i].titre) || 'Photo ' + (i + 1)}">`;
       // Au clic cette photo devient la photo principale
       thumb.addEventListener('click', () => {
         currentPhotoIndex = i;
@@ -537,7 +539,7 @@ export function initDetailMenusPage() {
 
       if (allergens.length > 0) {
         for (let i = 0; i < allergens.length; i++) {
-          allergensHtml += '<span class="detail_menu-dish-allergen-badge">' + allergens[i].libelle + '</span>';
+          allergensHtml += '<span class="detail_menu-dish-allergen-badge">' + sanitizeHtml(allergens[i].libelle) + '</span>';
         }
       } else {
         allergensHtml = '<span class="detail_menu-dish-allergen-none">Aucun</span>';
@@ -552,8 +554,8 @@ export function initDetailMenusPage() {
             <span class="detail_menu-dish-type-icon">${cat.icon}</span>
             <span class="detail_menu-dish-type-label">${cat.label}</span>
           </div>
-          <h3 class="detail_menu-dish-name">${platTitre || ' '}</h3>
-          <p class="detail_menu-dish-description">${plat ? plat.description : ''}</p>
+          <h3 class="detail_menu-dish-name">${sanitizeHtml(platTitre) || ' '}</h3>
+          <p class="detail_menu-dish-description">${plat ? sanitizeHtml(plat.description || '') : ''}</p>
           <div class="detail_menu-dish-allergens-label">
             <i class="bi bi-shield-exclamation"></i>
             <span>Allergènes :</span>
@@ -712,8 +714,8 @@ export function initDetailMenusPage() {
           if (DebugConsole) console.log("[btnSavePhoto] URL Cloudinary :", newPhotoUrl);
 
           // Étape 2 : Met à jour le plat avec la nouvelle URL + description
-          const description = editPhotoDescription?.value?.trim() || '';
-          const bodyData = { photo: newPhotoUrl };
+          const description = sanitizeHtml(editPhotoDescription?.value?.trim() || '');
+          const bodyData = { photo: sanitizeHtml(newPhotoUrl )};
           if (description) bodyData.description_plat = description;
 
           const updateRes = await fetch(`${apiEmployePlats}/${currentPlat.id}`, {

@@ -1,5 +1,5 @@
-import { API_URL,sanitizeHtml } from '../config.js';
-import { getToken } from '../script.js';
+import { API_URL } from '../config.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initGestionCommandeEmployerPage() {
 
@@ -176,7 +176,7 @@ export function initGestionCommandeEmployerPage() {
       if (DebugConsole) console.log("[loadUserName] Données reçues :", data);
 
       if (heroUserName && data.utilisateur) {
-        const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
+        const prenom = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
         heroUserName.textContent = prenom;
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
@@ -315,8 +315,8 @@ export function initGestionCommandeEmployerPage() {
       if (nextStatut) {
         actionsHtml += `
           <button class="btn btn-secondary btn-sm btn-next-statut" 
-            data-id="${c.id}" data-statut="${nextStatut}">
-            ${nextStatut}
+            data-id="${c.id}" data-statut="${sanitizeHtml(nextStatut)}">
+            ${sanitizeHtml(nextStatut)}
           </button>
         `;
       }
@@ -336,7 +336,7 @@ export function initGestionCommandeEmployerPage() {
       let suiviHtml = '';
       if (suivis.length > 0) {
         const badges = suivis.map(function(s) {
-          return `<span class="badge bg-light text-dark border me-1 mb-2" style="font-size:0.75rem;">${s.statut} — ${s.date_statut}</span>`;
+          return `<span class="badge bg-light text-dark border me-1 mb-2" style="font-size:0.75rem;">${sanitizeHtml(s.statut)} — ${sanitizeHtml(s.date_statut)}</span>`;
         }).join('');
         suiviHtml = `
           <div class="mt-2">
@@ -359,71 +359,71 @@ export function initGestionCommandeEmployerPage() {
 
       card.innerHTML = `
         <div class="text-center mb-2">
-          <strong class="fs-5">${c.numero_commande || ' '}</strong><br>
-          <em class="text-muted-commande">${c.menu?.titre || c.menu_titre || ' '}</em>
+          <strong class="fs-5">${sanitizeHtml(c.numero_commande || '')}</strong><br>
+          <em class="text-muted-commande">${sanitizeHtml(c.menu?.titre || c.menu_titre || '')}</em>
         </div>
         <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
 
           <strong>Nom du Client : </strong>
             <span class="client-name">
-              ${c.utilisateur_nom || c.utilisateur?.nom || ' '}
+              ${sanitizeHtml(c.utilisateur_nom || c.utilisateur?.nom || '')}
             </span>
             <span class="prenom-name">
-              ${c.utilisateur_prenom || c.utilisateur?.prenom || ''}
+              ${sanitizeHtml(c.utilisateur_prenom || c.utilisateur?.prenom || '')}
             </span><br>
     
           <strong>Numero du Client : </strong>
             <span class="numero-name"> 
-              ${c.utilisateur?.telephone || ''}
+              ${sanitizeHtml(c.utilisateur?.telephone || '')}
             </span><br>
           <strong>Nombre de personnes : </strong> 
             <span class="nombre-personne-name"> 
-              ${c.nombre_personne || 0} 
+              ${sanitizeHtml(c.nombre_personne || 0)} 
             </span><br>
 
           <strong>Date de commande : </strong>
             <span class="date-commande"> 
-              ${date_cmd ||  ''} 
+              ${sanitizeHtml(date_cmd ||  '')} 
             </span><br>
 
           <strong>Date de prestation client : </strong>
             <span class="date-prestation"> 
-              ${date_prestation  ||  ''}
+              ${sanitizeHtml(date_prestation  ||  '')}
             </span><br>
 
           <strong>Heure de livraison prévue : </strong>
             <span class="heure-livraison"> 
-              ${c.heure_livraison  ||  ''}
+              ${sanitizeHtml(c.heure_livraison  ||  '')}
             </span><br>
 
           <strong>Ville de livraison : </strong>
             <span class="ville-livraison"> 
-              ${c.ville_livraison || ' '}
+              ${sanitizeHtml(c.ville_livraison || ' ')}
             </span><br>         
           
           <strong>Adresse de livraison :</strong>
             <span class="adresse-livraison"> 
-              ${c.adresse_livraison || ' '}
+              ${sanitizeHtml(c.adresse_livraison || ' ')}
             </span><br>         
       
           <strong>Code postal du Client : </strong>
             <span class="codepostal-client"> 
-              ${c.utilisateur?.code_postal || ''}
+              ${sanitizeHtml(c.utilisateur?.code_postal || '')}
             </span><br>    
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 
-              ${c.distance_km || ''} km
+              ${sanitizeHtml(c.distance_km || '')} km
             </span><br>  
           <strong>Prix de la livraison : </strong>
             <span class="prix-livraison"> 
-              ${c.prix_livraison || ''} 
+              ${sanitizeHtml(c.prix_livraison || '')} 
             </span><br>  
-          <strong>Total commande TTC: </strong><span class="total-commande" >${total} €</span><br>
-          <strong>Prêt matériel : </strong><span class="pret-mat" ${pretText}</span><br>
-          <strong>Restitution matériel</strong><span class="resti-mat" ${restituText}</span><br>
+          <strong>Total commande TTC: </strong><span class="total-commande" >${sanitizeHtml(total)} €</span><br>
+          <strong>Prêt matériel : </strong><span class="pret-mat" ${sanitizeHtml(pretText)}</span><br>
+          <strong>Restitution matériel</strong><span class="resti-mat" ${sanitizeHtml(restituText)}</span><br>
         </div>
         <div class="mb-2">
-          <span class="badge ${badgeCss}">${c.statut}</span>
+          <span class="badge ${badgeCss}">${sanitizeHtml(c.statut)}</span>
         </div>
         ${suiviHtml}
         <div class="d-flex gap-2 mt-3">
@@ -550,8 +550,8 @@ export function initGestionCommandeEmployerPage() {
       FONCTION : FILTRES RECHERCHER ET STATUS
      =============================== */
   function applyFilters() {
-    const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
-    const status = filterStatus ? filterStatus.value : '';
+    const search = sanitizeInput(searchInput?.value.toLowerCase().trim() || '');
+    const status = sanitizeInput(filterStatus?.value || '');
 
     const filtered = allCommandes.filter(function(c) {
       if (status && c.statut !== status) return false;

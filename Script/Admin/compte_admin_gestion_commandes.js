@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole } from '../script.js';
+import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initCompteAdminGestionCommandesPage() {
 
@@ -8,7 +8,7 @@ export function initCompteAdminGestionCommandesPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = false;
+  let DebugConsole = true;
   let allCommandes = [];
 
   /* ===============================
@@ -65,7 +65,6 @@ export function initCompteAdminGestionCommandesPage() {
 
   if (DebugConsole) {
     console.log("=== DEBUG INIT COMPTE ADMIN ===");
-    console.log("Cookies actuels :", document.cookie);
     console.log("Token actuel :", token);
     console.log("================================");
   }
@@ -124,7 +123,7 @@ export function initCompteAdminGestionCommandesPage() {
   function showToast(message, type = 'success') {
     if (!toastEl || !toastBootstrap) return;
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = message || "Action effectuée !";
+    body.textContent =sanitizeHtml( message || "Action effectuée !");
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -143,17 +142,20 @@ export function initCompteAdminGestionCommandesPage() {
     'En attente': 'Acceptée',
     'Acceptée': 'En préparation',
     'En préparation': 'En livraison',
-    'En livraison': 'Livré'
+    'En livraison': 'Livré',
+    'En attente du retour matériel':'Restitution confirmée'
   };
+
   const STATUS_CSS = {
-    'En attente':                      'bg-warning text-dark',
-    'Acceptée':                        'bg-info text-dark',
-    'En préparation':                  'bg-primary',
-    'En livraison':                    'bg-primary',
-    'Livré':                           'bg-success',
-    'En attente du retour matériel':   'bg-warning text-dark',
-    'Terminée':                        'bg-success',
-    'Annulée':                         'bg-danger'
+    'En attente': 'bg-warning text-dark',
+    'Acceptée': 'bg-info text-dark',
+    'En préparation': 'bg-primary',
+    'En livraison': 'bg-primary',
+    'Livré': 'bg-success',
+    'En attente du retour matériel': 'bg-warning text-dark',
+    'Restitution confirmée': 'bg-success',
+    'Terminée': 'bg-success',
+    'Annulée': 'bg-danger'
   };
   /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
@@ -188,7 +190,9 @@ export function initCompteAdminGestionCommandesPage() {
 
       if (heroUserName && data.utilisateur) {
         const prenom = data.utilisateur.prenom || data.utilisateur.email || '';
-        heroUserName.textContent = prenom;
+        heroUserName.textContent = sanitizeHtml(
+          data.utilisateur.prenom || data.utilisateur.email || ''
+        );
         if (DebugConsole) console.log("[loadUserName] Prénom affiché dans le hero :", prenom);
       } else {
         if (DebugConsole) console.log("[loadUserName] Element #hero-user-name non trouvé ou pas de donnée utilisateurs disponible");
@@ -229,13 +233,14 @@ export function initCompteAdminGestionCommandesPage() {
       FONCTION : CHARGER LE SUIVI D'UNE COMMANDE
      =============================== */
   async function loadSuivi(commandeId) {
-    if (DebugConsole) console.log("[loadSuivi] Appel GET", apiSuivi);
+    if (DebugConsole) console.log("[loadSuivi] Appel GET", commandeId);
+    const safeId = sanitizeInput(commandeId);
     try {
-      const response = await fetch(`${apiSuivi}/${commandeId}/suivi`, 
+      const response = await fetch(`${apiSuivi}/${safeId}/suivi`, 
       { method: 'GET', headers: authHeaders });
 
       if (!response.ok){
-        console.error('[loadSuivi] Erreur retour API :', err);
+        console.error('[loadSuivi] Erreur retour API :', response.status);
         return [];
       } 
 
@@ -292,6 +297,20 @@ export function initCompteAdminGestionCommandesPage() {
     }
 
     for (const c of commandes) {
+
+      const numeroCommande = sanitizeHtml(c.numero_commande || '');
+      const menuTitre = sanitizeHtml(c.menu?.titre || '');
+      const nomClient = sanitizeHtml(c.utilisateur?.nom || '');
+      const prenomClient = sanitizeHtml(c.utilisateur?.prenom || '');
+      const telephone = sanitizeHtml(c.utilisateur?.telephone || '');
+      const ville = sanitizeHtml(c.ville_livraison || '');
+      const adresse = sanitizeHtml(c.adresse_livraison || '');
+      const safeId = sanitizeInput(c.id);
+      const nb_personne = sanitizeInput(c.nombre_personne || 0);            
+      const distance = sanitizeHtml(c.distance_km || '');
+      const CodePostal = sanitizeHtml(c.utilisateur?.code_postal || '');
+      const Heure_livraison = sanitizeHtml(c.heure_livraison  ||  '');
+
       if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
 
       const card = document.createElement('div');
@@ -309,12 +328,12 @@ export function initCompteAdminGestionCommandesPage() {
       let restituText = '<span style="color:#5a4a3a;">Non applicable</span>';
       if (c.pret_materiel) {
         restituText = c.restitution_materiel
-          ? '<span style="color:green; font-weight:600;">Rendu</span>'
-          : '<span style="color:#c0392b; font-weight:600;">en attente</span>';
+          ? '<span style="color:green; font-weight:600;"> Rendu</span>'
+          : '<span style="color:#c0392b; font-weight:600;"> En attente</span>';
       }
 
       // Total commande
-      const total = ((c.prix_menu || 0) + (c.prix_livraison || 0)).toFixed(2);
+      const total = (Number(c.prix_menu || 0) + Number(c.prix_livraison || 0)).toFixed(2);
       if (DebugConsole) console.log("[renderCommandes] total: ", total);
       if (DebugConsole) console.log("[renderCommandes] prix_menu: ", c.prix_menu);
       if (DebugConsole) console.log("[renderCommandes] prix_livraison: ", c.prix_livraison);
@@ -326,8 +345,8 @@ export function initCompteAdminGestionCommandesPage() {
       if (nextStatut) {
         actionsHtml += `
           <button class="btn btn-secondary btn-sm btn-next-statut" 
-            data-id="${c.id}" data-statut="${nextStatut}">
-            ${nextStatut}
+            data-id="${c.id}" data-statut="${sanitizeHtml(nextStatut)}">
+            ${sanitizeHtml(nextStatut)}
           </button>
         `;
       }
@@ -335,7 +354,7 @@ export function initCompteAdminGestionCommandesPage() {
       // Bouton confirmer restitution si en attente de retour matériel
       if (c.statut === 'En attente du retour matériel') {
         actionsHtml += `
-          <button class="btn btn-warning btn-sm btn-restitution" data-id="${c.id}">
+          <button class="btn btn-warning btn-sm btn-restitution" data-id="${safeId}">
             Confirmer restitution
           </button>
         `;
@@ -344,18 +363,18 @@ export function initCompteAdminGestionCommandesPage() {
       // Bouton annuler sauf Terminée et Annulée
       if (c.statut !== 'Terminée' && c.statut !== 'Annulée') {
         actionsHtml += `
-          <button class="btn btn-danger btn-sm btn-annuler" data-id="${c.id}">
+          <button class="btn btn-danger btn-sm btn-annuler" data-id="${safeId}">
             Annuler
           </button>
         `;
       }
       if (DebugConsole) console.log("[renderCommandes] COMMANDE COMPLETE :", c);
       // Suivi timeline
-      const suivis = await loadSuivi(c.id);
+      const suivis = await loadSuivi(safeId);
       let suiviHtml = '';
       if (suivis.length > 0) {
         const badges = suivis.map(function(s) {
-          return `<span class="badge bg-light text-dark border me-1 mb-2" style="font-size:0.75rem;">${s.statut} — ${s.date_statut}</span>`;
+          return `<span class="badge bg-light text-dark border me-1 mb-2" style="font-size:0.75rem;">${sanitizeHtml(s.statut)} — ${sanitizeHtml(s.date_statut)}</span>`;
         }).join('');
         suiviHtml = `
           <div class="mt-2">
@@ -378,31 +397,31 @@ export function initCompteAdminGestionCommandesPage() {
 
       card.innerHTML = `
         <div class="text-center mb-2">
-          <strong class="fs-5">${c.numero_commande || ' '}</strong><br>
-          <em class="text-muted-commande">${c.menu?.titre || c.menu_titre || ' '}</em>
+          <strong class="fs-5">${numeroCommande}</strong><br>
+          <em class="text-muted-commande">${menuTitre}</em>
         </div>
         <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
 
           <strong>Nom du Client : </strong>
             <span class="client-name">
-              ${c.utilisateur_nom || c.utilisateur?.nom || ' '}
+              ${nomClient}
             </span>
             <span class="prenom-name">
-              ${c.utilisateur_prenom || c.utilisateur?.prenom || ''}
+              ${prenomClient}
             </span><br>
     
           <strong>Numero du Client : </strong>
             <span class="numero-name"> 
-              ${c.utilisateur?.telephone || ''}
+              ${telephone}
             </span><br>
           <strong>Nombre de personnes : </strong> 
             <span class="nombre-personne-name"> 
-              ${c.nombre_personne || 0} 
+              ${nb_personne} 
             </span><br>
 
           <strong>Date de commande : </strong>
             <span class="date-commande"> 
-              ${date_cmd ||  ''} 
+              ${date_cmd} 
             </span><br>
 
           <strong>Date de prestation client : </strong>
@@ -412,34 +431,34 @@ export function initCompteAdminGestionCommandesPage() {
 
           <strong>Heure de livraison prévue : </strong>
             <span class="heure-livraison"> 
-              ${c.heure_livraison  ||  ''}
+              ${Heure_livraison}
             </span><br>
 
           <strong>Ville de livraison : </strong>
             <span class="ville-livraison"> 
-              ${c.ville_livraison || ' '}
+              ${ville}
             </span><br>         
           
           <strong>Adresse de livraison :</strong>
             <span class="adresse-livraison"> 
-              ${c.adresse_livraison || ' '}
+              ${adresse}
             </span><br>         
       
           <strong>Code postal du Client : </strong>
             <span class="codepostal-client"> 
-              ${c.utilisateur?.code_postal || ''}
+              ${CodePostal}
             </span><br>    
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 
-              ${c.distance_km || ''} km
+              ${distance} km
             </span><br>  
           <strong>Prix de la livraison : </strong>
             <span class="prix-livraison"> 
-              ${c.prix_livraison || ''} 
+              ${sanitizeHtml(c.prix_livraison || '')} 
             </span><br>  
           <strong>Total commande TTC: </strong><span class="total-commande" >${total} €</span><br>
-          <strong>Prêt matériel : </strong><span class="pret-mat" ${pretText}</span><br>
-          <strong>Restitution matériel</strong><span class="resti-mat" ${restituText}</span><br>
+          <strong>Prêt matériel : </strong><span class="pret-mat">${pretText}</span><br>
+          <strong>Restitution matériel : </strong><span class="resti-mat">${restituText}</span><br>
         </div>
         <div class="mb-2">
           <span class="badge ${badgeCss}">${c.statut}</span>
@@ -449,7 +468,6 @@ export function initCompteAdminGestionCommandesPage() {
           ${actionsHtml}
         </div>
       `;
-
       commandesList.appendChild(card);
     }
 
@@ -479,9 +497,9 @@ export function initCompteAdminGestionCommandesPage() {
       FONCTION : OUVRIR MODALE CHANGEMENT STATUT
      =============================== */
   function ouvrirModalStatut(commandeId, nouveauStatut) {
-    modalStatutText.textContent = `Passer la commande au statut "${nouveauStatut}" ?`;
-    modalStatutId.value = commandeId;
-    modalStatutValue.value = nouveauStatut;
+    modalStatutText.textContent = `Passer la commande au statut "${sanitizeInput(nouveauStatut)}" ?`;
+    modalStatutId.value = sanitizeInput(commandeId);
+    modalStatutValue.value = sanitizeInput(nouveauStatut);
     const modal = new bootstrap.Modal(modalStatutEl);
     modal.show();
   }
@@ -491,10 +509,18 @@ export function initCompteAdminGestionCommandesPage() {
       APPEL : POST /api/employe/commandes/{id}/statut
      =============================== */
   modalStatutConfirm.addEventListener('click', async function() {
-    const commandeId = modalStatutId.value;
-    const nouveauStatut = modalStatutValue.value;
+    const commandeId = sanitizeInput(modalStatutId.value);
+    const nouveauStatut = sanitizeInput(modalStatutValue.value);
+    const originalText = modalStatutConfirm.innerHTML;
 
     if (DebugConsole) console.log("[changerStatut] APPEL :", commandeId, ":", nouveauStatut);
+
+    // Désactive et met un spinner
+    modalStatutConfirm.disabled = true;
+    modalStatutConfirm.innerHTML = `
+      <span class="spinner-border spinner-border-sm me-2"></span>
+      Changement statut en cours...
+    `;
 
     try {
       const response = await fetch(`${apiChangerStatut}/${commandeId}/statut`, {
@@ -519,6 +545,10 @@ export function initCompteAdminGestionCommandesPage() {
       console.error('[changerStatut] Erreur :', err);
       showToast("Erreur réseau.", "error");
     }
+
+    // Réactive le bouton et remet le texte d’origine
+    modalStatutConfirm.disabled = false;
+    modalStatutConfirm.innerHTML = originalText;
   });
 
   /* ===============================
@@ -543,6 +573,8 @@ export function initCompteAdminGestionCommandesPage() {
         APPEL : PUT /api/commandes/admin/{id}/annuler
      =============================== */
   modalAnnulerConfirm.addEventListener('click', async function() {
+
+    const originalText = modalAnnulerConfirm.innerHTML;
     const commandeId = modalAnnulerId.value;
     const motif = modalAnnulerMotif.value.trim();
 
@@ -553,6 +585,13 @@ export function initCompteAdminGestionCommandesPage() {
     modalAnnulerError.style.display = 'none';
 
     if (DebugConsole) console.log("[annulerCommande]", commandeId, motif);
+
+    // Désactive et met un spinner
+    modalAnnulerConfirm.disabled = true;
+    modalAnnulerConfirm.innerHTML = `
+      <span class="spinner-border spinner-border-sm me-2"></span>
+      Annulation commande en cours...
+    `;
 
     try {
       const response = await fetch(`${apiAnnuler}/${commandeId}/annuler`, {
@@ -577,6 +616,10 @@ export function initCompteAdminGestionCommandesPage() {
       console.error('[annulerCommande] Erreur :', err);
       showToast("Erreur réseau.", "error");
     }
+
+    // Réactive le bouton et remet le texte d’origine
+    modalAnnulerConfirm.disabled = false;
+    modalAnnulerConfirm.innerHTML = originalText;
   });
 
   /* ===============================
@@ -595,12 +638,18 @@ export function initCompteAdminGestionCommandesPage() {
       APPEL : PUT /api/employe/commandes/{id}/restitution
      =============================== */
   modalRestitConfirm.addEventListener('click', async function() {
-    const commandeId = modalRestitId.value;
-    const restitution = modalRestitMateriel.checked;
-    const penalite = modalRestitPenalite.checked;
+
+    const originalText = modalRestitConfirm.innerHTML;
+    const commandeId = sanitizeInput(modalRestitId.value);
+    const restitution = sanitizeInput(modalRestitMateriel.checked);
+    const penalite = sanitizeInput(modalRestitPenalite.checked);
 
     if (DebugConsole) console.log("[confirmerRestitution]", commandeId, "restit:", restitution, "penalite:", penalite);
-
+    modalRestitConfirm.disabled = true;
+    modalRestitConfirm.innerHTML = `
+      <span class="spinner-border spinner-border-sm me-2"></span>
+      Restitution en cours...
+    `;
     try {
       const response = await fetch(`${apiRestitution}/${commandeId}/restitution`, {
         method: 'PUT',
@@ -627,28 +676,61 @@ export function initCompteAdminGestionCommandesPage() {
       console.error('[confirmerRestitution] Erreur :', err);
       showToast("Erreur réseau.", "error");
     }
+    
+    // Réactive le bouton et remet le texte d’origine
+    modalRestitConfirm.disabled = false;
+    modalRestitConfirm.innerHTML = originalText;
   });
+
+  /* ===============================
+      FONCTION : NETTOYAGE D'UN STRING POUR LE FILTRE
+     =============================== */
+  function normalize(str) {
+    return (str || '')
+      .toLowerCase()
+      .trim()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
 
   /* ===============================
       FONCTION : FILTRES RECHERCHER ET STATUS
      =============================== */
   function applyFilters() {
-    const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
-    const status = filterStatus ? filterStatus.value : '';
+
+    const search = searchInput
+      ? normalize(searchInput.value)
+      : '';
+
+    const status = filterStatus
+      ? normalize(filterStatus.value)
+      : '';
 
     const filtered = allCommandes.filter(function(c) {
-      if (status && c.statut !== status) return false;
 
+      const statutCommande = normalize(c.statut);
+
+      // filtre statut
+      if (status && statutCommande !== status) {
+        return false;
+      }
+
+      // filtre recherche
       if (search) {
-        const numero = (c.numero_commande || '').toLowerCase();
-        const nom = (c.utilisateur_nom || c.utilisateur?.nom || '').toLowerCase();
-        const ville = (c.ville_livraison || '').toLowerCase();
-        if (!numero.includes(search) && !nom.includes(search) && !ville.includes(search)) return false;
+        const numero = normalize(c.numero_commande);
+        const nom = normalize(c.utilisateur?.nom);
+        const ville = normalize(c.ville_livraison);
+
+        if (
+          !numero.includes(search) &&
+          !nom.includes(search) &&
+          !ville.includes(search)
+        ) return false;
       }
 
       return true;
     });
 
+    console.log("RESULTAT FILTRE:", filtered.length);
     renderCommandes(filtered);
   }
 

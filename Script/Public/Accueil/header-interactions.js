@@ -1,5 +1,4 @@
-import {getRole } from '../../script.js';
-
+import {getRole} from '../../script.js';
 /* ===============================
     Ce fichier centralise les intéractions et les effets concernant le header
     RÉSUMÉ DU FONCTIONNEMENT
