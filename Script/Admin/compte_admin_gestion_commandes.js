@@ -8,7 +8,7 @@ export function initCompteAdminGestionCommandesPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = true;
+  let DebugConsole = false;
   let allCommandes = [];
 
   /* ===============================

@@ -8,7 +8,7 @@ export function initCompteAdminGestionTagMenuPage() {
      =============================== */
   
   // Active/désactive les logs dans la console (debug)
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API

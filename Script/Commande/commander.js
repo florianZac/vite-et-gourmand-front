@@ -54,7 +54,7 @@ export async function initCommanderPage() {
   let horaires = [];
 
   // Variable debug console si à true
-  let DebugConsole = true;
+  let DebugConsole = false;
   
   let isModified = false;
 
