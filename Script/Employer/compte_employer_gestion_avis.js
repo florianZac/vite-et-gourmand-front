@@ -303,32 +303,10 @@ export function initGestionAvisEmployerPage() {
       FONCTION : FILTRE RECHERCHE ET STATUT
      =============================== */  
   function applyFilters() {
+    const search = (searchInput?.value || '').toLowerCase().trim();
+    const status = filterStatus?.value || '';
 
-    let search = "";
-    let status = "";
-    // Gestion du champ recherche
-    if (searchInput) {
-      if (searchInput.value) {
-        search = sanitizeInput(searchInput.value.toLowerCase().trim());
-      } else {
-        search = "";
-      }
-    } else {
-      search = "";
-    }
-
-    // Gestion du filtre status
-    if (filterStatus) {
-      if (filterStatus.value) {
-        status = filterStatus.value;
-      } else {
-        status = "";
-      }
-    } else {
-      status = "";
-    }
     if (DebugConsole) console.log("[applyFilters] search", search, "statuts:", status);
-
 
     const filtered = allAvis.filter(function(a) {
 
@@ -339,12 +317,12 @@ export function initGestionAvisEmployerPage() {
         if (statutNorm !== filterNorm) return false;
       }
 
-      // Filtre recherche par nom utilisateur, description, id commande
+      // Filtre recherche
       if (search) {
         const nom = (a.utilisateur_nom || '').toLowerCase();
         const desc = (a.description || '').toLowerCase();
-        const cmdId = String(a.commande_id || '');
-        if (!nom.includes(search) && !desc.includes(search) && !cmdId.includes(search)) return false;
+        const numCmd = (a.numero_commande || '').toLowerCase();
+        if (!nom.includes(search) && !desc.includes(search) && !numCmd.includes(search)) return false;
       }
 
       return true;

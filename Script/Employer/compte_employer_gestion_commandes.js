@@ -10,6 +10,7 @@ export function initGestionCommandeEmployerPage() {
   // Variable debug console 
   let DebugConsole = false;
   let allCommandes = [];
+  let renderVersion = 0;
 
   /* ===============================
       CONFIGURATION API
@@ -271,8 +272,9 @@ export function initGestionCommandeEmployerPage() {
      =============================== */
   async function renderCommandes(commandes) {
     if (DebugConsole) console.log("[renderCommandes] Appel");
+    renderVersion++;
+    const currentVersion = renderVersion;
 
-    if (!commandesList) return;
     commandesList.innerHTML = '';
 
     if (commandes.length === 0) {
@@ -281,6 +283,9 @@ export function initGestionCommandeEmployerPage() {
     }
 
     for (const c of commandes) {
+      // Si un nouveau render a été lancé entre-temps, on arrête celui-ci
+      if (currentVersion !== renderVersion) return;
+
       if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
 
       const card = document.createElement('div');
@@ -349,13 +354,7 @@ export function initGestionCommandeEmployerPage() {
       const date_cmd = formatDateFR(c.date_commande);
       const date_prestation = formatDateFR(c.date_prestation);
       
-      if(c.prix_livraison == "")
-      {
-        c.prix_livraison = "Gratuite"
-      }
-      else{
-        c.prix_livraison= c.prix_livraison +' €'
-      }
+      const prixLivraisonDisplay = (!c.prix_livraison || c.prix_livraison === 0) ? 'Gratuite' : c.prix_livraison + ' €';
 
       card.innerHTML = `
         <div class="text-center mb-2">
@@ -378,7 +377,7 @@ export function initGestionCommandeEmployerPage() {
             </span><br>
           <strong>Nombre de personnes : </strong> 
             <span class="nombre-personne-name"> 
-              ${sanitizeHtml(c.nombre_personne || 0)} 
+              ${String(c.nombre_personne || 0)} 
             </span><br>
 
           <strong>Date de commande : </strong>
@@ -412,15 +411,15 @@ export function initGestionCommandeEmployerPage() {
             </span><br>    
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 
-              ${sanitizeHtml(c.distance_km || '')} km
+              ${String(c.distance_km || '')} km
             </span><br>  
           <strong>Prix de la livraison : </strong>
             <span class="prix-livraison"> 
-              ${sanitizeHtml(c.prix_livraison || '')} 
+              ${sanitizeHtml(prixLivraisonDisplay)} 
             </span><br>  
-          <strong>Total commande TTC: </strong><span class="total-commande" >${sanitizeHtml(total)} €</span><br>
-          <strong>Prêt matériel : </strong><span class="pret-mat" ${sanitizeHtml(pretText)}</span><br>
-          <strong>Restitution matériel</strong><span class="resti-mat" ${sanitizeHtml(restituText)}</span><br>
+          <strong>Total commande TTC: </strong><span class="total-commande" >${String(total)} €</span><br>
+          <strong>Prêt matériel : </strong><span class="pret-mat">${pretText}</span><br>
+          <strong>Restitution matériel : </strong><span class="resti-mat">${restituText}</span><br>
         </div>
         <div class="mb-2">
           <span class="badge ${badgeCss}">${sanitizeHtml(c.statut)}</span>
@@ -550,17 +549,26 @@ export function initGestionCommandeEmployerPage() {
       FONCTION : FILTRES RECHERCHER ET STATUS
      =============================== */
   function applyFilters() {
-    const search = sanitizeInput(searchInput?.value.toLowerCase().trim() || '');
-    const status = sanitizeInput(filterStatus?.value || '');
+    const search = (searchInput?.value || '').toLowerCase().trim();
+    const status = filterStatus?.value || '';
 
     const filtered = allCommandes.filter(function(c) {
-      if (status && c.statut !== status) return false;
+    if (status && c.statut !== status) return false;
 
       if (search) {
         const numero = (c.numero_commande || '').toLowerCase();
         const nom = (c.utilisateur_nom || c.utilisateur?.nom || '').toLowerCase();
+        const prenom = (c.utilisateur_prenom || c.utilisateur?.prenom || '').toLowerCase();
         const ville = (c.ville_livraison || '').toLowerCase();
-        if (!numero.includes(search) && !nom.includes(search) && !ville.includes(search)) return false;
+        const menu = (c.menu_titre || c.menu?.titre || '').toLowerCase();
+
+        if (!numero.includes(search) 
+          && !nom.includes(search) 
+          && !prenom.includes(search)
+          && !ville.includes(search) 
+          && !menu.includes(search)) {
+          return false;
+        }
       }
 
       return true;

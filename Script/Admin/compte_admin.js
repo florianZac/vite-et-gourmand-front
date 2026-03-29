@@ -7,7 +7,7 @@ export function initCompteAdminPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API
@@ -234,25 +234,37 @@ export function initCompteAdminPage() {
   }
 
   /* ===============================
-      FONCTION : CHARGER LES GRAPHIQUES MongoDB
+      FONCTION : CHARGER LES GRAPHIQUES MongoDB et Mysql
         - Appel GET /api/admin/statistiques/graphiques
      =============================== */
   async function loadGraphiques() {
+  
     if (DebugConsole) console.log("[loadGraphiques] Appel GET", apiGraphiques);
 
     try {
-      const response = await fetch(apiGraphiques, { method: 'GET', headers: authHeaders });
-      if (!response.ok) {
-        console.error("[loadGraphiques] Erreur :", response.status);
+      // Charger les deux sources en parallèle pour voir laquelle est le plus à jour
+      const [resMongo, resMysql] = await Promise.all([
+        fetch(apiGraphiques, { method: 'GET', headers: authHeaders }),
+        fetch(apiStats, { method: 'GET', headers: authHeaders })
+      ]);
+
+      if (!resMongo.ok || !resMysql.ok) {
+        console.error("[loadGraphiques] Erreur");
         return;
       }
-      let result = {};
-      try { result = await response.json(); } catch { result = {}; }
 
-      const g = result.graphiques || {};
-      if (DebugConsole) console.log("[loadGraphiques] Données :", g);
+      let resultMongo = {};
+      let resultMysql = {};
+      try { resultMongo = await resMongo.json(); } catch { resultMongo = {}; }
+      try { resultMysql = await resMysql.json(); } catch { resultMysql = {}; }
 
-      renderCharts(g);
+      const g = resultMongo.graphiques || {};
+      const s = resultMysql.statistiques || {};
+
+      if (DebugConsole) console.log("[loadGraphiques] Données Mongo :", g);
+      if (DebugConsole) console.log("[loadGraphiques] Données MySQL :", s);
+
+      renderCharts(g, s);
     } catch (err) {
       console.error('[loadGraphiques] Erreur :', err);
     }
@@ -261,39 +273,39 @@ export function initCompteAdminPage() {
   /* ===============================
       FONCTION : AFFICHER LES GRAPHIQUES
      =============================== */
-  function renderCharts(g) {
+  function renderCharts(g, s) {
     if (DebugConsole) console.log("[renderCharts] Appel renderCharts ");
     
     // Charger les données stats pour le pie chart des statuts
     loadStatutsPieChart();
 
     /*
-    * ------- GRAPHIQUE : CA par mois -------- 
+    * ------- GRAPHIQUE : CA par mois (source MySQL) -------- 
     */
-    const caParMois = g.ca_par_mois || [];
-    if (DebugConsole) console.log("[renderCharts] Data recut : ",caParMois);
-
+    const ventesParMois = completerMoisManquants(s.ventes_par_mois || []);
+    if (DebugConsole) console.log("[renderCharts] Premier élément ventes_par_mois :", JSON.stringify(ventesParMois[0]));
+    if (DebugConsole) console.log("[renderCharts] Deuxième élément ventes_par_mois :", JSON.stringify(ventesParMois[1]));
+    if (DebugConsole) console.log("[renderCharts] Troisième élément ventes_par_mois :", JSON.stringify(ventesParMois[2]));
     const ctxMois = document.getElementById('chart-mois');
 
     // Vérification des données
-    if (ctxMois && caParMois.length > 0) {
+    if (ctxMois && ventesParMois.length > 0) {
 
       // Création du graphique
-      const graphiqueCAParMois = new Chart(ctxMois, {
+      new Chart(ctxMois, {
         // Type de graphique : barre
         type: 'bar', 
         data: {
-          // Mise en place des labels
-          labels: caParMois.map(function(element) {
+          labels: ventesParMois.map(function(element) {
             return sanitizeHtml(element.mois);
           }),
           datasets: [
             {
               // Valeurs du chiffre d'affaires
               label: 'CA (€)', 
-              data: caParMois.map(function(element) {
+              data: ventesParMois.map(function(element) {
                 // Valeurs du chiffre d'affaires
-                return element.ca_total; 
+                return element.chiffre_affaire || 0;
               }),
               // Couleur des barres
               backgroundColor: '#c8956c', 
@@ -470,6 +482,31 @@ export function initCompteAdminPage() {
     } catch (err) {
       console.error('[loadStatutsPieChart] Erreur :', err);
     }
+  }
+
+  /* ===============================
+      FONCTION : COMPLÉTER LES MOIS MANQUANTS
+        - Permet d'avoir les 12 mois de l'année même si il n'y a pas de données pour certains mois
+     =============================== */
+  function completerMoisManquants(ventesParMois) {
+    const annee = new Date().getFullYear();
+    const tousLesMois = {};
+
+    // Initialise les 12 mois à 0
+    for (let m = 1; m <= 12; m++) {
+      const moisKey = String(m).padStart(2, '0') + '/' + annee;
+      tousLesMois[moisKey] = 0;
+    }
+
+    // Remplit avec les données existantes
+    ventesParMois.forEach(function(element) {
+      tousLesMois[element.mois] = element.chiffre_affaire || 0;
+    });
+
+    // Convertit en tableau trié
+    return Object.keys(tousLesMois).sort().map(function(mois) {
+      return { mois: mois, chiffre_affaire: tousLesMois[mois] };
+    });
   }
 
   /* ===============================
