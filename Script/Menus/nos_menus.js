@@ -15,7 +15,7 @@ export function initNosMenusPage() {
    =============================== */
 
   // Variable debug console
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API
@@ -24,10 +24,14 @@ export function initNosMenusPage() {
   // EndPoint de l'API pour la récupération des mennus
   const apiMenusUrl = `${API_URL}/api/menus/full`;
 
+  // EndPoint de l'API pour la récupération des allergènes
+  const apiAllergenesUrl = `${API_URL}/api/allergenes`;
+
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG API NOS MENUS ===");
     console.log("API_URL :", API_URL);
     console.log("apiMenusUrl :", apiMenusUrl);
+    console.log("apiAllergenesUrl :", apiAllergenesUrl);   
     console.log("==================================");
   }
   /* ===============================
@@ -50,6 +54,9 @@ export function initNosMenusPage() {
   // Slider du prix max
   const filterPrice = document.getElementById('filter-price');
   const filterPriceValue = document.getElementById('filter-price-value');
+
+  // Filtre des allergènes
+  const filterAllergenes = document.getElementById('filter-allergenes');
 
   // Input nombre de personnes
   const filterPersons = document.getElementById('filter-persons');
@@ -85,6 +92,9 @@ export function initNosMenusPage() {
 
   // Stocke le statut disponible indisponible sélectionné ("Tous" par défaut)
   let selectedDisponibilite = 'Tous';
+
+  // Tableau des allergènes à exclure 
+  let selectedAllergenes = [];
 
   /* ===============================
       FONCTIONS UTILITAIRES
@@ -222,6 +232,8 @@ export function initNosMenusPage() {
       generateRegimeBadges();
       generateDisponibiliteBadges();
 
+      // Gènere le badges allergènes
+      generateAllergeneBadges();
       // Met à jour le slider prix max avec le prix le plus élevé
       updatePriceSliderMax();
 
@@ -680,6 +692,52 @@ export function initNosMenusPage() {
     });
 
     if (DebugConsole) console.log("[renderCards] Cards injectées :", menus.length);
+  }
+
+  /* ===============================
+      FONCTIONS : GENERATION DES BADGES ALLERGÈNES
+     =============================== */
+  function generateAllergeneBadges() {
+    if (!filterAllergenes) return;
+    filterAllergenes.innerHTML = '';
+
+    // Extraction de tous les allergènes depuis les plats des menus
+    const allergenesMap = {};
+    allMenus.forEach(function(menu) {
+      const plats = menu.plats || [];
+      plats.forEach(function(plat) {
+        const allergenes = plat.allergenes || [];
+        allergenes.forEach(function(a) {
+          if (a.id && !allergenesMap[a.id]) {
+            allergenesMap[a.id] = a.libelle;
+          }
+        });
+      });
+    });
+
+    if (DebugConsole) console.log("[generateAllergeneBadges] Allergènes trouvés :", allergenesMap);
+
+    // Crée un badge par allergène
+    Object.keys(allergenesMap).forEach(function(id) {
+      const badge = document.createElement('button');
+      badge.className = 'nos_menu-badge';
+      badge.textContent = allergenesMap[id];
+      badge.dataset.id = id;
+
+      badge.addEventListener('click', function() {
+        const allergenId = parseInt(badge.dataset.id);
+        if (selectedAllergenes.includes(allergenId)) {
+          selectedAllergenes = selectedAllergenes.filter(x => x !== allergenId);
+          badge.classList.remove('active');
+        } else {
+          selectedAllergenes.push(allergenId);
+          badge.classList.add('active');
+        }
+        applyFilters();
+      });
+
+      filterAllergenes.appendChild(badge);
+    });
   }
 
   /* ===============================
