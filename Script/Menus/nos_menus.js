@@ -597,15 +597,15 @@ export function initNosMenusPage() {
         );
 
         // Si oui on exclut le menu
-        if (hasForbidden) return false;
-      }
+      if (hasForbidden) return false;
 
-      if (DebugConsole) {
-        console.log("[FILTRE ALLERGENES]", {
-          selectedAllergenes,
-          menu: menu.titre,
-          menuAllergenes
-        });
+        if (DebugConsole) {
+          console.log("[FILTRE ALLERGENES]", {
+            selectedAllergenes,
+            menu: menu.titre,
+            menuAllergenes
+          });
+        }
       }
 
       // Si tous les filtres passent on garde ce menu
