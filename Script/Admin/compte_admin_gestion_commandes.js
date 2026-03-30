@@ -10,7 +10,8 @@ export function initCompteAdminGestionCommandesPage() {
   // Variable debug console 
   let DebugConsole = true;
   let allCommandes = [];
-
+  let renderVersion = 0;
+  
   /* ===============================
       CONFIGURATION API
      =============================== */
@@ -287,8 +288,9 @@ export function initCompteAdminGestionCommandesPage() {
      =============================== */
   async function renderCommandes(commandes) {
     if (DebugConsole) console.log("[renderCommandes] Appel");
+    renderVersion++;
+    const currentVersion = renderVersion;
 
-    if (!commandesList) return;
     commandesList.innerHTML = '';
 
     if (commandes.length === 0) {
@@ -297,19 +299,30 @@ export function initCompteAdminGestionCommandesPage() {
     }
 
     for (const c of commandes) {
+      // Si un nouveau render a été lancé entre-temps, on arrête celui-ci
+      if (currentVersion !== renderVersion) return;
+
+      if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
+
 
       const numeroCommande = sanitizeHtml(c.numero_commande || '');
-      const menuTitre = sanitizeHtml(c.menu?.titre || '');
-      const nomClient = sanitizeHtml(c.utilisateur?.nom || '');
-      const prenomClient = sanitizeHtml(c.utilisateur?.prenom || '');
+      const menuTitre = sanitizeHtml(c.menu?.titre || c.menu_titre || '');
+      const nomClient = sanitizeHtml((c.utilisateur_nom || c.utilisateur?.nom || ''));
+      const prenomClient = sanitizeHtml(c.utilisateur_prenom || c.utilisateur?.prenom || '');
       const telephone = sanitizeHtml(c.utilisateur?.telephone || '');
-      const ville = sanitizeHtml(c.ville_livraison || '');
-      const adresse = sanitizeHtml(c.adresse_livraison || '');
+      const ville = sanitizeHtml(c.utilisateur?.ville || '');
+      const adresse = sanitizeHtml(c.utilisateur?.adresse_postale || '');
+      const CodePostal = sanitizeHtml(c.utilisateur?.code_postal || '');
+      const ville_livraison = sanitizeHtml(c.ville_livraison || '');
+      const adresse_livraison = sanitizeHtml(c.adresse_livraison || '');
+      const CodePostal_livraison = sanitizeHtml(c.utilisateur?.code_postal || '');
       const safeId = sanitizeInput(c.id);
       const nb_personne = sanitizeInput(c.nombre_personne || 0);            
       const distance = sanitizeHtml(c.distance_km || '');
-      const CodePostal = sanitizeHtml(c.utilisateur?.code_postal || '');
       const Heure_livraison = sanitizeHtml(c.heure_livraison  ||  '');
+      const date_cmd = formatDateFR(c.date_commande);
+      const date_prestation = formatDateFR(c.date_prestation);
+      const prixLivraisonDisplay = (!c.prix_livraison || c.prix_livraison === 0) ? 'Gratuite' : c.prix_livraison + ' €';
 
       if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
 
@@ -333,7 +346,7 @@ export function initCompteAdminGestionCommandesPage() {
       }
 
       // Total commande
-      const total = (Number(c.prix_menu || 0) + Number(c.prix_livraison || 0)).toFixed(2);
+      const total = (parseFloat(c.prix_menu) || 0) + (parseFloat(c.prix_livraison) || 0);
       if (DebugConsole) console.log("[renderCommandes] total: ", total);
       if (DebugConsole) console.log("[renderCommandes] prix_menu: ", c.prix_menu);
       if (DebugConsole) console.log("[renderCommandes] prix_livraison: ", c.prix_livraison);
@@ -384,17 +397,6 @@ export function initCompteAdminGestionCommandesPage() {
         `;
       }
 
-      const date_cmd = formatDateFR(c.date_commande);
-      const date_prestation = formatDateFR(c.date_prestation);
-      
-      if(c.prix_livraison == "")
-      {
-        c.prix_livraison = "Gratuite"
-      }
-      else{
-        c.prix_livraison= c.prix_livraison +' €'
-      }
-
       card.innerHTML = `
         <div class="text-center mb-2">
           <strong class="fs-5">${numeroCommande}</strong><br>
@@ -435,42 +437,41 @@ export function initCompteAdminGestionCommandesPage() {
             </span><br>
 
           <strong>Adresse de facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.adresse_postale || '')}
+            <span class="adresse-livraison">
+              ${adresse}
             </span><br>
           <strong>Ville de facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.ville || '')}
+            <span class="ville-livraison">
+              ${ville}
             </span><br>
           <strong>Code postal facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.code_postal || '')}
+            <span class="codepostal-client">
+              ${CodePostal}
             </span><br>
 
           <hr style="border-color:#e8ddd0; margin:0.5rem 0;">
 
           <strong>Adresse de livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.adresse_livraison || '')}
+            <span class="adresse-livraison">
+              ${adresse_livraison}
             </span><br>
           <strong>Ville de livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.ville_livraison || '')}
+            <span class="ville-livraison">
+              ${ville_livraison}
             </span><br>
           <strong>Code postal livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.code_postal_livraison || '')}
-            </span><br>
-            </span><br>    
+            <span class="codepostal-client">
+              ${CodePostal_livraison}
+            </span><br>  
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 
               ${distance} km
             </span><br>  
           <strong>Prix de la livraison : </strong>
             <span class="prix-livraison"> 
-              ${sanitizeHtml(c.prix_livraison || '')} 
+              ${sanitizeHtml(prixLivraisonDisplay)} 
             </span><br>  
-          <strong>Total commande TTC: </strong><span class="total-commande" >${total} €</span><br>
+          <strong>Total commande TTC: </strong><span class="total-commande">${total} €</span><br>
           <strong>Prêt matériel : </strong><span class="pret-mat">${pretText}</span><br>
           <strong>Restitution matériel : </strong><span class="resti-mat">${restituText}</span><br>
         </div>

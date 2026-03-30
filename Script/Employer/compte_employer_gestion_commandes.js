@@ -274,7 +274,6 @@ export function initGestionCommandeEmployerPage() {
     if (DebugConsole) console.log("[renderCommandes] Appel");
     renderVersion++;
     const currentVersion = renderVersion;
-
     commandesList.innerHTML = '';
 
     if (commandes.length === 0) {
@@ -287,6 +286,25 @@ export function initGestionCommandeEmployerPage() {
       if (currentVersion !== renderVersion) return;
 
       if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
+
+      const numeroCommande = sanitizeHtml(c.numero_commande || '');
+      const menuTitre = sanitizeHtml(c.menu?.titre || c.menu_titre || '');
+      const nomClient = sanitizeHtml((c.utilisateur_nom || c.utilisateur?.nom || ''));
+      const prenomClient = sanitizeHtml(c.utilisateur_prenom || c.utilisateur?.prenom || '');
+      const telephone = sanitizeHtml(c.utilisateur?.telephone || '');
+      const ville = sanitizeHtml(c.utilisateur?.ville || '');
+      const adresse = sanitizeHtml(c.utilisateur?.adresse_postale || '');
+      const CodePostal = sanitizeHtml(c.utilisateur?.code_postal || '');
+      const ville_livraison = sanitizeHtml(c.ville_livraison || '');
+      const adresse_livraison = sanitizeHtml(c.adresse_livraison || '');
+      const CodePostal_livraison = sanitizeHtml(c.utilisateur?.code_postal || '');
+      const safeId = sanitizeInput(c.id);
+      const nb_personne = sanitizeInput(c.nombre_personne || 0);            
+      const distance = sanitizeHtml(c.distance_km || '');
+      const Heure_livraison = sanitizeHtml(c.heure_livraison  ||  '');
+      const date_cmd = formatDateFR(c.date_commande);
+      const date_prestation = formatDateFR(c.date_prestation);
+      const prixLivraisonDisplay = (!c.prix_livraison || c.prix_livraison === 0) ? 'Gratuite' : c.prix_livraison + ' €';
 
       const card = document.createElement('div');
       card.className = 'p-4 mb-3 rounded';
@@ -308,7 +326,7 @@ export function initGestionCommandeEmployerPage() {
       }
 
       // Total commande
-      const total = ((c.prix_menu || 0) + (c.prix_livraison || 0)).toFixed(2);
+      const total = (parseFloat(c.prix_menu) || 0) + (parseFloat(c.prix_livraison) || 0);
       if (DebugConsole) console.log("[renderCommandes] total: ", total);
       if (DebugConsole) console.log("[renderCommandes] prix_menu: ", c.prix_menu);
       if (DebugConsole) console.log("[renderCommandes] prix_livraison: ", c.prix_livraison);
@@ -329,7 +347,7 @@ export function initGestionCommandeEmployerPage() {
       // Bouton confirmer restitution si en attente de retour matériel
       if (c.statut === 'En attente du retour matériel') {
         actionsHtml += `
-          <button class="btn btn-warning btn-sm btn-restitution" data-id="${c.id}">
+          <button class="btn btn-warning btn-sm btn-restitution" data-id="${safeId}">
             Confirmer restitution
           </button>
         `;
@@ -337,7 +355,7 @@ export function initGestionCommandeEmployerPage() {
 
       if (DebugConsole) console.log("[renderCommandes] COMMANDE COMPLETE :", c);
       // Suivi timeline
-      const suivis = await loadSuivi(c.id);
+      const suivis = await loadSuivi(safeId);
       let suiviHtml = '';
       if (suivis.length > 0) {
         const badges = suivis.map(function(s) {
@@ -351,98 +369,92 @@ export function initGestionCommandeEmployerPage() {
         `;
       }
 
-      const date_cmd = formatDateFR(c.date_commande);
-      const date_prestation = formatDateFR(c.date_prestation);
-      
-      const prixLivraisonDisplay = (!c.prix_livraison || c.prix_livraison === 0) ? 'Gratuite' : c.prix_livraison + ' €';
-
       card.innerHTML = `
         <div class="text-center mb-2">
-          <strong class="fs-5">${sanitizeHtml(c.numero_commande || '')}</strong><br>
-          <em class="text-muted-commande">${sanitizeHtml(c.menu?.titre || c.menu_titre || '')}</em>
+          <strong class="fs-5">${numeroCommande}</strong><br>
+          <em class="text-muted-commande">${menuTitre}</em>
         </div>
         <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
 
           <strong>Nom du Client : </strong>
             <span class="client-name">
-              ${sanitizeHtml(c.utilisateur_nom || c.utilisateur?.nom || '')}
+              ${nomClient}
             </span>
             <span class="prenom-name">
-              ${sanitizeHtml(c.utilisateur_prenom || c.utilisateur?.prenom || '')}
+              ${prenomClient}
             </span><br>
     
           <strong>Numero du Client : </strong>
             <span class="numero-name"> 
-              ${sanitizeHtml(c.utilisateur?.telephone || '')}
+              ${telephone}
             </span><br>
           <strong>Nombre de personnes : </strong> 
             <span class="nombre-personne-name"> 
-              ${String(c.nombre_personne || 0)} 
+              ${nb_personne} 
             </span><br>
 
           <strong>Date de commande : </strong>
             <span class="date-commande"> 
-              ${sanitizeHtml(date_cmd ||  '')} 
+              ${date_cmd} 
             </span><br>
 
           <strong>Date de prestation client : </strong>
             <span class="date-prestation"> 
-              ${sanitizeHtml(date_prestation  ||  '')}
+              ${date_prestation  ||  ''}
             </span><br>
 
           <strong>Heure de livraison prévue : </strong>
             <span class="heure-livraison"> 
-              ${sanitizeHtml(c.heure_livraison  ||  '')}
+              ${Heure_livraison}
             </span><br>
 
           <strong>Adresse de facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.adresse_postale || '')}
+            <span class="adresse-livraison">
+              ${adresse}
             </span><br>
           <strong>Ville de facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.ville || '')}
+            <span class="ville-livraison">
+              ${ville}
             </span><br>
           <strong>Code postal facturation : </strong>
-            <span>
-              ${sanitizeHtml(c.utilisateur?.code_postal || '')}
+            <span class="codepostal-client">
+              ${CodePostal}
             </span><br>
 
           <hr style="border-color:#e8ddd0; margin:0.5rem 0;">
 
           <strong>Adresse de livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.adresse_livraison || '')}
+            <span class="adresse-livraison">
+              ${adresse_livraison}
             </span><br>
           <strong>Ville de livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.ville_livraison || '')}
+            <span class="ville-livraison">
+              ${ville_livraison}
             </span><br>
           <strong>Code postal livraison : </strong>
-            <span>
-              ${sanitizeHtml(c.code_postal_livraison || '')}
-            </span><br>    
+            <span class="codepostal-client">
+              ${CodePostal_livraison}
+            </span><br>  
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 
-              ${String(c.distance_km || '')} km
+              ${distance} km
             </span><br>  
           <strong>Prix de la livraison : </strong>
             <span class="prix-livraison"> 
               ${sanitizeHtml(prixLivraisonDisplay)} 
             </span><br>  
-          <strong>Total commande TTC: </strong><span class="total-commande" >${String(total)} €</span><br>
+          <strong>Total commande TTC: </strong><span class="total-commande">${total} €</span><br>
           <strong>Prêt matériel : </strong><span class="pret-mat">${pretText}</span><br>
           <strong>Restitution matériel : </strong><span class="resti-mat">${restituText}</span><br>
         </div>
         <div class="mb-2">
-          <span class="badge ${badgeCss}">${sanitizeHtml(c.statut)}</span>
+          <span class="badge ${badgeCss}">${c.statut}</span>
         </div>
         ${suiviHtml}
         <div class="d-flex gap-2 mt-3">
           ${actionsHtml}
         </div>
       `;
-
       commandesList.appendChild(card);
     }
 
