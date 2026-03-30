@@ -1231,13 +1231,13 @@ export async function initCommanderPage() {
           
           if (DebugConsole) console.log("[submitCommande] Commande créée :", createdOrder);
         } else {
-          // Erreur côté API
           let errorData = {};
           try {
             errorData = await response.json();
           } catch {
             errorData = { message: "Erreur serveur" };
           }
+          console.error("[submitCommande] ERREUR 400 :", JSON.stringify(errorData));
           resetSubmitButton();
           showToast(errorData.message || "Erreur lors de la création de la commande", 'error');
           return;
