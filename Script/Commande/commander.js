@@ -75,7 +75,7 @@ export async function initCommanderPage() {
   const apiProfilUrl = `${API_URL}/api/client/profil`;
 
   // EndPoint de l'API pour la géolocalisation et le calcul du coup vias la distance
-  const apigeocodeUrl = `${API_URL}/delivery-cost?adresse=`;
+  const apigeocodeUrl = `${API_URL}/api/delivery-cost?adresse=`;
   
   // EndPoint de l'API pour la récupération des horraires du site
   const apiHorraireUrl = `${API_URL}/api/horaires`;
