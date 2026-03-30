@@ -254,7 +254,6 @@ export function initNosMenusPage() {
         - Crée un badge "Tous" + un badge par thème trouvé
         - "Tous" est actif par défaut
      =============================== */
-
   function generateDisponibiliteBadges() {
     
     // Badge filtre disponible
@@ -372,7 +371,6 @@ export function initNosMenusPage() {
     return badgeDispoHtml;
   }
 
-  
   /* ===============================
       FONCTION : GÉNÉRER LES BADGES RÉGIME DYNAMIQUEMENT
         - Même logique que pour les thèmes
@@ -479,7 +477,6 @@ export function initNosMenusPage() {
         - 2. Chaque filtre réduit progressivement la liste
         - 3. Met à jour le compteur et réaffiche les cards
      =============================== */
-
   function applyFilters() {
     // Récupère les valeurs actuelles de chaque filtre
     var searchText = '';
@@ -574,6 +571,31 @@ export function initNosMenusPage() {
         }
       }
 
+      // FILTRE 7 : Exclusion des allergènes sélectionnés
+      if (selectedAllergenes.length > 0) {
+
+        // Récupère tous les allergènes du menu
+        let menuAllergenes = [];
+
+        const plats = menu.plats || [];
+        plats.forEach(plat => {
+          const allergenes = plat.allergenes || [];
+          allergenes.forEach(a => {
+            if (a.id) {
+              menuAllergenes.push(a.id);
+            }
+          });
+        });
+
+        // Vérifie s'il y a un allergène interdit dans le menu
+        const hasForbidden = selectedAllergenes.some(aId =>
+          menuAllergenes.includes(aId)
+        );
+
+        // Si oui on exclut le menu
+        if (hasForbidden) return false;
+      }
+
       // Si tous les filtres passent on garde ce menu
       return true;
     });
@@ -600,7 +622,6 @@ export function initNosMenusPage() {
           - 4.2 Tags (noms des plats : Foie gras, Magret, Truffe...)
           - 4.3 Prix/pers + nb min personnes + bouton "Voir le détail"
      =============================== */
-
   function renderCards(menus) {
     if (!menuGrid) return;
 
@@ -631,7 +652,6 @@ export function initNosMenusPage() {
       // Badge de disponibilité
       const dispoBadgeHtml = generateDisponibiliteBadge(menu);
 
-      
       // Image du menu : première photo de plat trouvée ou fallback
       const imageUrl = getMenuImage(menu);
 
@@ -748,7 +768,6 @@ export function initNosMenusPage() {
         - 4. Vide le nombre de personnes
         - 5. Relance le filtrage
      =============================== */
-
   function resetFilters() {
     if (DebugConsole) console.log("[resetFilters] Réinitialisation de tous les filtres");
 
