@@ -54,7 +54,7 @@ export async function initCommanderPage() {
   let horaires = [];
 
   // Variable debug console si à true
-  let DebugConsole = false;
+  let DebugConsole = true;
   
   let isModified = false;
 
@@ -91,7 +91,7 @@ export async function initCommanderPage() {
   // Select du choix de menu (étape 3)
   const menuSelect = document.getElementById('CommandMenu');
   // Input nombre de personnes (étape 3)
-  // Input Form
+  // Input Formulaire
   const personsInput = document.getElementById('CommandPersons');
   const firstNameInput = document.getElementById('CommandFirstName');
   const lastNameInput = document.getElementById('CommandLastName');
@@ -102,6 +102,13 @@ export async function initCommanderPage() {
   const dateInput = document.getElementById('CommandDate');
   const timeInput = document.getElementById('CommandTime');
 
+  //Inputs de l'adresse de livraison (étape 2)
+  const sameAddressCheckbox = document.getElementById('CommandSameAddress');
+  const deliveryFieldsContainer = document.getElementById('delivery-address-fields');
+  const deliveryAddressInput = document.getElementById('CommandDeliveryAddress');
+  const deliveryCityInput = document.getElementById('CommandDeliveryCity');
+  const deliveryPostalInput = document.getElementById('CommandDeliveryPostal');
+  
   // Toast Bootstrap
   const toastEl = document.getElementById('toast-message');
   const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 4000 });
@@ -572,9 +579,10 @@ export async function initCommanderPage() {
   async function calculateDeliveryFee() {
     if (DebugConsole) console.log("[calculateDeliveryFee] CALCUL DES FRAIS DE LIVRAISON");
     // Récupère les valeurs saisies par le client à l'étape 2
-    const address = sanitizeInput(addressInput?.value || '');
-    const city = sanitizeInput(cityInput?.value || '');
-    const postal = sanitizeInput(postalInput?.value || '');
+    const delivery = getDeliveryAddress();
+    const address = delivery.adresse;
+    const city = delivery.ville;
+    const postal = delivery.code_postal;
     const fullAddress = `${address}, ${postal} ${city}, France`;
 
     // Construit l'adresse complète au format attendu par Nominatim
@@ -935,6 +943,28 @@ export async function initCommanderPage() {
   }
 
   /* ===============================
+    FONCTION : RECUPERATION DE L'ADRESSE DE LIVRAISON
+    =============================== */
+  function getDeliveryAddress() {
+      if (sameAddressCheckbox && sameAddressCheckbox.checked) {
+        return {
+          adresse: sanitizeInput(addressInput?.value || ''),
+          ville: sanitizeInput(cityInput?.value || ''),
+          code_postal: sanitizeInput(postalInput?.value || '')
+        };
+      }
+      return {
+        adresse: sanitizeInput(deliveryAddressInput?.value || ''),
+        ville: sanitizeInput(deliveryCityInput?.value || ''),
+        code_postal: sanitizeInput(deliveryPostalInput?.value || '')
+      };
+  }
+
+
+
+
+  
+  /* ===============================
       LISTENERS : INPUT FORM
      =============================== */
   // Inputs à surveiller
@@ -956,6 +986,18 @@ export async function initCommanderPage() {
       });
     }
   });
+
+  // Gestion de la checkbox "Même adresse"
+  if (sameAddressCheckbox) {
+    sameAddressCheckbox.addEventListener('change', function() {
+      if (sameAddressCheckbox.checked) {
+        deliveryFieldsContainer.classList.add('d-none');
+      } else {
+        deliveryFieldsContainer.classList.remove('d-none');
+      }
+    });
+  }
+
 
   /* ===============================
       LISTENERS : MENU & PERSONNES
@@ -1014,6 +1056,13 @@ export async function initCommanderPage() {
         
         // Vérifie si l'un des champs des inputs à changées
         await updateUserIfChanged();
+
+        // Vérifie que les champs livraison sont remplis
+        const delivery = getDeliveryAddress();
+        if (!delivery.adresse || !delivery.ville || !delivery.code_postal) {
+            showToast('Veuillez remplir tous les champs d\'adresse de livraison', 'error');
+            return;
+        }
 
         // Appelle l'API /delivery-cost pour calculer les frais
         // 2. Une fois les frais calculés, affiche l'étape 3
@@ -1127,16 +1176,17 @@ export async function initCommanderPage() {
       const prixTotal = updateRecapPrices(); 
 
       // Collecte toutes les données saisies dans les 3 étapes
+      const delivery = getDeliveryAddress();
       const formData = {
-        menu_id: parseInt(menuSelect.value) || 0,
-        date_prestation: dateInput.value,
-        nombre_personnes: persons,
-        adresse_livraison: addressInput.value,
-        heure_livraison: timeInput.value,
-        ville_livraison: cityInput.value,
-        distance_km: deliveryDistanceKm,
-        pret_materiel: materialCheckbox.checked,
-        // prix_total: prixTotal
+          menu_id: parseInt(menuSelect.value) || 0,
+          date_prestation: dateInput.value,
+          nombre_personnes: persons,
+          adresse_livraison: delivery.adresse,
+          heure_livraison: timeInput.value,
+          ville_livraison: delivery.ville,
+          code_postal_livraison: delivery.code_postal,
+          distance_km: deliveryDistanceKm,
+          pret_materiel: materialCheckbox.checked,
       };
 
       // Désactive le bouton pour éviter le multi click

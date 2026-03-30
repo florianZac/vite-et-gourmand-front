@@ -64,29 +64,34 @@
           </div>
         </div>
 
-
         <!------ ÉTAPE 2 : Livraison -------->
         <div class="commander-panel d-none" id="step-2">
           <h2 class="commander-subtitle">Date et lieu de commande</h2>
 
           <div class="commander-card">
             <form class="commander-form" id="form-step-2">
-
-              <!-- Adresse -->
-              <div class="mb-4">
-                <label for="CommandAddress" class="form-label">Adresse <span class="required">*</span></label>
-                <input type="text" class="form-control commander-input" id="CommandAddress" placeholder="12 rue des Roses" required>
+              <!-- Checkbox même adresse -->
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="CommandSameAddress" checked>
+                <label class="form-check-label" for="CommandSameAddress">
+                  Même adresse que mon profil (facturation)
+                </label>
               </div>
-
-              <!-- Ville et Code Postal -->
-              <div class="row mb-4">
-                <div class="col-6">
-                  <label for="CommandCity" class="form-label">Ville <span class="required">*</span></label>
-                  <input type="text" class="form-control commander-input" id="CommandCity" placeholder="Bordeaux" required>
+              <!-- Champs adresse livraison (cachés par défaut) -->
+              <div id="delivery-address-fields" class="d-none">
+                <div class="mb-3">
+                  <label for="CommandDeliveryAddress" class="form-label">Adresse de livraison</label>
+                  <input type="text" class="form-control" id="CommandDeliveryAddress" placeholder="12 rue des fleurs">
                 </div>
-                <div class="col-6">
-                  <label for="CommandPostal" class="form-label">Code Postal <span class="required">*</span></label>
-                  <input type="text" class="form-control commander-input" id="CommandPostal" placeholder="33000" required>
+                <div class="row mb-3">
+                  <div class="col-8">
+                    <label for="CommandDeliveryCity" class="form-label">Ville de livraison</label>
+                    <input type="text" class="form-control" id="CommandDeliveryCity" placeholder="Bordeaux">
+                  </div>
+                  <div class="col-4">
+                    <label for="CommandDeliveryPostal" class="form-label">Code postal</label>
+                    <input type="text" class="form-control" id="CommandDeliveryPostal" placeholder="33000">
+                  </div>
                 </div>
               </div>
 

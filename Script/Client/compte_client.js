@@ -16,7 +16,7 @@ export function initcompteclientPage() {
     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = false;
+  let DebugConsole = true;
 
   /* ===============================
       CONFIGURATION API
@@ -618,9 +618,10 @@ export function initcompteclientPage() {
             <span class="compte_client-order-info-label">Personnes</span>
             <span class="compte_client-order-info-value">${sanitizeHtml(order.nombre_personne || 0)}</span>
           </div>
+
           <div class="compte_client-order-info-item">
-            <span class="compte_client-order-info-label">Livraison</span>
-            <span class="compte_client-order-info-value">${(livraisonText)}</span>
+              <span class="compte_client-order-info-label">Livraison</span>
+              <span class="compte_client-order-info-value">${sanitizeHtml(order.adresse_livraison || '')} - ${sanitizeHtml(order.ville_livraison || '')}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Réduction</span>

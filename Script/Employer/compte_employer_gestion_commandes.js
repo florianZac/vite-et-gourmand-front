@@ -8,7 +8,7 @@ export function initGestionCommandeEmployerPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = false;
+  let DebugConsole = true;
   let allCommandes = [];
   let renderVersion = 0;
 
@@ -395,19 +395,32 @@ export function initGestionCommandeEmployerPage() {
               ${sanitizeHtml(c.heure_livraison  ||  '')}
             </span><br>
 
-          <strong>Ville de livraison : </strong>
-            <span class="ville-livraison"> 
-              ${sanitizeHtml(c.ville_livraison || ' ')}
-            </span><br>         
-          
-          <strong>Adresse de livraison :</strong>
-            <span class="adresse-livraison"> 
-              ${sanitizeHtml(c.adresse_livraison || ' ')}
-            </span><br>         
-      
-          <strong>Code postal du Client : </strong>
-            <span class="codepostal-client"> 
+          <strong>Adresse de facturation : </strong>
+            <span>
+              ${sanitizeHtml(c.utilisateur?.adresse_postale || '')}
+            </span><br>
+          <strong>Ville de facturation : </strong>
+            <span>
+              ${sanitizeHtml(c.utilisateur?.ville || '')}
+            </span><br>
+          <strong>Code postal facturation : </strong>
+            <span>
               ${sanitizeHtml(c.utilisateur?.code_postal || '')}
+            </span><br>
+
+          <hr style="border-color:#e8ddd0; margin:0.5rem 0;">
+
+          <strong>Adresse de livraison : </strong>
+            <span>
+              ${sanitizeHtml(c.adresse_livraison || '')}
+            </span><br>
+          <strong>Ville de livraison : </strong>
+            <span>
+              ${sanitizeHtml(c.ville_livraison || '')}
+            </span><br>
+          <strong>Code postal livraison : </strong>
+            <span>
+              ${sanitizeHtml(c.code_postal_livraison || '')}
             </span><br>    
           <strong>Distance entre le restaurant et le client : </strong>
             <span class="distance-livraison"> 

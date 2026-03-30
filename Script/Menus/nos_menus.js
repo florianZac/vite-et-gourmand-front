@@ -358,7 +358,7 @@ export function initNosMenusPage() {
       return '';
     }
     let badgeDispoHtml = '';
-    // Si la quantité restante est suffisante pour le nombre de personnes minimum → disponible
+    // Si la quantité restante est suffisante pour le nombre de personnes minimum  disponible
     if (menu.quantite_restante >= menu.nombre_personne_minimum) {
       badgeDispoHtml = '<span class="nos_menu-card-badge-dispo">Disponible</span>';
     } else {
@@ -528,9 +528,13 @@ export function initNosMenusPage() {
         const description = (menu.description || '').toLowerCase();
         const plats = getPlatNames(menu).join(' ').toLowerCase();
         // Les tags peuvent être un tableau de strings (allergènes, ingrédients)
-        const tags = (menu.tags || []).join(' ').toLowerCase();
+        //const tags = (menu.tags || []).join(' ').toLowerCase();
+        const tags = (menu.tags || [])
+          .map(t => t.tag || '')
+          .join(' ')
+          .toLowerCase();
 
-        // Si aucun champ ne contient le texte recherché → on exclut ce menu
+        // Si aucun champ ne contient le texte recherché on exclut ce menu
         const matchSearch = titre.includes(searchText)
           || theme.includes(searchText)
           || regime.includes(searchText)
@@ -594,6 +598,14 @@ export function initNosMenusPage() {
 
         // Si oui on exclut le menu
         if (hasForbidden) return false;
+      }
+
+      if (DebugConsole) {
+        console.log("[FILTRE ALLERGENES]", {
+          selectedAllergenes,
+          menu: menu.titre,
+          menuAllergenes
+        });
       }
 
       // Si tous les filtres passent on garde ce menu
@@ -803,7 +815,6 @@ export function initNosMenusPage() {
       const firstBadge = filterDisponibilite.querySelector('.nos_menu-badge');
       if (firstBadge) updateBadgesActive(filterDisponibilite, firstBadge);
     }
-
 
     // Relance le filtrage (affiche tous les menus)
     applyFilters();
