@@ -546,10 +546,6 @@ export function initCompteAdminGestionEmployePage() {
   btnResetPasswordEmploye.addEventListener('click', async function() {
     if (!currentEditId) return;
 
-    if (!confirm('Réinitialiser le mot de passe ? Un email avec le nouveau mot de passe temporaire sera envoyé.')) {
-      return;
-    }
-
     const url = `${apiAdminUtilisateurs}/${currentEditId}`;
     if (DebugConsole) console.log("[resetPasswordEmploye] PUT", url);
 
