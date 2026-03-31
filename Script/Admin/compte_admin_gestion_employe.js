@@ -84,12 +84,25 @@ export function initCompteAdminGestionEmployePage() {
   const deleteEmployeName = document.getElementById('delete-employe-name');
   const confirmDeleteBtn = document.getElementById('confirm-delete-employe');
 
+  // Edition employé
+  const editEmployeCard = document.getElementById('edit-employe-card');
+  const editEmployeTitle = document.getElementById('edit-employe-title');
+  const editEmployePrenom = document.getElementById('edit-employe-prenom');
+  const editEmployeNom = document.getElementById('edit-employe-nom');
+  const editEmployeEmail = document.getElementById('edit-employe-email');
+  const editEmployeTelephone = document.getElementById('edit-employe-telephone');
+  const btnSaveEditEmploye = document.getElementById('btn-save-edit-employe');
+  const btnResetPasswordEmploye = document.getElementById('btn-reset-password-employe');
+  const btnCancelEditEmploye = document.getElementById('btn-cancel-edit-employe');
+
+
   // Toast
   const toastEl = document.getElementById('toast-message');
   const toastBootstrap = new bootstrap.Toast(toastEl, { delay: 3000 });
 
   // Variables
   let allEmployes = [];
+  let currentEditId = null;
   let currentDeleteId = null;
 
   /* ===============================
@@ -252,15 +265,18 @@ export function initCompteAdminGestionEmployePage() {
           ${telephone ? '<br><small class="text-muted">' + telephone + '</small>' : ''}
         </div>
         <div class="d-flex flex-column gap-2">
+          <button class="btn btn-secondary btn-sm btn-modifier" data-id="${employe.id}" title="Modifier">
+            <i class="bi bi-pencil me-1"></i> Modifier
+          </button>
           ${isActif
-            ? `<button class="btn btn-warning btn-sm  btn-desactiver" data-id="${employe.id}" title="Désactiver">
+            ? `<button class="btn btn-warning btn-sm btn-desactiver" data-id="${employe.id}" title="Désactiver">
                 <i class="bi bi-pause-circle me-1"></i> Désactiver
                </button>`
-            : `<button class="btn btn-success btn-sm  btn-reactiver" data-id="${employe.id}" title="Réactiver">
+            : `<button class="btn btn-success btn-sm btn-reactiver" data-id="${employe.id}" title="Réactiver">
                 <i class="bi bi-play-circle me-1"></i> Réactiver
                </button>`
           }
-          <button class="btn btn-danger btn-sm  btn-supprimer" 
+          <button class="btn btn-danger btn-sm btn-supprimer" 
             data-id="${employe.id}" 
             data-nom="${prenom} ${nom}" 
             title="Supprimer">
@@ -283,6 +299,13 @@ export function initCompteAdminGestionEmployePage() {
     document.querySelectorAll('.btn-reactiver').forEach(function(btn) {
       btn.addEventListener('click', function() {
         toggleStatut(parseInt(btn.dataset.id), 'reactivation');
+      });
+    });
+
+    // Events modifier
+    document.querySelectorAll('.btn-modifier').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        openEditEmploye(parseInt(btn.dataset.id));
       });
     });
 
@@ -431,6 +454,122 @@ export function initCompteAdminGestionEmployePage() {
       }
     } catch (err) {
       console.error('[createEmploye] Erreur :', err);
+      showToast("Erreur réseau.", "error");
+    }
+  });
+
+/* ===============================
+      FONCTION : OUVRIR LE FORMULAIRE DE MODIFICATION EMPLOYÉ
+   =============================== */
+  function openEditEmploye(userId) {
+    const user = allEmployes.find(function(u) { return u.id === userId; });
+    if (!user) return;
+
+    if (DebugConsole) console.log("[openEditEmploye] édition de :", user);
+
+    currentEditId = userId;
+    editEmployeTitle.textContent = 'Modifier — ' + (user.prenom || '') + ' ' + (user.nom || '');
+    editEmployePrenom.value = user.prenom || '';
+    editEmployeNom.value = user.nom || '';
+    editEmployeEmail.value = user.email || '';
+    editEmployeTelephone.value = user.telephone || '';
+
+    editEmployeCard.classList.remove('d-none');
+    editEmployeCard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ===============================
+      ANNULER LA MODIFICATION EMPLOYÉ
+     =============================== */
+  btnCancelEditEmploye.addEventListener('click', function() {
+    editEmployeCard.classList.add('d-none');
+    currentEditId = null;
+  });
+
+  /* ===============================
+      ENREGISTRER LA MODIFICATION EMPLOYÉ
+        - APPEL : PUT /api/admin/utilisateurs/{id}
+     =============================== */
+  btnSaveEditEmploye.addEventListener('click', async function() {
+    if (!currentEditId) return;
+
+    const prenom = sanitizeInput(editEmployePrenom.value.trim());
+    const nom = sanitizeInput(editEmployeNom.value.trim());
+    const email = sanitizeInput(editEmployeEmail.value.trim());
+    const telephone = sanitizeInput(editEmployeTelephone.value.trim());
+
+    if (!prenom) { showToast("Le prénom est obligatoire.", "error"); return; }
+    if (!nom) { showToast("Le nom est obligatoire.", "error"); return; }
+    if (!email) { showToast("L'email est obligatoire.", "error"); return; }
+    if (!validateEmail(email)) { showToast("L'email n'est pas valide.", "error"); return; }
+    if (!telephone) { showToast("Le téléphone est obligatoire.", "error"); return; }
+    if (!validatePhone(telephone)) { showToast("Le téléphone n'est pas valide.", "error"); return; }
+
+    const body = {
+      prenom: prenom,
+      nom: nom,
+      email: email,
+      telephone: telephone
+    };
+
+    const url = `${apiAdminUtilisateurs}/${currentEditId}`;
+    if (DebugConsole) console.log("[saveEditEmploye] PUT", url, body);
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: authHeaders,
+        body: JSON.stringify(body)
+      });
+
+      let data = {};
+      try { data = await response.json(); } catch { data = {}; }
+
+      if (response.ok) {
+        showToast("Employé modifié avec succès !");
+        editEmployeCard.classList.add('d-none');
+        currentEditId = null;
+        loadEmployes();
+      } else {
+        showToast(data.message || "Erreur lors de la modification.", "error");
+      }
+    } catch (err) {
+      console.error('[saveEditEmploye] Erreur :', err);
+      showToast("Erreur réseau.", "error");
+    }
+  });
+
+  /* ===============================
+      RÉINITIALISER LE MOT DE PASSE EMPLOYÉ
+        - APPEL : PUT /api/admin/utilisateurs/{id} avec { password: "true" }
+     =============================== */
+  btnResetPasswordEmploye.addEventListener('click', async function() {
+    if (!currentEditId) return;
+
+    if (!confirm('Réinitialiser le mot de passe ? Un email avec le nouveau mot de passe temporaire sera envoyé.')) {
+      return;
+    }
+
+    const url = `${apiAdminUtilisateurs}/${currentEditId}`;
+    if (DebugConsole) console.log("[resetPasswordEmploye] PUT", url);
+
+    try {
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: authHeaders,
+        body: JSON.stringify({ password: 'true' })
+      });
+
+      let data = {};
+      try { data = await response.json(); } catch { data = {}; }
+
+      if (response.ok) {
+        showToast("Mot de passe réinitialisé ! Email envoyé.");
+      } else {
+        showToast(data.message || "Erreur lors de la réinitialisation.", "error");
+      }
+    } catch (err) {
+      console.error('[resetPasswordEmploye] Erreur :', err);
       showToast("Erreur réseau.", "error");
     }
   });

@@ -189,7 +189,7 @@ export function initforgotpasswordPage() {
         const response = await fetch(apiForgotpassword, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ safeData })
+          body: JSON.stringify({ email: safeData.email })
         });
 
         let data = null;

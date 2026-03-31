@@ -178,6 +178,46 @@
           </div>
         </div>
 
+        <!------ Card : Formulaire modification employé (masqué par défaut) -------->
+        <div class="card mb-4 shadow-sm d-none" id="edit-employe-card">
+          <div class="card-body">
+            <h4 class="fw-bold mb-3 text-center pb-2 pt-2" id="edit-employe-title">Modifier un employé</h4>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="edit-employe-prenom" class="form-label">Prénom</label>
+                <input type="text" id="edit-employe-prenom" class="form-control rounded-pill">
+              </div>
+              <div class="col-md-6">
+                <label for="edit-employe-nom" class="form-label">Nom</label>
+                <input type="text" id="edit-employe-nom" class="form-control rounded-pill">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="edit-employe-email" class="form-label">Email</label>
+              <input type="email" id="edit-employe-email" class="form-control rounded-pill">
+            </div>
+
+            <div class="mb-3">
+              <label for="edit-employe-telephone" class="form-label">Téléphone</label>
+              <input type="tel" id="edit-employe-telephone" class="form-control rounded-pill">
+            </div>
+
+            <div class="d-flex justify-content-center gap-2 mt-4">
+              <button type="button" class="btn btn-warning rounded-pill px-3" id="btn-reset-password-employe">
+                <i class="bi bi-key me-1"></i> Réinitialiser le mot de passe
+              </button>
+              <button type="button" class="btn btn-primary rounded-pill px-4" id="btn-save-edit-employe">
+                <i class="bi bi-check-lg me-1"></i> Enregistrer
+              </button>
+              <button type="button" class="btn btn-secondary rounded-pill px-3" id="btn-cancel-edit-employe">
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+        
         <!------ Toast -------->
         <div class="d-flex justify-content-center mt-3">
           <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">

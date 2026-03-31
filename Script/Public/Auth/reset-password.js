@@ -156,13 +156,13 @@ export function initResetpasswordPage() {
 
   function validatePassword(password) {
 
-      const validation = {
-        hasCorrectLength = password.length >= 10;
-        hasUpperCase = /[A-Z]/.test(password);
-        hasLowerCase = /[a-z]/.test(password);
-        hasDigit = /\d/.test(password);
-        hasSpecialChar = /[\W_]/.test(password);
-      };
+    const validation = {
+      hasCorrectLength: password.length >= 10,
+      hasUpperCase: /[A-Z]/.test(password),
+      hasLowerCase: /[a-z]/.test(password),
+      hasDigit: /\d/.test(password),
+      hasSpecialChar: /[\W_]/.test(password),
+    };
     
     validation.isValid =
       validation.hasCorrectLength &&
@@ -306,8 +306,8 @@ export function initResetpasswordPage() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            tokensafe,
-            password
+            token: tokensafe,
+            password: password
           })
         });
 
