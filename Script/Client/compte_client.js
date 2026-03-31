@@ -16,7 +16,7 @@ export function initcompteclientPage() {
     =============================== */
   
   // Variable debug console : passer à false pour désactiver tous les logs
-  let DebugConsole = true;
+  let DebugConsole = false;
 
   /* ===============================
       CONFIGURATION API
@@ -616,20 +616,23 @@ export function initcompteclientPage() {
         <div class="compte_client-order-infos">
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Personnes</span>
-            <span class="compte_client-order-info-value">${sanitizeHtml(order.nombre_personne || 0)}</span>
+            <span class="compte_client-order-info-value">${String(order.nombre_personne || 0)}</span>
           </div>
-
           <div class="compte_client-order-info-item">
-              <span class="compte_client-order-info-label">Livraison</span>
-              <span class="compte_client-order-info-value">${sanitizeHtml(order.adresse_livraison || '')} - ${sanitizeHtml(order.ville_livraison || '')}</span>
+            <span class="compte_client-order-info-label">Adresse livraison</span>
+            <span class="compte_client-order-info-value">${sanitizeHtml(order.adresse_livraison || '')} - ${sanitizeHtml(order.ville_livraison || '')} ${sanitizeHtml(order.code_postal_livraison || '')}</span>
+          </div>
+          <div class="compte_client-order-info-item">
+            <span class="compte_client-order-info-label">Frais livraison</span>
+            <span class="compte_client-order-info-value">${livraisonText}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Réduction</span>
-            <span class="compte_client-order-info-value ${reductionClass}">${sanitizeInput(reductionText || '0€')}</span>
+            <span class="compte_client-order-info-value ${reductionClass}">${reductionText}</span>
           </div>
           <div class="compte_client-order-info-item">
             <span class="compte_client-order-info-label">Total</span>
-            <span class="compte_client-order-info-value compte_client-order-info-value-total">${sanitizeInput(total)}€</span>
+            <span class="compte_client-order-info-value compte_client-order-info-value-total">${total}€</span>
           </div>
         </div>
 

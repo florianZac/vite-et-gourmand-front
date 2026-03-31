@@ -8,7 +8,7 @@ export function initGestionCommandeEmployerPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = true;
+  let DebugConsole = false;
   let allCommandes = [];
   let renderVersion = 0;
 

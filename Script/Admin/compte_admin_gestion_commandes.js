@@ -8,7 +8,7 @@ export function initCompteAdminGestionCommandesPage() {
      =============================== */
   
   // Variable debug console 
-  let DebugConsole = true;
+  let DebugConsole = false;
   let allCommandes = [];
   let renderVersion = 0;
   
@@ -431,11 +431,6 @@ export function initCompteAdminGestionCommandesPage() {
               ${date_prestation  ||  ''}
             </span><br>
 
-          <strong>Heure de livraison prévue : </strong>
-            <span class="heure-livraison"> 
-              ${Heure_livraison}
-            </span><br>
-
           <strong>Adresse de facturation : </strong>
             <span class="adresse-livraison">
               ${adresse}
@@ -450,6 +445,11 @@ export function initCompteAdminGestionCommandesPage() {
             </span><br>
 
           <hr style="border-color:#e8ddd0; margin:0.5rem 0;">
+
+          <strong>Heure de livraison prévue : </strong>
+            <span class="heure-livraison"> 
+              ${Heure_livraison}
+            </span><br>
 
           <strong>Adresse de livraison : </strong>
             <span class="adresse-livraison">
