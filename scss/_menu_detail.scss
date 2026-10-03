@@ -455,7 +455,6 @@
 .detail_menu-composition {
   background-color: $bg-gradient-start;
   padding: 2rem 0 3rem;
-  
 }
 
 /* -------- Titre de la section "Composition du menu" -------- */
@@ -987,7 +986,7 @@
   /* -------- Points de navigation -------- */
   .detail_menu-gallery-dots {
     position: absolute;
-    top: 1rem;
+    top: calc(0.85rem + 10px); /* centrés sur la ligne thème / régime */
     left: 0;
     right: 0;
     z-index: 3;
@@ -1011,7 +1010,59 @@
     }
   }
 
-  /* -------- Badges + titre posés sur la photo -------- */
+  /* -------- Badges posés sur la photo -------- */
+
+  /* Style commun : pastilles blanches pour rester lisibles sur la photo */
+  .detail_menu-gallery-overlay-top > span,
+  .detail_menu-gallery-overlay .detail_menu-badges > span {
+    padding: 0.25rem 0.6rem;
+    border: 0;
+    background: rgba($white-pure, 0.92);
+    color: $bordeaux;
+    font-size: 0.75rem;
+    box-shadow: none;
+    white-space: nowrap;
+  }
+
+  .detail_menu-gallery-overlay-top .detail_menu-badge-available {
+    color: $olive-dark;
+  }
+
+  /* Haut de la photo :
+     ligne 1 = thème à gauche | (points de la galerie au centre) | régime à droite
+     ligne 2 = disponible / indisponible centré */
+  .detail_menu-gallery-overlay-top {
+    position: absolute;
+    top: 0.85rem;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    row-gap: 0.5rem;
+    padding: 0 1rem;
+    pointer-events: none;
+  }
+
+  .detail_menu-gallery-overlay-top .detail_menu-badge-theme {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .detail_menu-gallery-overlay-top .detail_menu-badge-regime {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .detail_menu-gallery-overlay-top .detail_menu-badge-available,
+  .detail_menu-gallery-overlay-top .detail_menu-badge-unavailable {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+  }
+
+  /* Bas de la photo : "Plus que X menus disponibles" centré, puis le titre */
   .detail_menu-gallery-overlay {
     position: absolute;
     left: 0;
@@ -1022,36 +1073,7 @@
     pointer-events: none;
 
     .detail_menu-badges {
-      justify-content: flex-start;
-      gap: 0.35rem;
-    }
-
-    /* Badges en pastilles blanches pour rester lisibles sur la photo */
-    .detail_menu-badges > span {
-      padding: 0.25rem 0.6rem;
-      border: 0;
-      background: rgba($white-pure, 0.92);
-      color: $bordeaux;
-      font-size: 0.75rem;
-      box-shadow: none;
-    }
-
-    .detail_menu-badge-available {
-      color: $olive-dark;
-    }
-
-    /* Badge "Plus que X menus disponibles" : seul sur sa ligne, centré.
-       ::after crée un saut de ligne invisible entre les autres badges et celui-ci */
-    .detail_menu-badges::after {
-      content: '';
-      flex-basis: 100%;
-      height: 0;
-      order: 1;
-    }
-
-    .detail_menu-badge-stock {
-      order: 2;
-      margin: 0.15rem auto 0;
+      justify-content: center;
     }
   }
 

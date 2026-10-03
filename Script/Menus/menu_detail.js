@@ -95,6 +95,9 @@ export function initDetailMenusPage() {
   /* -------- Éléments MOBILE uniquement (< 992px, masqués en desktop par d-lg-none) -------- */
 
   // Badges + titre posés sur la photo
+  // -top : thème / régime / disponibilité en haut de la photo
+  // sans suffixe : "Plus que X menus disponibles" en bas de la photo
+  const detailBadgesMobileTop = document.getElementById('detail-badges-mobile-top');
   const detailBadgesMobile = document.getElementById('detail-badges-mobile');
   const detailTitleMobile = document.getElementById('detail-title-mobile');
 
@@ -491,8 +494,25 @@ export function initDetailMenusPage() {
 		 =============================== */
 
   function renderMobile(menu) {
-    // Badges et titre posés sur la photo
-    if (detailBadgesMobile && detailBadges) detailBadgesMobile.innerHTML = detailBadges.innerHTML;
+    // Badges posés sur la photo : répartis entre le haut et le bas de la photo
+    if (detailBadges) {
+      // Copie d'un badge (ou chaîne vide s'il n'existe pas)
+      const copie = (selector) => detailBadges.querySelector(selector)?.outerHTML || '';
+
+      // Haut : thème (gauche), régime (droite), disponible / indisponible (centré dessous)
+      if (detailBadgesMobileTop) {
+        detailBadgesMobileTop.innerHTML =
+          copie('.detail_menu-badge-theme') +
+          copie('.detail_menu-badge-regime') +
+          copie('.detail_menu-badge-available') +
+          copie('.detail_menu-badge-unavailable');
+      }
+
+      // Bas : "Plus que X menus disponibles"
+      if (detailBadgesMobile) detailBadgesMobile.innerHTML = copie('.detail_menu-badge-stock');
+    }
+
+    // Titre posé sur la photo
     if (detailTitleMobile && detailTitle) detailTitleMobile.textContent = detailTitle.textContent;
 
     // Barre prix
