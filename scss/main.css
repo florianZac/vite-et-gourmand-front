@@ -14875,6 +14875,26 @@ textarea.form-control-lg {
   }
 }
 /* ===============================
+   MOBILE (< 768px) — ESPACEMENTS DU FORMULAIRE
+   - media-breakpoint-down(md) = max-width: 767.98px
+     (c'est sous 768px que les colonnes col-md-6 passent l'une sous l'autre)
+   - Rien ici ne s'applique au-dessus de 768px : desktop et tablette inchangés
+   =============================== */
+@media (max-width: 767.98px) {
+  /* Prénom/Nom et Ville/Code postal : même espace entre les champs empilés
+     que entre les autres champs (mb-4 = 1.5rem) */
+  .inscription-form .row {
+    row-gap: 1.5rem;
+  }
+  /* Léger espace seulement entre le bandeau "Créer un compte" et la toque */
+  .inscription-section {
+    padding-top: 1.25rem;
+  }
+  .inscription-icon {
+    margin-top: 0;
+  }
+}
+/* ===============================
    STYLES PAGE RESET PASSWORD - VITE & GOURMAND
    =============================== */
 /* -------- Section hero -------- */
