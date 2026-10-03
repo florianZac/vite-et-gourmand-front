@@ -441,3 +441,105 @@
     font-size: 1rem;
   }
 }
+
+/* ===============================
+   MOBILE (< 768px) — ESPACE CLIENT PLUS COMPACT
+   - media-breakpoint-down(md) = max-width: 767.98px
+   - Rien ici ne s'applique au-dessus de 768px : desktop et tablette inchangés
+   - Même style qu'avant, en plus petit :
+       cartes de commande resserrées et repliables (bouton "Voir le détail")
+   - Les onglets "Mes commandes / Mon profil" et le bandeau du haut sont gérés
+     dans _compte_admin.scss (règle mobile commune client / employé / admin)
+   =============================== */
+@include media-breakpoint-down(md) {
+
+  /* -------- Cartes de commande resserrées -------- */
+  .compte_client-order-card {
+    padding: 1rem 1.1rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .compte_client-order-menu-name {
+    font-size: 1.05rem;
+  }
+
+  .compte_client-order-status {
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .compte_client-order-ref {
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  /* Infos sur 3 colonnes : Personnes | Frais | Réduction, puis Total, adresse en dernier */
+  .compte_client-order-infos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .compte_client-order-info-item:nth-child(2) {
+    grid-column: 1 / -1;
+    order: 5;
+  }
+
+  .compte_client-order-info-label {
+    font-size: 0.72rem;
+  }
+
+  .compte_client-order-info-value {
+    font-size: 0.92rem;
+  }
+
+  .compte_client-order-timeline-label {
+    font-size: 0.8rem;
+  }
+
+  .compte_client-timeline-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  /* -------- Carte repliée (par défaut) : titre, statut, date et total -------- */
+
+  /* Masque tout le détail : suivi, avis, matériel, bouton annuler */
+  .compte_client-order-card:not(.is-open) > *:not(.compte_client-order-header):not(.compte_client-order-ref):not(.compte_client-order-infos):not(.compte_client-order-toggle) {
+    display: none;
+  }
+
+  /* Dans les infos, seul le Total reste visible */
+  .compte_client-order-card:not(.is-open) .compte_client-order-info-item:not(:last-child) {
+    display: none;
+  }
+
+  .compte_client-order-card:not(.is-open) .compte_client-order-infos {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  .compte_client-order-card:not(.is-open) .compte_client-order-info-item:last-child {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  /* -------- Bouton "Voir le détail" / "Masquer le détail" -------- */
+  .compte_client-order-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px; /* zone facile à toucher au doigt */
+    margin-top: 0.5rem;
+    padding: 0.5rem 0 0;
+    border: 0;
+    border-top: 1px solid rgba($terracotta, 0.15);
+    background: transparent;
+    color: $terracotta;
+    font-size: 0.88rem;
+    font-weight: $font-weight-semibold;
+  }
+}

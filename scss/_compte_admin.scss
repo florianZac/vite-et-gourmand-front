@@ -787,3 +787,112 @@
     max-width: 250px; 
   }
 }
+
+/* ===============================
+   MOBILE (< 768px) — ONGLETS COMPACTS POUR LES 3 ESPACES
+   (client, employé, admin : ils partagent la classe .compte_admin)
+   - media-breakpoint-down(md) = max-width: 767.98px
+   - Rien ici ne s'applique au-dessus de 768px : desktop et tablette inchangés
+   - Même style de tuile (couleurs, icône au-dessus du texte), en plus petit :
+       client  : 2 tuiles sur une ligne
+       employé : 6 tuiles = 2 lignes de 3
+       admin   : 9 tuiles = 3 lignes de 3
+   - Sous-onglets (ex. "Gestion Avis / Gestion Commandes") : 2 tuiles côte à côte
+   =============================== */
+@include media-breakpoint-down(md) {
+
+  /* -------- Bandeau du haut moins haut -------- */
+  .compte_admin-hero,
+  .compte_employer-hero,
+  .compte_client-hero,
+  .compte_client_profil-hero {
+    min-height: 0;
+    padding: 1.25rem 0;
+  }
+
+  .compte_admin-hero-title,
+  .compte_employer-hero-title,
+  .compte_client-hero-title,
+  .compte_client_profil-hero-title {
+    font-size: 1.6rem;
+  }
+
+  .compte_admin-section,
+  .compte_employer-section,
+  .compte_client-section,
+  .compte_client_profil-section {
+    padding-top: 1rem;
+  }
+
+  /* -------- Alignement : même marge sur les bords de l'écran pour les 3 espaces -------- */
+  /* Les pages imbriquent 3 .row sans colonne entre elles : leurs marges négatives
+     s'additionnaient et collaient tuiles et cartes aux bords de l'écran (client, employé) */
+  .compte_admin-section > .container > .row,
+  .compte_employer-section > .container > .row,
+  .compte_client-section > .container > .row,
+  .compte_client_profil-section > .container > .row,
+  .compte_admin-section .compte_admin,
+  .compte_employer-section .compte_admin,
+  .compte_client-section .compte_admin,
+  .compte_client_profil-section .compte_admin {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* -------- Ligne d'onglets principale : grille de petites tuiles -------- */
+  /* auto-fit : 3 colonnes sur téléphone, et seulement 2 quand il n'y a que 2 tuiles (client) */
+  .compte_admin .compte_admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+  }
+
+  .compte_admin .compte_admin > [class*="col-"] {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* -------- Sous-onglets (hors de la grille) : 2 par ligne -------- */
+  .compte_admin > [class*="col-md-4"] {
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* -------- Tuile : même style, plus petite -------- */
+  .compte_admin a.card {
+    min-height: 64px;
+    padding: 0.45rem 0.35rem;
+    border-radius: 0.75rem;
+  }
+
+  /* Pas de réduction de la tuile active : les tuiles restent alignées dans la grille */
+  .compte_admin a.active {
+    transform: none;
+  }
+
+  /* !important nécessaire : py-3 (Bootstrap) impose son padding avec !important */
+  .compte_admin a.card .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0 !important;
+  }
+
+  /* !important nécessaire : fs-4 et mb-1 (Bootstrap) imposent taille et marge avec !important */
+  .compte_admin a.card i {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+  }
+
+  .compte_admin a.card h6 {
+    font-size: 0.72rem;
+    line-height: 1.2;
+  }
+}

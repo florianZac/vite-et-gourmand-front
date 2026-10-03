@@ -647,6 +647,13 @@ export function initcompteclientPage() {
 
         <!-- Bouton annuler (si commande en attente) -->
         ${(cancelHtml)}
+
+        <!-- MOBILE UNIQUEMENT (< 768px) : replier / déplier le détail de la commande -->
+        <!-- d-md-none : masqué à partir de 768px, la carte reste entièrement dépliée en desktop -->
+        <button type="button" class="compte_client-order-toggle d-md-none" aria-expanded="false">
+          <span>Voir le détail</span>
+          <i class="bi bi-chevron-down" aria-hidden="true"></i>
+        </button>
       `;
 
       commandesList.appendChild(card);
@@ -658,7 +665,32 @@ export function initcompteclientPage() {
 
     // Branche les listeners sur les boutons "Laisser un avis"
     setupAvisButtons();
+
+    // Branche les boutons "Voir le détail" (mobile)
+    setupToggleButtons();
     if (DebugConsole) console.log("[renderOrders] Terminé - Tous les listeners branchés");
+  }
+
+  /* ===============================
+      FONCTION : REPLIER / DÉPLIER UNE COMMANDE (mobile)
+        - 1.  Par défaut la carte est repliée : titre, statut, date et total
+        - 2.  Au clic sur "Voir le détail" la classe is-open affiche le reste
+              (infos, suivi, avis, matériel, bouton annuler)
+        - 3.  Le repli n'existe qu'en CSS mobile (< 768px) : en desktop tout reste visible
+     =============================== */
+
+  function setupToggleButtons() {
+    if (!commandesList) return;
+    commandesList.querySelectorAll('.compte_client-order-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.compte_client-order-card');
+        const ouvert = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+        btn.querySelector('span').textContent = ouvert ? 'Masquer le détail' : 'Voir le détail';
+        btn.querySelector('i').className = ouvert ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+      });
+    });
+    if (DebugConsole) console.log("[setupToggleButtons] Boutons repli branchés");
   }
 
   /* ===============================
