@@ -455,6 +455,7 @@
 .detail_menu-composition {
   background-color: $bg-gradient-start;
   padding: 2rem 0 3rem;
+  
 }
 
 /* -------- Titre de la section "Composition du menu" -------- */
@@ -1094,8 +1095,9 @@
     font-size: 0.95rem;
   }
 
+  /* Tags centrés au milieu de la page */
   .detail_menu-tags {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .detail_menu-tag {
