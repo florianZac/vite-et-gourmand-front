@@ -19103,6 +19103,121 @@ textarea.form-control-lg {
     font-size: 0.72rem;
     line-height: 1.2;
   }
+  /* -------- Statistiques : Top 3 des menus -------- */
+  /* La largeur fixe de 20rem (320px) dépassait de la carte sur téléphone :
+     la ligne prend la largeur de la carte moins 1rem, soit une marge de 24px de chaque côté
+     (padding 1rem de la carte + 0.5rem) */
+  .card-top .top-menu-item {
+    width: calc(100% - 1rem);
+    max-width: 20rem;
+  }
+  /* -------- Gestion Employés / Gestion Utilisateurs : cartes de compte -------- */
+  /* Infos en haut, boutons dessous côte à côte : sur téléphone, infos et colonne de boutons
+     ne tenaient pas sur une seule ligne (boutons collés au texte et sortant de la carte).
+     !important nécessaire : justify-content-between, align-items-center et flex-column
+     (Bootstrap) imposent leur valeur avec !important */
+  #employes-list > div,
+  #utilisateurs-list > div {
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0.9rem;
+  }
+  /* Bloc infos : les e-mails et adresses longs passent à la ligne au lieu de pousser les boutons */
+  #employes-list > div > div:first-child,
+  #utilisateurs-list > div > div:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  /* Les 3 boutons sur une ligne, de même largeur */
+  #employes-list > div > div:last-child,
+  #utilisateurs-list > div > div:last-child {
+    flex-direction: row !important;
+  }
+  #employes-list > div > div:last-child .btn,
+  #utilisateurs-list > div > div:last-child .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    /* Icône au-dessus du texte : le mot entier tient dans le bouton
+       (évite "Désactive / r" coupé sur 2 lignes à 360px) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.4rem 0.15rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  /* !important nécessaire : me-1 (Bootstrap) impose sa marge avec !important */
+  #employes-list > div > div:last-child .btn i,
+  #utilisateurs-list > div > div:last-child .btn i {
+    margin: 0 !important;
+  }
+  /* -------- Formulaires de création / modification de comptes -------- */
+  /* Sous 768px les champs col-md-6 (Prénom/Nom, Code postal/Ville) s'empilent sans espace
+     entre eux : même écart (1rem = mb-3) qu'entre les autres champs du formulaire */
+  .compte_admin-section .row.mb-3,
+  .compte_admin-section .row.mb-4 {
+    row-gap: 1rem;
+  }
+  /* -------- Gestion menus / plats : cartes empilées -------- */
+  /* Texte en haut, boutons Modifier / Supprimer en ligne dessous
+     (:not(.list-group) : #menus-list de la page "Menu tag" n'est pas concerné) */
+  #menus-list:not(.list-group) > div,
+  #plats-list > div {
+    flex-direction: column;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0.9rem;
+  }
+  #menus-list:not(.list-group) > div > div:first-child,
+  #plats-list > div > div:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  #menus-list:not(.list-group) > div > div:last-child,
+  #plats-list > div > div:last-child {
+    flex-direction: row !important;
+  }
+  #menus-list:not(.list-group) > div > div:last-child .btn,
+  #plats-list > div > div:last-child .btn {
+    flex: 1 1 0;
+  }
+  /* -------- Gestion menus / plats : barre de filtres -------- */
+  /* "+ Nouveau menu" / "+ Nouveau plat" pleine largeur, comme le filtre au-dessus */
+  #btn-new-menu,
+  #btn-new-plat {
+    width: 100%;
+    min-height: 2.875rem; /* même hauteur que le filtre (.form-select : 46px) */
+  }
+  /* -------- Ajout allergène / thème / régime -------- */
+  /* Champ qui prend la place restante, bouton arrondi de même hauteur que le champ */
+  #new-allergene,
+  #new-theme,
+  #new-regime {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  #btn-add-allergene,
+  #btn-add-theme,
+  #btn-add-regime {
+    flex-shrink: 0;
+    align-self: stretch;
+    border-radius: 2rem;
+    white-space: nowrap;
+  }
+  /* -------- Horaires : le tableau tient dans un écran de 360px -------- */
+  #company-hours-table th,
+  #company-hours-table td {
+    padding: 0.4rem 0.25rem;
+    font-size: 0.8rem;
+    white-space: normal;
+  }
+  #company-hours-table .form-control {
+    min-width: 0;
+    padding: 0.3rem 0.2rem;
+    font-size: 0.85rem;
+  }
 }
 /* ===============================
    STYLES PAGE NOS MENUS - VITE & GOURMAND

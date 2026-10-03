@@ -237,6 +237,17 @@ export function initCompteAdminGestionAllergenePage() {
   }
   loadAllergenes();
 
+
+  /* ===============================
+      FONCTION : VÉRIFIE SI UN LIBELLÉ EXISTE DÉJÀ DANS LA LISTE AFFICHÉE
+      (insensible à la casse, aux accents et aux espaces en trop)
+     =============================== */
+  function existeDeja(liste, valeur) {
+    const normaliser = (texte) => texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+    const cible = normaliser(valeur);
+    return Array.from(liste.querySelectorAll('span.fw-semibold')).some(span => normaliser(span.textContent) === cible);
+  }
+
    /* ===============================
         AJOUT ALLERGÈNE
       =============================== */
@@ -249,6 +260,12 @@ export function initCompteAdminGestionAllergenePage() {
     // Vérification : si le champ est vid
     if (!libelle) {
       showToast("Veuillez entrer un nom d'allergène.", "error");
+      return;
+    }
+
+    // Vérification : si l'élément existe déjà dans la liste → refus
+    if (existeDeja(allergenesList, newAllergeneInput.value)) {
+      showToast("Cet allergène existe déjà.", "error");
       return;
     }
 

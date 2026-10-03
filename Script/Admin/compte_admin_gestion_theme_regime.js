@@ -391,6 +391,17 @@ export function initCompteAdminGestionThemeRegimePage() {
   }
   loadRegimes();
 
+
+  /* ===============================
+      FONCTION : VÉRIFIE SI UN LIBELLÉ EXISTE DÉJÀ DANS LA LISTE AFFICHÉE
+      (insensible à la casse, aux accents et aux espaces en trop)
+     =============================== */
+  function existeDeja(liste, valeur) {
+    const normaliser = (texte) => texte.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+    const cible = normaliser(valeur);
+    return Array.from(liste.querySelectorAll('span.fw-semibold')).some(span => normaliser(span.textContent) === cible);
+  }
+
   /* ===============================
       AJOUT THÈME
      =============================== */
@@ -402,6 +413,12 @@ export function initCompteAdminGestionThemeRegimePage() {
     // Vérification : si le champ est vide
     if (!libelle ) {
       showToast("Veuillez entrer un nom de thème.", "error");
+      return;
+    }
+
+    // Vérification : si l'élément existe déjà dans la liste → refus
+    if (existeDeja(themesList, newThemeInput.value)) {
+      showToast("Ce thème existe déjà.", "error");
       return;
     }
 
@@ -444,6 +461,12 @@ export function initCompteAdminGestionThemeRegimePage() {
     // Vérification : si le champ est vide
     if (!libelle) {
       showToast("Veuillez entrer un nom d'un Régime.", "error");
+      return;
+    }
+
+    // Vérification : si l'élément existe déjà dans la liste → refus
+    if (existeDeja(regimesList, newRegimeInput.value)) {
+      showToast("Ce régime existe déjà.", "error");
       return;
     }
 
