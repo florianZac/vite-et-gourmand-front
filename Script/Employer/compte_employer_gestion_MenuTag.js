@@ -99,6 +99,9 @@ export function initGestionTagMenuPage() {
   // Variable pour le drag & drop
   let currentMenuId = null;
 
+  // Mobile / tactile : écran < 768px ou pointeur tactile (le drag & drop HTML5 n'y fonctionne pas)
+  const estMobile = () => window.matchMedia('(max-width: 767.98px), (pointer: coarse)').matches;
+
   /* ===============================
       FONCTION : TOAST BOOTSTRAP POUR ENVOYER LES MESSAGES A l'ADMIN
      =============================== */
@@ -283,6 +286,9 @@ export function initGestionTagMenuPage() {
 
         element.classList.add('active');
         loadMenuTags(menu.id);
+
+        // MOBILE : les colonnes sont empilées on fait défiler jusqu'aux tags du menu
+        if (estMobile()) menuTagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       });
       container.appendChild(element);
@@ -540,6 +546,18 @@ export function initGestionTagMenuPage() {
       element.addEventListener('dragstart', (event) => {
         event.dataTransfer.setData('tagId', tag.id);
         if (DebugConsole) console.log("[renderDraggableTags] DRAG START:", tag.id);
+      });
+
+      // MOBILE / TACTILE : le glisser-déposer HTML5 ne fonctionne pas au doigt
+      // un simple appui sur le tag l'ajoute au menu sélectionné (desktop : drag & drop inchangé)
+      element.addEventListener('click', async () => {
+        if (!estMobile()) return;
+        if (!currentMenuId) {
+          showToast("Sélectionnez d'abord un menu.", "error");
+          return;
+        }
+        if (DebugConsole) console.log("[renderDraggableTags] TAP:", tag.id);
+        await assignTag(currentMenuId, tag.id);
       });
 
       dispoTagsContainer.appendChild(element);

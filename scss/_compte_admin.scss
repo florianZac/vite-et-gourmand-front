@@ -784,7 +784,7 @@
 
   .compte_admin a.card {
     width: 100%;
-    max-width: 250px;
+    max-width: 250px; 
   }
 }
 
@@ -999,18 +999,31 @@
   /* Champ qui prend la place restante, bouton arrondi de même hauteur que le champ */
   #new-allergene,
   #new-theme,
-  #new-regime {
+  #new-regime,
+  #new-tag-menus {
     flex: 1 1 auto;
     min-width: 0;
   }
 
   #btn-add-allergene,
   #btn-add-theme,
-  #btn-add-regime {
+  #btn-add-regime,
+  #btn-add-tag-menus {
     flex-shrink: 0;
     align-self: stretch;
     border-radius: 2rem;
     white-space: nowrap;
+  }
+
+  /* Menu tag : tags disponibles cliquables au doigt */
+  #tags-list .badge {
+    cursor: pointer;
+  }
+
+  /* Menu tag : espace entre les 3 blocs empilés (Menus / Tags du menu / Tags disponibles) */
+  #menus-list.list-group,
+  #menu-tags {
+    margin-bottom: 1.5rem;
   }
 
   /* -------- Horaires : le tableau tient dans un écran de 360px -------- */
