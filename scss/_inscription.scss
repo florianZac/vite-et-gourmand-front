@@ -323,12 +323,14 @@
   }
 
   /* Permet aux colonnes d'être à côté même sur mobile */
-  .row {
+  /* Ciblé sur .inscription-section : sans ce préfixe, la règle modifiait
+     les gouttières de TOUTES les .row du site sous 768px */
+  .inscription-section .row {
     margin-left: -0.5rem;
     margin-right: -0.5rem;
   }
 
-  .row > * {
+  .inscription-section .row > * {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }

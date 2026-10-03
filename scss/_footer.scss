@@ -84,12 +84,17 @@
 }
 
 /* augmentation de la distance entre le bloc horraire et Navigation */
-.footer-dark .col-lg-4 {
-  padding-right: 2rem;
-}
+/* Uniquement à partir de lg (992px) : c'est là que les 3 colonnes sont côte à côte.
+   En dessous, les colonnes sont empilées : garder le padding Bootstrap symétrique
+   évite le contenu décentré et le débordement horizontal de 4px sur mobile */
+@include media-breakpoint-up(lg) {
+  .footer-dark .col-lg-4 {
+    padding-right: 2rem;
+  }
 
-.footer-dark .col-lg-4:last-child {
-  padding-right: 0;
+  .footer-dark .col-lg-4:last-child {
+    padding-right: 0;
+  }
 }
 
 .footer-dark .col-lg-4:nth-child(3),
@@ -159,9 +164,11 @@
     margin-bottom: 1rem;
   }
   
+  /* .row préfixé par .footer-dark : sans ce préfixe, la règle centrait
+     TOUTES les .row du site sous 768px */
   .footer-dark h5,
   .footer-dark h6,
-  .row,
+  .footer-dark .row,
   .footer-dark h5 {
     justify-content: center;
   }

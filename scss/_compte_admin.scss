@@ -716,6 +716,19 @@
     max-width: 100%;
   }
 
+  /* Gouttières réduites à 0.5rem, assorties au padding 0.5rem du container ci-dessus.
+     Avant, cette valeur venait d'une règle .row globale de _inscription.scss
+     (désormais limitée à la page inscription) : on la garde ici pour l'espace admin */
+  .compte_admin-section .row {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+
+  .compte_admin-section .row > * {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
   .compte_admin {
     --bs-gutter-x: 0;
   }

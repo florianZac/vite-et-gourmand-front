@@ -45,7 +45,6 @@ Le fichier router.js : importe la classe Route et les variables « allRoutes » 
 │ ├─ main.css.map 
 │ ├─ main.scss
 
-
 # NPM windows installation via choco pour s'il n'est pas déjà installer.
 https://nodejs.org/en/download
 Etape 1 : powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
@@ -68,16 +67,11 @@ taper dans la console
 document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 
-
-
-
 # Installation du framework css bootstrap
 
 pourquoi : respect des normes standardiser, est gain de temps sur le css du site
 installation de bootstrap 1. 
-
 npm install bootstrap
-
 
 # Instalation de la version 5.3 de Bootstrap
 npm install bootstrap@v5.3.8
@@ -109,10 +103,6 @@ Pour se déconnecter :
 jsdocument.cookie = "accesstoken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 location.reload();
-
-
-
-
 
 # Déploiment
 
@@ -176,3 +166,4 @@ heroku logs --tail
 
 # Installation de chart JS
 npm install chart.js
+
