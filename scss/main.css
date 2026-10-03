@@ -17269,8 +17269,18 @@ textarea.form-control-lg {
     top: 42%;
     z-index: 3;
   }
+  /* Boutons admin/employé (modifier / supprimer) : en bas à gauche et à droite
+     (en haut ils recouvraient les badges thème / régime) */
   .action-image-buttons {
     z-index: 3;
+    top: auto;
+    bottom: 0;
+  }
+  /* Admin/employé connecté : le titre du bas laisse la place aux 2 boutons
+     (sinon il passe dessous) — sans effet pour un visiteur ou un client */
+  .detail_menu-gallery-main:has(.action-image-buttons:not(.d-none)) .detail_menu-gallery-overlay {
+    padding-left: 3.25rem;
+    padding-right: 3.25rem;
   }
   /* Les miniatures sont remplacées par les points */
   .detail_menu-gallery-thumbs {
