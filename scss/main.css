@@ -18193,6 +18193,68 @@ textarea.form-control-lg {
   }
 }
 /* ===============================
+   MOBILE (< 768px) — CARTES DE COMMANDE EMPLOYÉ COMPACTES ET REPLIABLES
+   - media-breakpoint-down(md) = max-width: 767.98px
+   - Rien ici ne s'applique au-dessus de 768px : desktop et tablette inchangés
+   - Carte repliée (par défaut) : numéro, menu, résumé (client, prestation, total),
+     statut et bouton d'action
+   - "Voir le détail" : toutes les infos client / livraison / matériel + le suivi
+   =============================== */
+@media (max-width: 767.98px) {
+  /* !important nécessaire : p-4 (Bootstrap) impose son padding avec !important */
+  .compte_employer-order-card {
+    padding: 1rem 1.1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  /* -------- Résumé (carte repliée) -------- */
+  .compte_employer-order-summary {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.25rem 0 0.6rem;
+    font-size: 0.85rem;
+    color: #4A4A4A;
+  }
+  .compte_employer-order-summary div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .compte_employer-order-summary span {
+    color: #666666;
+  }
+  .compte_employer-order-summary strong {
+    text-align: right;
+  }
+  .compte_employer-order-summary-total {
+    color: hsl(14, 61%, 47%);
+  }
+  /* -------- Carte repliée : détail et suivi masqués -------- */
+  .compte_employer-order-card:not(.is-open) .client-info,
+  .compte_employer-order-card:not(.is-open) > .mt-2 {
+    display: none;
+  }
+  /* Carte dépliée : le résumé fait doublon avec le détail */
+  .compte_employer-order-card.is-open .compte_employer-order-summary {
+    display: none;
+  }
+  /* -------- Bouton "Voir le détail" / "Masquer le détail" -------- */
+  .compte_employer-order-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px; /* zone facile à toucher au doigt */
+    margin-top: 0.5rem;
+    padding: 0.5rem 0 0;
+    border: 0;
+    border-top: 1px solid rgba(192.9585, 80.8588, 46.7415, 0.15);
+    background: transparent;
+    color: hsl(14, 61%, 47%);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+}
+/* ===============================
    STYLES PAGE COMPTE Admin - VITE & GOURMAND
    Structure :
    - Hero avec nom de l'utilisateur

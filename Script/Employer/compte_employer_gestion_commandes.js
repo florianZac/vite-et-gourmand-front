@@ -307,7 +307,8 @@ export function initGestionCommandeEmployerPage() {
       const prixLivraisonDisplay = (!c.prix_livraison || c.prix_livraison === 0) ? 'Gratuite' : c.prix_livraison + ' €';
 
       const card = document.createElement('div');
-      card.className = 'p-4 mb-3 rounded';
+      // compte_employer-order-card : utilisé uniquement par le CSS mobile (repli de la carte)
+      card.className = 'p-4 mb-3 rounded compte_employer-order-card';
       card.style.backgroundColor = '#fdf8f0';
       card.style.border = '1px solid #e8ddd0';
 
@@ -374,6 +375,15 @@ export function initGestionCommandeEmployerPage() {
           <strong class="fs-5">${numeroCommande}</strong><br>
           <em class="text-muted-commande">${menuTitre}</em>
         </div>
+
+        <!-- MOBILE UNIQUEMENT (< 768px) : résumé affiché quand la carte est repliée -->
+        <!-- d-md-none : masqué à partir de 768px, la carte desktop est inchangée -->
+        <div class="compte_employer-order-summary d-md-none">
+          <div><span>Client</span><strong>${nomClient} ${prenomClient}</strong></div>
+          <div><span>Prestation</span><strong>${date_prestation || ''}</strong></div>
+          <div><span>Total</span><strong class="compte_employer-order-summary-total">${total} €</strong></div>
+        </div>
+
         <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
 
           <strong>Nom du Client : </strong>
@@ -454,9 +464,27 @@ export function initGestionCommandeEmployerPage() {
         <div class="d-flex gap-2 mt-3">
           ${actionsHtml}
         </div>
+
+        <!-- MOBILE UNIQUEMENT (< 768px) : replier / déplier le détail de la commande -->
+        <button type="button" class="compte_employer-order-toggle d-md-none" aria-expanded="false">
+          <span>Voir le détail</span>
+          <i class="bi bi-chevron-down" aria-hidden="true"></i>
+        </button>
       `;
       commandesList.appendChild(card);
     }
+
+    // Events : "Voir le détail" / "Masquer le détail" (mobile)
+    // La classe is-open n'a d'effet qu'en CSS mobile (< 768px)
+    commandesList.querySelectorAll('.compte_employer-order-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.compte_employer-order-card');
+        const ouvert = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+        btn.querySelector('span').textContent = ouvert ? 'Masquer le détail' : 'Voir le détail';
+        btn.querySelector('i').className = ouvert ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+      });
+    });
 
     // Events : prochain statut
     document.querySelectorAll('.btn-next-statut').forEach(function(btn) {
