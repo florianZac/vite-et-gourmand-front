@@ -16300,10 +16300,13 @@ textarea.form-control-lg {
    STYLES PAGE DÉTAIL MENU - VITE & GOURMAND
    =============================== */
 /* -------- Fil d’Ariane  -------- */
+/* padding-top au lieu de margin-top : le fond beige remplit l'espace sous le header fixe
+   (avec margin-top: 80px, une bande blanche de 12px apparaissait sous le header de 68px).
+   Le texte reste à la même position : 80px + 1rem. */
 .detail_menu-breadcrumb {
   background-color: #F5E6D3;
-  padding: 1rem 0;
-  margin-top: 80px;
+  padding: calc(80px + 1rem) 0 1rem;
+  margin-top: 0;
 }
 
 /* -------- lien du Fil d’Ariane  -------- */
@@ -17226,7 +17229,7 @@ textarea.form-control-lg {
   }
   .detail_menu-gallery-main {
     margin-bottom: 0;
-    border-radius: 0 0 1.5rem 1.5rem;
+    border-radius: 0;
     /* Dégradé sombre en bas pour garder le titre blanc lisible */
   }
   .detail_menu-gallery-main::after {
@@ -17304,6 +17307,20 @@ textarea.form-control-lg {
   }
   .detail_menu-gallery-overlay .detail_menu-badge-available {
     color: hsl(79, 31%, 22%);
+  }
+  .detail_menu-gallery-overlay {
+    /* Badge "Plus que X menus disponibles" : seul sur sa ligne, centré.
+       ::after crée un saut de ligne invisible entre les autres badges et celui-ci */
+  }
+  .detail_menu-gallery-overlay .detail_menu-badges::after {
+    content: "";
+    flex-basis: 100%;
+    height: 0;
+    order: 1;
+  }
+  .detail_menu-gallery-overlay .detail_menu-badge-stock {
+    order: 2;
+    margin: 0.15rem auto 0;
   }
   .detail_menu-gallery-overlay-title {
     margin: 0.4rem 0 0;
