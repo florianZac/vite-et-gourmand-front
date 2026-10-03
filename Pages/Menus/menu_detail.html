@@ -44,6 +44,16 @@
               <i class="bi bi-chevron-right"></i>
               <span class="visually-hidden">image suivante</span>
             </button>
+
+            <!-- MOBILE UNIQUEMENT (< 992px) : badges + titre posés sur la photo -->
+            <!-- Copie visuelle remplie par le JS : le vrai h1 reste dans la colonne infos (lecteurs d'écran) -->
+            <div class="detail_menu-gallery-overlay d-lg-none" aria-hidden="true">
+              <div class="detail_menu-badges" id="detail-badges-mobile"></div>
+              <p class="detail_menu-gallery-overlay-title" id="detail-title-mobile"></p>
+            </div>
+
+            <!-- MOBILE UNIQUEMENT : points de navigation de la galerie (remplacent les miniatures) -->
+            <div class="detail_menu-gallery-dots d-lg-none" id="gallery-dots"></div>
           </div>
           
           <!-- Miniatures 2 petites photos cliquables -->
@@ -94,7 +104,8 @@
           </div>
 
           <!-- Bouton Commander -->
-          <div class="d-grid">
+          <!-- d-none d-lg-grid : masqué sous 992px (remplacé par la barre du bas), identique à d-grid au-dessus -->
+          <div class="d-none d-lg-grid">
             <button type="button" class="btn btn-detail_menu-order" id="btn-order-menu">
               <i class="bi bi-clipboard-check"></i> Commander ce menu
             </button>
@@ -138,6 +149,24 @@
 
   </div>
 </section>
+
+<!------ MOBILE UNIQUEMENT (< 992px) : barre prix + Commander toujours visible en bas -------->
+<!-- position: sticky en bas : reste visible pendant le défilement et s'arrête au-dessus du footer -->
+<div class="detail_menu-order-bar d-lg-none">
+  <div class="detail_menu-order-bar-infos">
+    <div class="detail_menu-order-bar-price">
+      <span id="order-bar-price">0</span> € <span class="detail_menu-order-bar-per">/pers.</span>
+    </div>
+    <div class="detail_menu-order-bar-details">
+      <i class="bi bi-people"></i> min. <span id="order-bar-min">0</span> pers.
+      · -10% dès <span id="order-bar-reduction">0</span>
+    </div>
+  </div>
+  <!-- Ce bouton déclenche le bouton "Commander ce menu" existant (même logique, même redirection) -->
+  <button type="button" class="detail_menu-order-bar-btn" id="btn-order-menu-mobile">
+    <i class="bi bi-clipboard-check"></i> Commander
+  </button>
+</div>
 
 
 <!-- ================================================================

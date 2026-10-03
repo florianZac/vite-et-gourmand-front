@@ -5,12 +5,15 @@ node_modules/
 npm-debug.log*
 package-lock.json
 
-
 # ===============================
 # Sass cache
 # ===============================
 main.css.map
 
+# ===============================
+# vérification Winmerge
+# ===============================
+*.bak
 
 # ===============================
 # Environment variables
@@ -25,7 +28,6 @@ main.css.map
 # ===============================
 logs
 *.log
-
 
 # ===============================
 # IDE / Editors

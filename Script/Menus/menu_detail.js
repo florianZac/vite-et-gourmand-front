@@ -92,6 +92,21 @@ export function initDetailMenusPage() {
   // Bouton commander
   const btnOrder = document.getElementById('btn-order-menu');
 
+  /* -------- Éléments MOBILE uniquement (< 992px, masqués en desktop par d-lg-none) -------- */
+
+  // Badges + titre posés sur la photo
+  const detailBadgesMobile = document.getElementById('detail-badges-mobile');
+  const detailTitleMobile = document.getElementById('detail-title-mobile');
+
+  // Points de navigation de la galerie
+  const galleryDots = document.getElementById('gallery-dots');
+
+  // Barre prix + Commander en bas d'écran
+  const orderBarPrice = document.getElementById('order-bar-price');
+  const orderBarMin = document.getElementById('order-bar-min');
+  const orderBarReduction = document.getElementById('order-bar-reduction');
+  const btnOrderMobile = document.getElementById('btn-order-menu-mobile');
+
   // Composition
   const compositionGrid = document.getElementById('composition-grid');
 
@@ -173,6 +188,7 @@ export function initDetailMenusPage() {
       renderGallery(menu);
       renderComposition(menu);
       setupOrderButton(menu);
+      renderMobile(menu);
 
     } catch (err) {
       console.error('[loadMenuDetail] Erreur réseau :', err);
@@ -437,6 +453,62 @@ export function initDetailMenusPage() {
         }
       });
     }
+
+    // Mobile : met à jour les points de navigation
+    renderGalleryDots();
+  }
+
+	/* ===============================
+      FONCTION : POINTS DE NAVIGATION GALERIE (mobile)
+        - Un point par photo (max 3, comme les miniatures)
+        - Le point de la photo affichée est actif
+        - Au clic sur un point la photo correspondante s'affiche
+		 =============================== */
+
+  function renderGalleryDots() {
+    if (!galleryDots) return;
+    galleryDots.innerHTML = '';
+    const maxPhotos = Math.min(plats.length, 3);
+    if (maxPhotos < 2) return; // inutile avec une seule photo
+    for (let i = 0; i < maxPhotos; i++) {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = `detail_menu-gallery-dot ${i === currentPhotoIndex ? 'active' : ''}`;
+      dot.setAttribute('aria-label', `Photo ${i + 1}`);
+      dot.addEventListener('click', () => {
+        currentPhotoIndex = i;
+        updateMainPhoto();
+      });
+      galleryDots.appendChild(dot);
+    }
+  }
+
+	/* ===============================
+      FONCTION : AFFICHAGE MOBILE
+        - Recopie badges + titre sur la photo
+        - Remplit la barre prix + Commander en bas d'écran
+        - Recopie l'état du bouton "Commander ce menu" (menu indisponible = désactivé)
+		 =============================== */
+
+  function renderMobile(menu) {
+    // Badges et titre posés sur la photo
+    if (detailBadgesMobile && detailBadges) detailBadgesMobile.innerHTML = detailBadges.innerHTML;
+    if (detailTitleMobile && detailTitle) detailTitleMobile.textContent = detailTitle.textContent;
+
+    // Barre prix
+    const minPersons = menu?.nombre_personne_minimum || 0;
+    if (orderBarPrice) orderBarPrice.textContent = menu?.prix_par_personne || 0;
+    if (orderBarMin) orderBarMin.textContent = minPersons;
+    // Même règle métier que renderPriceCard : réduction à partir de minimum + 5 personnes
+    if (orderBarReduction) orderBarReduction.textContent = minPersons + 5;
+
+    // Bouton Commander mobile : même état que le bouton principal
+    if (btnOrderMobile && btnOrder && btnOrder.disabled) {
+      btnOrderMobile.disabled = true;
+      btnOrderMobile.innerHTML = '<i class="bi bi-x-circle"></i> Indisponible';
+    }
+
+    if (DebugConsole) console.log("[renderMobile] Affichage mobile rempli");
   }
 
 	/* ===============================
@@ -488,6 +560,38 @@ export function initDetailMenusPage() {
 			updateMainPhoto();
 		});
      if (DebugConsole) console.log("[galleryNext] IndexPhoto :", currentPhotoIndex);
+	}
+
+	/* ===============================
+      LISTENERS MOBILE
+		 =============================== */
+
+	// Glisser le doigt sur la photo : photo suivante / précédente (réutilise les flèches)
+	const galleryMain = document.querySelector('.detail_menu-gallery-main');
+	if (galleryMain && galleryPrev && galleryNext) {
+		let touchStartX = null;
+		galleryMain.addEventListener('touchstart', (e) => {
+			touchStartX = e.touches[0].clientX;
+		}, { passive: true });
+		galleryMain.addEventListener('touchend', (e) => {
+			if (touchStartX === null) return;
+			const deltaX = e.changedTouches[0].clientX - touchStartX;
+			touchStartX = null;
+			// Seuil de 40px pour ne pas confondre avec un simple appui
+			if (deltaX > 40) galleryPrev.click();
+			if (deltaX < -40) galleryNext.click();
+		});
+	}
+
+	// Bouton Commander de la barre mobile : déclenche le bouton principal (même logique)
+	if (btnOrderMobile && btnOrder) {
+		btnOrderMobile.addEventListener('click', () => btnOrder.click());
+	}
+
+	// Photo sous le header fixe : hauteur réelle du header mesurée (le fil d'Ariane est masqué sur mobile)
+	const header = document.querySelector('header .custom-navbar');
+	if (header) {
+		document.documentElement.style.setProperty('--detail-menu-header-h', `${header.offsetHeight}px`);
 	}
 
    /* ===============================
@@ -550,6 +654,9 @@ export function initDetailMenusPage() {
       col.className = 'col-12 col-lg-4 mb-3';
       col.innerHTML = `
         <div class="detail_menu-dish-card">
+          <!-- Vignette du plat : mobile uniquement (< 992px) -->
+          ${plat && plat.photo ? `<img class="detail_menu-dish-thumb d-lg-none" src="${sanitizeHtml(plat.photo)}" alt="">` : ''}
+          <div class="detail_menu-dish-content">
           <div class="detail_menu-dish-type">
             <span class="detail_menu-dish-type-icon">${cat.icon}</span>
             <span class="detail_menu-dish-type-label">${cat.label}</span>
@@ -561,6 +668,7 @@ export function initDetailMenusPage() {
             <span>Allergènes :</span>
           </div>
           <div class="detail_menu-dish-allergens">${allergensHtml}</div>
+          </div>
         </div>
       `;
       compositionGrid.appendChild(col);

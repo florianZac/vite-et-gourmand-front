@@ -901,3 +901,318 @@
   }
 
 }
+
+/* ===============================
+   MOBILE & TABLETTE (< 992px) — PROPOSITION B "PHOTO IMMERSIVE"
+   - media-breakpoint-down(lg) = max-width: 991.98px
+   - Rien ici ne s'applique au desktop (>= 992px) : le desktop reste identique
+   - Photo d'un bord à l'autre avec badges + titre posés dessus
+   - Points de navigation à la place des miniatures
+   - Texte aligné à gauche
+   - Composition en liste avec vignette du plat
+   - Barre prix + Commander toujours visible en bas
+   =============================== */
+@include media-breakpoint-down(lg) {
+
+  /* -------- Fil d'Ariane masqué : la photo prend toute la largeur sous le header -------- */
+  .detail_menu-breadcrumb {
+    display: none;
+  }
+
+  .detail_menu-main {
+    margin-top: var(--detail-menu-header-h, 66px); /* hauteur du header, mesurée par le JS */
+  }
+
+  /* Galerie collée aux bords de l'écran */
+  .detail_menu-main > .container {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .detail_menu-main > .container > .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .detail_menu-main > .container > .row > * {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* -------- Photo principale -------- */
+  .detail_menu-gallery {
+    margin-bottom: 0;
+  }
+
+  .detail_menu-gallery-main {
+    margin-bottom: 0;
+    border-radius: 0 0 1.5rem 1.5rem;
+
+    /* Dégradé sombre en bas pour garder le titre blanc lisible */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 45%, rgba(20, 10, 5, 0.9) 100%);
+      pointer-events: none;
+    }
+  }
+
+  .detail_menu-gallery-main-img {
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-height: 70vh;
+  }
+
+  /* Flèches et boutons admin au-dessus du dégradé */
+  .detail_menu-gallery-arrow {
+    top: 42%;
+    z-index: 3;
+  }
+
+  .action-image-buttons {
+    z-index: 3;
+  }
+
+  /* Les miniatures sont remplacées par les points */
+  .detail_menu-gallery-thumbs {
+    display: none;
+  }
+
+  /* -------- Points de navigation -------- */
+  .detail_menu-gallery-dots {
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .detail_menu-gallery-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 5rem;
+    background-color: rgba($white-pure, 0.55);
+    transition: width 0.2s ease;
+
+    &.active {
+      width: 22px;
+      background-color: $white-pure;
+    }
+  }
+
+  /* -------- Badges + titre posés sur la photo -------- */
+  .detail_menu-gallery-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 1.25rem 1.25rem 1.1rem;
+    pointer-events: none;
+
+    .detail_menu-badges {
+      justify-content: flex-start;
+      gap: 0.35rem;
+    }
+
+    /* Badges en pastilles blanches pour rester lisibles sur la photo */
+    .detail_menu-badges > span {
+      padding: 0.25rem 0.6rem;
+      border: 0;
+      background: rgba($white-pure, 0.92);
+      color: $bordeaux;
+      font-size: 0.75rem;
+      box-shadow: none;
+    }
+
+    .detail_menu-badge-available {
+      color: $olive-dark;
+    }
+  }
+
+  .detail_menu-gallery-overlay-title {
+    margin: 0.4rem 0 0;
+    font-family: $headings-font-family;
+    font-size: 1.75rem;
+    font-weight: $font-weight-bold;
+    line-height: 1.2;
+    color: $white-pure;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* -------- Colonne infos -------- */
+  .detail_menu-info {
+    margin-top: 0;
+    padding: 1.25rem 1rem 0;
+  }
+
+  /* Badges et titre déjà affichés sur la photo */
+  .detail_menu-info > .detail_menu-badges {
+    display: none;
+  }
+
+  /* Le h1 reste lisible par les lecteurs d'écran, mais n'est plus affiché */
+  .detail_menu-info > .detail_menu-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  /* Texte aligné à gauche : plus facile à lire */
+  .detail_menu-description {
+    display: block;
+    margin: 0 0 0.75rem;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .detail_menu-tags {
+    justify-content: flex-start;
+  }
+
+  .detail_menu-tag {
+    border: 0;
+    background-color: rgba($terracotta, 0.1);
+    color: $bordeaux;
+    font-weight: $font-weight-medium;
+  }
+
+  /* Prix : déjà dans la barre du bas (le bouton Commander est masqué via d-none d-lg-grid dans le HTML) */
+  .detail_menu-price-card {
+    display: none;
+  }
+
+  /* -------- Composition : liste avec vignette -------- */
+  .detail_menu-composition-title {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .detail_menu-dish-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.9rem;
+    height: auto;
+    padding: 0 0 0.9rem;
+    border-left: 0;
+    border-bottom: 1px solid rgba($terracotta, 0.2);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+  }
+
+  .detail_menu-dish-thumb {
+    flex: none;
+    width: 72px;
+    height: 72px;
+    border-radius: 0.9rem;
+    object-fit: cover;
+  }
+
+  .detail_menu-dish-content {
+    min-width: 0;
+  }
+
+  .detail_menu-dish-type,
+  .detail_menu-dish-allergens {
+    justify-content: flex-start;
+  }
+
+  .detail_menu-dish-type {
+    margin-bottom: 0.15rem;
+  }
+
+  .detail_menu-dish-name {
+    margin: 0 0 0.3rem;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  /* Description du plat et libellé "Allergènes" masqués : la liste reste courte */
+  .detail_menu-dish-description,
+  .detail_menu-dish-allergens-label {
+    display: none;
+  }
+
+  .detail_menu-dish-allergen-badge {
+    padding: 0.1rem 0.45rem;
+    font-size: 0.65rem;
+  }
+
+  /* -------- Barre prix + Commander collée en bas de l'écran -------- */
+  .detail_menu-order-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 1020; /* sous le header (1030) et les modales */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+    background-color: $white-pure;
+    border-radius: 1rem 1rem 0 0;
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  .detail_menu-order-bar-infos {
+    min-width: 0;
+  }
+
+  .detail_menu-order-bar-price {
+    font-family: $headings-font-family;
+    font-size: 1.45rem;
+    font-weight: $font-weight-bold;
+    line-height: 1;
+    color: $terracotta;
+  }
+
+  .detail_menu-order-bar-per {
+    font-family: $font-family-sans-serif;
+    font-size: 0.8rem;
+    font-weight: $font-weight-medium;
+    color: $gray-700;
+  }
+
+  .detail_menu-order-bar-details {
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    color: $gray-700;
+  }
+
+  .detail_menu-order-bar-btn {
+    flex: none;
+    height: 48px;
+    padding: 0 1.25rem;
+    border: 0;
+    border-radius: 5rem;
+    background-color: $terracotta;
+    color: $white-pure;
+    font-size: 0.95rem;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+
+    &:disabled {
+      background-color: $gray-600;
+    }
+  }
+}
+
+/* -------- Tablette (576px à 991px) : photo moins haute -------- */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .detail_menu-gallery-main-img {
+    aspect-ratio: 16 / 9;
+  }
+}
