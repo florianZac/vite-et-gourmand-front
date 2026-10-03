@@ -64,6 +64,26 @@ export function initNosMenusPage() {
   // Bouton réinitialiser
   const btnReset = document.getElementById('btn-reset-filters');
 
+  /* -------- Éléments MOBILE uniquement (< 992px, masqués en desktop par d-lg-none) -------- */
+
+  // Panneau des filtres (devient un panneau qui monte du bas sur mobile)
+  const filtersPanel = document.getElementById('menu-filters');
+
+  // Recherche de la barre collante mobile (synchronisée avec #filter-search)
+  const filterSearchMobile = document.getElementById('filter-search-mobile');
+
+  // Bouton "Filtres" de la barre mobile + pastille du nombre de filtres actifs
+  const btnOpenFilters = document.getElementById('btn-open-filters');
+  const filterActiveCount = document.getElementById('filter-active-count');
+
+  // Bouton fermer, bouton "Voir les X menus" et fond sombre du panneau
+  const btnCloseFilters = document.getElementById('btn-close-filters');
+  const btnApplyFilters = document.getElementById('btn-apply-filters');
+  const filtersBackdrop = document.getElementById('filters-backdrop');
+
+  // Ligne des thèmes défilante (mobile)
+  const filterThemesMobile = document.getElementById('filter-themes-mobile');
+
   if (DebugConsole) {
     console.log("[DOM] Éléments trouvés :", {
       menuGrid: Boolean(menuGrid),
@@ -301,33 +321,50 @@ export function initNosMenusPage() {
 
     // Vide le conteneur avant de régénérer
     filterThemes.innerHTML = '';
+    if (filterThemesMobile) filterThemesMobile.innerHTML = '';
 
-    // Crée le badge "Tous" (actif par défaut)
-    const btnAll = document.createElement('button');
-    btnAll.className = 'nos_menu-badge active';
-    btnAll.textContent = 'Tous';
-    btnAll.addEventListener('click', () => {
-      selectedTheme = 'Tous';
-      // Met à jour les badges actifs visuellement
-      updateBadgesActive(filterThemes, btnAll);
-      // Relance le filtrage
-      applyFilters();
-    });
-    filterThemes.appendChild(btnAll);
-
-    // Crée un badge pour chaque thème unique
-    themes.forEach(theme => {
+    // Crée le badge "Tous" (actif par défaut) puis un badge par thème unique.
+    // Chaque thème existe en 2 exemplaires : panneau de filtres + ligne mobile.
+    // data-theme permet de garder les deux synchronisés (voir selectTheme).
+    ['Tous', ...themes].forEach(theme => {
       if (DebugConsole) console.log("[generateThemeBadges] Création badge thème :", theme);
+
+      // Badge du panneau de filtres (identique à avant)
       const btn = document.createElement('button');
-      btn.className = 'nos_menu-badge';
+      btn.className = theme === 'Tous' ? 'nos_menu-badge active' : 'nos_menu-badge';
       btn.textContent = theme;
-      btn.addEventListener('click', () => {
-        selectedTheme = theme;
-        updateBadgesActive(filterThemes, btn);
-        applyFilters();
-      });
+      btn.dataset.theme = theme;
+      btn.addEventListener('click', () => selectTheme(theme));
       filterThemes.appendChild(btn);
+
+      // Badge de la ligne défilante mobile
+      if (filterThemesMobile) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = theme === 'Tous' ? 'nos_menu-badge active' : 'nos_menu-badge';
+        chip.textContent = theme;
+        chip.dataset.theme = theme;
+        chip.addEventListener('click', () => selectTheme(theme));
+        filterThemesMobile.appendChild(chip);
+      }
     });
+  }
+
+  /* ===============================
+      FONCTION : SÉLECTIONNER UN THÈME
+        - Met à jour selectedTheme
+        - Active le bon badge dans le panneau ET dans la ligne mobile
+        - Relance le filtrage
+     =============================== */
+  function selectTheme(theme) {
+    selectedTheme = theme;
+    [filterThemes, filterThemesMobile].forEach(container => {
+      if (!container) return;
+      container.querySelectorAll('.nos_menu-badge').forEach(badge => {
+        badge.classList.toggle('active', badge.dataset.theme === theme);
+      });
+    });
+    applyFilters();
   }
 
   /* ===============================
@@ -620,8 +657,53 @@ export function initNosMenusPage() {
       menuCount.textContent = `${filtered.length} menu${filtered.length > 1 ? 's' : ''} trouvé${filtered.length > 1 ? 's' : ''}`;
     }
 
+    // Mobile : bouton "Voir les X menus" + pastille du nombre de filtres actifs
+    updateMobileFilterInfos(filtered.length, maxPrice, minPersons);
+
     // Affiche les cards filtrées dans la grille
     renderCards(filtered);
+  }
+
+  /* ===============================
+      FONCTION : INFOS MOBILE DES FILTRES
+        - Texte du bouton "Voir les X menus"
+        - Pastille sur le bouton "Filtres" = nombre de filtres actifs
+          (le thème n'est pas compté : il est visible dans la ligne mobile)
+     =============================== */
+  function updateMobileFilterInfos(nbMenus, maxPrice, minPersons) {
+    if (btnApplyFilters) {
+      btnApplyFilters.textContent = nbMenus === 0
+        ? 'Aucun menu'
+        : `Voir ${nbMenus > 1 ? 'les ' + nbMenus + ' menus' : 'le menu'}`;
+    }
+
+    if (!filterActiveCount) return;
+    let nbActifs = 0;
+    if (selectedRegime !== 'Tous') nbActifs++;
+    if (selectedDisponibilite !== 'Tous') nbActifs++;
+    if (filterPrice && maxPrice < parseFloat(filterPrice.max)) nbActifs++;
+    if (minPersons > 0) nbActifs++;
+    nbActifs += selectedAllergenes.length;
+
+    filterActiveCount.textContent = nbActifs;
+    filterActiveCount.classList.toggle('d-none', nbActifs === 0);
+  }
+
+  /* ===============================
+      FONCTIONS : OUVRIR / FERMER LE PANNEAU DE FILTRES (mobile)
+     =============================== */
+  function openFilters() {
+    if (!filtersPanel) return;
+    filtersPanel.classList.add('is-open');
+    if (filtersBackdrop) filtersBackdrop.classList.add('is-open');
+    if (btnOpenFilters) btnOpenFilters.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeFilters() {
+    if (!filtersPanel) return;
+    filtersPanel.classList.remove('is-open');
+    if (filtersBackdrop) filtersBackdrop.classList.remove('is-open');
+    if (btnOpenFilters) btnOpenFilters.setAttribute('aria-expanded', 'false');
   }
 
   /* ===============================
@@ -783,15 +865,17 @@ export function initNosMenusPage() {
   function resetFilters() {
     if (DebugConsole) console.log("[resetFilters] Réinitialisation de tous les filtres");
 
-    // Vide le champ recherche
+    // Vide le champ recherche (desktop + mobile)
     if (filterSearch) filterSearch.value = '';
+    if (filterSearchMobile) filterSearchMobile.value = '';
 
-    // Remet "Tous" actif pour le thème
+    // Remet "Tous" actif pour le thème (panneau + ligne mobile)
     selectedTheme = 'Tous';
-    if (filterThemes) {
-      const firstBadge = filterThemes.querySelector('.nos_menu-badge');
-      if (firstBadge) updateBadgesActive(filterThemes, firstBadge);
-    }
+    [filterThemes, filterThemesMobile].forEach(container => {
+      if (!container) return;
+      const firstBadge = container.querySelector('.nos_menu-badge');
+      if (firstBadge) updateBadgesActive(container, firstBadge);
+    });
 
     // Remet "Tous" actif pour le régime
     selectedRegime = 'Tous';
@@ -849,6 +933,37 @@ export function initNosMenusPage() {
   // Bouton réinitialiser
   if (btnReset) {
     btnReset.addEventListener('click', resetFilters);
+  }
+
+  /* -------- LISTENERS MOBILE -------- */
+
+  // Recherche mobile : recopie dans #filter-search (source unique lue par applyFilters)
+  if (filterSearchMobile && filterSearch) {
+    filterSearchMobile.addEventListener('input', () => {
+      filterSearch.value = filterSearchMobile.value;
+      applyFilters();
+    });
+    // Et inversement (si la fenêtre passe de desktop à mobile)
+    filterSearch.addEventListener('input', () => {
+      filterSearchMobile.value = filterSearch.value;
+    });
+  }
+
+  // Ouverture / fermeture du panneau de filtres
+  if (btnOpenFilters) btnOpenFilters.addEventListener('click', openFilters);
+  if (btnCloseFilters) btnCloseFilters.addEventListener('click', closeFilters);
+  if (btnApplyFilters) btnApplyFilters.addEventListener('click', closeFilters);
+  if (filtersBackdrop) filtersBackdrop.addEventListener('click', closeFilters);
+
+  // Touche Échap : ferme le panneau
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeFilters();
+  });
+
+  // Barre collante : se place juste sous le header fixe (hauteur réelle mesurée)
+  const header = document.querySelector('header .custom-navbar');
+  if (header) {
+    document.documentElement.style.setProperty('--nos-menu-sticky-top', `${header.offsetHeight}px`);
   }
 
   /* ===============================

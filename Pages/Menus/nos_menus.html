@@ -13,6 +13,34 @@
 <!------ Section Filtres + Cartes Menus -------->
 <section class="nos_menu-section">
   <div class="container">
+
+    <!------ MOBILE UNIQUEMENT (< 992px) : barre collante recherche + bouton filtres -------->
+    <!-- d-lg-none : masqué à partir de 992px, le desktop n'est pas modifié -->
+    <div class="nos_menu-mobile-bar d-lg-none">
+      <div class="nos_menu-mobile-search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input
+          type="search"
+          id="filter-search-mobile"
+          placeholder="Rechercher un menu…"
+          aria-label="Rechercher un menu"
+        >
+      </div>
+      <button
+        type="button"
+        class="nos_menu-mobile-filter-btn"
+        id="btn-open-filters"
+        aria-controls="menu-filters"
+        aria-expanded="false"
+      >
+        <i class="bi bi-sliders" aria-hidden="true"></i> Filtres
+        <span class="nos_menu-mobile-filter-count d-none" id="filter-active-count">0</span>
+      </button>
+    </div>
+
+    <!------ MOBILE UNIQUEMENT : thèmes en ligne défilante (badges injectés par le JS) -------->
+    <div class="nos_menu-mobile-themes d-lg-none" id="filter-themes-mobile"></div>
+
     <div class="row">
 
       <!------ COLONNE GAUCHE : Filtres -------->
@@ -23,10 +51,15 @@
           <div class="nos_menu-filters-header">
             <i class="bi bi-funnel"></i>
             <span>Filtrer</span>
+            <!-- Bouton fermer : mobile uniquement (panneau de filtres) -->
+            <button type="button" class="nos_menu-filters-close d-lg-none" id="btn-close-filters" aria-label="Fermer les filtres">
+              <i class="bi bi-x-lg"></i>
+            </button>
           </div>
 
           <!-- Recherche par nom / ingrédient / thème / régime / allergène -->
-          <div class="nos_menu-filter-group">
+          <!-- nos_menu-filter-group-search : masqué sur mobile (la recherche est dans la barre collante) -->
+          <div class="nos_menu-filter-group nos_menu-filter-group-search">
             <label class="nos_menu-filter-label">Recherche</label>
             <input
               type="text"
@@ -108,7 +141,15 @@
             Réinitialiser les filtres
           </button>
 
+          <!-- Bouton "Voir les X menus" : mobile uniquement, ferme le panneau -->
+          <button type="button" class="nos_menu-filters-apply d-lg-none" id="btn-apply-filters">
+            Voir les menus
+          </button>
+
         </div>
+
+        <!-- Fond sombre derrière le panneau de filtres : mobile uniquement -->
+        <div class="nos_menu-filters-backdrop d-lg-none" id="filters-backdrop"></div>
       </div>
 
       <!------ COLONNE DROITE : Grille des menus -------->
