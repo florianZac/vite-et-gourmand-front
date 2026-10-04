@@ -239,12 +239,27 @@ export function initCompteAdminGestionAvisPage() {
       `;
 
       const card = document.createElement('div');
-      card.className = 'p-4 mb-3 rounded';
+      // compte_admin-avis-card : utilisé uniquement par le CSS mobile
+      card.className = 'p-4 mb-3 rounded compte_admin-avis-card';
       card.style.backgroundColor = '#fdf8f0';
       card.style.border = '1px solid #e8ddd0';
 
+      // MOBILE UNIQUEMENT : couleur de la pastille de statut (même style que l'espace client)
+      let pillCss = 'pending';
+      let pillText = 'En attente';
+      if (statutLower === 'publié') { pillCss = 'completed'; pillText = 'Publié'; }
+      else if (statutLower === 'refusé') { pillCss = 'cancelled'; pillText = 'Refusé'; }
+      const refCommande = sanitizeHtml(a.numero_commande || '#' + (a.commande_id || ' '));
+
       card.innerHTML = `
-        <div class="d-flex justify-content-between align-items-start mb-2">
+        <!-- MOBILE UNIQUEMENT (< 768px, d-md-none) : en-tête nom + statut, puis commande -->
+        <div class="compte_admin-mcard compte_admin-mcard-head d-md-none">
+          <span class="compte_admin-mcard-title">${utilisateurNom}</span>
+          <span class="compte_admin-mcard-status compte_admin-mcard-status-${pillCss}">${pillText}</span>
+        </div>
+        <div class="compte_admin-mcard compte_admin-mcard-ref d-md-none">Commande ${refCommande}${a.date ? ' — ' + sanitizeHtml(a.date) : ''}</div>
+
+        <div class="d-flex justify-content-between align-items-start mb-2 compte_admin-avis-desktop-head">
           <div>
             <strong class="fs-5">${utilisateurNom}</strong>
             ${statutBadge}
@@ -257,7 +272,12 @@ export function initCompteAdminGestionAvisPage() {
         </div>
         <div class="mb-2">${starsHtml}</div>
         <p class="mb-1 fst-italic" style="color:#5a4a3a;">"${description}"</p>
-        <small class="text-muted">${descLength}/255 caractères</small>
+        <small class="text-muted compte_admin-avis-count">${descLength}/255 caractères</small>
+
+        <!-- MOBILE UNIQUEMENT (< 768px) : boutons d'action en bas de la carte -->
+        <div class="compte_admin-mcard compte_admin-mcard-actions d-md-none">
+          ${actionsHtml}
+        </div>
       `;
 
       avisList.appendChild(card);

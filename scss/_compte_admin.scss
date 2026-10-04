@@ -1039,4 +1039,148 @@
     padding: 0.3rem 0.2rem;
     font-size: 0.85rem;
   }
+
+  /* -------- Admin : gestion des commandes et des avis -------- */
+  /* Même style que les cartes de l'espace client : carte blanche arrondie,
+     titre + pastille de statut, référence, total, puis "Voir le détail".
+     !important nécessaire : p-4 / mb-3 (Bootstrap) et le style en ligne du JS
+     (fond et bordure) imposent leurs valeurs */
+  .compte_admin-order-card,
+  .compte_admin-avis-card {
+    background-color: $white-pure !important;
+    border: 0 !important;
+    border-left: 3px solid rgba($terracotta, 0.3) !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 1rem 1.1rem !important;
+    margin-bottom: 0.9rem !important;
+  }
+
+  /* En-tête : titre à gauche, pastille de statut à droite */
+  .compte_admin-mcard-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .compte_admin-mcard-title {
+    font-family: $headings-font-family;
+    font-size: 1.05rem;
+    font-weight: $font-weight-bold;
+    color: $dark;
+  }
+
+  .compte_admin-mcard-status {
+    flex-shrink: 0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: $font-weight-semibold;
+    white-space: nowrap;
+  }
+
+  .compte_admin-mcard-status-pending    { background-color: rgba(#fd7e14, 0.1); color: #fd7e14; border: 1px solid rgba(#fd7e14, 0.3); }
+  .compte_admin-mcard-status-accepted   { background-color: rgba(#0d6efd, 0.1); color: #0d6efd; border: 1px solid rgba(#0d6efd, 0.3); }
+  .compte_admin-mcard-status-preparing  { background-color: rgba(#6f42c1, 0.1); color: #6f42c1; border: 1px solid rgba(#6f42c1, 0.3); }
+  .compte_admin-mcard-status-delivering { background-color: rgba(#0dcaf0, 0.1); color: #0aa2c0; border: 1px solid rgba(#0dcaf0, 0.3); }
+  .compte_admin-mcard-status-completed  { background-color: rgba($sucess-icon, 0.1); color: $sucess-icon; border: 1px solid rgba($sucess-icon, 0.3); }
+  .compte_admin-mcard-status-cancelled  { background-color: rgba(#dc3545, 0.1); color: #dc3545; border: 1px solid rgba(#dc3545, 0.3); }
+
+  /* Référence (n° de commande + date) */
+  .compte_admin-mcard-ref {
+    font-size: 0.82rem;
+    color: $terracotta;
+    margin-bottom: 0.35rem;
+  }
+
+  .compte_admin-mcard-client {
+    font-size: 0.85rem;
+    color: $gray-700;
+    margin-bottom: 0.2rem;
+  }
+
+  .compte_admin-mcard-total {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+
+    span {
+      font-size: 0.78rem;
+      color: $gray-600;
+    }
+
+    strong {
+      font-size: 1.05rem;
+      color: $terracotta;
+    }
+  }
+
+  /* -------- Commandes : carte repliée par défaut -------- */
+  /* L'en-tête desktop (n° + menu centrés) est remplacé par l'en-tête mobile */
+  .compte_admin-order-card > .text-center.mb-2 {
+    display: none;
+  }
+
+  /* Repliée : seuls l'en-tête, la référence, le client, le total et le bouton restent */
+  .compte_admin-order-card:not(.is-open) > :not(.compte_admin-mcard) {
+    display: none;
+  }
+
+  /* Dépliée : le statut est déjà dans la pastille, le total dans le détail */
+  .compte_admin-order-card.is-open > .compte_admin-order-badge,
+  .compte_admin-order-card.is-open > .compte_admin-mcard-total,
+  .compte_admin-order-card.is-open > .compte_admin-mcard-client {
+    display: none;
+  }
+
+  .compte_admin-order-card.is-open .client-info {
+    margin-top: 0.6rem;
+  }
+
+  /* Bouton "Voir le détail" / "Masquer le détail" */
+  .compte_admin-mcard-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px; /* zone facile à toucher au doigt */
+    margin-top: 0.5rem;
+    padding: 0.5rem 0 0;
+    border: 0;
+    border-top: 1px solid rgba($terracotta, 0.15);
+    background: transparent;
+    color: $terracotta;
+    font-size: 0.88rem;
+    font-weight: $font-weight-semibold;
+  }
+
+  /* -------- Avis -------- */
+  /* En-tête desktop (nom, badge, boutons sur une ligne) remplacé par l'en-tête mobile */
+  .compte_admin-avis-desktop-head,
+  .compte_admin-avis-count {
+    display: none !important;
+  }
+
+  .compte_admin-avis-card p {
+    margin-top: 0.35rem;
+    font-size: 0.92rem;
+  }
+
+  /* Boutons d'action en bas de la carte, même largeur */
+  .compte_admin-mcard-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba($terracotta, 0.15);
+
+    .btn {
+      flex: 1 1 0;
+      white-space: nowrap;
+      padding: 0.4rem 0.3rem;
+      font-size: 0.8rem;
+    }
+  }
 }

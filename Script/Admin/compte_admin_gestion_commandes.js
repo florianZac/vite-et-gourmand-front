@@ -158,6 +158,19 @@ export function initCompteAdminGestionCommandesPage() {
     'Terminée': 'bg-success',
     'Annulée': 'bg-danger'
   };
+
+  // MOBILE UNIQUEMENT : couleur de la pastille de statut (même style que l'espace client)
+  const STATUS_PILL = {
+    'En attente': 'pending',
+    'En attente du retour matériel': 'pending',
+    'Acceptée': 'accepted',
+    'En préparation': 'preparing',
+    'En livraison': 'delivering',
+    'Livré': 'completed',
+    'Restitution confirmée': 'completed',
+    'Terminée': 'completed',
+    'Annulée': 'cancelled'
+  };
   /* ===============================
       FONCTION : AFFICHAGE DU PRÉNOM DANS LE HERO
         - 1.  Appelle GET /api/me
@@ -272,18 +285,6 @@ export function initCompteAdminGestionCommandesPage() {
   }
 
   /* ===============================
-    FONCTION : FORMATE LES HEURE EN FR
-    =============================== */
-  function formatHeureFR(dateString) {
-  if (!dateString) return '';
-    const d = new Date(dateString.replace(' ', 'T'));
-    return d.toLocaleTimeString('fr-FR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
-
-  /* ===============================
       FONCTION : AFFICHER LES COMMANDES
      =============================== */
   async function renderCommandes(commandes) {
@@ -327,12 +328,14 @@ export function initCompteAdminGestionCommandesPage() {
       if (DebugConsole) console.log("[renderCommandes] :", c.id, c.numero_commande, c.statut);
 
       const card = document.createElement('div');
-      card.className = 'p-4 mb-3 rounded';
+      // compte_admin-order-card : utilisé uniquement par le CSS mobile (carte repliable)
+      card.className = 'p-4 mb-3 rounded compte_admin-order-card';
       card.style.backgroundColor = '#fdf8f0';
       card.style.border = '1px solid #e8ddd0';
 
       // Badge statut
       const badgeCss = STATUS_CSS[c.statut] || 'bg-secondary';
+      const pillCss = STATUS_PILL[c.statut] || 'pending';
 
       // Prêt matériel
       const pretText = c.pret_materiel ? '<span style="color:#c0392b; font-weight:600;">Oui</span>' : '<span style="color:#5a4a3a;">Non</span>';
@@ -402,6 +405,18 @@ export function initCompteAdminGestionCommandesPage() {
           <strong class="fs-5">${numeroCommande}</strong><br>
           <em class="text-muted-commande">${menuTitre}</em>
         </div>
+
+        <!-- MOBILE UNIQUEMENT (< 768px, d-md-none) : en-tête de la carte repliable -->
+        <div class="compte_admin-mcard compte_admin-mcard-head d-md-none">
+          <span class="compte_admin-mcard-title">${menuTitre}</span>
+          <span class="compte_admin-mcard-status compte_admin-mcard-status-${pillCss}">${sanitizeHtml(c.statut || '')}</span>
+        </div>
+        <div class="compte_admin-mcard compte_admin-mcard-ref d-md-none">${numeroCommande}${date_prestation ? ' — ' + date_prestation : ''}</div>
+        <div class="compte_admin-mcard compte_admin-mcard-client d-md-none">${nomClient} ${prenomClient}</div>
+        <div class="compte_admin-mcard compte_admin-mcard-total d-md-none">
+          <span>Total</span><strong>${total.toFixed(2)}€</strong>
+        </div>
+
         <div class="mb-2 client-info" style="font-size:0.9rem; color:#5a4a3a;">
 
           <strong>Nom du Client : </strong>
@@ -475,16 +490,34 @@ export function initCompteAdminGestionCommandesPage() {
           <strong>Prêt matériel : </strong><span class="pret-mat">${pretText}</span><br>
           <strong>Restitution matériel : </strong><span class="resti-mat">${restituText}</span><br>
         </div>
-        <div class="mb-2">
+        <div class="mb-2 compte_admin-order-badge">
           <span class="badge ${badgeCss}">${c.statut}</span>
         </div>
         ${suiviHtml}
         <div class="d-flex gap-2 mt-3">
           ${actionsHtml}
         </div>
+
+        <!-- MOBILE UNIQUEMENT (< 768px) : replier / déplier le détail de la commande -->
+        <button type="button" class="compte_admin-mcard compte_admin-mcard-toggle d-md-none" aria-expanded="false">
+          <span>Voir le détail</span>
+          <i class="bi bi-chevron-down" aria-hidden="true"></i>
+        </button>
       `;
       commandesList.appendChild(card);
     }
+
+    // Events : "Voir le détail" / "Masquer le détail" (mobile)
+    // La classe is-open n'a d'effet qu'en CSS mobile (< 768px)
+    commandesList.querySelectorAll('.compte_admin-mcard-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.compte_admin-order-card');
+        const ouvert = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+        btn.querySelector('span').textContent = ouvert ? 'Masquer le détail' : 'Voir le détail';
+        btn.querySelector('i').className = ouvert ? 'bi bi-chevron-up' : 'bi bi-chevron-down';
+      });
+    });
 
     // Events : prochain statut
     document.querySelectorAll('.btn-next-statut').forEach(function(btn) {
