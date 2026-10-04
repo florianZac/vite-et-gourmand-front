@@ -113,12 +113,12 @@ export async function initAccueilPage() {
       fullStars = Math.round(count);
     }
     // Ajoute les étoiles REMPLIES (bi-star-fill)
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < fullStars; i++) {
       stars += '<i class="bi bi-star-fill"></i>';
     }
     
     // Ajoute les étoiles VIDES (bi-star)
-    for (let i = count; i < 5; i++) {
+    for (let i = fullStars; i < 5; i++) {
       stars += '<i class="bi bi-star"></i>';
     }
     return stars;

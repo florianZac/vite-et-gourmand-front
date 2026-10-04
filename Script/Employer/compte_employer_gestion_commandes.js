@@ -225,7 +225,7 @@ export function initGestionCommandeEmployerPage() {
       { method: 'GET', headers: authHeaders });
 
       if (!response.ok){
-        console.error('[loadSuivi] Erreur retour API :', err);
+        console.error('[loadSuivi] Erreur retour API :', response.status);
         return [];
       } 
 
@@ -253,18 +253,6 @@ export function initGestionCommandeEmployerPage() {
   const d = new Date(dateString.replace(' ', 'T'));
   return d.toLocaleDateString('fr-FR') + ' à ' +
          d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  /* ===============================
-    FONCTION : FORMATE LES HEURE EN FR
-    =============================== */
-  function formatHeureFR(dateString) {
-  if (!dateString) return '';
-    const d = new Date(dateString.replace(' ', 'T'));
-    return d.toLocaleTimeString('fr-FR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
   }
 
   /* ===============================

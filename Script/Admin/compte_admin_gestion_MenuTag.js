@@ -307,7 +307,7 @@ export function initCompteAdminGestionTagMenuPage() {
         // stock ID
         currentDeleteId = btn.dataset.id; 
         // nom affiché
-        deleteName.textContent = sanitizeInput(btn.dataset.tag);
+        deleteName.textContent = btn.dataset.tag;
         // ouverture modal
         deleteModal.show();
       });
@@ -626,15 +626,22 @@ export function initCompteAdminGestionTagMenuPage() {
     =============================== */
   async function assignTag(menuId, tagId) {
     if (DebugConsole) console.log("[assignTag] Début menuId: ",menuId, "tagId: ",tagId);
-      const response = await fetch(`${apiBase}/menus/${menuId}/tags/${tagId}`, {
-        method: 'POST',
-        headers: authHeaders
-      });
+      let response;
+      try {
+        response = await fetch(`${apiBase}/menus/${menuId}/tags/${tagId}`, {
+          method: 'POST',
+          headers: authHeaders
+        });
+      } catch (err) {
+        console.error(err);
+        showToast("Erreur réseau", "error");
+        return;
+      }
     
       if (!response.ok) {
         if (DebugConsole) console.log("[assignTag] Réponse non OK, abandon");
         let data = {};
-        try { data = await response.json(); } catch {}
+        try { data = await response.json(); } catch { data = {}; }
         showToast(data.message || "Erreur", "error");
         return;
       }
@@ -653,20 +660,19 @@ export function initCompteAdminGestionTagMenuPage() {
         method: 'DELETE',
         headers: authHeaders
       });
+
       if (!response.ok) {
-
-        if (DebugConsole) console.log("[removeTagFromMenu] Réponse non OK, abandon");
+        // Refus de l'API : on lit son message pour l'afficher
+        if (DebugConsole) console.log("[removeTagFromMenu] Réponse non OK :", response.status);
+        let data = {};
+        try { data = await response.json(); } catch { data = {}; }
+        showToast(data.message || "Erreur lors de la suppression du tag", "error");
         return;
+      }
 
-      }else if(response.ok) {
-        if (DebugConsole) console.log("[removeTagFromMenu] Réponse status :", response.status);
-      }
-      if (response.ok) {
-        showToast("Tag supprimé");
-        loadMenuTags(currentMenuId);
-      }else {
-        showToast(data.message, "error");
-      }
+      if (DebugConsole) console.log("[removeTagFromMenu] Réponse status :", response.status);
+      showToast("Tag supprimé");
+      loadMenuTags(currentMenuId);
     } catch (err) {
       console.error(err);
       showToast("Erreur réseau", "error");

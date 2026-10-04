@@ -287,7 +287,7 @@ export function initGestionTagMenuPage() {
         element.classList.add('active');
         loadMenuTags(menu.id);
 
-        // MOBILE : les colonnes sont empilées on fait défiler jusqu'aux tags du menu
+        // MOBILE : les colonnes sont empilées → on fait défiler jusqu'aux tags du menu
         if (estMobile()) menuTagsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       });
@@ -307,7 +307,7 @@ export function initGestionTagMenuPage() {
         // stock ID
         currentDeleteId = btn.dataset.id; 
         // nom affiché
-        deleteName.textContent = sanitizeInput(btn.dataset.tag);
+        deleteName.textContent = btn.dataset.tag;
         // ouverture modal
         deleteModal.show();
       });
@@ -549,7 +549,7 @@ export function initGestionTagMenuPage() {
       });
 
       // MOBILE / TACTILE : le glisser-déposer HTML5 ne fonctionne pas au doigt
-      // un simple appui sur le tag l'ajoute au menu sélectionné (desktop : drag & drop inchangé)
+      // → un simple appui sur le tag l'ajoute au menu sélectionné (desktop : drag & drop inchangé)
       element.addEventListener('click', async () => {
         if (!estMobile()) return;
         if (!currentMenuId) {
@@ -626,15 +626,22 @@ export function initGestionTagMenuPage() {
     =============================== */
   async function assignTag(menuId, tagId) {
     if (DebugConsole) console.log("[assignTag] Début menuId: ",menuId, "tagId: ",tagId);
-      const response = await fetch(`${apiBase}/menus/${menuId}/tags/${tagId}`, {
-        method: 'POST',
-        headers: authHeaders
-      });
+      let response;
+      try {
+        response = await fetch(`${apiBase}/menus/${menuId}/tags/${tagId}`, {
+          method: 'POST',
+          headers: authHeaders
+        });
+      } catch (err) {
+        console.error(err);
+        showToast("Erreur réseau", "error");
+        return;
+      }
     
       if (!response.ok) {
         if (DebugConsole) console.log("[assignTag] Réponse non OK, abandon");
         let data = {};
-        try { data = await response.json(); } catch {}
+        try { data = await response.json(); } catch { data = {}; }
         showToast(data.message || "Erreur", "error");
         return;
       }
@@ -653,20 +660,19 @@ export function initGestionTagMenuPage() {
         method: 'DELETE',
         headers: authHeaders
       });
+
       if (!response.ok) {
-
-        if (DebugConsole) console.log("[removeTagFromMenu] Réponse non OK, abandon");
+        // Refus de l'API : on lit son message pour l'afficher
+        if (DebugConsole) console.log("[removeTagFromMenu] Réponse non OK :", response.status);
+        let data = {};
+        try { data = await response.json(); } catch { data = {}; }
+        showToast(data.message || "Erreur lors de la suppression du tag", "error");
         return;
+      }
 
-      }else if(response.ok) {
-        if (DebugConsole) console.log("[removeTagFromMenu] Réponse status :", response.status);
-      }
-      if (response.ok) {
-        showToast("Tag supprimé");
-        loadMenuTags(currentMenuId);
-      }else {
-        showToast(data.message, "error");
-      }
+      if (DebugConsole) console.log("[removeTagFromMenu] Réponse status :", response.status);
+      showToast("Tag supprimé");
+      loadMenuTags(currentMenuId);
     } catch (err) {
       console.error(err);
       showToast("Erreur réseau", "error");

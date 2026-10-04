@@ -264,7 +264,7 @@ export function initContactPage() {
           MessageInput.classList.add('is-invalid');
         }
 
-      } catch (err) {
+      } catch {
         // Gestion des erreurs réseau
         showError(
           'Impossible de contacter le serveur. Vérifiez que l\'API est lancée.'

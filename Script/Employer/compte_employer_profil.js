@@ -92,8 +92,6 @@ export function initGestionProfilEmployerPage() {
       displayName: !!displayName,
       displayEmail: !!displayEmail,
       btnSave: !!btnSave,
-      btnDelete: !!btnDelete,
-      btnDeactivate: !!btnDeactivate,
     });
   }
 

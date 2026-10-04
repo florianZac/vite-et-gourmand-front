@@ -133,7 +133,7 @@ export function initcompteclientprofilPage() {
 
       const heroName = document.getElementById('hero-user-name');
       if (heroName && data.utilisateur) {
-        heroName.textContent = sanitizeInput(data.utilisateur.prenom || data.utilisateur.email || '');
+        heroName.textContent = data.utilisateur.prenom || data.utilisateur.email || '';
         if (DebugConsole) console.log("[loadHeroName] Prénom affiché :", data.utilisateur.prenom);
       }
 

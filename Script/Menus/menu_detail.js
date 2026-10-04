@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole, sanitizeInput, sanitizeHtml } from '../script.js';
+import { getToken, getRole, sanitizeHtml } from '../script.js';
 export function initDetailMenusPage() {
 
 /* ===============================
@@ -49,12 +49,6 @@ export function initDetailMenusPage() {
       RÉCUPÉRATION DU TOKEN
      =============================== */
   const token = getToken();
-  const authHeaders = token ? {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  } : {
-    'Content-Type': 'application/json'
-  };
   const role = getRole();
 
   if (DebugConsole) {
@@ -212,6 +206,7 @@ export function initDetailMenusPage() {
       } else {
         breadcrumbName.textContent = ' ';
       }
+
       if (DebugConsole) {
         console.log("[renderBreadcrumb] chargé :", breadcrumbName.textContent);
       }
@@ -348,8 +343,8 @@ export function initDetailMenusPage() {
 
     // Texte de réduction dynamique basé sur la règle métier
     // Réduction de 10% si nombre_personnes > nombre_personne_minimum + 5
-    // le premier nombre de personnes qui donne droit à la réduction est minimum + 6
-    // (même règle que commander.js et CommandeController côté API)
+    // -> le premier nombre de personnes qui donne droit à la réduction est minimum + 6
+    //    (même règle que commander.js et CommandeController côté API)
     if (detailReduction) {
       let minPersons = menu?.nombre_personne_minimum || 0;
       const seuilReduction = minPersons + 6;
@@ -730,7 +725,7 @@ export function initDetailMenusPage() {
         window.location.href = `/commander?menu_id=${menu.id}`;
       } else {
         // Employé ou admin n'a pas accès à la commande
-        console.log('Accès commande réservé aux clients');
+        if (DebugConsole) console.log('Accès commande réservé aux clients');
         window.location.href = '/';
       }
     });

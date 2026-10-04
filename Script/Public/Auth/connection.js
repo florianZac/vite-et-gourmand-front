@@ -1,5 +1,5 @@
 import { API_URL} from '../../config.js';
-import { setToken, setCookie, showAndHideElementsForRole,sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../../script.js';
+import { setToken, setCookie, showAndHideElementsForRole, sanitizeInput, sanitizeHtml } from '../../script.js';
 
 export function initConnexionPage() {
 

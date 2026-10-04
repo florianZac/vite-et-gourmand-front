@@ -454,6 +454,9 @@ export function initInscriptionPage() {
 
       if (DebugConsole)  console.log("Utilisateur inscrit :", safeFormData);
 
+      // Passe à true si l'inscription réussit : le bouton reste alors désactivé jusqu'à la redirection
+      let inscriptionReussie = false;
+
       try {
         const response = await fetch(apiInscriptionUser, {
           method: 'POST',
@@ -471,7 +474,8 @@ export function initInscriptionPage() {
 
         if (response.ok) {
           // Succès on redirige vers la page de connexion
-          showToast("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit !!");
+          inscriptionReussie = true;
+          showToast("Compte créé avec succès ! "+prenom.value+", vous êtes maintenant inscrit !!", "success");
           if(DebugConsole){
             console.log("Utilisateur inscrit :", {
               prenom: prenom.value,
@@ -480,7 +484,9 @@ export function initInscriptionPage() {
             });
 
           }
-          window.location.href = '/login';
+          // Laisse 2 secondes pour lire le message avant d'aller sur la connexion
+
+          setTimeout(() => { window.location.href = '/login'; }, 2000);
         } else {
           // Erreur retournée par l'API (400, 409...)
           showToast(sanitizeHtml(data.message) || 'Erreur lors de l\'inscription.');
@@ -496,11 +502,13 @@ export function initInscriptionPage() {
 
       } finally {
 
-        // Réactive le bouton dans tous les cas
-        isSubmitting = false; // reset flag
-        submitButton.disabled = false;
-        submitButton.innerHTML = '<i class="bi bi-person-fill-add me-2"></i> Créer mon compte';
-        checkFormValidity();
+        // Réactive le bouton, sauf si l'inscription a réussi (redirection en cours)
+        if (!inscriptionReussie) {
+          isSubmitting = false; // reset flag
+          submitButton.disabled = false;
+          submitButton.innerHTML = '<i class="bi bi-person-fill-add me-2"></i> Créer mon compte';
+          checkFormValidity();
+        }
       }
     });
   }

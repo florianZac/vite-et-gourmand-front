@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
+import { getToken, sanitizeInput } from '../script.js';
 
 export function initCompteAdminGestionUtilisateurPage() {
   
@@ -454,6 +454,7 @@ export function initCompteAdminGestionUtilisateurPage() {
     if (!validateEmail(email)) { showToast("L'email n'est pas valide.", "error"); return; }
     if (!telephone) { showToast("Le téléphone est obligatoire.", "error"); return; }
     if (!validatePhone(telephone)) { showToast("Le téléphone n'est pas valide.", "error"); return; }
+    if (code_postal && !validatePostalCode(code_postal)) { showToast("Le code postal doit contenir 5 chiffres.", "error"); return; }
 
     const body = {
       prenom: prenom,
@@ -528,6 +529,12 @@ export function initCompteAdminGestionUtilisateurPage() {
     // Validation téléphone 
     if(!telephoneValid){
       showToast("Le telephone n'est pas valide.", "error");
+      return;
+    }
+
+    // Validation code postal (5 chiffres)
+    if (!validatePostalCode(code_postale)) {
+      showToast("Le code postal doit contenir 5 chiffres.", "error");
       return;
     }
 

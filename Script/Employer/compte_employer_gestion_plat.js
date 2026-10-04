@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, sanitizeInput, sanitizeHtml, getSanitizedFormData } from '../script.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export function initGestionPlatEmployerPage() {
 
@@ -231,7 +231,7 @@ export function initGestionPlatEmployerPage() {
         }
       );
       if (!response.ok){
-        console.error('[loadAllergenes] Erreur API :', err);
+        console.error('[loadAllergenes] Erreur API :', response.status);
         return;
       }
       let data = {};
@@ -362,7 +362,7 @@ export function initGestionPlatEmployerPage() {
       if (DebugConsole) console.log("[loadPlat] Réponse status platsRes:", platsRes.status);
       if (!platsRes.ok) {
         if (DebugConsole) console.log("[loadPlat] érreur Réponse:", platsRes);
-        console.error('[loadPlat] Erreur platsRes:', err);
+        console.error('[loadPlat] Erreur platsRes:', platsRes.status);
         return;
       }
 
@@ -374,7 +374,7 @@ export function initGestionPlatEmployerPage() {
       if (platsRes) {
         try {
           platsData = await platsRes.json();
-        } catch (error) {
+        } catch {
           platsData = {};
         }
       }

@@ -113,16 +113,18 @@
             </div>
           </div>  
         </div> 
+        <!------ Toast : placé HORS de #commandes-list, que le JS vide à chaque affichage des avis
+             (à l'intérieur, il était supprimé et le message ne s'affichait jamais) -------->
+        <div class="d-flex justify-content-center">
+          <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
+          </div>
+        </div>
+
         <!------ Liste des commandes injectée dynamiquement par le JS -------->
         <div id="commandes-list">
           <!-- Les cards de commandes seront injectées ici par le JS -->
 
-          <!------ Toast -------->
-          <div class="d-flex justify-content-center mt-3">
-            <div id="toast-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="toast-body"></div>
-            </div>
-          </div>
         </div> 
       </div>         
     </div>         

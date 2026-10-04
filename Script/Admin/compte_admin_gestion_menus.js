@@ -123,7 +123,7 @@ export function initCompteAdminGestionMenusPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = sanitizeInput(message || "Action effectuée !");
+    body.textContent = message || "Action effectuée !";
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -201,7 +201,7 @@ export function initCompteAdminGestionMenusPage() {
       if (DebugConsole) console.log("[loadSelectData] Réponse status apiGetThemes:", themesRes.status);
       if (!themesRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, apiGetThemes:");
-        console.error('[loadSelectData] Erreur apiGetThemes:', err);
+        console.error('[loadSelectData] Erreur apiGetThemes:', themesRes.status);
         return;
       }
 
@@ -212,7 +212,7 @@ export function initCompteAdminGestionMenusPage() {
       if (DebugConsole) console.log("[loadSelectData] Réponse status regimesRes:", regimesRes.status);
       if (!regimesRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, regimesRes:");
-        console.error('[loadSelectData] Erreur regimesRes:', err);
+        console.error('[loadSelectData] Erreur regimesRes:', regimesRes.status);
         return;
       }
 
@@ -221,9 +221,9 @@ export function initCompteAdminGestionMenusPage() {
         headers: authHeaders
       });
       if (DebugConsole) console.log("[loadSelectData] Réponse status platsRes:", platsRes.status);
-      if (!regimesRes.ok) {
+      if (!platsRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, platsRes:");
-        console.error('[loadSelectData] Erreur platsRes:', err);
+        console.error('[loadSelectData] Erreur platsRes:', platsRes.status);
         return;
       }
 
@@ -235,7 +235,7 @@ export function initCompteAdminGestionMenusPage() {
       if (themesRes) {
         try {
           themesData = await themesRes.json();
-        } catch (error) {
+        } catch {
           themesData = {};
         }
       }
@@ -258,7 +258,7 @@ export function initCompteAdminGestionMenusPage() {
       if (regimesRes) {
         try {
           regimesData = await regimesRes.json();
-        } catch (error) {
+        } catch {
           regimesData = {};
         }
       }
@@ -281,7 +281,7 @@ export function initCompteAdminGestionMenusPage() {
       if (platsRes) {
         try {
           platsData = await platsRes.json();
-        } catch (error) {
+        } catch {
           platsData = {};
         }
       }
@@ -639,7 +639,7 @@ export function initCompteAdminGestionMenusPage() {
     const plats = [];
     platSelects.forEach(sel => {
       if (sel.value) {
-        console.log(`[btnSaveMenu] plat selectionné : ${sel.value} `);
+        if (DebugConsole) console.log(`[btnSaveMenu] plat selectionné : ${sel.value} `);
         plats.push(parseInt(sel.value));
       }
     });

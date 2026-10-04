@@ -193,7 +193,7 @@ export function initCompteAdminGestionAllergenePage() {
         // stock ID
         currentDeleteId = btn.dataset.id; 
         // nom affiché
-        deleteAllergeneName.textContent = sanitizeInput(btn.dataset.libelle);
+        deleteAllergeneName.textContent = btn.dataset.libelle;
         // ouverture modal
         deleteModal.show();
       });

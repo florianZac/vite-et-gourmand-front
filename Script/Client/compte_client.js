@@ -45,7 +45,7 @@ export function initcompteclientPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = sanitizeInput(message || "Action effectuée !");
+    body.textContent = message || "Action effectuée !";
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -463,7 +463,7 @@ export function initcompteclientPage() {
 
       const data = await response.json();
       const orders = data.commandes || [];
-      console.log("orders:", orders, "length:", orders.length); 
+      if (DebugConsole) console.log("orders:", orders, "length:", orders.length);
 
       if (DebugConsole) {
         console.log("[loadOrders] Données reçues :", data);
@@ -944,14 +944,15 @@ export function initcompteclientPage() {
 
           loadOrders();
         } else {
+          // Refus de l'API (ex : commande plus "En attente") : on affiche son message.
+          // errorDiv ("motif obligatoire") n'est affiché que si le motif est vide.
           showToast(result.message || "Erreur lors de l'annulation", "error");
-          errorDiv.style.display = 'block';
         }
 
       } catch (err) {
+        // Erreur réseau : pas de réponse de l'API, donc pas de "result" ici
         console.error(err);
-        showToast(result.message || "Erreur lors de l'annulation", "error");
-        errorDiv.style.display = 'block';
+        showToast("Erreur réseau : la commande n'a pas pu être annulée.", "error");
       } finally {
         // Réactivation du bouton
         confirmBtn.disabled = false;

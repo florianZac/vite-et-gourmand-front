@@ -745,7 +745,7 @@ export function initCompteAdminGestionCommandesPage() {
       return true;
     });
 
-    console.log("RESULTAT FILTRE:", filtered.length);
+    if (DebugConsole) console.log("RESULTAT FILTRE:", filtered.length);
     renderCommandes(filtered);
   }
 

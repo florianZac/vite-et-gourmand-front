@@ -123,7 +123,7 @@ export function initGestionMenusEmployerPage() {
      =============================== */
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = sanitizeInput(message || "Action effectuée !");
+    body.textContent = message || "Action effectuée !";
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
@@ -200,7 +200,7 @@ export function initGestionMenusEmployerPage() {
       if (DebugConsole) console.log("[loadSelectData] Réponse status apiGetThemes:", themesRes.status);
       if (!themesRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, apiGetThemes:");
-        console.error('[loadSelectData] Erreur apiGetThemes:', err);
+        console.error('[loadSelectData] Erreur apiGetThemes:', themesRes.status);
         return;
       }
 
@@ -211,7 +211,7 @@ export function initGestionMenusEmployerPage() {
       if (DebugConsole) console.log("[loadSelectData] Réponse status regimesRes:", regimesRes.status);
       if (!regimesRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, regimesRes:");
-        console.error('[loadSelectData] Erreur regimesRes:', err);
+        console.error('[loadSelectData] Erreur regimesRes:', regimesRes.status);
         return;
       }
 
@@ -220,9 +220,9 @@ export function initGestionMenusEmployerPage() {
         headers: authHeaders
       });
       if (DebugConsole) console.log("[loadSelectData] Réponse status platsRes:", platsRes.status);
-      if (!regimesRes.ok) {
+      if (!platsRes.ok) {
         if (DebugConsole) console.log("[loadSelectData] érreur Réponse, platsRes:");
-        console.error('[loadSelectData] Erreur platsRes:', err);
+        console.error('[loadSelectData] Erreur platsRes:', platsRes.status);
         return;
       }
 
@@ -234,7 +234,7 @@ export function initGestionMenusEmployerPage() {
       if (themesRes) {
         try {
           themesData = await themesRes.json();
-        } catch (error) {
+        } catch {
           themesData = {};
         }
       }
@@ -257,7 +257,7 @@ export function initGestionMenusEmployerPage() {
       if (regimesRes) {
         try {
           regimesData = await regimesRes.json();
-        } catch (error) {
+        } catch {
           regimesData = {};
         }
       }
@@ -280,7 +280,7 @@ export function initGestionMenusEmployerPage() {
       if (platsRes) {
         try {
           platsData = await platsRes.json();
-        } catch (error) {
+        } catch {
           platsData = {};
         }
       }
@@ -503,7 +503,7 @@ export function initGestionMenusEmployerPage() {
       if (DebugConsole) {console.log(`[renderMenus] : Apel modal suppression`);}
       btn.addEventListener('click', () => {
         currentDeleteId = btn.dataset.id;
-        deleteMenuName.textContent = sanitizeInput(btn.dataset.titre);
+        deleteMenuName.textContent = btn.dataset.titre;
         deleteModal.show();
       });
     });
@@ -638,7 +638,7 @@ export function initGestionMenusEmployerPage() {
     const plats = [];
     platSelects.forEach(sel => {
       if (sel.value) {
-        console.log(`[btnSaveMenu] plat selectionné : ${sel.value} `);
+        if (DebugConsole) console.log(`[btnSaveMenu] plat selectionné : ${sel.value} `);
         plats.push(parseInt(sel.value));
       }
     });

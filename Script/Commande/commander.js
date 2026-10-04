@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, getRole, sanitizeInput, getSanitizedFormData, sanitizeHtml } from '../script.js';
+import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
 
 export async function initCommanderPage() {
 
@@ -55,8 +55,6 @@ export async function initCommanderPage() {
 
   // Variable debug console si à true
   let DebugConsole = false;
-  
-  let isModified = false;
 
   /* ===============================
       CONFIGURATION API
@@ -554,7 +552,6 @@ export async function initCommanderPage() {
         // Met à jour les valeurs originales pour la prochaine comparaison
         copyCurrentToOriginal(currentData);
         // Reset du flag
-        isModified = false;
       } else {
         console.error('[updateUserIfChanged] Erreur mise à jour profil:', result.message);
         if (DebugConsole) console.log("[updateUserIfChanged] Erreur mise à jour profil:", result.message);
@@ -903,8 +900,8 @@ export async function initCommanderPage() {
     const confirmDate = document.getElementById('confirm-date');
     const confirmTotal = document.getElementById('confirm-total');
 
-    if (confirmMenu) confirmMenu.textContent = sanitizeInput(menuName);
-    if (confirmPersons) confirmPersons.textContent = sanitizeInput(persons);
+    if (confirmMenu) confirmMenu.textContent = menuName;
+    if (confirmPersons) confirmPersons.textContent = persons;
     if (confirmDate) confirmDate.textContent = `${sanitizeInput(date)} à ${sanitizeInput(time)}`;
     if (confirmTotal) confirmTotal.textContent = `${updateRecapPrices()}€`;
 
@@ -960,9 +957,6 @@ export async function initCommanderPage() {
       };
   }
 
-
-
-
   
   /* ===============================
       LISTENERS : INPUT FORM
@@ -981,7 +975,6 @@ export async function initCommanderPage() {
   profileInputs.forEach(input => {
     if (input) {
       input.addEventListener('input', () => {
-        isModified = true;
         if (DebugConsole) console.log(`[PROFILE INPUT] ${input.id} modifié, isModified = true`);
       });
     }
@@ -1173,7 +1166,7 @@ export async function initCommanderPage() {
       }
 
       // récupère le total TTC
-      const prixTotal = updateRecapPrices(); 
+      updateRecapPrices();
 
       // Collecte toutes les données saisies dans les 3 étapes
       const delivery = getDeliveryAddress();

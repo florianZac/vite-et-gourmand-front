@@ -356,7 +356,7 @@ export function initCompteAdminPage() {
     if (ctxMenus && caParMenu.length > 0) {
 
       // Création du graphique
-      const graphiqueMenus = new Chart(ctxMenus, {
+      new Chart(ctxMenus, {
         type: 'bar', 
         data: {
           // Mise à jour des labels d'après le noms des menus

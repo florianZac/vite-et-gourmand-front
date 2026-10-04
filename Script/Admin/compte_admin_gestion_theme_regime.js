@@ -189,7 +189,7 @@ export function initCompteAdminGestionThemeRegimePage() {
     // On met à jour le titre
     deleteModalTitle.innerHTML = `<i class="bi bi-trash text-danger me-2"></i>Supprimer ${sanitizeHtml(label)}`;
     // On affiche le nom à supprimer
-    deleteItemName.textContent = sanitizeInput(name);
+    deleteItemName.textContent = name;
     // On ouvre la modale de suppression
     deleteModal.show();
   }

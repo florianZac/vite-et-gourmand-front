@@ -115,7 +115,7 @@ export function initGestionThemeRegimeEmployerPage() {
   function showToast(message, type = 'success') {
     const body = toastEl.querySelector('.toast-body');
     // Texte du message
-    body.textContent = sanitizeInput(message || "Action effectuée !");
+    body.textContent = message || "Action effectuée !";
     // Reset des classes
     toastEl.classList.remove('toast-success', 'toast-error');
     // Ajout de la bonne classe selon type

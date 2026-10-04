@@ -1,6 +1,5 @@
 import { API_URL } from '../config.js';
-import {sanitizeInput, sanitizeHtml } from '../script.js';
-console.log("=== nos_menus.js chargé ===");
+import { sanitizeHtml } from '../script.js';
 export function initNosMenusPage() {
 
   /* ===============================
@@ -736,12 +735,6 @@ export function initNosMenusPage() {
       // Récupère les libellés
       const themeLabel = getThemeLabel(menu);
       const regimeLabel = getRegimeLabel(menu);
-      let tagsHtml = '';
-      if (menu.tags && Array.isArray(menu.tags)) {
-        tagsHtml = menu.tags
-          .map(tag => `<span class="nos_menu-card-tag">${tag.tag}</span>`)
-          .join('');
-      }
 
       // Badge de disponibilité
       const dispoBadgeHtml = generateDisponibiliteBadge(menu);
@@ -860,7 +853,8 @@ export function initNosMenusPage() {
         - 2. Remet "Tous" actif pour thème et régime
         - 3. Remet le slider prix au max
         - 4. Vide le nombre de personnes
-        - 5. Relance le filtrage
+        - 5. Désélectionne les allergènes
+        - 6. Relance le filtrage
      =============================== */
   function resetFilters() {
     if (DebugConsole) console.log("[resetFilters] Réinitialisation de tous les filtres");
@@ -898,6 +892,12 @@ export function initNosMenusPage() {
     if (filterDisponibilite) {
       const firstBadge = filterDisponibilite.querySelector('.nos_menu-badge');
       if (firstBadge) updateBadgesActive(filterDisponibilite, firstBadge);
+    }
+
+    // Désélectionne tous les allergènes (liste vidée + badges remis à l'état inactif)
+    selectedAllergenes = [];
+    if (filterAllergenes) {
+      filterAllergenes.querySelectorAll('.nos_menu-badge.active').forEach(badge => badge.classList.remove('active'));
     }
 
     // Relance le filtrage (affiche tous les menus)
@@ -973,4 +973,4 @@ export function initNosMenusPage() {
 
   if (DebugConsole) console.log("=== INITIALISATION PAGE NOS MENUS ===");
   loadMenus();
-}
+}

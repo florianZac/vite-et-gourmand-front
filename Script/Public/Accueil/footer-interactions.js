@@ -1,5 +1,5 @@
 import { API_URL } from '../../config.js';
-import { sanitizeInput, sanitizeHtml } from '../../script.js';
+import { sanitizeHtml } from '../../script.js';
   // EndPoint de l'API pour la récupération des horaires
 const apiHoraire = `${API_URL}/api/horaires`;
 

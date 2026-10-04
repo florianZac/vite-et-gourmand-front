@@ -7,7 +7,6 @@
 // Import des fonctions utilitaires depuis Script/script.js
 import { isConnected, showAndHideElementsForRole, getRole } from "/Script/script.js";
 
-console.log("Router chargé");
 
 // Import de la classe Route qui sert de modèle pour définir une route
 import Route from "./Route.js";
@@ -20,7 +19,8 @@ import { allRoutes, websiteName } from "./allRoutes.js";
    ===================================================== */
 
 // Mode debug - affichera des logs dans la console si égale à True
-const debug = true;
+const debug = false; // true : affiche les logs de navigation dans la console
+if (debug) console.log("Router chargé");
 
 // Création d'une route spéciale pour les pages introuvables (404)
 const route404 = new Route(
@@ -298,6 +298,11 @@ document.addEventListener("click", (event) => {
 
     // Si ce n'est pas un lien interne on ignore
     if (!link) return;
+
+    // Ctrl/Cmd/Maj + clic, clic molette ou lien en target="_blank" : on laisse le navigateur
+    // ouvrir un nouvel onglet ou une nouvelle fenêtre comme sur un site classique
+    if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    if (link.target === '_blank' || link.hasAttribute('download')) return;
 
     // Empêche le comportement normal du lien
     event.preventDefault();

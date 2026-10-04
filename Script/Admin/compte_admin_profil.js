@@ -1,5 +1,5 @@
 import { API_URL  } from '../config.js';
-import {getToken, sanitizeInput, sanitizeHtml } from '../script.js';
+import { getToken, sanitizeInput } from '../script.js';
 
 export function initCompteAdminProfilPage() {
 
@@ -218,7 +218,7 @@ export function initCompteAdminProfilPage() {
     // Met à jour le nom affiché sous l'avatar
     if (displayName) {
       if (firstName || lastName) {
-        displayName.textContent = sanitizeInput((firstName + " " + lastName).trim());
+        displayName.textContent = (firstName + " " + lastName).trim();
       } else {
         displayName.textContent = " ";
       }

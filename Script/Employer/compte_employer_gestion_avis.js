@@ -1,5 +1,5 @@
 import { API_URL } from '../config.js';
-import { getToken, sanitizeInput, sanitizeHtml } from '../script.js';
+import { getToken, sanitizeHtml } from '../script.js';
 
 export function initGestionAvisEmployerPage() {
 
@@ -25,8 +25,6 @@ export function initGestionAvisEmployerPage() {
   // EndPoint de l'API pour Approuver / Refuser les avis
   const apiEmployeAvis = `${API_URL}/api/employe/avis`;
 
-  // EndPoint de l'API pour Supprimer un avis
-  const apiAdminAvis = `${API_URL}/api/admin/avis`;
 
   if (DebugConsole) {
     console.log("=== DEBUG CONFIG API ===");
@@ -93,7 +91,8 @@ export function initGestionAvisEmployerPage() {
   function showToast(message, type = 'success') {
     if (!toastEl || !toastBootstrap) return;
     const body = toastEl.querySelector('.toast-body');
-    body.textContent = sanitizeHtml(data.utilisateur.prenom || data.utilisateur.email || '');
+    // textContent n'interprète pas le HTML : le message est affiché tel quel, sans risque XSS
+    body.textContent = message || "Action effectuée !";
     toastEl.classList.remove('toast-success', 'toast-error');
     toastEl.classList.add(type === 'error' ? 'toast-error' : 'toast-success');
     toastBootstrap.show();
