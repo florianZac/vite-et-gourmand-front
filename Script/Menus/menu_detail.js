@@ -212,7 +212,6 @@ export function initDetailMenusPage() {
       } else {
         breadcrumbName.textContent = ' ';
       }
-
       if (DebugConsole) {
         console.log("[renderBreadcrumb] chargé :", breadcrumbName.textContent);
       }
@@ -324,7 +323,7 @@ export function initDetailMenusPage() {
         - 1.	Prix par personne
         - 2.	Minimum de personnes
         - 3.	Texte de réduction "-10% à partir de X personnes supplémentaires"
-        où X = nombre_personne_minimum + 5 (règle métier)
+        où X = nombre_personne_minimum + 6 (règle métier : réduction si plus de 5 personnes au-delà du minimum)
 		 =============================== */
 
   function renderPriceCard(menu) {
@@ -349,9 +348,11 @@ export function initDetailMenusPage() {
 
     // Texte de réduction dynamique basé sur la règle métier
     // Réduction de 10% si nombre_personnes > nombre_personne_minimum + 5
+    // le premier nombre de personnes qui donne droit à la réduction est minimum + 6
+    // (même règle que commander.js et CommandeController côté API)
     if (detailReduction) {
       let minPersons = menu?.nombre_personne_minimum || 0;
-      const seuilReduction = minPersons + 5;
+      const seuilReduction = minPersons + 6;
       if (DebugConsole) console.log("[detailReduction] minPersons:",minPersons);
 
       detailReduction.innerHTML = `<i class="bi bi-tag"></i> Réduction de 10% à partir de ${seuilReduction} personnes`;
@@ -519,8 +520,8 @@ export function initDetailMenusPage() {
     const minPersons = menu?.nombre_personne_minimum || 0;
     if (orderBarPrice) orderBarPrice.textContent = menu?.prix_par_personne || 0;
     if (orderBarMin) orderBarMin.textContent = minPersons;
-    // Même règle métier que renderPriceCard : réduction à partir de minimum + 5 personnes
-    if (orderBarReduction) orderBarReduction.textContent = minPersons + 5;
+    // Même règle métier que renderPriceCard : réduction à partir de minimum + 6 personnes
+    if (orderBarReduction) orderBarReduction.textContent = minPersons + 6;
 
     // Bouton Commander mobile : même état que le bouton principal
     if (btnOrderMobile && btnOrder && btnOrder.disabled) {
