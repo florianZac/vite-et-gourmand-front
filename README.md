@@ -1,121 +1,282 @@
-# Vite est Gourmand
-Ce site est un site vitrine pour le restaurant vite et gourmand
+# Vite & Gourmand — Front-end
 
-Utilisation d'un Le framework JavaScript
+Site web du traiteur **Vite & Gourmand** (Bordeaux) : vitrine des menus, commande en ligne et espaces de gestion pour les clients, les employés et l'administrateur.
 
-1.1 Le routage
-But :
-Pour permetre d'avoir un cadre de travail lors du développement de la partie front du site.
+Ce dépôt contient uniquement le **front-end**. Il communique avec l'API REST Symfony du dépôt `vite-et-gourmand-back` (requêtes HTTP au format JSON, authentification par jeton JWT).
+
+- Front en production : https://vite-et-gourmand-c36478b4c1b0.herokuapp.com
+- API en production : https://vite-et-gourmand-api-2b0eeb54e8d5.herokuapp.com
+
+---
+
+## 0. Le routeur (application monopage)
+
+**But :** éviter de dupliquer le header et le footer sur chaque page, centraliser le chargement des pages et gérer les droits de chaque rôle.
+
 Utilisation d'un système de routage due au limite du HTML dans le but de ne pas dupliquer 
 les page header, footer.
 ainsi que centraliser les données au meme endroits
 Le routage utilise une table de correspondance qui associe des URL perméttant de mieux gérer les droits des différents role (invitée,client,employée,admin).
 
-composé de 3 fichiers : 
-Le fichier Route.js : définit une classe Route qui représente une route de l'application. Chaque route a une URL, un titre, un chemin vers un fichier HTML, un chemin vers un fichier JavaScript
+Il est composé de 3 fichiers :
 
-Le fichier allRoutes.js : crée un tableau « allRoutes » contenant toutes les routes de l'application. Chaque route est créée en utilisant la classe « Route » avec les paramètres appropriés. Il définit également la variable « websiteName », qui représente le nom du site web
+- **`Route.js`** définit la classe `Route`. Chaque route a une URL  qui représente une route de l'application, un titre, le chemin de sa page HTML, la liste des rôles autorisés et le chemin de son script JavaScript.
+- **`allRoutes.js`** crée le tableau `allRoutes`, qui contient les 32 routes de l'application, et la variable `websiteName` (le nom du site).
+- **`Router.js`** contient la logique de navigation :
+  1. il intercepte les clics sur les liens internes ;
+  2. il vérifie le rôle de l'utilisateur (une page réservée redirige vers la connexion) ;
+  3. il charge la page HTML dans la zone `#main-page` ;
+  4. il exécute le script JavaScript de la page.
 
-Le fichier router.js : importe la classe Route et les variables « allRoutes » et « websiteName » du fichier allRoutes.js. C’est lui qui contient la logique de routage.
+Ctrl + clic et clic molette ouvrent bien un nouvel onglet, comme sur un site classique.
+Pour afficher les logs de navigation dans la console, passer `const debug = true;` dans `Router.js`.
 
-# Architecture du Front
-/project-root
-├─ Pages/
-│ ├─ 404.html
-│ ├─ home.html
-│ ├───Auth/
-│ ├─ inscription.html
-│ ├─ login.html
-│ ├───Auth/
-│ ├─ commander.html
-│ ├───Contact/
-│ ├─ contact.html
-│ ├───Mention_legale/
-│ ├─ Mentions_CGV.html
-│ ├─ Mentions_legale.html
+---
+
+## 1. Technologies
+
+| Rôle | Outil |
+|---|---|
+| Structure | HTML5 |
+| Style | Sass (compilé en `scss/main.css`) + Bootstrap 5.3.8 |
+| Icônes | Bootstrap Icons |
+| Interactions | JavaScript natif en modules ES6 (pas de framework) |
+| Graphiques (statistiques admin) | Chart.js |
+| Serveur | Node.js + Express |
+| Déploiement | Heroku |
+| Environnement local (optionnel) | Docker |
+
+Pourquoi Bootstrap : respect de standards connus, grille responsive et gain de temps sur le CSS.
+Pourquoi Sass : modifier les couleurs par défaut de Bootstrap et surcharger le CSS pour appliquer la charte du site.
+Pourquoi JavaScript natif : maîtriser les bases du langage sans dépendre d'un framework.
+
+## 2. Architecture du projet
+
+```
+vite-et-gourmand-front/
+├─ index.html              Page unique : header, zone #main-page, footer
+├─ server.js               Serveur Express local (proxy /api vers l'API Heroku)
+├─ server_prod.js          Serveur Express de production (utilisé par Heroku)
+├─ Dockerfile
+├─ package.json
+├─ Assets/Images/          Photos, logo, favicon, image par défaut des menus
+├─ Pages/                  Contenu HTML de chaque page (injecté par le routeur)
+│  ├─ accueil.html, 404.html
+│  ├─ Auth/                connexion, inscription, mot de passe oublié / réinitialisation
+│  ├─ Menus/               nos_menus.html, menu_detail.html
+│  ├─ Commande/Client/     commander, espace client, profil client
+│  ├─ Contact/             contact.html
+│  ├─ Mention_legale/      mentions légales, CGV
+│  ├─ Employer/            pages de l'espace employé
+│  └─ Admin/               pages de l'espace administrateur
 ├─ Router/
-│ ├─ Router.js 
-│ ├─ Route.js 
-│ └─ allRoutes.js
+│  ├─ Route.js             Classe Route
+│  ├─ allRoutes.js         Liste des 32 routes de l'application
+│  └─ Router.js            Logique de navigation
 ├─ Script/
-│ ├─ script.js 
-├─ scss/
-│ ├─ _custom.scss
-│ ├─ main.css
-│ ├─ main.css.map 
-│ ├─ main.scss
+│  ├─ config.js            URL de l'API
+│  ├─ script.js            Fonctions communes (cookies, rôles, nettoyage des données)
+│  ├─ Public/              Accueil (header, footer, témoignages) et authentification
+│  ├─ Menus/               Nos menus et détail d'un menu
+│  ├─ Commande/            Tunnel de commande
+│  ├─ Client/              Espace client
+│  ├─ Contact/             Formulaire de contact
+│  ├─ Employer/            Espace employé
+│  └─ Admin/               Espace administrateur
+└─ scss/
+   ├─ main.scss            Point d'entrée Sass (importe tous les fichiers ci-dessous)
+   ├─ _custom.scss         Charte graphique : couleurs, polices, variables Bootstrap
+   ├─ _header.scss, _footer.scss, _accueil.scss, _nos_menus.scss, _menu_detail.scss, ...
+   └─ main.css             Fichier compilé chargé par index.html
+```
 
-# NPM windows installation via choco pour s'il n'est pas déjà installer.
+## 3. Rôles et connexion
+
+| Rôle | Accès |
+|---|---|
+| Visiteur | Accueil, Nos menus, détail d'un menu, contact, mentions légales, inscription, connexion |
+| `ROLE_CLIENT` | + commander, espace client (suivi, annulation, avis), profil |
+| `ROLE_EMPLOYE` | + gestion des commandes, des avis, des menus, plats, thèmes, régimes, allergènes et tags |
+| `ROLE_ADMIN` | + statistiques, comptes employés et utilisateurs, horaires, suppressions |
+
+À la connexion, l'API renvoie un jeton JWT. Le front stocke deux cookies :
+
+- `accesstoken` : le jeton, envoyé dans l'en-tête `Authorization: Bearer ...` de chaque appel à l'API ;
+- `role` : le rôle de l'utilisateur, utilisé pour l'affichage.
+
+La vraie sécurité est assurée par l'API, qui vérifie le jeton et le rôle sur chaque route. Le front ne fait que l'affichage.
+Toutes les données reçues de l'API sont nettoyées avant d'être insérées dans la page (`sanitizeHtml` / `sanitizeInput` dans `script.js`), pour éviter les failles XSS.
+
+---
+
+## 4. Connexion à l'API
+
+L'URL de l'API est définie dans `Script/config.js`.
+
+Par défaut, le front appelle **toujours l'API de production**, même en local :
+
+```js
+export const API_URL = 'https://vite-et-gourmand-api-2b0eeb54e8d5.herokuapp.com';
+```
+
+Pour travailler avec l'API Symfony lancée en local (`http://127.0.0.1:8000`), réactiver le bloc commenté :
+
+```js
+export const API_URL = dev
+    ? 'http://127.0.0.1:8000'
+    : 'https://vite-et-gourmand-api-2b0eeb54e8d5.herokuapp.com';
+```
+
+Ne pas oublier de remettre la version production avant de déployer.
+
+---
+
+## 5. Affichage mobile
+
+Chaque page a été adaptée au mobile (moins de 768 px de large) sans modifier l'affichage sur ordinateur :
+
+- **Nos menus :** barre de recherche fixe, filtres dans un panneau qui s'ouvre depuis le bas, thèmes en pastilles, cartes photo.
+- **Détail d'un menu :** photo plein écran avec titre et badges en surimpression, galerie au glissé du doigt, barre « Commander » fixée en bas.
+- **Espaces client, employé et admin :** cartes de commandes et d'avis repliables (« Voir le détail »), onglets en grille, boutons pleine largeur.
+- **Menus et tags :** association d'un tag à un menu par simple appui (le glisser-déposer ne fonctionne pas au doigt).
+
+Les règles mobiles sont regroupées à la fin de chaque fichier Sass, dans un bloc `@include media-breakpoint-down(md)`.
+
+---
+## 6. Installation en local
+
+### 7.1 Installer Node.js (Windows, via Chocolatey, s'il n'est pas déjà installé)
+
 https://nodejs.org/en/download
+
+```powershell
 Etape 1 : powershell -c "irm https://community.chocolatey.org/install.ps1|iex"
 Etape 2 : choco install nodejs-lts -y
-Etape 3 : Vérifier les versions
 
-# Verification de la version de Node.js
-node -v #
 
-# Verification de la version de npm
-npm -v #
+```
+### 7.2 Installation des dépendances
 
-# Installation du serveur Express
+```bash
+npm install
+```
+
+Cette commande installe Express, Bootstrap 5.3.8, Bootstrap Icons, Chart.js et http-proxy-middleware (voir `package.json`).
+sinon manuellement :
+## Installation du serveur Express
 npm install express
-# Lance le serveur
+
+## Installation du framework css bootstrap
+
+pourquoi : respect des normes standardiser, est gain de temps sur le css du site
+installation de bootstrap
+npm install bootstrap
+
+## Instalation de la version 5.3 de Bootstrap
+npm install bootstrap@v5.3.8
+
+## Instalation de la version 5.3 de Bootstrap icon
+npm i bootstrap-icons
+
+## Installation de Sass 
+But :  possibilité de modifier les couleurs par défaut de bootstrap est surchargé le css pour appliqué notre propre style.
+
+### 7.3 Verification des versions et netoyage des cookies
+
+## Verification de la version de Node.js
+node -v 
+
+## Verification de la version de npm
+npm -v
+
+## Lancement du serveur
 node server.js
 
-# Netoyage des COOKIES peut creer des problemes avec les roles
+## Netoyage des COOKIES peut creer des problemes avec les roles
 taper dans la console 
 document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 
-# Installation du framework css bootstrap
+## Installation de chart JS
+npm install chart.js
 
-pourquoi : respect des normes standardiser, est gain de temps sur le css du site
-installation de bootstrap 1. 
-npm install bootstrap
 
-# Instalation de la version 5.3 de Bootstrap
-npm install bootstrap@v5.3.8
+```
+```
+### 7.4 Compiler le Sass
 
-# Instalation de la version 5.3 de Bootstrap icon
-npm i bootstrap-icons
+Après chaque modification d'un fichier `.scss`, recompiler `main.css` :
 
-# Installation de Sass 
-But :  possibilité de modifier les couleurs par défaut de bootstrap est surchargé le css pour appliqué notre propre style.
+```bash
+npx sass scss/main.scss scss/main.css --no-source-map
+```
+Ou avec l'extension VS Code **Live Sass Compiler** (bouton « Watch Sass »).
+Sans cette étape, les modifications de style n'apparaissent pas sur le site.
 
-Test de gestion des utilisateurs 
-Ouvrir la console du navigateur (F12) taper les commandes ci-dessous pour tester les roles 
+### 7.5 Test l'affichage selon le rôle (sans se connecter)
+
 Client :
-jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
-document.cookie = "role=client; path=/; SameSite=Lax";
+```js
+document.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=ROLE_CLIENT; path=/; SameSite=Lax";
 location.reload();
+```
 
 Employé :
-jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
-document.cookie = "role=employee; path=/; SameSite=Lax";
+```js
+document.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=ROLE_EMPLOYE; path=/; SameSite=Lax";
 location.reload();
+```
 
 Admin :
-jsdocument.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
-document.cookie = "role=admin; path=/; SameSite=Lax";
+```js
+document.cookie = "accesstoken=fake-token-123; path=/; SameSite=Lax";
+document.cookie = "role=ROLE_ADMIN; path=/; SameSite=Lax";
 location.reload();
+```
 
-Pour se déconnecter :
-jsdocument.cookie = "accesstoken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+Se déconnecter / nettoyer les cookies (utile si les rôles s'affichent mal) :
+```js
+document.cookie = "accesstoken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 location.reload();
+```
 
-# Déploiment
+### 7.6 Lancer le site
 
-# instalation de heroku via npm
+```bash
+node server.js
+```
+
+Puis ouvrir http://localhost:3000
+
+### 7.7 Avec Docker (optionnel)
+
+Le `Dockerfile` construit une image Node 20 qui lance `server_prod.js` sur le port 3000.
+Le `compose.dev.yml` du dépôt back démarre ensemble le back, MySQL, le front et phpMyAdmin.
+
+---
+
+## 8. Déploiement sur Heroku
+
+### 8.1 Installer et vérifier les outils
+
+```bash
 npm install -g heroku
-
-# Verifier les dépendances
 git --version
 heroku --version
 node -v
+```
+
+### 8.2 Préparer le projet
 
 # Se déplacer dans le dossier à déployer
+
+```bash
 cd D:\wamp64\www\vite-et-gourmand-front
+heroku login
+```
 
 # Initialiser Git
 git init
@@ -126,6 +287,15 @@ git commit -m "first deploy"
 heroku login
 
 heroku create vite-et-gourmand
+
+Le fichier `package.json` doit lancer le serveur de production :
+
+```json
+"main": "server_prod.js",
+"scripts": {
+  "start": "node server_prod.js"
+}
+```
 
 # Modification de fichier package.json
 {
@@ -144,26 +314,46 @@ heroku create vite-et-gourmand
   }
 }
 
-# Créer l’application : vite-et-gourmand
-heroku create "nomdel'application"
+
+### 8.3 Créer l'application et la relier au dépôt (une seule fois)
+
+```bash
 heroku create vite-et-gourmand
+heroku git:remote -a vite-et-gourmand
+git remote -v
+```
 
 # Faire le lien avec heroku 
-// fait le lien Heroku à ton projet actuelle
+// fait le lien Heroku au projet actuelle
 heroku git:remote -a vite-et-gourmand
 
-//vérifie 
-git remote -v
+### 8.4 Déployer le projet
 
-# Déployer le projet 
+Après avoir fusionné les modifications sur la branche `main` :
+
+```bash
 git push heroku main
-
-# Ouvrir le  site 
 heroku open
+```
+
+### 8.5 En cas de problème
 
 # SI sa plante Vérifier les logs Heroku
+```bash
 heroku logs --tail
+```
 
-# Installation de chart JS
-npm install chart.js
+Revenir à la version précédente :
 
+```bash
+heroku releases:rollback
+```
+## 10. Dépannage
+
+| Problème | Solution |
+|---|---|
+| Les modifications de style n'apparaissent pas | Recompiler le Sass puis vider le cache du navigateur (Ctrl + F5). |
+| Les menus du header ne correspondent pas au rôle | Nettoyer les cookies . |
+| Erreur 500 sur toutes les routes de l'API | Voir `heroku logs --tail -a vite-et-gourmand-api`. Si le message contient `max_questions`, la limite gratuite de JawsDB (3 600 requêtes SQL par heure) est atteinte : elle se remet à zéro une heure après le dépassement. |
+| Le site appelle la mauvaise API | Vérifier `Script/config.js` |
+| Besoin de logs détaillés dans la console | Passer `let DebugConsole = true;` en haut du script de la page concernée. |
