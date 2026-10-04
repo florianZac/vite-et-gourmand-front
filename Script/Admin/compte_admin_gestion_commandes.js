@@ -386,7 +386,10 @@ export function initCompteAdminGestionCommandesPage() {
       }
       if (DebugConsole) console.log("[renderCommandes] COMMANDE COMPLETE :", c);
       // Suivi timeline
-      const suivis = await loadSuivi(safeId);
+      // Le suivi est désormais renvoyé avec la liste des commandes (c.suivis) :
+      // plus besoin d'un appel /suivi par commande (économise des requêtes SQL).
+      // loadSuivi() reste en secours si l'API ne renvoie pas encore ce champ.
+      const suivis = Array.isArray(c.suivis) ? c.suivis : await loadSuivi(safeId);
       let suiviHtml = '';
       if (suivis.length > 0) {
         const badges = suivis.map(function(s) {

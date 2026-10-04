@@ -559,8 +559,9 @@ export function initcompteclientPage() {
       const status = STATUS_MAP[order.statut] || { label: order.statut, css: 'compte_client-status-pending' };
       if (DebugConsole) console.log(`[renderOrders] Commande ${order.id} - Status mappé :`, status);
 
-      // Charge le suivi de la commande depuis l'API
-      const suivis = await loadSuivi(order.id);
+      // Suivi renvoyé avec la liste des commandes (order.suivis) : plus d'appel /suivi par commande.
+      // loadSuivi() reste en secours si l'API ne renvoie pas encore ce champ.
+      const suivis = Array.isArray(order.suivis) ? order.suivis : await loadSuivi(order.id);
 
       // Génère les sections HTML conditionnelles
       const timelineHtml = renderTimeline(suivis);
