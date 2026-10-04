@@ -145,7 +145,7 @@ Les règles mobiles sont regroupées à la fin de chaque fichier Sass, dans un b
 ---
 ## 6. Installation en local
 
-### 7.1 Installer Node.js (Windows, via Chocolatey, s'il n'est pas déjà installé)
+### Installer Node.js (Windows, via Chocolatey, s'il n'est pas déjà installé)
 
 https://nodejs.org/en/download
 
@@ -155,7 +155,7 @@ Etape 2 : choco install nodejs-lts -y
 
 
 ```
-### 7.2 Installation des dépendances
+### Installation des dépendances
 
 ```bash
 npm install
@@ -163,34 +163,48 @@ npm install
 
 Cette commande installe Express, Bootstrap 5.3.8, Bootstrap Icons, Chart.js et http-proxy-middleware (voir `package.json`).
 sinon manuellement :
-## Installation du serveur Express
-npm install express
 
+## Installation du serveur Express
+```bash
+npm install express
+```
 ## Installation du framework css bootstrap
 
 pourquoi : respect des normes standardiser, est gain de temps sur le css du site
 installation de bootstrap
+```bash
 npm install bootstrap
+```
 
 ## Instalation de la version 5.3 de Bootstrap
+```bash
 npm install bootstrap@v5.3.8
+```
 
 ## Instalation de la version 5.3 de Bootstrap icon
+```bash
 npm i bootstrap-icons
+```
 
 ## Installation de Sass 
 But :  possibilité de modifier les couleurs par défaut de bootstrap est surchargé le css pour appliqué notre propre style.
 
-### 7.3 Verification des versions et netoyage des cookies
+### Verification des versions et netoyage des cookies
 
 ## Verification de la version de Node.js
+```bash
 node -v 
+```
 
 ## Verification de la version de npm
+```bash
 npm -v
+```
 
 ## Lancement du serveur
+```bash
 node server.js
+```
 
 ## Netoyage des COOKIES peut creer des problemes avec les roles
 taper dans la console 
@@ -198,12 +212,13 @@ document.cookie = "accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 document.cookie = "role=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 
 ## Installation de chart JS
+```bash
 npm install chart.js
-
+```
 
 ```
 ```
-### 7.4 Compiler le Sass
+## 7. Compiler le Sass
 
 Après chaque modification d'un fichier `.scss`, recompiler `main.css` :
 
@@ -213,7 +228,7 @@ npx sass scss/main.scss scss/main.css --no-source-map
 Ou avec l'extension VS Code **Live Sass Compiler** (bouton « Watch Sass »).
 Sans cette étape, les modifications de style n'apparaissent pas sur le site.
 
-### 7.5 Test l'affichage selon le rôle (sans se connecter)
+### Test l'affichage selon le rôle (sans se connecter)
 
 Client :
 ```js
@@ -243,7 +258,7 @@ document.cookie = "role=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
 location.reload();
 ```
 
-### 7.6 Lancer le site
+### 8 Lancer le site
 
 ```bash
 node server.js
@@ -251,7 +266,7 @@ node server.js
 
 Puis ouvrir http://localhost:3000
 
-### 7.7 Avec Docker (optionnel)
+### 8.1 Avec Docker (optionnel)
 
 Le `Dockerfile` construit une image Node 20 qui lance `server_prod.js` sur le port 3000.
 Le `compose.dev.yml` du dépôt back démarre ensemble le back, MySQL, le front et phpMyAdmin.
