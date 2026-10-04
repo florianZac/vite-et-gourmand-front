@@ -14189,6 +14189,19 @@ textarea.form-control-lg {
   }
 }
 /* ===============================
+   ÉCRANS D'ORDINATEUR PEU HAUTS (fenêtre réduite, zoom 125-150 %)
+   - Le hero n'avait pas la place : le badge passait sous le header fixe
+     et "Découvrir" (position absolue en bas) recouvrait les boutons.
+   - Marges haute et basse égales : quand la place suffit, le contenu reste
+     centré exactement au même endroit qu'avant.
+   =============================== */
+@media (min-width: 769px) and (max-height: 760px) {
+  .hero-scene {
+    padding-top: 6.5rem; /* passe sous le header fixe */
+    padding-bottom: 6.5rem; /* réserve la place du bouton "Découvrir" */
+  }
+}
+/* ===============================
    STYLES PAGE DE CONNEXION - VITE & GOURMAND
    =============================== */
 /* -------- Section hero -------- */
