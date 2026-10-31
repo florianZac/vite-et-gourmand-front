@@ -77,8 +77,8 @@ export function initContactPage() {
      =============================== */
 
   function validateEmail(email) {
-    //const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Regex: min 3 char avant @, @ obligatoire, min 3 après, .fr ou .com obligatoire
+    const emailRegex = /^[a-zA-Z0-9._-]{3,}@[a-zA-Z0-9._-]{3,}\.(fr|com)$/;
     return emailRegex.test(email);
   }
 
